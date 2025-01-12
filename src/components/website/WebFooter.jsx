@@ -60,9 +60,9 @@ const WebFooter = () => {
                   />
                   <a
                     className={Styles.HomeFooterReachText}
-                    href="tel:+33761406084"
+                    href="tel:+33752371022"
                   >
-                    +33761406084
+                    +33752371022
                   </a>
                 </div>
 
