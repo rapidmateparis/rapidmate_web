@@ -35,8 +35,10 @@ const WebPrivacyPolicy = () => {
                 <p>
                   Rapidmate provides logistics services, connecting businesses
                   with delivery professionals to ensure fast and reliable
-                  deliveries across France. For questions or concerns about your
-                  data, contact us at:
+                  deliveries across France. <b>Rapidmate</b> operates under its parent
+                  company, <b>AJS GROUP</b>, which is responsible for issuing
+                  all invoices and bills related to our services. For questions
+                  or concerns about your data, contact us at:
                 </p>
                 <h3>
                   Email:{" "}
