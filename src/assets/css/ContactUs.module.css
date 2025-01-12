@@ -1,0 +1,136 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.homeContactDetailsCard {
+  background-image: url(../images/Contact-Form-Banner.png);
+  background-size: cover;
+  max-width: 100%;
+  padding: 100px 40px;
+}
+
+.homeContactTitleText {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.homeContactDiscriptionText {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.homeContactPhoneIcon {
+  font-size: 15px;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.homeContactNumbertext {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.homeContactNumberCard {
+  display: flex;
+  margin: 10px 0px;
+}
+
+.homeContactNumberMainCard {
+  margin-top: 200px;
+}
+
+.homeContactFormLabel {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.homeContactFormInput {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.HomeContactFromMessageSendBtn {
+  border: none;
+  background-color: var(--secondary-color);
+  padding: 10px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: var(--white-color);
+}
+
+.HomeContactFromMessageSendBtnCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 12px;
+  justify-content: end;
+}
+
+.homeContactSenderImg {
+  position: absolute;
+  top: -60px;
+  width: 160px;
+  height: 90px;
+  left: 0px;
+  transform: rotate(-30deg);
+}
+
+.homeContactFormMainCardForm {
+  padding: 15px 50px;
+}
+
+.homeContactSec {
+  padding: 50px 0px;
+}
+
+.mr2 {
+  margin-right: 20px;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}

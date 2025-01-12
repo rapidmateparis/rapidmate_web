@@ -1,0 +1,162 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.giftsSection {
+  background-color: var(--primary-color);
+  margin-top: -75px;
+  padding-top: 80px;
+}
+
+.giftsTopBannerCard {
+  max-width: 100%;
+}
+
+.giftsBannerTitleTextCard {
+  padding: 300px 0px 0px 80px;
+}
+
+.giftsBannerTitleTextCard h2 {
+  font-size: 70px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.giftsShiftDeliveryBannerCard img {
+  max-width: 100%;
+}
+
+.giftsShiftDeliveryMainCard {
+  padding: 80px 0px;
+}
+
+.giftsShiftDeliveryTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.giftsShiftDeliveryTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.giftsMultipleDeliveryOptionsSec {
+  background-color: var(--mainbg-color);
+  padding: 80px 0px;
+}
+
+.giftsMultipleDeliveryOptionsTitleCard {
+  text-align: center;
+}
+
+.giftsMultipleDeliveryOptionsTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.giftsMultipleDeliveryOptionsTitleCard p {
+  font-size: 16px;
+}
+
+.giftsMultipleDeliveryOptionsBannerCard img {
+  max-width: 50%;
+}
+
+.giftsMultipleDeliveryOptionsBannerCard {
+  text-align: center;
+}
+
+.giftsLiveTrackingBannerCard img {
+  max-width: 35%;
+}
+
+.giftsLiveTrackingBannerCard {
+  text-align: center;
+  padding-top: 30px;
+}
+
+.giftsVehicleWideaMainCard {
+  background-image: url("../images/GiftsWideVehicles.png");
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0px;
+  height: 400px;
+}
+
+.giftsVehicleWideaTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.giftsVehicleWideaTitleCard p {
+  font-size: 16px;
+}
+
+.giftsShiftDeliveryBannerCard img,
+.giftsShiftDeliveryBannerCard img,
+.giftsMultipleDeliveryOptionsBannerCard img,
+.giftsLiveTrackingBannerCard img {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+@-webkit-keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}

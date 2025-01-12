@@ -1,0 +1,66 @@
+:root {
+    --primary-color: #ffc72b;
+    --secondary-color: #ff0058;
+    --text-color: #000;
+    --white-color: #fff;
+    --gradiantbg-color: linear-gradient(
+      0deg,
+
+      
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 242, 206, 1) 100%
+    );
+    --mainbg-color: #fbfaf5;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .modalPickupEditAddressHeader{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fffcea;
+    border-radius: 15px 15px 0px 0px;
+    align-items: center;
+  }
+
+  .pickupEditAddressDeleteBtn{
+    font-size: 14px;
+    font-weight: 500;
+    background-color: transparent;
+    border: 1px solid #ff0058;
+    color: #ff0058;
+    padding: 8px 35px;
+    border-radius: 6px;
+    margin-right: 20px;
+  }
+
+  .pickupEditAddressSaveBtn{
+    font-size: 14px;
+    font-weight: 500;
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    padding: 8px 40px;
+    border-radius: 6px;
+  }
+
+  .enterpriseAddNewAdUploadIconimg{
+    width: 105px;
+    height: 105px;
+    border-radius: 100%;
+  }
+
+  .enterpriseAddNewAdLargeIconimg{
+    width: 100%;
+    height: 100px;
+  }

@@ -1,0 +1,169 @@
+:root {
+  --primaryColor: #ffc72b;
+  --secondaryColor: #ff0058;
+  --textColor: #000;
+  --whiteColor: #fff;
+  --gradientBgColor: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainBgColor: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.homeHeader .nav {
+  width: 100%;
+  background-color: #fff2d0;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+.homeHeader .nav > .navHeader {
+  flex: 0.95;
+  padding-left: 1rem;
+  margin-left: 60px;
+}
+.homeHeader .nav > .navList {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 0px;
+}
+.homeHeader .nav > .navList > li {
+  list-style-type: none;
+}
+.homeHeader .nav > .navList > li a {
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--textColor);
+  font-weight: 500;
+}
+.homeHeader .nav > #navCheck {
+  display: none;
+}
+@media (max-width: 480px) {
+  .homeHeader .nav {
+    padding: 1rem;
+  }
+  .homeHeader .nav > .navBtn {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-top: 0.2rem;
+  }
+  .homeHeader .nav > .navBtn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  .homeHeader .nav > .navBtn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #000;
+  }
+  .homeHeader .nav > .navList {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    background-color: #fff;
+    height: 0;
+    transition: all 0.3s ease-in;
+    top: 40px;
+    left: 0;
+    overflow: hidden;
+  }
+  .homeHeader .nav > .navList > li {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  .homeHeader .nav > #navCheck:checked ~ .navList {
+    height: calc(80vh - 50px);
+    margin-top: 30px;
+  }
+}
+
+.homeHeader .homeHeaderLogo {
+  width: 41px;
+  height: 44px;
+  margin-right: 10px;
+}
+
+.homeHeader .homeHeaderCompanyName {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0px;
+  color: var(--textColor);
+}
+.homeHeader .homeHeaderLogoCard {
+  display: flex;
+  align-items: center;
+}
+
+.homeHeader .homeHeaderSignupLink {
+  background-color: var(--secondaryColor);
+  color: #fff !important;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.homeHeader .loginNavList {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0px;
+  margin-left: 30px;
+}
+
+.homeHeader .loginNavList li {
+  list-style: none;
+}
+
+.homeHeader .loginNavList li a {
+  cursor: pointer;
+  color: var(--textColor);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* DeliveryBoy Signup start Here  */
+
+.deliverySignupPolicyCheck {
+  color: var(--primaryColor);
+}
+
+.deliveryBoySignupCustomCheckbox .form-check-input:checked {
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
+}
+
+.deliveryBoySignupCheckboxCard {
+  display: flex;
+}
+
+

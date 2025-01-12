@@ -1,0 +1,100 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --white-color: #fff;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+.tabs {
+  width: 100%;
+  overflow: hidden;
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tabs ul {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: hidden;
+  border-bottom: 1px solid #ccc;
+}
+
+.tabs ul li {
+  text-align: center;
+}
+
+.tabs ul li label {
+  display: block;
+  padding: 15px 20px;
+  color: #000;
+  cursor: pointer;
+  transition: 0.7s;
+}
+
+.tabs ul li label:hover {
+  color: var(--secondary-color);
+}
+
+.tabs .tab-input:checked + .tab-label {
+  background-color: #ffcc00; /* Active tab background color */
+  border-color: #ccc;
+  border-bottom-color: #fff;
+}
+
+.tabs .content section {
+  display: none;
+}
+
+.tabs
+  input[type="radio"]:nth-of-type(1):checked
+  ~ .content
+  section:nth-of-type(1),
+.tabs
+  input[type="radio"]:nth-of-type(2):checked
+  ~ .content
+  section:nth-of-type(2),
+.tabs
+  input[type="radio"]:nth-of-type(3):checked
+  ~ .content
+  section:nth-of-type(3) {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .tabs ul {
+    flex-direction: column;
+  }
+
+  .tabs ul li label {
+    border-radius: 0;
+  }
+
+  .tabs ul li label:first-of-type {
+    border-radius: 10px 10px 0 0;
+  }
+
+  .tabs ul li label:last-of-type {
+    border-radius: 0 0 10px 10px;
+  }
+}

@@ -1,0 +1,141 @@
+.HomeContactModalBodyModal {
+  padding: 0px !important;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.homeContactModalDetailsCard {
+  position: relative;
+  background-color: #FFC72B;
+  max-width: 100%;
+  padding: 40px 160px 40px 40px;
+  border-radius: 15px 0px 0px 15px;
+}
+
+.homeContactModalTitleText {
+  font-size: 35px;
+  color: var(--secondary-color);
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.homeContactModalDiscriptionText {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.homeContactModalPhoneIcon {
+  font-size: 15px;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.homeContactModalNumbertext {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.homeContactModalNumberCard {
+  display: flex;
+  margin: 10px 0px;
+}
+
+.homeContactModalNumberMainCard {
+  margin-top: 150px;
+}
+
+.homeContactModalFormLabel {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.homeContactModalFormInput {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.homeContactModalFromMessageSendBtn {
+  border: none;
+  background-color: var(--secondary-color);
+  padding: 10px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: var(--white-color);
+}
+
+.homeContactModalFromMessageSendBtnCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 12px;
+  justify-content: end;
+}
+
+.homeContactModalSenderImg {
+  position: absolute;
+  top: -60px;
+  width: 160px;
+  height: 90px;
+  left: 0px;
+  transform: rotate(-30deg);
+}
+
+.homeContactModalFormMainCardForm {
+  padding: 15px 10px;
+}
+
+.homeContactModalSec {
+  padding: 50px 0px;
+}
+
+.mr-2 {
+  margin-right: 20px;
+}
+
+.HomeContactModalBodyModal {
+  padding: 0px !important;
+}
+
+.HomeContactModalCloseModalBtn {
+  border: none;
+  background-color: var(--text-color);
+  padding: 10px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: var(--white-color);
+}
+
+.homeContactModalFormMainCardForm {
+  padding: 15px 10px;
+}
+
+.homeContactModalBannerCard{
+  position: absolute;
+  bottom: 0px;
+  right: -26px;
+}
+
+.homeContactModalBannerCard img{
+  height: 500px;
+  width: auto;
+}
+
+.homeContactModalSocialIcon img{
+  height: 22px;
+  width: auto;
+}
+
+.homeContactModalSocialIconCard{
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+}

@@ -1,0 +1,2079 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #131314;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+  --bg-color: #fffef0;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif !important;
+  background-color: #faf9f5 !important;
+  color: #131314 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.homeSection {
+  margin: 50px 50px 80px 50px;
+}
+
+.homeCompaniesSec {
+  margin: 30px 50px 80px 50px;
+}
+
+.WebCompaniesSec {
+  padding: 40px 30px;
+  background-color: #fff0f5;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.homeTitle {
+  font-size: 39px;
+  font-weight: 600;
+}
+
+.bannerMainCard {
+  background-color: var(--bg-color);
+  padding: 40px 30px;
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.homeDiscription {
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.homeInfoCard {
+  padding: 0px 60px 0px 0px;
+}
+
+.trailButton {
+  background-color: var(--secondary-color);
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--white-color);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.7s;
+}
+
+.trailButton:hover {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.homeActionBtns {
+  display: flex;
+  margin-top: 50px;
+}
+
+.playIcon {
+  font-size: 30px;
+  color: #ff0058;
+}
+
+.demoBtn {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-left: 30px;
+  color: var(--text-color);
+  border: 2px solid var(--secondary-color);
+  padding: 5px 15px;
+  border-radius: 6px;
+  transition: color 0.5s ease;
+}
+
+.demoBtn:hover {
+  color: var(--secondary-color);
+}
+
+.demoPlay {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0px 10px;
+}
+
+.commentIcon {
+  font-size: 25px;
+}
+
+.GetInTouchBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  font-size: 17px;
+  transition: all 0.7s;
+}
+
+.GetInTouchBtn:hover {
+  color: var(--primary-color);
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.homeServicesCardImg {
+  width: auto;
+  height: 140px;
+}
+
+.homerCardsImages {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.homerCardsImagesbg {
+  padding: 15px;
+  background-color: var(--bg-color);
+  height: auto;
+  transition: 0.7s;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.homerCardsImagesbg:hover {
+  background-color: #fff1c9;
+}
+
+.homeResturentCardsText {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  margin-top: 20px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.homeServicesMainCard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.homeCompanyPartnerCountsMainCard {
+  padding: 15px;
+}
+
+.homeCompanyPartnerCounts {
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
+  transition: 0.7s;
+}
+
+.homeCompanyPartnerCounts:hover {
+  color: var(--secondary-color);
+}
+
+.homeCompanyPartnerCountsText {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+.WebWorkflowSec {
+  margin: 50px 50px 80px 50px;
+}
+
+.workFlowMainText {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-transform: capitalize;
+  margin: 80px 0px;
+}
+
+.workFlowMainText span {
+  font-weight: 700;
+  color: var(--secondary-color);
+}
+
+.workFlowDeliverySolutionCard h2 {
+  font-size: 38px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.workFlowDeliverySolutionCard h2 span {
+  color: var(--secondary-color);
+}
+
+.workFlowDeliverySolutionCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  width: 90%;
+  font-weight: 500;
+}
+
+.workFlowDeliverySolutionRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 120px 45px;
+  border: 2px solid var(--text-color);
+  border-radius: 25px 0px 0px 25px;
+  border-right: none;
+}
+
+.workFlowDeliverySolutionRow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px; /* Adjust the width */
+  height: 50px; /* Adjust the height */
+  background-color: #FAF9F5;
+  border-radius: 0px 0px 0px 0px; /* Adjust the radius */
+  transform: translate(60%, 4%);
+}
+
+.workFlowOrderTrackRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 72px 45px;
+  border: 2px solid var(--text-color);
+  border-radius: 0px 25px 25px 0px;
+  border-left: none;
+  border-top: none;
+}
+
+.workFlowOrderTrackRow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px; /* Adjust the width */
+  height: 50px; /* Adjust the height */
+  background-color: #FAF9F5;
+  border-radius: 0px 0px 0px 0px; /* Adjust the radius */
+  transform: translate(-60%, 4%);
+}
+
+.workFlowMainBorderCard {
+  position: relative;
+}
+
+.workFlowMainBorderimgCard {
+  max-width: 100%;
+  position: absolute;
+  top: 0px;
+}
+
+.workFlowTrackOrderCard h2 {
+  font-size: 38px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.workFlowTrackOrderCard h2 span {
+  color: var(--secondary-color);
+}
+
+.workFlowTrackOrderCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  width: 90%;
+  font-weight: 500;
+}
+
+.workFlowTrackOrderCard {
+  padding-left: 50px;
+}
+
+.workFlowShiftBasedRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 100px 45px;
+  border: 2px solid var(--text-color);
+  border-radius: 25px 25px 0px 25px;
+  border-right: none;
+  border-top: none;
+}
+
+.workFlowShiftBasedRow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px; /* Adjust the width */
+  height: 50px; /* Adjust the height */
+  background-color: #FAF9F5;
+  border-radius: 0px 0px 0px 0px; /* Adjust the radius */
+  transform: translate(60%, 4%);
+}
+
+.workFlowDeliveryVehicleRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 100px 45px;
+  border: 2px solid var(--text-color);
+  border-radius: 25px 25px 25px 0px;
+  border-left: none;
+  border-top: none;
+}
+
+.workFlowDeliveryVehicleRow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px; /* Adjust the width */
+  height: 50px; /* Adjust the height */
+  background-color: #FAF9F5;
+  border-radius: 0px 0px 0px 0px; /* Adjust the radius */
+  transform: translate(-60%, 4%);
+}
+
+.workFlowDeliveryVehicleCard h2 {
+  font-size: 38px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.workFlowDeliveryVehicleCard h2 span {
+  color: var(--secondary-color);
+}
+
+.workFlowDeliveryVehicleCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  width: 90%;
+  font-weight: 500;
+}
+
+.workFlowDeliveryVehicleCard {
+  padding-left: 110px;
+}
+
+.workFlowSecurePaymentRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 50px 45px;
+  border: 2px solid var(--text-color);
+  border-radius: 25px 25px 0px 25px;
+  border-right: none;
+  border-top: none;
+}
+
+.workFlowSecurePaymentRow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px; /* Adjust the width */
+  height: 50px; /* Adjust the height */
+  background-color: #FAF9F5;
+  border-radius: 0px 0px 0px 0px; /* Adjust the radius */
+  transform: translate(60%, 4%);
+}
+
+.workFlowSpecializedVehicleRow {
+  display: flex;
+  align-items: center;
+  padding: 60px 45px;
+  border: 2px solid var(--text-color);
+  border-radius: 25px 25px 25px 0px;
+  border-left: none;
+  border-top: none;
+}
+
+.workFlowMainBorderCard {
+  position: relative;
+}
+
+.workFlowIsolationModeCard {
+  position: absolute;
+  top: -79px;
+  right: 0px;
+  height: 80px;
+  width: auto;
+}
+
+.EcoFriendlyFleetSec {
+  padding: 70px 50px 80px 50px;
+  background-color: #fff0f5;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.ecoFriendlyFleetText {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-transform: capitalize;
+  margin-bottom: 30px;
+}
+
+.ecoFriendlyFleetText span {
+  font-weight: 700;
+  color: var(--secondary-color);
+}
+
+.EcoRouteOptimizationCard {
+  border: 2px solid var(--secondary-color);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px;
+}
+
+.EcoRouteOptimizationTitle {
+  font-size: 30px;
+  color: var(--secondary-color);
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.EcoRouteOptimizationDescription {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  color: var(--text-color);
+}
+
+.EcoFriendlyFleetRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.webHomeBlogSec {
+  margin: 20px 50px 80px 50px;
+}
+
+.webHomeBlogHeadCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.webHomeBlogTitle {
+  font-size: 35px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.webHomeBlogViewBtn {
+  background-color: var(--secondary-color);
+  border-radius: 6px;
+  font-size: 16px;
+  color: var(--white-color);
+  padding: 7px 20px;
+}
+
+.webHomeBlogPlaceholderImage {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.webHomeBlogCategoryCard {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.webHomeBlogCategoryTitle {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.webHomeBlogPostDate {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-bottom: 0px;
+}
+
+.webHomeBlogMainCard {
+  padding-left: 60px;
+}
+
+.webHomeBlogHeadlineText {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 30px 0px;
+}
+
+.webHomeBlogDescriptionText {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.webHomeBlogReadMoreBtn {
+  border: 2px solid var(--secondary-color);
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 9px 20px;
+  color: var(--text-color);
+}
+
+.webHomeBlogReadMoreBtnCard {
+  margin-top: 35px;
+}
+
+.webHomeBlogBottomCardsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 80px;
+}
+
+.webHomeBlogBottomBlogImgCard img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.webHomeBlogBottomBlogCategoryCard {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.webHomeBlogBottomBlogCategoryCard h5 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.webHomeBlogBottomBlogCategoryCard p {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin-bottom: 0px;
+}
+
+.webHomeBlogBottomBlogDetailsCard {
+  margin-bottom: 25px;
+}
+
+.webHomeBlogBottomBlogDetailsCard h2 {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 20px 0px;
+}
+
+.webHomeBlogBottomBlogDetailsCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.webHomeBlogBottomReadMoreBtn {
+  border: 2px solid var(--secondary-color);
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 9px 20px;
+  color: var(--text-color);
+}
+
+.webHomeBlogBottomMainCard {
+  max-width: 415px;
+  margin: 20px;
+}
+
+.WebHomeTestimonialSec {
+  background-color: #fffef0;
+  padding: 50px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.webHomeTestimonialTitleText {
+  font-size: 35px;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+
+.HomeTestimonialClientMainCard {
+  padding: 25px;
+}
+.HomeTestimonialMainContainer {
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid var(--secondary-color);
+}
+
+.HomeTestimonialClientImgsCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.HomeTestimonialClientSec {
+  padding: 50px 0px;
+}
+
+.HomeTestimonialClientImgs {
+  width: 95px;
+  height: 95px;
+  border-radius: 100%;
+  margin: 15px 0px;
+}
+
+.HomeTestimonialClientName {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.HomeTestimonialClientDescription {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.HomeTestimonialClientRatinCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  gap: 20px;
+}
+
+.HomeTestimonialClientRatinCard img {
+  height: 20px;
+  width: auto;
+}
+
+.HomeFooterSec {
+  background-color: #131314;
+  padding: 50px 0px;
+}
+
+.HomeFooterReachTexttitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--white-color);
+}
+
+.HomeFooterReachCallIcon {
+  font-size: 18px;
+  color: var(--white-color);
+  margin-right: 10px;
+  margin-top: 3px;
+  transition: 0.7s;
+}
+
+.HomeFooterReachText {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px;
+  color: var(--white-color);
+  transition: 0.7s;
+}
+
+.HomeFooterReachCard {
+  display: flex;
+  margin: 20px 0px;
+  transition: 0.7s;
+}
+
+.HomeFooterReachCard:hover {
+  margin-left: 5px;
+
+  .HomeFooter-ReachCallIcon {
+    color: var(--secondary-color);
+  }
+  .HomeFooterReachText {
+    color: var(--secondary-color);
+  }
+}
+
+.HomeFooterCompanyLinks {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--white-color);
+  transition: 0.7s;
+}
+
+.HomeFooterCompanyLinks:hover {
+  margin-left: 5px;
+  color: var(--secondary-color);
+}
+
+.HomeFooterCompanyLinksCards {
+  margin: 20px 0px;
+}
+
+.HomeFooterSubscribeNewsletterInput {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  padding: 10px 10px !important;
+  border-radius: 0px !important;
+}
+
+.HomeFooterSubscribeBtn {
+  border: none !important;
+  background-color: var(--text-color);
+  color: var(--white-color);
+  padding: 10px 20px;
+}
+
+.HomeFooterSubscribeNewsletterCard {
+  display: flex;
+  align-items: center;
+}
+
+.HomeFooterSubscribeNewsletterDiscription {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 15px 0px;
+  color: var(--white-color);
+}
+
+.HomeFooterlogotitleCard {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #faf9f552;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+}
+
+.HomeFooterlogoImg {
+  width: 50px;
+  height: 53px;
+  margin-right: 15px;
+}
+
+.HomeFooterCompanyName {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0px;
+  color: var(--white-color);
+}
+
+.HomeFooterSocialMediaCard {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.HomeFooterSocialMediaCard img {
+  height: 22px;
+  width: auto;
+}
+
+.HomeFooterCompanyName span {
+  color: var(--secondary-color);
+}
+
+.HomeFooterContactBtn {
+  background-color: var(--secondary-color);
+  padding: 8px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  color: var(--white-color);
+}
+
+.HomeFooterBottomNavCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #faf9f552;
+  padding-top: 30px;
+}
+
+.HomeFooterBottomLinks {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--white-color);
+  transition: 0.7s;
+}
+
+.HomeFooterBottomLinks:hover {
+  margin-left: 5px;
+  color: var(--secondary-color);
+}
+
+.HomeFooterPolicyCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.RestaurantBannerMainSec {
+  margin: 50px 50px 80px 50px;
+}
+
+.RestaurantBannerMainRowCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 40px 30px;
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.RestaurantBannerTextCard {
+  padding-right: 80px;
+}
+
+.RestaurantBannerTextCard h2 {
+  color: var(--secondary-color);
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.RestaurantBannerTextCard p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  text-transform: capitalize;
+}
+
+.RestaurantDeliverySolutionSec {
+  padding: 50px 50px 50px 50px;
+  background-color: #fff0f5;
+}
+
+.RestaurantCountText {
+  width: 30px;
+  height: 30px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+  border-radius: 100%;
+}
+
+.RestaurantDeliverySolutionMainCard {
+  display: flex;
+  background-color: #ffe7ef;
+  gap: 10px;
+  padding: 25px;
+  margin: 20px 30px 20px 0px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.RestaurantCommissionsCard h2 {
+  font-size: 25px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.RestaurantCommissionsCard p {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.RestaurantShiftBasedSec {
+  margin: 50px 50px 50px 50px;
+}
+
+.RestaurantShiftBasedRow {
+  display: flex;
+  align-items: center;
+}
+
+.RestaurantShiftBasedTextCard {
+  padding-left: 100px;
+}
+
+.RestaurantShiftBasedTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-transform: capitalize;
+}
+
+.RestaurantShiftBasedTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.RestaurantDeliveryTitleText {
+  font-size: 35px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.RestaurantDeliveryTitleText span {
+  color: var(--secondary-color);
+}
+
+.RestaurantScheduleSec {
+  margin: 80px 50px 300px 50px;
+}
+
+.RestaurantScheduleMainCard {
+  background-color: var(--bg-color);
+  padding: 50px 30px 50px 30px;
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.RestaurantScheduleImgCard{
+  margin-top: 50px;
+}
+
+.RestaurantScheduleTextCard {
+  text-align: center;
+  padding: 0 18%;
+}
+
+.RestaurantScheduleTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.RestaurantScheduleTextCard span {
+  color: var(--secondary-color);
+}
+
+.RestaurantScheduleTextCard p {
+  font-size: 18px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.RestaurantRealTimeTrackingSec {
+  margin: 80px 50px 80px 50px;
+}
+
+.RestaurantRealTimeTrackingRow {
+  display: flex;
+  align-items: center;
+}
+
+.RestaurantRealTimeTrackingTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.RestaurantRealTimeTrackingTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.RestaurantRealTimeTrackingTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.RestaurantRealTimeTrackingTextCard {
+  margin-right: 80px;
+}
+
+.RestaurantProfileFeedbackSec {
+  padding: 80px 50px 80px 50px;
+  background-color: #fff0f5;
+}
+
+.RestaurantProfileFeedbackRow {
+  display: flex;
+  align-items: center;
+}
+
+.RestaurantProfileFeedbackTextCard {
+  padding-left: 80px;
+}
+
+.RestaurantProfileFeedbackTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.RestaurantProfileFeedbackTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.RestaurantProfileFeedbackTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.RestaurantSeamlessCoordinationSec {
+  margin: 80px 50px 80px 50px;
+}
+
+.RestaurantSeamlessCoordinationRow {
+  display: flex;
+  align-items: center;
+}
+
+.RestaurantSeamlessCoordinationTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.RestaurantSeamlessCoordinationTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.RestaurantSeamlessCoordinationTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.RestaurantLogingTrackingSec {
+  margin: 50px 0px;
+}
+
+.RestaurantLogingTrackingRow {
+  display: flex;
+  align-items: center;
+}
+
+.RestaurantLogingTrackinImageCard {
+  padding: 50px;
+  background-color: var(--bg-color);
+  border-radius: 0px 15px 15px 0px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.RestaurantLogingTrackinTextCard {
+  padding: 0px 50px;
+}
+
+.RestaurantLogingTrackinTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.RestaurantLogingTrackinTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.RestaurantLogingTrackinTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebPartnersSec {
+  padding: 50px 50px 50px 50px;
+  background-color: #fff0f5;
+}
+
+.PartnerImage {
+  height: 300px;
+  width: auto;
+}
+
+.WebPartnersTitleText {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.WebPartnersTitleText span {
+  color: var(--secondary-color);
+}
+
+.WebGroceryMultipleDeliveryCard {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.GroceryCustomerSatisfactionTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.GroceryCustomerSatisfactionTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.GroceryCustomerSatisfactionTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.GroceryCustomerSatisfactionImgCard {
+  text-align: end;
+}
+
+.GroceryCustomerSatisfactionImgCard img {
+  max-width: 80%;
+}
+
+.WebPharmacyUrgentDeliverySec {
+  margin: 80px 50px 300px 50px;
+}
+
+.WebPharmacyUrgentDeliveryMainCard {
+  display: flex;
+  background-color: var(--bg-color);
+  padding: 50px 30px 50px 30px;
+  border-radius: 25px;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebPharmacyUrgentDeliveryTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebPharmacyUrgentDeliveryTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebPharmacyUrgentDeliveryTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebPharmacyUrgentDeliveryImageCard {
+  position: relative;
+}
+
+.WebPharmacyUrgentDeliveryImageCard img {
+  position: absolute;
+  max-width: 100%;
+  top: 0px;
+}
+
+.WebPharmacyLiveTrackingSec {
+  margin: 50px 0px;
+}
+
+.WebPharmacyLiveTrackingRow {
+  display: flex;
+  align-items: center;
+}
+
+.WebPharmacyLiveTrackingTextCard {
+  padding: 150px 50px;
+  background-color: #fff0f5;
+  border-radius: 0px 15px 15px 0px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebPharmacyLiveTrackingTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebPharmacyLiveTrackingTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebPharmacyLiveTrackingTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebPharmacyLiveTrackingImageCard {
+  position: relative;
+}
+
+.WebPharmacyLiveTrackingImageCard img {
+  position: absolute;
+  max-width: 90%;
+  top: -210px;
+}
+
+.CommerceMultipleDeliverySec {
+  margin: 80px 50px 80px 50px;
+}
+
+.CommerceMultipleDeliveryMainCard {
+  background-color: var(--bg-color);
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.CommerceMultipleDeliveryTextMainCard {
+  margin: 0px auto;
+  max-width: 70%;
+  text-align: center;
+}
+
+.CommerceMultipleDeliveryTextMainCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.CommerceMultipleDeliveryTextMainCard h2 span {
+  color: var(--secondary-color);
+}
+
+.CommerceMultipleDeliveryTextMainCard p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.WebMoreBannerSec {
+  margin: 40px 50px 50px 50px;
+}
+
+.WebMoreBannerRowCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color);
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebMoreBannerTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebMoreBannerTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebMoreBannerTextCard p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.WebMoreAreaMainSec {
+  background-color: #fff0f5;
+  padding: 50px 50px 50px 50px;
+  margin: 80px 0px;
+}
+
+.WebMoreAreaTitleText {
+  font-size: 35px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebMoreAreaCategoryRow {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 20px 10px;
+}
+
+.WebMoreAreaCategoryTextCard h2 {
+  font-size: 30px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+.WebMoreAreaCategoryTextCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebMoreAreaCategoryImageCard img {
+  height: 120px;
+  width: auto;
+}
+
+.WebMoreAreaMainBottomText {
+  font-size: 18px;
+  margin: 20px 0px 0px 0px;
+  font-weight: 500;
+}
+
+.WebIndividualsSec {
+  margin: 50px 50px 100px 50px;
+}
+
+.WebIndividualsMainCard {
+  background-color: var(--bg-color);
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebIndividualsMainTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--secondary-color);
+}
+
+.WebIndividualsScheduledMainCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebIndividualsScheduledMainCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebIndividualsScheduledMainCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebPackersMoversSec {
+  background-color: var(--bg-color);
+  padding: 50px 50px 50px 50px;
+  margin: 50px 0px;
+}
+
+.WebIndividualsPackersMoversMainCard {
+  padding-left: 50px;
+}
+
+.WebIndividualsPackersMoversMainCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebIndividualsPackersMoversMainCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebIndividualsPackersMoversMainCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebBecomeCourierSec {
+  background-color: var(--bg-color);
+  margin: 50px 50px 50px 50px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebJoinRapidmateSec {
+  margin: 50px 50px 50px 50px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebJoinRapidmateTextCard {
+  padding: 100px;
+}
+
+.WebJoinRapidmateTextCard h2 {
+  font-size: 30px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+}
+
+.WebJoinRapidmateTextCard p {
+  font-size: 18px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebJoinRapidmateTextMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.WebJoinRapidmateFormMainCard {
+  padding: 30px 50px;
+  background-color: var(--white-color);
+  border-radius: 0px 15px 15px 0px;
+}
+
+.DeliveryboyFormApplyInputCard {
+  margin: 10px;
+}
+
+.DeliveryboyFormApplyInputCard input {
+  border: 1px solid var(--text-color);
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  box-shadow: none;
+}
+
+.DeliveryboyFormApplyPaaswordCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin: 10px;
+}
+
+.DeliveryboyFormApplyPaaswordInput {
+  width: 100%;
+  padding-right: 2rem;
+  border: 1px solid var(--text-color);
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 16px;
+  outline: none;
+  box-shadow: none;
+}
+
+.signupPasswordEyeIcon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1rem; /* Adjust size as needed */
+  color: #666;
+}
+
+.DeliveryboyFormSelectCard {
+  margin: 10px;
+}
+
+.DeliveryboyFormSelectCard select {
+  border: 1px solid var(--text-color);
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  box-shadow: none;
+}
+
+.DeliveryboyFormApplyPhoneCard {
+  margin: 10px;
+}
+
+.deliverySignupPolicyCheck {
+  color: var(--secondary-color);
+}
+
+.pickupSignupContinueBtn {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-color);
+  padding: 10px 50px;
+  width: 100%;
+  text-align: center;
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.7s;
+  border: none;
+  margin: 20px 0px 20px 0px;
+}
+
+.pickupSignupContinueBtn:hover {
+  background-color: var(--primary-color);
+}
+
+.loginTextSignup {
+  color: var(--secondary-color);
+}
+
+.WebJoinRapidmateTextMainRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  border-radius: 15px 15px 15px 15px;
+}
+
+.WebWhyWithRapidmateSec {
+  margin: 50px 50px 50px 50px;
+  background-color: #fff0f5;
+  padding: 50px 50px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebWhyWithRapidmateTitle {
+  font-size: 38px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: capitalize;
+  margin-bottom: 40px;
+}
+
+.WebWhyFlexibleScheduleCard h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--secondary-color);
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.WebWhyFlexibleScheduleCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebWhyFlexibleScheduleMainCard {
+  display: flex;
+  gap: 20px;
+  margin: 70px 0px;
+}
+
+.WebWhySimpleEfficientMainCard {
+  display: flex;
+  gap: 20px;
+}
+
+.WebWhyFlexibleScheduleImgCard img {
+  height: 120px;
+  width: auto;
+}
+
+.WebWhyFlexibleScheduleMainAllCard {
+  padding-left: 50px;
+}
+
+.WebEssentialsKickstartSec {
+  margin: 50px 50px 50px 50px;
+}
+
+.WebEssentialsKickstartTitleText {
+  font-size: 38px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.WebEssentialsKickstartTitleText span {
+  color: var(--secondary-color);
+}
+
+.WebEssentialsKickstartMainCard {
+  text-align: center;
+  padding: 50px;
+}
+
+.WebEssentialsKickstartMainCard h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--secondary-color);
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.WebEssentialsKickstartMainCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebEssentialsKickstartMainCard img {
+  height: 100px;
+  width: auto;
+}
+
+.WebJoinRapidmatePlateformSec {
+  padding: 50px 50px 50px 50px;
+  margin: 50px 0px;
+  background-color: var(--bg-color);
+}
+
+.WebJoinRapidmatePlateformTitle {
+  font-size: 35px;
+  font-weight: 700;
+  text-transform: capitalize;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.WebJoinRapidmatePlateformTitle span {
+  color: var(--secondary-color);
+}
+
+.WebJoinRapidmatePlateFollowSteps {
+  font-size: 25px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--secondary-color);
+  margin-bottom: 40px;
+}
+
+.WebJoinRapidmateQuickApplyCard {
+  text-align: center;
+  padding: 70px;
+}
+
+.WebJoinRapidmateQuickApplyCard img {
+  height: 400px;
+  width: auto;
+  margin-bottom: 30px;
+}
+
+.WebJoinRapidmateQuickApplyCard h2 {
+  font-size: 25px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.WebJoinRapidmateQuickApplyCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebRapidmateTrustReviewSec {
+  margin: 50px 50px 50px 50px;
+  padding: 0px 50px;
+  border-radius: 15px;
+  background-color: #fff0f5;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebRapidmateTrustReviewTextCard {
+  padding-left: 80px;
+}
+
+.WebRapidmateTrustReviewTextCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.WebRapidmateTrustReviewTextCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebRapidmateVerifiedReviewCard {
+  margin-top: 50px;
+}
+
+.WebRapidmateVerifiedReviewCard h2 {
+  font-size: 25px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 15px;
+}
+
+.WebRapidmateVerifiedReviewCard img {
+  height: 60px;
+  width: auto;
+}
+
+.WebRapidmateVerifiedReviewCard p {
+  font-size: 18px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebRapidmateTrustReviewRow {
+  display: flex;
+  align-items: center;
+}
+
+.WebRapidmateFaqMainSec {
+  margin: 50px 50px 50px 50px;
+}
+
+.FaqContainer {
+  margin-top: 20px;
+}
+
+.FaqItem {
+  margin-bottom: 15px;
+  background-color: #fff;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.FaqQuestion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.FaqIcon {
+  font-size: 14px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.FaqAnswer {
+  padding: 15px;
+  font-size: 16px;
+  color: #555;
+  background-color: #fff;
+}
+
+.WebRapidmateFaqMainTitle {
+  font-size: 35px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+  color: var(--secondary-color);
+}
+
+.WebRapidmateSignupEarningSec {
+  padding: 50px 50px 50px 50px;
+  background-color: var(--primary-color);
+  margin: 50px 0px 0px;
+}
+
+.WebRapidmateSignupEarningTextCard {
+  margin-top: 130px;
+  text-align: center;
+}
+
+.WebRapidmateSignupEarningTextCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 30px;
+}
+
+.WebRapidmateSignupEarningTextCard span {
+  color: var(--secondary-color);
+}
+
+.WebRapidmateSignupEarningTextCard button {
+  background-color: var(--secondary-color);
+  padding: 8px 20px;
+  font-size: 16px;
+  color: var(--white-color);
+  border: none;
+  border-radius: 6px;
+}
+
+.WebAboutUsTitleTextCard {
+  padding: 30px 20px;
+}
+
+.WebAboutUsTitleTextCard h2 {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-transform: capitalize;
+  text-align: center;
+  color: var(--secondary-color);
+}
+
+.WebWhyChooseUsSec {
+  padding: 50px 50px;
+  background-color: var(--bg-color);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebWhyChooseUsTitleCard h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.WebWhyChooseUsTitleCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebWhyChooseUsTitleCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+.WebWhyChooseUsFlexibleDelivery {
+  padding: 45px 25px;
+  border-radius: 25px;
+  border: 2px solid var(--text-color);
+  height: 335px;
+}
+
+.WebWhyChooseUsFlexibleDelivery {
+  text-align: center;
+}
+
+.WebWhyChooseUsFlexibleMainCard {
+  margin: 25px 25px;
+}
+
+.WebWhyChooseUsFlexibleMainCard p {
+  font-size: 20px;
+  margin-top: 15px;
+  font-weight: 600;
+}
+
+.WebOurTeamSec {
+  padding: 80px 50px 80px 50px;
+}
+
+.WebOurTeamTitleText {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-transform: capitalize;
+}
+
+.WebOurTeamTitleText span {
+  color: var(--secondary-color);
+}
+
+.WebOurTeamDesignationCard {
+  text-align: center;
+}
+
+.WebOurTeamDesignationCard h2 {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.WebOurTeamDesignationCard p {
+  font-size: 18px;
+  color: var(--secondary-color);
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.WebOurTeamMainCard {
+  text-align: center;
+}
+
+.WebOurTeamImagesCard img {
+  border-radius: 25px;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.WebOurCoreValuesSec {
+  padding: 80px 50px 80px 50px;
+  background-color: #fff0f5;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.WebOurCoreValuesTitleText {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-transform: capitalize;
+}
+
+.WebOurCoreValuesTitleText span {
+  color: var(--secondary-color);
+}
+
+.WebOurCoreValuesMainCard {
+  text-align: center;
+  padding: 25px;
+}
+
+.WebOurCoreValuesMainCard img {
+  height: 110px;
+  width: auto;
+  margin-bottom: 20px;
+}
+
+.WebOurCoreValuesMainCard h2 {
+  font-size: 22px;
+  color: var(--secondary-color);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.WebOurCoreValuesMainCard p {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.WebApplicationDownloadSec {
+  padding: 50px 100px 50px 50px;
+  background-color: var(--bg-color);
+}
+
+.WebApplicationDownloadRow {
+  display: flex;
+  align-items: center;
+}
+
+.WebApplicationDownloadMainCard h2 {
+  font-size: 38px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  text-transform: capitalize;
+}
+
+.WebApplicationDownloadMainCard h2 span {
+  color: var(--secondary-color);
+}
+
+.WebApplicationDownloadMainCard p {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.WebApplicationDownloadMainCard img {
+  height: 50px;
+  width: auto;
+  margin-top: 15px;
+}
+
+.WebApplicationDownloadImageCard img {
+  max-width: 70%;
+}
+
+.WebApplicationDownloadImageCard {
+  text-align: center;
+}
+
+.EcoRouteOptimizationEScooterCard {
+  height: 230px;
+  width: auto;
+}
+
+.homerCardsImages {
+  text-align: center;
+}
+
+.homePrivacyPolicySec {
+  margin: 50px 0px;
+}
+
+.homePrivacyPolicyCard h1 {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.homePrivacyPolicyCard h1 span {
+  color: var(--secondary-color);
+}
+
+.homePrivacyPolicyCard h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.homePrivacyPolicyCard h3 span {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.homePrivacyPolicyCard h3 span a {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.homePrivacyPolicyCard p {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+.homePrivacyPolicyCard ul li p {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.homePrivacyPolicyCard h6 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}

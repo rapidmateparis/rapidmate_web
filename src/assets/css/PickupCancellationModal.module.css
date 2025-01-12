@@ -1,0 +1,235 @@
+:root {
+    --primary-color: #ffc72b;
+    --secondary-color: #ff0058;
+    --text-color: #000;
+    --white-color: #fff;
+    --gradiantbg-color: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 242, 206, 1) 100%
+    );
+    --mainbg-color: #fbfaf5;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .modal-header{
+    padding: 0px !important;
+    display: block !important;
+  }
+
+  .modalCancellationHeader{
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: #fffcea;
+    border-radius: 15px 15px 0px 0px;
+    align-items: center;
+  }
+
+  .cancellationReasonText{
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px 100px 0px 0px;
+  }
+
+  .orderCanceledTextHead{
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px 110px 0px 0px;
+  }
+
+  .modalCloseHeaderBtn{
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  .modal-content{
+    border-radius: 15px !important;
+  }
+
+  .cancellationModalReasonCircle {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+    line-height: 20px; /* Ensure the check mark icon centers vertically */
+  }
+  
+  .cancellationReasonCard.selected .cancellationModalReasonCircle {
+    background-color: var(--primary-color); 
+    color: #fff; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .reasonCancellationCheckIcon{
+    font-size: 12px;
+  }
+
+  .cancellationReasonCard{
+    display: flex;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  .cancellationReasonTextDetails{
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0px;
+  }
+
+  .VehicleDimensionsModalSubmitBtn{
+    font-size: 14px;
+    font-weight: 500;
+    border: 0px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    padding: 10px 55px;
+  }
+
+  .cancellationModalSubmitBtn{
+    font-size: 14px;
+    font-weight: 500;
+    border: 0px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    margin-top: 30px;
+    padding: 10px 55px;
+  }
+
+  .orderCanceledSadEmoji{
+    width: 55px;
+    height: 53px;
+    margin: 20px 0px 30px;
+  }
+
+  .yourOrderCancelText{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0px;
+    text-align: center;
+  }
+
+  .orderCanceledMsg{
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0px;
+    text-align: center;
+  }
+
+  .orderCanceledMainCard{
+    text-align: center;
+  }
+
+  /* ------------ Vehcle Dimensions ------------  */
+
+  .vehicleDimensionsTextHead{
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px 100px 0px 0px;
+  }
+
+  .vehicleDimensionsCounts{
+    font-size: 12px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    padding: 1px 2px 2px 7px;
+    margin-right: 8px;
+    margin-bottom: 0px;
+  }
+
+  .vehicleDimensionsLength{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 0px;
+  }
+
+  .vehicleDimensionsCountCard{
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+  }
+
+  .modalImageContainer {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .modalVehicleImage {
+    width: auto;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  /* -------------------- Pickup Feedback ---------------------  */
+
+  .pickupFeedbackThansksImg{
+    width: 63px;
+    height: 71px;
+    margin-bottom: 20px;
+  }
+
+  .pickupfeedbackTitle{
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0px 140px 0px 0px;
+  }
+
+  /* .bicycleImage {
+    width: 215px;
+    height: 215px;
+  }
+  
+  .scooterImage {
+    width: 215px;
+    height: 218px;
+  }
+  
+  .carImage {
+    width: 233px;
+    height: 162px;
+  }
+  
+  .partnerImage {
+    width: 265px;
+    height: 156px;
+  }
+  
+  .vanImage {
+   width: 247px;
+   height: 156px;
+  }
+  
+  .pickupImage {
+    width: 233px;
+    height: 184px;
+  }
+  
+  .truckImage {
+    width: 285px;
+    height: 160px;
+  }
+
+  .otherImage{
+    width: 157px;
+    height: 150px;
+  } */

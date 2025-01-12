@@ -1,0 +1,216 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.EcommerceSection {
+  background-color: var(--primary-color);
+  margin-top: -75px;
+  padding-top: 80px;
+}
+
+.EcommerceTopBannerCard {
+  max-width: 100%;
+}
+
+.EcommerceBannerTitleTextCard {
+  padding: 300px 0px 0px 80px;
+}
+
+.EcommerceBannerTitleTextCard h2 {
+  font-size: 70px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.EcommerceShiftDeliveryBannerCard img {
+  max-width: 100%;
+}
+
+.EcommerceMultipleDeliveryOptionsSec {
+  padding: 80px 0px;
+}
+
+.EcommerceMultipleDeliveryOptionsBannerCard {
+  text-align: center;
+}
+
+.EcommerceMultipleDeliveryOptionsBannerCard img {
+  max-width: 100%;
+}
+
+.EcommerceMultipleDeliveryOptionsTitleCard {
+  text-align: center;
+}
+
+.EcommerceMultipleDeliveryOptionsTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.EcommerceMultipleDeliveryOptionsTitleCard p {
+  font-size: 16px;
+}
+
+.EcommerceRealTimeTrackingSec {
+  padding: 80px 0px;
+  background: linear-gradient(
+    270deg,
+    #fbfaf5 46.82%,
+    rgba(252, 251, 247, 0) 64.03%
+  );
+}
+
+.EcommerceRealTimeTrackingImageCard img {
+  max-width: 100%;
+}
+
+.EcommerceRealTimeTrackingTextCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.EcommerceRealTimeTrackingTextCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.EcommerceRealTimeTrackingImageCard::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%; /* Adjust this to control how much of the image should have opacity */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+}
+
+.EcommerceRealTimeTrackingImageCard {
+  position: relative;
+}
+
+.EcommerceCustomDeliverySchedulingSec {
+  background-color: var(--mainbg-color);
+  padding: 80px 0px;
+}
+
+.EcommerceCustomDeliverySchedulingTitleCard {
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.EcommerceCustomDeliverySchedulingTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.EcommerceCustomDeliverySchedulingTitleCard p {
+  font-size: 16px;
+}
+
+.EcommerceCustomDeliverySchedulingBannerCard img {
+  max-width: 100%;
+}
+
+.EcommerceRealTimeTrackingImageCard img {
+  max-width: 100%;
+}
+
+.EcommerceRealTimeTrackingTextCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.EcommerceRealTimeTrackingTextCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.giftsVehicleWideaMainCard {
+  background-image: url("../../assets/images/GiftsWideVehicles.png");
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0px;
+  height: 400px;
+}
+
+.giftsVehicleWideaTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.giftsVehicleWideaTitleCard p {
+  font-size: 16px;
+}
+
+.EcommerceMultipleDeliveryOptionsBannerCard img,
+.EcommerceRealTimeTrackingImageCard img,
+.EcommerceCustomDeliverySchedulingBannerCard img,
+.EcommerceRealTimeTrackingImageCard img {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+@-webkit-keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}

@@ -1,0 +1,191 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.grocerySection {
+  background-color: var(--primary-color);
+  margin-top: -75px;
+  padding-top: 80px;
+}
+
+.groceryTopBannerCard {
+  max-width: 100%;
+}
+
+.groceryBannerTitleTextCard {
+  padding: 300px 0px 0px 80px;
+}
+
+.groceryBannerTitleTextCard h2 {
+  font-size: 70px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.groceryShiftDeliveryBannerCard img {
+  max-width: 100%;
+}
+
+.groceryShiftDeliveryMainCard {
+  padding: 80px 0px;
+}
+
+.groceryShiftDeliveryTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.groceryShiftDeliveryTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.groceryRealTimeTrackingTextCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.groceryRealTimeTrackingTextCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.groceryRealTimeTrackingSec {
+  padding: 80px 0px;
+}
+
+.groceryRealTimeTrackingImageCard img {
+  max-width: 100%;
+}
+
+.groceryProfileFeedbackTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.groceryProfileFeedbackTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.groceryProfileFeedbackSec {
+  padding: 80px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.groceryProfileFeedbackTitleCard {
+  text-align: center;
+  padding: 0% 20%;
+}
+
+.groceryDriverFeedbackImgCard img {
+  width: 130px;
+  height: 130px;
+}
+
+.groceryDriverFeedbackMainCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 10px 7px;
+}
+
+.groceryDriverFeedbackDescriptionTextCard p {
+  font-size: 13px;
+  margin-bottom: 0px;
+}
+
+.groceryMultipleDeliveryOptionsSec {
+  background-color: var(--mainbg-color);
+  padding: 80px 0px;
+}
+
+.groceryMultipleDeliveryOptionsTitleCard {
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.groceryMultipleDeliveryOptionsTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.groceryMultipleDeliveryOptionsTitleCard p {
+  font-size: 16px;
+}
+
+.groceryMultipleDeliveryOptionsBannerCard img {
+  max-width: 100%;
+}
+
+.groceryShiftDeliveryBannerCard img,
+.groceryMultipleDeliveryOptionsBannerCard img,
+.groceryRealTimeTrackingImageCard img {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+@-webkit-keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}

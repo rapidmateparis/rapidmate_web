@@ -1,0 +1,118 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --white-color: #fff;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+
+
+.pickupNotificationHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 15px 15px 0px 0px;
+  align-items: center;
+}
+
+.pickupnotificationTitle {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.pickupNotificationClearBtn {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+  color: var(--secondary-color);
+  background-color: transparent;
+  border: none;
+}
+
+.pickupNotificationModalCard {
+  position: relative;
+  display: flex;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupNotificationNotificationBell{
+    font-size: 21px;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.pickupNotificationDeliveryStatus{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.pickupNotificationDeliverydiscription{
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.pickupNotificationDeliveryTime{
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0px;
+}
+
+.pickupNotificationClockIcon{
+    font-size: 12px;
+    color: #909090;
+    margin-right: 5px;
+}
+
+.pickupNotificationClockTimeCard{
+    display: flex;
+    align-items: center;
+}
+
+.pickupNotificationNotificationClose{
+    font-size: 12px;
+    color: #909090;
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    cursor: pointer;
+    z-index: 10; /* Ensure it appears above other elements */
+}
+
+.pickupNotificationSeeallBtn{
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    background-color: transparent;
+    color: var(--secondary-color);
+}
+.pickupNotificationModalCard:hover .pickupNotificationNotificationClose {
+  color: var(--secondary-color); /* Optional: Change color on hover */
+}

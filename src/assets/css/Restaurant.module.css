@@ -1,0 +1,269 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.restaurantsSection {
+  background-color: var(--primary-color);
+  margin-top: -75px;
+  padding-top: 80px;
+}
+
+.restaurantsTopBannerCard {
+  max-width: 100%;
+}
+
+.restaurantBannerTitleTextCard {
+  padding: 300px 0px 0px 80px;
+}
+
+.restaurantBannerTitleTextCard h2 {
+  font-size: 70px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.restaurantsShiftDeliveryBannerCard img {
+  max-width: 100%;
+}
+
+.restaurantsShiftDeliveryMainCard {
+  padding: 80px 0px;
+}
+
+.restaurantsShiftDeliveryTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.restaurantsShiftDeliveryTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.restaurantsShiftDeliveryBannerCard img, .restaurantsImmediateRequestsCard img, .restaurantsScheduledRequestsCard img, .restaurantsRealTimeTrackingImageCard img, .restaurantsSeamlessCoordinationBannerCard img, .restaurantsSchedulePreviewBannerCard img {
+    -webkit-animation: mover 1s infinite alternate;
+    animation: mover 1s infinite alternate;
+  }
+  
+  @-webkit-keyframes mover {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes mover {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-10px);
+    }
+  }
+
+.restaurantsImmediateRequestsCard {
+  background-image: url("../images/ImmediateRequests-Bg.png");
+  background-size: cover;
+  background-position: center;
+  padding: 50px 0px 140px;
+}
+
+.restaurantsImmediateRequestsCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.restaurantsImmediateRequestsCard img {
+  max-width: 85%;
+}
+
+.restaurantsScheduledRequestsCard {
+  padding: 50px 0px;
+}
+
+.restaurantsScheduledRequestsCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.restaurantsScheduledRequestsCard img {
+  max-width: 60%;
+  margin-left: 20%;
+}
+
+.restaurantsScheduledDeliveryDescriptionCard {
+  background-color: #204966;
+  padding: 20px;
+  border-radius: 35px 35px 0px 0px;
+  width: 600px;
+  position: absolute;
+  bottom: 0px;
+}
+
+.restaurantsScheduledDeliveryDescriptionCard p {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  color: var(--white-color);
+  text-align: center;
+}
+
+.restaurantsScheduledMainSec {
+  position: relative;
+}
+
+.restaurantsScheduledDeliveryDescriptionMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.restaurantsRealTimeTrackingTextCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.restaurantsRealTimeTrackingTextCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.restaurantsRealTimeTrackingSec {
+  padding: 80px 0px 0px;
+}
+
+.restaurantsRealTimeTrackingImageCard img {
+  max-width: 100%;
+}
+
+.restaurantsProfileFeedbackTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.restaurantsProfileFeedbackTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.restaurantsProfileFeedbackSec {
+  padding: 80px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.restaurantsProfileFeedbackTitleCard {
+  text-align: center;
+  padding: 0% 20%;
+}
+
+.restaurantsDriverFeedbackImgCard img {
+  width: 130px;
+  height: 130px;
+}
+
+.restaurantsDriverFeedbackMainCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 10px 7px;
+}
+
+.restaurantsDriverFeedbackDescriptionTextCard p {
+  font-size: 13px;
+  margin-bottom: 0px;
+}
+
+.restaurantsSeamlessCoordinationTitleCard {
+  padding-right: 100px;
+}
+
+.restaurantsSeamlessCoordinationTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.restaurantsSeamlessCoordinationTitleCard p {
+  font-size: 16px;
+}
+
+.restaurantsSeamlessCoordinationSec {
+  padding: 80px 0px;
+}
+
+.restaurantsSeamlessCoordinationBannerCard img {
+  max-width: 100%;
+}
+
+.restaurantsSchedulePreviewSec {
+  padding: 80px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.restaurantsSchedulePreviewBannerCard img {
+  max-width: 100%;
+}
+
+.restaurantsSchedulePreviewTitleCard {
+  padding-left: 100px;
+}
+
+.restaurantsSchedulePreviewTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.restaurantsSchedulePreviewTitleCard p {
+  font-size: 16px;
+  margin-bottom: 0px;
+}

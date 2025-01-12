@@ -1,0 +1,5997 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --active-color: #27ae60;
+  --pending-color: #f39c12;
+  --white-color: #fff;
+  --orange-color: #f39c12;
+  --mediumaquamarine-color: #1abc9c;
+  --steelblue-color: #3498db;
+  --progress-color: #3498db;
+  --mediumpurple-color: #9b59b6;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.homeSection {
+  background: var(--gradiantbg-color);
+  padding: 80px 0px 70px 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.homeTitle {
+  font-size: 60px;
+  font-weight: 700;
+}
+
+.borderCurvy {
+  width: 480px;
+  margin: 30px 0px;
+}
+
+.homeDiscription {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.homeInfoCard {
+  padding: 0px 60px 0px 0px;
+}
+
+.trailButton {
+  background-color: var(--secondary-color);
+  padding: 10px 15px;
+  font-size: 16;
+  font-weight: 500;
+  color: var(--white-color);
+  text-decoration: none;
+  border-radius: 30px;
+  transition: 0.7s;
+}
+
+.trailButton:hover {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.homeActionBtns {
+  display: flex;
+  margin-top: 50px;
+}
+
+.playIcon {
+  font-size: 30px;
+}
+
+.demoBtn {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin-left: 30px;
+  color: var(--text-color);
+  transition: color 0.5s ease;
+}
+
+.demoBtn:hover {
+  color: var(--primary-color);
+}
+
+.demoPlay {
+  font-size: 18;
+  font-weight: 500;
+  margin: 0px 10px;
+}
+
+.commentIcon {
+  font-size: 25px;
+}
+
+.GetInTouchBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  font-size: 17px;
+  transition: all 0.7s;
+}
+
+.GetInTouchBtn:hover {
+  color: var(--primary-color);
+}
+
+.homeBanner {
+  max-width: 100%;
+}
+
+.bannerCard {
+  padding: 0px 0px 0px 60px;
+}
+
+.bannerCard .homeBanner,
+.onDemandDeliveryImage,
+.homeTrackYourOrderImage,
+.homeChooseDeliveryVehicleImg,
+.homeEfficientCardImage,
+.HomeTalktoTeamBannerCard img,
+.EcoFriendlyFleetMainCard img {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+@-webkit-keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes mover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+.homeResturentCardImg {
+  width: 55px;
+  height: 69px;
+}
+
+.homerCardsImages {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.homerCardsImagesbg {
+  padding: 15px;
+  background-color: #faf9f4;
+  height: 250px;
+  transition: 0.7s;
+}
+
+.homerCardsImagesbg:hover {
+  background-color: #fff1c9;
+}
+
+.homerCardsImageswithoutBg {
+  padding: 15px;
+  height: 250px;
+  transition: 0.7s;
+}
+/* ad */
+.deliverySignupPolicyCheck {
+  color: var(--primaryColor);
+}
+.homerCardsImageswithoutBg:hover {
+  background-color: #fff1c9;
+}
+
+.homeResturentCardsText {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.homeGroceryCardImg {
+  width: 70px;
+  height: 70px;
+}
+
+.homeCompanyPartnerCounts {
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
+  transition: 0.7s;
+}
+
+.homeCompanyPartnerCounts:hover {
+  color: var(--secondary-color);
+}
+
+.homeCompanyPartnerCountsText {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.DeliveryServicesImages {
+  width: 193px;
+  height: 193px;
+}
+
+.DeliveryServicesImagesCard {
+  padding: 15px;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 10px;
+  height: 540px;
+  transition: 0.7s;
+}
+
+.DeliveryServicesImagesCard:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin-top: 20px;
+}
+
+.DeliveryServicesTitle {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 15px 0px;
+}
+
+.DeliveryServicesSubtitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.homeCompanyPartnerCountsMainCard {
+  padding: 15px;
+}
+
+.homeCompaniesSec {
+  padding: 50px 0px;
+}
+
+.HomeourServicesTitle {
+  font-size: 35px;
+  font-weight: 700;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.HomeourServicesSec {
+  padding: 30px 0px;
+}
+
+.HomeWhyChooseUsSec {
+  background-image: url(../images/WhyChoose-Bg.png);
+  background-size: cover;
+  max-width: 100%;
+  padding: 320px 0px 360px;
+}
+
+.HomeWhyChooseUsWhitebgCard {
+  background-color: var(--white-color);
+  padding: 25px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.HomeWhyChooseUsCardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.HomeWhyChooseUsCardDiscription {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.HomeWhyChooseUsPrimarybgCard {
+  background-color: var(--primary-color);
+  padding: 25px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin-top: 120px;
+}
+
+.HomeLatestBlogImages {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+.HomeLatestBlogCard {
+  padding: 20px 15px;
+  border-radius: 6px;
+  transition: 0.7s;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.HomeLatestBlogCard:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.HomeLatestBlogTypeText {
+  color: var(--secondary-color);
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #ff00580d;
+  padding: 4px 8px;
+  border-radius: 20px;
+  margin: 10px 0px;
+  border: none;
+}
+
+.HomeLatestBlogTitle {
+  font-size: 18px;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+}
+
+.HomeLatestBlogAdminImg {
+  height: 36px;
+  width: 36px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
+.HomeLatestBlogAdminName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #97989f;
+  margin: 0px;
+}
+
+.HomeLatestBlogAdminInfoCard {
+  display: flex;
+  align-items: center;
+}
+.HomeLatestBlogAdminMaincard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.HomeLatestBlogSec {
+  padding: 50px 0px;
+}
+
+.HomeFaqTitleMainCard {
+  background-image: url(../images/Faq-Bg.png);
+  background-size: cover;
+  max-width: 100%;
+  padding: 25px;
+  height: 500px;
+}
+
+.HomeFaqTitle {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.HomeFaqPlusicon {
+  font-size: 16px;
+}
+
+.HomeFaqQuestion {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0px;
+  transition: 0.7s;
+}
+
+.HomeFaqQuestion:hover {
+  color: var(--secondary-color);
+}
+
+.HomeFaqQuestionCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.HomeFaqAnswerQuestionCard {
+  padding: 10px 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.HomeFaqAnswerText {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.HomeFaqAnswer {
+  margin-top: 15px;
+}
+
+.HomeFAQsSec {
+  padding: 50px 0px;
+}
+
+.slidetrack {
+  width: 100%;
+  display: flex;
+  gap: 3em;
+  overflow: hidden;
+}
+
+.slider {
+  padding: 50px 0px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translatex(-1000%);
+  }
+}
+
+.slide img {
+  width: 250px;
+  height: 250px;
+  animation: scroll 45s linear infinite;
+}
+
+.HomeAppDownloadCard {
+  padding: 10px;
+}
+
+.HomeAppDownloadTitle {
+  font-size: 35px;
+  font-weight: 600;
+}
+
+.HomeAppDownloadDiscription {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.HomeAppDownloadQrImage {
+  width: 135px;
+  height: 135px;
+}
+
+.HomeAppDownloadTextFrench {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 30px 0px 10px;
+}
+
+.HomeAppDownloadImgBtns {
+  display: flex;
+  align-items: center;
+}
+
+.HomeAppDownloadAppstoreImg {
+  width: 192px;
+  height: 64px;
+  margin-right: 20px;
+}
+
+.HomeAppDownloadQrMainCard {
+  margin-top: 150px;
+}
+
+.homeContactDetailsCard {
+  background-image: url(../images/Contact-Form-Banner.png);
+  background-size: cover;
+  max-width: 100%;
+  padding: 40px;
+}
+
+.HomeAppDownloadSec {
+  padding: 50px 0px;
+}
+
+.homeContactTitleText {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.homeContactDiscriptionText {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.homeContactPhoneIcon {
+  font-size: 15px;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.homeContactNumbertext {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.homeContactNumberCard {
+  display: flex;
+  margin: 10px 0px;
+}
+
+.homeContactNumberMainCard {
+  margin-top: 400px;
+}
+
+.homeContactFormLabel {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.homeContactFormInput {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.HomeContactFromMessageSendBtn {
+  border: none;
+  background-color: var(--secondary-color);
+  padding: 10px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: var(--white-color);
+}
+
+.HomeContactFromMessageSendBtnCard {
+  text-align: end;
+  position: relative;
+  margin: 60px 0px;
+}
+
+.homeContactSenderImg {
+  position: absolute;
+  top: -15px;
+  width: 260px;
+  height: 130px;
+  left: 0px;
+  transform: rotate(-30deg);
+}
+
+.homeContactFormMainCardForm {
+  padding: 15px 50px;
+}
+
+.homeContactSec {
+  padding: 50px 0px;
+}
+
+.mr2 {
+  margin-right: 20px;
+}
+
+.HomeFooterlogotitleCard {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+}
+
+.HomeFooterlogoImg {
+  width: 50px;
+  height: 53px;
+  margin-right: 15px;
+}
+
+.HomeFooterCompanyName {
+  font-size: 35px;
+  font-weight: 700;
+  margin: 0px;
+  color: var(--white-color);
+}
+
+.HomeFooterSec {
+  background-color: #131314;
+  padding: 50px 0px;
+}
+
+.HomeFooterReachTexttitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--white-color);
+}
+
+.HomeFooterReachCallIcon {
+  font-size: 18px;
+  color: var(--white-color);
+  margin-right: 10px;
+  margin-top: 3px;
+  transition: 0.7s;
+}
+
+.HomeFooterReachText {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0px;
+  color: var(--white-color);
+  transition: 0.7s;
+}
+
+.HomeFooterReachCard {
+  display: flex;
+  margin: 20px 0px;
+  transition: 0.7s;
+}
+
+.HomeFooterReachCard:hover {
+  margin-left: 5px;
+
+  .HomeFooter-ReachCallIcon {
+    color: var(--secondary-color);
+  }
+  .HomeFooterReachText {
+    color: var(--secondary-color);
+  }
+}
+
+.HomeFooterCompanyLinks {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--white-color);
+  transition: 0.7s;
+}
+
+.HomeFooterCompanyLinks:hover {
+  margin-left: 5px;
+  color: var(--secondary-color);
+}
+
+.HomeFooterCompanyLinksCards {
+  margin: 20px 0px;
+}
+
+.HomeFooterSubscribeNewsletterInput {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  padding: 10px 10px !important;
+  border-radius: 0px !important;
+}
+
+.HomeFooterSubscribeBtn {
+  border: none !important;
+  background-color: var(--text-color);
+  color: var(--white-color);
+  padding: 10px 20px;
+}
+
+.HomeFooterSubscribeNewsletterCard {
+  display: flex;
+  align-items: center;
+}
+
+.HomeFooterSubscribeNewsletterDiscription {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 15px 0px;
+  color: var(--white-color);
+}
+
+.HomeAboutSec {
+  background-image: url(../images/AboutUs-Banner.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  max-width: 100%;
+  padding: 50px 0px;
+  height: 403px;
+}
+
+.HomeAboutTitleText {
+  font-size: 35px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.HomeAboutDiscriptionText {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.HomeAppDownloadPhoneImg {
+  max-width: 70%;
+}
+
+.HomeAppDownloadPhoneImgCard {
+  text-align: center;
+}
+
+.HomeTestimonialClientImgs {
+  width: 95px;
+  height: 95px;
+  border-radius: 100%;
+  margin: 15px 0px;
+}
+
+.HomeTestimonialQuoteImg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.HomeTestimonialClientName {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.HomeTestimonialClientDesignation {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.HomeTestimonialClientDescription {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.HomeTestimonialClientMainCard {
+  text-align: center;
+  padding: 15px;
+}
+
+.HomeTestimonialClientImgsCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.HomeTestimonialClientSec {
+  padding: 50px 0px;
+}
+
+.HomeourServicesTitleMainCard {
+  position: relative;
+  padding: 20px;
+}
+
+.HomeourServicesTitleMainCard::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 5px;
+  border-radius: 25px;
+  background-color: var(--primary-color);
+}
+
+.HomeourServicesTitleMainCard::after {
+  top: 70px;
+  left: 45%;
+}
+/* <----------- Login CSS Start Here --------->  */
+
+.loginSection {
+  background-color: #fffbf1;
+  width: 100%;
+  height: 100%;
+}
+
+.loginBanner {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.loginMain {
+  padding: 50px 100px;
+}
+
+.logo {
+  width: 41px;
+  height: 43px;
+}
+
+.companyName {
+  font-size: 25px;
+  font-weight: 700;
+  margin: 0px 8px;
+}
+
+.logoCard {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.loginCard {
+  margin: 50px 0px;
+}
+
+.welcomeLogin {
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.loginInfo {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.welcomeuserCard {
+  margin-bottom: 30px;
+}
+
+.passwordInputContainer {
+  position: relative;
+}
+
+.eyeIcon {
+  position: absolute;
+  font-size: 15px;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: var(--secondary-color);
+}
+
+.loginLabels {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.loginInputs {
+  font-size: 12px !important;
+  padding: 8px !important;
+}
+
+/* Focused input style */
+.loginInputs:focus {
+  border-color: var(
+    --secondary-color
+  ) !important; /* Change border color on focus */
+  background-color: #f1f8ff; /* Light background on focus */
+  outline: none; /* Remove the default browser outline */
+  box-shadow: 0 0 5px rgba(255, 64, 129, 0.5) !important;
+}
+
+.manageRow {
+  --bs-gutter-x: 0px !important;
+}
+
+.forgotPassword {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.forgotCard {
+  display: flex;
+  justify-content: end;
+}
+
+.signinBtn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  text-decoration: none;
+  border: 1px solid var(--secondary-color);
+  padding: 10px 50px;
+  border-radius: 8px;
+  transition: 0.7s;
+}
+
+.signinBtn:hover {
+  color: var(--white-color);
+  background-color: var(--secondary-color);
+}
+
+.customCheckbox .formCheckInput:checked {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.checkText {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0px 0px 0px 10px;
+}
+
+.termsCheck {
+  color: var(--secondary-color);
+}
+
+.checkboxCard {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.checkboxCard input[type="checkbox"]:focus {
+  outline: none; /* Remove default outline */
+  border: 2px solid var(--secondary-color); /* Custom border color */
+  box-shadow: 0 0 5px rgba(255, 64, 129, 0.5); /* Glowing effect */
+  border-radius: 4px; /* Optional: Smooth border */
+}
+
+.checkboxCard input[type="checkbox"]:checked {
+  background-color: var(--secondary-color);
+  border-color: var(
+    --secondary-color
+  ); /* Optional: Green border when checked */
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.noAccount {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.registerText {
+  font-weight: 600;
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.registerCard {
+  margin-top: 120px;
+}
+
+/* ------------- profile choose------------------  */
+
+.profileChooseSec {
+  padding: 15px 0px;
+  background: var(--gradiantbg-color);
+}
+
+.chooseProfileHeading {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.chooseProfileSubheading {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.chooseProfileCard {
+  margin: 50px 0px;
+}
+
+.EnterpriseIcon {
+  width: 46px;
+  height: 38px;
+}
+
+.categoryCards {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  height: 100px;
+  border: 1px solid #3535354d;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.categoryCards.selected {
+  border: 1px solid var(--primary-color);
+  background: linear-gradient(
+    90deg,
+    hsla(44, 100%, 73%, 1) 0%,
+    hsla(44, 100%, 95%, 1) 100%
+  );
+}
+
+.hereText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.categoryTypes {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.categoryTypesCard {
+  margin-left: 15px;
+  flex: 1;
+}
+
+.circleChoose {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+
+.PickupIcon {
+  width: 37px;
+  height: 40px;
+}
+
+.DeliveryboyIcon {
+  width: 33px;
+  height: 50px;
+}
+
+.circleChoose {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  margin-left: auto;
+}
+
+.circleChoose.selected {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.selectedCheck {
+  color: var(--white-color);
+  font-size: 15px;
+  padding: 0px 0px 3px 2px;
+}
+
+.chooseContinueBtn {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  padding: 10px 50px;
+  text-align: center;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.7s;
+  border: none;
+}
+
+.chooseContinueBtn:hover {
+  color: var(--white-color);
+  background-color: var(--secondary-color);
+}
+
+.chooseContinueCard {
+  margin: 25px 0px;
+}
+
+.accountLogin {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.loginGoBtn {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: 0.7s;
+}
+
+.profileChooseBannerCard {
+  padding: 100px 0px 0px 60px;
+}
+
+.chooseBanner {
+  max-width: 100%;
+}
+
+.chooseMainCard {
+  padding-right: 80px;
+}
+
+.profileChooseBannerCard .chooseBanner {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+.loginGoBtn:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* ---------- Pickup CSS Start Here ---------  */
+
+.pickupSignupContainer {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #2c303336;
+  position: relative;
+}
+
+.signupUserName {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.signupInput {
+  width: 100% !important;
+  padding: 9px 9px 9px 29px !important ;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.pickupSignupFieldsIcons {
+  font-size: 15px;
+  color: var(--text-color);
+}
+
+.homePickupVehiclesCard.selected {
+  border-color: var(--secondary-color); /* Highlight selected vehicle */
+}
+
+.signupPasswordEyeIcon {
+  position: absolute;
+  font-size: 15px;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.pickupSignupFlags {
+  width: 26px;
+  height: 26px;
+}
+
+.selectNumberByCountry {
+  font-size: 12px !important;
+  width: 25% !important;
+  border: none !important;
+  border-right: 1px solid #ccc !important;
+  padding: 0px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.pickupSingupCountrySelect {
+  padding: 10px !important;
+  border: 1px solid #ccc;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.pickupSingupAccountType {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.pickupSignupTypeOfAc {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.acNamesType {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px 0px 0px 10px;
+}
+
+.pickupSignupAcCircle {
+  position: relative;
+  width: 20px; /* Adjust circle size as needed */
+  height: 20px; /* Adjust circle size as needed */
+  border-radius: 50%;
+  border: 1px solid #ccc; /* Border style */
+  margin-left: auto;
+}
+
+/* .selected-check {
+  color: var(--white-color);
+  font-size: 12px; 
+  padding: 0px 0px 5px 4px;
+} */
+
+.pickupSignupAcCircle.selected {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.pickupSignupTypeOfAc.selected {
+  border: 1px solid var(--primary-color);
+  background: linear-gradient(
+    90deg,
+    hsla(44, 100%, 73%, 1) 0%,
+    hsla(44, 100%, 95%, 1) 100%
+  );
+}
+
+.pickupSignupContinueBtn {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  padding: 10px 50px;
+  text-align: center;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.7s;
+  border: none;
+  margin: 0px 0px 40px 0px;
+}
+
+.pickupSignupContinueBtn:hover {
+  color: var(--white-color);
+  background-color: var(--secondary-color);
+}
+
+.pickupSignupAcLoginText {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.loginTextSignup {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: 0.7s;
+  font-weight: 700;
+}
+
+.loginTextSignup:hover {
+  color: var(--secondary-color);
+}
+
+.pickupSignupFormMainCard {
+  padding-right: 100px;
+}
+
+.PickupSignupBanner {
+  width: 100%;
+  height: 526px;
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+.deliveryboySignupbanner {
+  max-width: 100%;
+}
+
+.profileChooseBannerCard .deliveryboySignupbanner {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+/* ------------- Pickup Home CSS Start Here -----------  */
+
+.homeMapContainerCard {
+  width: 100%;
+  height: 100vh;
+}
+
+.pickupRequestText {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.pickupHomeInfoBtnIcon {
+  border: none;
+  background: transparent;
+  right: 0%;
+  position: absolute;
+  top: -6%;
+  padding: 0px;
+}
+
+.requestPickupMaincard {
+  padding: 20px 17px;
+  height: 91vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.requestPickupMaincard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.requestPickupMaincard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.requestPickupMaincard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.requestPickupMaincard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.requestPickupSec {
+  background-color: var(--mainbg-color);
+}
+
+.homeMapPlaceSearch {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  width: 100%;
+}
+
+.homePickupDropAddressCards {
+  padding: 8px 8px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.pickupAddresAutocompleteCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupHomeLocationIcon {
+  font-size: 15px;
+  padding-right: 10px;
+}
+
+.homePickupLocationsBorderShowoff {
+  border: 1px dashed #dbdbdb;
+  margin: 12px 0px;
+}
+
+.dropHomeLocationIcon {
+  font-size: 15px;
+  padding-right: 7px;
+}
+
+.homepickupScheduleRequestCardMain {
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 6px;
+}
+
+.pickupHomeScheduleselectCard {
+  display: flex;
+  align-self: center;
+}
+
+.pickupHomeWhenNeedText {
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+  margin-bottom: 0px;
+}
+
+.pickupHomeCalenderIcon {
+  font-size: 15px;
+}
+
+.pickupHomeNowText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-bottom: 0px;
+  margin-left: auto;
+}
+
+.homePickupBicycle {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.homePickupVehiclesCard {
+  border: 1px solid #2c303336;
+  height: 85px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.homePickupInfo {
+  width: 20px;
+  height: 20px;
+}
+
+.homePickupVehicleCardMain {
+  margin: 10px 0px;
+  height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+}
+.homePickupVehicleCardMain::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.homePickupVehicleCardMain::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.homePickupVehicleCardMain::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.homePickupVehicleCardMain::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+.pickupHomeVehicleTypeByName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.pickupHomeVehicleCap {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupHomeVehicleTypeCap {
+  margin: 5px 0px 10px;
+}
+
+.goToOrderDetails {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  background-color: var(--primary-color);
+  width: 100%;
+  border: none;
+}
+
+.pickuphomeContinueBt {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.selectedVehiclePriceCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectedVehiclePriceText {
+  font-size: 15px;
+  color: var(--secondary-color);
+  margin: 0px;
+  font-weight: 600;
+}
+
+/* --------------- DateTimePicker ------------  */
+
+.homepickupChooseTimeText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 10px 0px 0px;
+}
+
+/* -------------- add pickup details Page ----------  */
+
+.addPickupDetailsSec {
+  background-color: var(--mainbg-color);
+}
+
+.pickupOrderPreviewMainCard {
+  padding: 20px 50px;
+  height: 91vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.pickupOrderPreviewMainCard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.pickupOrderPreviewMainCard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.pickupOrderPreviewMainCard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.pickupOrderPreviewMainCard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.addpickupDetailSidecardMain {
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(244, 226, 177, 1) 100%
+  );
+}
+
+.addpickupDetailSidecardboxIcon {
+  width: 100%;
+  height: 91vh;
+}
+
+.orderPreviewDetailSidecardboxIcon {
+  width: 100%;
+  height: 91vh;
+}
+
+.addPickupFileInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.pickupAddpickupDetailsMaincard {
+  padding: 20px 50px;
+  height: 90vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.pickupAddpickupDetailsMaincard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.pickupAddpickupDetailsMaincard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.pickupAddpickupDetailsMaincard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.pickupAddpickupDetailsMaincard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.addPickupDetailsText {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 15px 0px 0px;
+}
+
+.addPickupDetailsSubtext {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.pickupPersonalDetails {
+  font-size: 12px;
+  font-weight: 400;
+  border-bottom: 1px dashed #d8d6d6;
+  padding-bottom: 5px;
+}
+
+.addPickupDetailFormLabels {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  margin-bottom: 3px !important;
+}
+
+.addPickupDetailsInputs {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  font-family: "Montserrat", sans-serif;
+  padding: 10px !important;
+}
+
+.addPickupUploadPhoto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #d8d8d8;
+  border-radius: 8px;
+  padding: 50px 0px;
+  background-color: var(--white-color);
+  position: relative;
+}
+
+.addPickupDragText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px 0px 0px 8px;
+}
+
+.addPickupDetailsCancelBTn {
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--text-color);
+  border-radius: 10px;
+  padding: 10px 70px;
+  background-color: transparent;
+  transition: 0.7s;
+}
+
+.addPickupDetailsCancelBTn:hover {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+}
+
+.addPickupDetailsNextBtn {
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-radius: 10px;
+  padding: 10px 80px;
+  transition: 0.7s;
+}
+
+.addPickupDetailsNextBtn:hover {
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+}
+
+.addPickupDetailsBtnCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0px 20px;
+}
+
+.addPickupDetailsBackArrow {
+  color: var(--text-color);
+}
+
+/* ----------- Pickup Order Preview Start Here ----------  */
+
+.pickupOrderPreviewAddresCard {
+  padding: 20px 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.pickupOrderPreviewPickupAddressCard {
+  display: flex;
+}
+
+.pickuporderPreviewPickupAddressText {
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 10px;
+  margin-bottom: 0px;
+}
+
+.pickupOrderPreviewLocationIcon {
+  font-size: 14px;
+}
+
+.PickupOrderPreviewBorderShowOff {
+  border: 1px dashed #dbdbdb;
+  margin: 12px 0px;
+}
+
+.pickupOrderPreviewVehicleCard {
+  padding: 15px 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.pickupOrderPreviewVehicleDetailsText {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.PickupOrderPreviewTruckImage {
+  width: 100%;
+  height: 62px;
+  object-fit: cover;
+}
+
+.pickupOrderPreviewVehicleDetailsCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pickupOrderPreviewVehicleType {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.pickupOrderPreviewCompanyName {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.pickupOrderPreviewAdminDetailsCard {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.pickupOrderAdminEmail {
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 5px;
+  margin-bottom: 0px;
+}
+
+.pickupOrderglobeIcon {
+  font-size: 12px;
+}
+
+.pickupOrderPreviewAdminDetailsMainCard {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.pickupOrderPreviewPickupNotes {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.PickupOrderEuroTextBig {
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin: 0px;
+}
+
+.pickupOrderPreviewNormalDetails {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupOrderNormalDetailsCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupPreviewB {
+  padding: 0px 5px;
+  margin: 0px 5px;
+  border-left: 1px solid var(--text-color);
+  border-right: 1px solid var(--text-color);
+}
+
+.saveAddresslaterCheckBox .formCheckInput:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.promoCodeCardPayments {
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+}
+
+.promoCodeInputPayment {
+  border: none !important;
+  padding: 0px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.paymentPromoCodeIcon {
+  color: var(--secondary-color);
+  margin-right: 10px;
+}
+
+.paymentApplyCouponBtn {
+  border: none;
+  color: var(--white-color);
+  border-radius: 0px 8px 8px 0px;
+  background-color: var(--secondary-color);
+  padding: 10px 25px;
+  transition: 0.7s;
+}
+
+.paymentApplyCouponBtn:hover {
+  background-color: var(--primary-color);
+}
+
+.paymentDebitCreditCardsText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 15px 0px;
+}
+
+.paymentsOffCreaditCardInfo {
+  display: flex;
+  align-items: center;
+  background-color: #ff00580f;
+  padding: 8px 15px;
+  border-radius: 6px;
+}
+
+.paymentCreditCardOfferText {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--secondary-color);
+  margin: 0px;
+}
+
+.paymentsCardsInfoCircle {
+  font-size: 13px;
+  color: var(--secondary-color);
+  margin-right: 8px;
+}
+
+.paymentInvoiveTruckIcon {
+  width: auto;
+  height: 90px;
+}
+
+.paymentInvoiceCardMain {
+  padding: 15px 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.paymentInvoiceTruckImageCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0px;
+}
+
+.paymentOrderSummaryText {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 8px 0px;
+}
+
+.paymentInvoiceDetailsText {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0px;
+}
+
+.paymentAddressDetailText {
+  font-size: 11px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.paymentMainDetailsText {
+  font-size: 11px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.paymentTotalAmountCard {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px 0px;
+}
+
+.paymentTotalAmounttext {
+  font-size: 11px;
+  font-weight: 700;
+  margin: 0px;
+}
+
+/* ---------------- Looking for Driver Start Here ------------  */
+
+.lookingDriverSection {
+  background-image: url("../images/Looking-Background.png");
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.driverBackgroundMiddleCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backgroundDriverCircle {
+  width: 500px;
+  height: 500px;
+  position: relative;
+  z-index: 1;
+}
+
+.backgroundDriverCircleProfiles {
+  width: 420px;
+  height: 215px;
+}
+
+.DriverProfileCardMainBg {
+  text-align: center;
+  position: absolute;
+  z-index: 9;
+}
+
+.lookingDriverText {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.lookingDriverSubText {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.driverCancelCard {
+  text-align: end;
+  margin-top: 30px;
+}
+
+.driverCancelModalBtn {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  padding: 8px 15px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+/* ----------- Pickup Account Section -----------  */
+
+.pickupAccountSideNavBtns.active {
+  background-color: #fff7df;
+}
+
+.pickupAccountNavLinkText.active-link {
+  color: #000;
+}
+
+.pickupAccountSec {
+  padding: 20px 0px;
+}
+
+.pickupAccountUserProfile {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.pickupAccountHeaderUserName {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.pickupAccountHeaderUserEmail {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupAccountUserHeaderCard {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+  background: linear-gradient(
+    269.99deg,
+    rgba(255, 199, 43, 0.1) 25.29%,
+    rgba(255, 199, 43, 0.44) 99.99%
+  );
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.pickupAccountSidebarNav {
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  border-radius: 8px;
+}
+
+.pickupAccountSideNavBtns {
+  padding: 8px 20px 10px;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  margin: 10px 0px;
+  transition: 0.7s;
+}
+
+.pickupAccountNavLinkText {
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+/* ------------- Address Book Start Here --------------  */
+
+.addressBookMainSec {
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  border-radius: 8px;
+}
+
+.addressBookHeaderTitleText {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.addressBookPlusIconBtn {
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  padding: 0px;
+}
+
+.addressBookAddressCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #dbdbdb;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.addressBookAddressesCards {
+  display: flex;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin: 10px 0px;
+}
+
+.addressBookUserCompanyname {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.addressBookUserCompanyAddress {
+  font-size: 10px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.addressBookEditPenIconCard {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  padding: 0px;
+}
+
+.addressBookLocationDotIconCard {
+  margin-right: 15px;
+}
+
+/* ---------------- Pickup Notification Settings -----------  */
+
+.pickupPushNotificationEnableCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.pushNotificationsSwitch .form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.promotionalEmailSwitch .form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.pickupPushNotificationSettings {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+/* ----------------- Payment Method -------------------  */
+
+.paymentMethodWalletCard {
+  background-image: url("../images/walletBackground.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  width: 100%;
+  height: 195px;
+  padding: 10px 15px;
+}
+
+.paymentMethodwalletHeading {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--white-color);
+  margin: 0px;
+}
+
+.paymentMethodWalletLogo {
+  width: 34px;
+  height: 36px;
+}
+
+.paymentMethodWalletHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentMethodWalletBalance {
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--white-color);
+  margin: 0px;
+}
+
+.paymentMethodWalletText {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white-color);
+}
+
+.paymentMethodWalletBalanceCard {
+  text-align: center;
+}
+
+.paymentMethodWithdrawBtn {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white-color);
+  background-color: transparent;
+  border: 1px solid var(--white-color);
+  border-radius: 25px;
+  padding: 8px 15px;
+  margin: 0px 10px;
+}
+
+.paymentMethodWalletActionBtn {
+  text-align: center;
+}
+
+.paymentMethodCardsText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 10px 0px;
+}
+
+.paymentMethodAddedCards {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dbdbdb;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.paymentMethodCardsLogos {
+  width: 17px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.paymentMethodCardName {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.paymentmethodUserEmail {
+  font-size: 10px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.paymentMethodEditIcon {
+  margin-left: auto;
+}
+
+.paymentMethodMastercardsLogos {
+  width: 26px;
+  height: 16px;
+  margin-right: 10px;
+}
+
+.paymentMethodEditBtn {
+  border: none;
+  background-color: transparent;
+  margin-left: auto;
+  color: var(--secondary-color);
+}
+
+/* --------------- pickup change password ----------------  */
+
+.pickupChangePasswordLabelText {
+  font-size: 12px;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+}
+
+.pickupChangePasswordInputs {
+  border: none !important;
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.pickupChangePasswordLockIcon {
+  font-size: 12px;
+}
+
+.pickupChangePasswordEyeIcon {
+  font-size: 12px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.pickupChangePasswordCard {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.changePasswordForgotPassword {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.changepasswordLinkCard {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.pickupUpdatePasswordBtn {
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  padding: 8px 30px;
+}
+
+.pickupUpdatePasswordCard {
+  text-align: right;
+  margin: 30px 0px 0px;
+}
+
+/* --------------- About-Us -------------- */
+
+.aboutUsTopHead {
+  background-image: url("../images/about-us-banner.png");
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 230px;
+  padding: 15px;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.aboutusHeading {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 20px 0px 0px;
+}
+
+.aboutusSubHeading {
+  font-size: 10px;
+  height: 500;
+  margin: 5px 0px;
+}
+
+.pickupAboutUsmain {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+}
+
+.aboutsDiscriptions {
+  padding: 15px;
+}
+
+.aboutusInfoText {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.pickupHelpSec {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.pickupHelpMainCard {
+  padding: 10px 15px;
+  border: 1px solid #dbdbdb;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.questionsCardHelp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pickupHelpQuestions {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0px;
+  display: contents;
+}
+
+.pickupHelpDownicon {
+  font-size: 13px;
+}
+
+.pickupHelpAnswer {
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 10px;
+}
+
+/* --------------- Pickup History ------------------  */
+
+.pickupHistorySec {
+  padding: 20px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.pickupHistoryHeaderCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pickupHistoryTitleHeaderCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupHistoryHeaderTitle {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.pickupHistoryBackspaceButton {
+  font-size: 15px;
+  margin-right: 10px;
+  color: var(--text-color);
+}
+
+.pickupHistorySearchInput {
+  font-size: 12px;
+  font-weight: 400;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.pickupHistorySearchCard {
+  display: flex;
+  align-items: center;
+  border: 1px solid #2c303336;
+  padding: 8px 15px;
+  border-radius: 8px;
+  margin-right: 10px;
+  width: 350px;
+}
+
+.pickupHistorySearchIcon {
+  font-size: 15px;
+  color: #656565;
+  margin-right: 10px;
+}
+
+.pickupHistorySearchFillterCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupHistoryFillterIcon {
+  font-size: 25px;
+  color: var(--secondary-color);
+  border: none;
+  background-color: transparent;
+}
+
+.pickupHistoryPackageIcon {
+  width: 23px;
+  height: 23px;
+  margin-right: 10px;
+}
+
+.pickuphistoryMainCard {
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  margin: 15px 0px;
+  border-radius: 10px;
+}
+
+.pickupHistoryDeliveredText {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0px;
+}
+
+.pickupHistoryPackageCard {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.pickupHistoryFromLoc {
+  font-size: 12px;
+  color: var(--text-color);
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupHistoryLocIcon {
+  font-size: 14px;
+  color: #717172;
+  margin-right: 10px;
+}
+
+.pickupHistoryFromLocaCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupHistoryShowOff {
+  border: 1px dashed #ccc;
+  width: 50px;
+  margin: 0px 10px;
+}
+
+.pickupHistoryLocationCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupHistoryBorderBottomShow {
+  width: 100%;
+  border: 1px solid #e4e4e4;
+  margin: 15px 0px;
+}
+
+.pickupHistoryOrderId {
+  font-size: 12px;
+  color: var(--text-color);
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupHistoryMoneyText {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin: 0px;
+}
+
+.pickupHistoryOrderMoneyCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pickupHistoryNoDataCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 200px 0px 15px;
+}
+
+.pickupHistoryNodataImage {
+  width: 136px;
+  height: 133px;
+}
+
+.pickupHistoryNoDatatext {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.pickupHistoryNodataSubText {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.pickupHistoryNoDataMainCard {
+  height: 100vh;
+}
+
+/* ---------------- Pickup Delivery Details ----------------  */
+
+.pickupDeliveryDetails {
+  padding: 20px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.pickupDeliveryDetailsHeaderCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupDeliveryDetailsSettingsIcon {
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+}
+
+.pickupDeliveryDetailsHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pickupDeliveryDetailsMapCard {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.pickupDeliveryDetailDriverImg {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.pickupDevliveryDetailVehicleNumber {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailDriverName {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailDriverMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupDeliveryDetailDrivernameCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupDeliveryDetailPackage {
+  width: 32px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.pickupDeliveryDetailDropInfo {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.pickupDeliverDetailCompanyName {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailCompanyAddress {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailPackageCard {
+  display: flex;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupDeliveryDetailOrderPrice {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pickupdeliveryDetailOrderfareIcon {
+  width: 26px;
+  height: 22px;
+  margin-right: 10px;
+}
+
+.pickupDeliveryDetailOrderfareMainCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupDeliveryDetailOrderfareText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailTraveledDistance {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.pickupDeliveryDetailOrderPriceText {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-left: auto;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailPickupCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupDeliveryDetailPickuppriceCard {
+  margin-left: 35px;
+}
+
+.pickupDeliveryDetailsAllPriceCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pickupDeliveryDetailOrderfaretext {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.pickupDeliveryDetailPricesText {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.pickupDeliveryDetailMastercardCard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupDeliveryDetailMastercardImg {
+  width: 27px;
+  height: 17px;
+  margin-right: 10px;
+}
+
+.pickupDeliveryDetailMasterCardtext {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.pickupDeliveryDetailPackageInformaitionCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupDeliveryDetailsPackageInfoText {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.pickupDeliveryDetail-orderId {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailInvoiceCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupDeliveryDetailsInvoiceImg {
+  width: 18px;
+  height: 22px;
+  margin-right: 10px;
+}
+
+.pickupDeliveryDetailDownloadInvoiceText {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.pickupDeliveryDetailDownloadIcon {
+  font-size: 20px;
+  color: var(--secondary-color);
+  background-color: transparent;
+  border: none;
+}
+
+.pickupDeliveryDetailInvoiceTextCard {
+  display: flex;
+  align-items: center;
+}
+
+/* -------------------- Pickup Notifications -------------------  */
+
+.pickupNotificationHeadText {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.pickupNotificationsSec {
+  padding: 20px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.pickupNotificationDeliveryRouteText {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.pickupNotificationDiscription {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupNotificationCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupNotificationBellIcon {
+  font-size: 22px;
+  color: var(--primary-color);
+  margin-right: 10px;
+}
+
+.pickupNotificationCloseBtn {
+  font-size: 16px;
+  color: var(--text-color);
+  border: none;
+  background-color: transparent;
+  margin-left: 50px;
+  margin-bottom: 10px;
+}
+
+.pickupNotificationClockIcon {
+  font-size: 12px;
+  color: #c0c0c0;
+  margin-right: 5px;
+}
+
+.pickupnotificationTimeText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupnotificationSeceondryMainCard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pickupNotificationMainCard {
+  display: flex;
+}
+
+.pickupnotificationTimeCard {
+  display: flex;
+}
+
+/* --------------- Pickup Feedback -----------------  */
+
+.pickupfeedbackSec {
+  background-color: var(--mainbg-color);
+}
+
+.pickupFeedbackDeliveryCompleteCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
+.pickupFeedbackImg {
+  width: 192px;
+  height: 181px;
+}
+
+.pickupFeedbackDeliveryCompletedUpperCard {
+  background-image: url(../images/Delivery-complete-header.png);
+  background-size: cover;
+  background-position: center;
+  padding-top: 30px;
+}
+
+.pickupFeedbackDeliveryCompletedLowerCard {
+  padding: 3% 10%;
+}
+
+.pickupFeedbackDeliveryCompletedText {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: center;
+  color: var(--white-color);
+}
+
+.pickupFeedbackSubTitleText {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0px;
+  text-align: center;
+  color: var(--white-color);
+}
+
+.pickupFeedbackDeliveryboyText {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.pickupFeedbackDeliveryboyCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.pickupFeedbackStarCard {
+  text-align: center;
+  margin-left: 30px;
+}
+
+.pickupFeedbackStarsIcons {
+  font-size: 35px;
+}
+
+.pickupfeedbackRatingtext {
+  font-size: 10px;
+  font-weight: 400;
+  margin: 5px 0px;
+}
+
+.pickupfeedbackAllStarsCard {
+  display: flex;
+  align-items: center;
+}
+
+.selected .pickupFeedbackStarsIcons {
+  color: var(--primary-color);
+}
+
+.pickupFeedbackDownloadInvoiceBtn {
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--text-color);
+  background-color: transparent;
+  padding: 10px 25px;
+  border-radius: 8px;
+}
+
+.pickupFeedbackDownloadIcon {
+  font-size: 15px;
+  margin-right: 5px;
+}
+
+.pickupFeedbackRemindLaterBtn {
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--text-color);
+  background-color: transparent;
+  padding: 10px 25px;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.pickupFedbackSubmitBtn {
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  background-color: var(--primary-color);
+  padding: 10px 40px;
+  border-radius: 8px;
+}
+
+.pickupFeedbackActionBtnCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 0px 20px;
+}
+
+/* -------------- Pickup Tracking ---------------  */
+
+.pickupOrderTrackingPickupAddressCard {
+  display: flex;
+}
+
+.pickupOrderTrackingAddressText {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0px;
+}
+
+.pickupOrderTrackingLocIcon {
+  margin-right: 10px;
+}
+
+.pickuporderTrackingBorderShowOff {
+  border: 1px dashed #97989f;
+  margin: 10px 0px;
+}
+
+.pickupOrderTrackingLocCrosshairsIcon {
+  margin-right: 8px;
+}
+
+.pickuporderTrackingAddressCardMain {
+  padding: 25px;
+  background-color: var(--white-color);
+}
+
+.PickupOrderTrackingDeliveryInfoCard {
+  background-image: url("../images/Order-Tracking-Bg.png");
+  background-size: cover;
+  background-position: center;
+  padding: 20px 15px;
+}
+
+.pickupOrdertrackingDeliveryStatus {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin: 10px 0px;
+}
+
+.pickupOrderTrackingOrderId {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupOrderTrackingCopyIcon {
+  color: var(--secondary-color);
+  margin-left: 10px;
+}
+
+.pickupOrderTrackingOrderIdCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pickupOrderTrackingTimerCondown {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 10px 0px 0px;
+  text-align: center;
+}
+
+.pickupOrderTrackingPackageImg {
+  width: 113px;
+  height: 107px;
+  margin-bottom: 0px;
+}
+
+.pickupOrderTrackingPackageImgCard {
+  margin: 12px 0px 0px;
+  text-align: center;
+}
+
+.pickuporderTrackingEstimatedTime {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.pickupOrderTrackingEstimateText {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.pickupOrderTrackingDriverImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+}
+
+.pickupOrderTrackingTruckImg {
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 45px;
+  background-color: var(--white-color);
+  padding: 2px;
+}
+
+.pickupOrderTrackingDriverTruckCard {
+  position: relative;
+}
+
+.pickupOrderTrackingDriverCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding: 12px;
+  /* margin: 80px 0px 0px; */
+}
+
+.pickupOrderTrackingDriverName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.pickupOrderTrackingTruckInfo {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.pickupOrderTrackingChatIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.pickupOrderTrackingChatButton {
+  border: none;
+  background-color: transparent;
+}
+
+.pickupOrderTrackingCallIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.pickupOrderTrackingButtonCard {
+  display: flex;
+  align-items: center;
+}
+/* -------------- Pickup Progress Bar ---------------  */
+
+._2_g61 {
+  display: none !important;
+}
+
+._3uApM {
+  display: none !important;
+}
+
+._2Jtxm._35Ago ._2kL0S {
+  background-color: var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
+  height: 15px !important;
+  width: 15px !important;
+  border-radius: 100%;
+  font-size: 0px;
+  margin-top: 10px;
+  margin-right: 10px;
+  align-items: unset;
+}
+
+._2Jtxm ._2kL0S,
+._2Jtxm ._2JvrO {
+  height: 15px !important;
+  width: 15px !important;
+  border-radius: 100%;
+  font-size: 0px;
+  margin-top: 10px;
+  margin-right: 10px;
+  align-items: unset !important;
+}
+
+._2Jtxm._2ZUAI ._2JvrO {
+  background-color: var(--secondary-color) !important;
+  height: 20px !important;
+  width: 20px !important;
+  border-radius: 100%;
+  font-size: 0px;
+  margin-top: 8px;
+  margin-right: 10px;
+  align-items: unset;
+}
+
+._53Ji7 {
+  padding: 0px !important;
+}
+
+._2Jtxm ._1hzhf {
+  font-size: 10px;
+  width: 80%;
+}
+
+/* DeliveryBoy Add Vehicle  */
+
+.deliveryboyVehicleSelectText {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.deliveryboyVehicleName {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
+.deliveryboyAddVehicleVehicleCard {
+  border: 1px solid #35353533;
+  padding: 15px 30px;
+  border-radius: 10px;
+  height: 90px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.deliveryboyaddVehicleVehicleImageCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deliveryboyAddVehicleAllImagesCard {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.DeliveryBicycle {
+  width: auto;
+  height: 43px;
+}
+
+.DeliveryScooter {
+  width: 34px;
+  height: 37px;
+  margin-top: 5px;
+}
+
+.DeliveryCar {
+  width: 52px;
+  height: 21px;
+  margin-top: 20px;
+}
+
+.DeliveryPartner {
+  width: 67px;
+  height: 27px;
+  margin-top: 15px;
+}
+
+.DeliveryVan {
+  width: 60px;
+  height: 27px;
+  margin-top: 15px;
+}
+
+.DeliveryPickup {
+  width: 52px;
+  height: 34px;
+  margin-top: 8px;
+}
+
+.DeliveryTruck {
+  width: 70px;
+  height: 32px;
+  margin-top: 10px;
+}
+
+.DeliveryPackage {
+  width: 37px;
+  height: 37px;
+  margin-top: 5px;
+}
+
+.deliveryboyAddVehicleVehicleCard.selected {
+  background-color: #ff00581f;
+  border: 1px solid var(--secondary-color);
+}
+
+.deliveryboyVehicleInfo {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  font-family: "Montserrat", sans-serif;
+  padding: 10px 15px !important;
+}
+
+.deliveryboyLabelVehicleInfo {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px !important;
+  font-family: "Montserrat", sans-serif;
+}
+
+.deliveryAddvehiclePaperclipIcon {
+  font-size: 16px;
+  color: #606060;
+}
+
+.fileUpload {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.fileUpload h2 {
+  margin-bottom: 20px;
+}
+
+.fileUpload input[type="file"] {
+  margin-bottom: 20px;
+}
+
+.fileUpload button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.fileUpload button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.deliveryaddVehicleVehicleUploadCard {
+  background-color: var(--white-color);
+  padding: 6px 15px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+}
+
+.deliveryboyVehicleFormDetailText {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.DeliveryboyProfiletypeImgCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0px;
+}
+
+.deliveryboyProfileTypeImg {
+  width: 59px;
+  height: 58px;
+}
+
+.deliveryboyProfiletypeText {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.deliveryboyProfileTypeDiscription {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.deliveryboyProfileTypeMainCard {
+  border: 1px solid #3535354d;
+  padding: 60px 20px 100px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.deliveryboyProfileTypeCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: 1px solid #717172;
+}
+
+.deliveryboyProfiletypeCircleCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.deliveryboyProfileTypeImgLoc {
+  width: 47px;
+  height: 57px;
+}
+
+.deliveryboyProfileTypeCircle.checked {
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary-color);
+}
+
+.deliveryboyProfileTypeCircle .fa-check {
+  color: #fff;
+  font-size: 13px;
+}
+
+.deliveryboyProfileTypeMainCard.selected {
+  border: 2px solid var(--primary-color);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* Deliveryboy ThankYou Signup Page  */
+
+.deliveryboyThankyouLoaderImg {
+  width: 79px;
+  height: 137px;
+}
+
+.deliveryboyThankyouSignupText {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.deliveryboyThankyouSignupDiscription {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.deliveryboyThankyouLoaderImgCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0px;
+}
+
+.deliveryboyThankyoumainCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.deliveryboyThankyouSec {
+  background: var(--gradiantbg-color);
+  padding: 15px 0px;
+}
+
+.deliveryboyThankyouSignupBtnCard {
+  display: flex;
+  justify-content: center;
+}
+
+/* Enterprises Home Css Start Here  */
+
+.enterpriseSignupBannerimg {
+  max-width: 100%;
+}
+
+.profileChooseBannerCard .enterpriseSignupBannerimg {
+  -webkit-animation: mover 1s infinite alternate;
+  animation: mover 1s infinite alternate;
+}
+
+.enterpriseHomeSec {
+  padding: 15px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.enterprisesHomeUserWelcomeText {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.enterprisesHomeDashbordDiscription {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.enterprisesHomeActiveBookingCount {
+  font-size: 40px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseBookingCountCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterpriseHomeCheckIcon {
+  width: 69px;
+  height: 69px;
+}
+
+.enterpriseHomeActiveBookingCard {
+  background-color: var(--white-color);
+  padding: 20px 20px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  position: relative;
+}
+
+.enterpriseHomeInfoButton {
+  border: none;
+  background-color: transparent;
+  color: #717172;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.enterpriseHomeActiveBookingText {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+.enterprisesHomeGraphCard {
+  background-color: var(--white-color);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin: 20px 0px;
+}
+
+.enterpriseHomeHoursText {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0px;
+}
+
+.enterpriseHomeFranchiseSelect {
+  padding: 10px 10px 10px 0px !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-family: "Montserrat", sans-serif;
+  width: 200px !important;
+}
+
+.enterpriseHomeLocationSelectCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseHomeHoursCircleIcon {
+  font-size: 10px;
+  color: var(--secondary-color);
+}
+
+.enterpriseHomeHoursBookedText {
+  font-size: 10px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  margin-left: 5px;
+}
+
+.enterpriseHomeBookedCard {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.enterpriseHomeHoursusedCircleIcon {
+  font-size: 10px;
+  color: var(--primary-color);
+}
+
+.enterpriseHomeTotalHoursText {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 0px;
+  color: var(--secondary-color);
+}
+
+.enterpriseHomeTotalSpendHoursText {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 0px;
+  color: var(--primary-color);
+}
+.enterpriseHomeTotalHourseCard {
+  display: flex;
+  align-items: baseline;
+}
+
+.enterpriseHomeWithoutGraphCard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.enterpriseCompanyLocationsText {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterpriseHomeAddressCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseHomeCompanyLocCard {
+  display: flex;
+  background-color: var(--white-color);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin: 20px 0px;
+}
+
+.enterpriseHomeHomeIcon {
+  width: 56px;
+  height: 46px;
+  margin-right: 15px;
+}
+
+.enterpriseHomeCompanyLocAddressCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseHomeCompanyName {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.enterpriseHomeCompanyAddress {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.enterpriseHomeLocDotIcon {
+  font-size: 13px;
+  margin-right: 5px;
+}
+
+.enterpriseHomeLocHsbooked {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.enterpriseHomeHrsBookedCard {
+  margin-left: 20px;
+}
+
+.enterpriseHomeLocSpentCard {
+  display: flex;
+  margin-left: auto;
+}
+
+.enterpriseHomeCalenderMainCard {
+  background-color: var(--white-color);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.enterpriseHomeResturentCircle {
+  color: var(--orange-color);
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.enerpriseHomeResturentText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseHomeResturntCard {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.enterpriseHomeSupermarketsCircle {
+  color: var(--mediumaquamarine-color);
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.enterpriseHomeEcommerceCircle {
+  color: var(--steelblue-color);
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.enterpriseHomeMoversCircle {
+  color: var(--mediumpurple-color);
+  font-size: 10px;
+  margin-right: 5px;
+}
+
+.enterprisesHomeEnterpriesNameCard {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px;
+}
+
+.enterpriseHomeDeliveryHistoryCard {
+  background-color: var(--white-color);
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  margin: 15px 0px;
+}
+
+.enterpriseHomePackage {
+  width: 23px;
+  height: 23px;
+  margin-right: 10px;
+}
+
+.enterpriseHomePickupTimeinfo {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterpriseHomeDotCircleResturent {
+  color: var(--orange-color);
+  font-size: 9px;
+  position: absolute;
+  top: 0px;
+  left: 15px;
+  background-color: var(--white-color);
+  border-radius: 100%;
+  padding: 2px;
+}
+
+.enterpriseHomeDotCircleSupermarkets {
+  color: var(--mediumaquamarine-color);
+  font-size: 9px;
+  position: absolute;
+  top: 0px;
+  left: 15px;
+  background-color: var(--white-color);
+  border-radius: 100%;
+  padding: 2px;
+}
+
+.enterpriseHomeDotCircleEcommerce {
+  color: var(--steelblue-color);
+  font-size: 9px;
+  position: absolute;
+  top: 0px;
+  left: 15px;
+  background-color: var(--white-color);
+  border-radius: 100%;
+  padding: 2px;
+}
+
+.enterpriseHomeDotCircleMovers {
+  color: var(--mediumpurple-color);
+  font-size: 9px;
+  position: absolute;
+  top: 0px;
+  left: 15px;
+  background-color: var(--white-color);
+  border-radius: 100%;
+  padding: 2px;
+}
+
+.enterpriseHomePackageImgCard {
+  position: relative;
+}
+
+.enterpriseHomePackagedeliveryInfoCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseHomeAddresslocDotIcon {
+  font-size: 12px;
+  color: #717172;
+  margin-right: 10px;
+}
+
+.enterpriseHomeAddressText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseHomeAddressFromCard {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px 0px 5px;
+}
+
+.enterpriseHomeAddressToCard {
+  display: flex;
+  align-items: center;
+  margin: 8px 0px 0px 3px;
+}
+
+.enterpriseHomeOrderIdText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseHomeOrderidCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.enterpriseHomeShiftHeaderCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterpriseHomeCalenderMainCard .reactCalendar {
+  width: 100% !important;
+}
+
+/* Enterprise Planning CSS Start Here  */
+
+.enterprisePlaningSec {
+  padding: 15px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.enterprisePlanningFilterBtn {
+  font-size: 15px;
+  border: 1px solid #606060;
+  border-radius: 8px;
+  padding: 7px 10px;
+  background-color: transparent;
+  color: var(--text-color);
+  margin-right: 10px;
+}
+
+.enterprisePlanningTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.enterprisePlanningPlusIcon {
+  margin-right: 5px;
+}
+
+.enterprisePlanningNewScheduleBtn {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+}
+
+.enterprisePlannigHeadCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterprisePlannigFilterScheduleCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterprisePlanningCalenderMain {
+  background-color: var(--white-color);
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterprisePlanningCalenderMain .reactCalendar {
+  width: 100%;
+  line-height: 4rem;
+  border: none;
+}
+
+.enterprisePlannigdDateText {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterprisePlannigDateCloseIcon {
+  font-size: 12px;
+  border: none;
+  background-color: transparent;
+}
+
+.enterprisePlannigdDateHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--primary-color);
+  padding: 10px 15px;
+  border-radius: 10px 10px 0px 0px;
+  margin-top: 15px;
+}
+
+.enterprisePlannigDeliveryByDateMainCard {
+  background-color: var(--white-color);
+  padding: 10px 15px;
+  margin: 0px 0.5px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterprisePlaningPackageImg {
+  width: 23px;
+  height: 23px;
+  margin-right: 8px;
+}
+
+.enterprisePlaningPackageInfo {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterprisePlaningPackageHeaderCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseFooterCardId {
+  margin-top: 10px;
+}
+
+.enterprisePlaningPackageMainCard {
+  background-color: var(--white-color);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterpriseNewScheduleText {
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.enterpriseNewScheduleDiscription {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Enterprise New Schedule  */
+
+.enterprisenewScheduleSec {
+  background-color: var(--mainbg-color);
+}
+
+.enterprisePreviewPageSec {
+  background-color: var(--mainbg-color);
+  padding: 15px 0px;
+}
+
+.enterpriseScheduleApprovedSec {
+  background-image: url(../images/Celebration-Bg.png);
+  height: 90vh;
+  padding: 20px 0px;
+}
+
+.enterpriseNewScheduleTitleCard {
+  padding: 60px 80px;
+  background: var(--gradiantbg-color);
+}
+
+.enterpriseNewScheduleImg {
+  width: 304px;
+  height: 203px;
+  margin-top: 65%;
+}
+
+.enterpriseNewScheduleSelectType {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.enterpriseNewScheduletypeMainCard {
+  padding: 20px 100px;
+  height: 91vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.enterpriseNewScheduletypeMainCard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.enterpriseNewScheduletypeMainCard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.enterpriseNewScheduletypeMainCard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.enterpriseNewScheduletypeMainCard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.enterpriseNewScheduleLinkCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.enterpriseNewScheduleOneTimeImg {
+  height: 31px;
+  width: auto;
+  margin-right: 15px;
+}
+
+.enterpriseNewScheduleDeliveryTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: var(--text-color);
+}
+
+.enterpriseNewScheduleDeliveryDiscription {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 0px;
+  color: var(--text-color);
+}
+
+.enterpriseNewScheduleRightArrow {
+  color: var(--text-color);
+  margin-left: auto;
+}
+
+.enterpriseNewScheduleCalenderImg {
+  width: 31px;
+  height: 31px;
+  margin: 0px 15px 0px 15px;
+}
+
+.enterpriseNewScheduleMainLinkCards {
+  margin-top: 20%;
+}
+
+/* ------------ Enterprise One Time Css Start Here ---------------  */
+
+.enterpriseOneTimeTrackImg {
+  width: 328px;
+  height: 113px;
+  margin: 20px 0px;
+}
+
+.enterpriseOneTimePackageImg {
+  width: 258px;
+  height: 158px;
+  margin-top: 50%;
+}
+
+.enterpriseOneTimeHomeIcon {
+  width: 25px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.enterpriseOneTimeCompanyName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  color: var(--text-color);
+}
+
+.enterpriseOneTimeCompanyAddress {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+  color: var(--text-color);
+}
+
+.enterpriseOneTimeLocDot {
+  font-size: 12px;
+  color: #606060;
+  margin-right: 10px;
+}
+
+.enterpriseOneTimeCompanyLocCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 15px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.enterpriseOneTimeCompanyAddressCard {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.enterpriseOneTimeCompanyLocMainCard {
+  margin-top: 20px;
+}
+
+/* ----------- Enterprise Select Service Type ----------  */
+
+.enterpriseSelectServiceTypeCricle {
+  font-size: 15px;
+  margin-right: 6px;
+}
+
+.enterpriseSelectServiceTypeText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseselectServicesOptionCard {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.enterpriseselectServicesOptionCardMain {
+  display: flex;
+  align-items: center;
+  margin: 20px 0px 30px;
+}
+
+.enterpriseVehilces {
+  height: 40px;
+  margin-left: auto;
+}
+
+.enterpriseSelectVehicleCircleIcon {
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.enterpriseSelectServiceVehicleName {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseSelectServiceVehicleCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--white-color);
+  height: 60px;
+  padding: 15px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  cursor: pointer;
+}
+
+.enterpriseSelectServiceVehicleCardMain {
+  margin: 20px 0px 30px;
+}
+
+.enterpriseSelectServiceLoc {
+  display: flex;
+  align-items: center;
+  box-shadow: #00000005 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  padding: 10px 15px 10px 15px;
+  width: 100%;
+  margin: 15px 0px;
+  border-radius: 8px;
+}
+
+.enterpriseSelectServiceLocMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0px 30px;
+}
+
+.enterpriseSelectServicePickupDate {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.enterpriseSelectServiceDateCard {
+  background-color: var(--white-color);
+  padding: 8px 15px;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterpriseSelectServiceDateCard
+  .react-datetime-picker
+  .react-datetime-picker__wrapper {
+  border: none;
+}
+
+.enterpriseSelectServiceDateCard .react-datetime-picker {
+  display: flex;
+}
+
+.enterpriseSelectServiceTimeInput {
+  border: none !important;
+  padding: 0px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.enterpriseSelectServiceDateClockIcon {
+  margin-left: auto;
+}
+
+.enterpriseSelectServiceTimeCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterpriseSelectServiceDateTimeMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterpriseSelectServiceRepeatOrderText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseSelectServiceRepeatOrderCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.enterpriseSelectServiceRepeatOrderCard
+  .repeat-switch
+  .form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.enterpriseSelectServiceNextBtn {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  padding: 10px 50px;
+  border-radius: 8px;
+}
+
+.enterpriseSelectServiceNextBtnCard {
+  display: flex;
+  justify-content: end;
+  margin-top: 50px;
+}
+
+.selected .enterpriseSelectServiceTypeCricle {
+  color: var(--secondary-color);
+}
+
+.selected .enterpriseSelectVehicleCircleIcon {
+  color: var(--secondary-color);
+}
+.textColor {
+  color: var(--secondary-color);
+}
+
+.enterpriseSelectServiceRepeatOrderMainCard {
+  background-color: #eaeaea;
+  padding: 10px 15px;
+  margin: 10px 0px 15px;
+}
+
+.enterpriseSelectServiceRepeatCircle {
+  font-size: 15px;
+  margin-right: 6px;
+}
+
+.enterpriseSelectServiceDayilyText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseSelectServiceDayilyCard {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.enterpriseSelectServiceDayilyCardMain {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.enterpriseSelectServiceRepeatEveryText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseSelectServiceRepeatDaySelect {
+  width: 100px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  margin-right: 15px !important;
+}
+
+.enterpriseSelectServiceRepeatDateSelect {
+  width: 60px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  margin-right: 15px !important;
+}
+
+.enterpriseSelectServiceRepeatDateuntil {
+  width: 150px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  margin-right: 15px !important;
+}
+
+.enterpriseSelectServiceUntilText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px 10px 0px 0px;
+}
+
+.enterpriseSelectServiceRepeatEveryCard {
+  display: flex;
+  align-items: center;
+  margin: 15px 0px;
+}
+
+.enterpriseSelectServiceUntilCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseSelectServiceOccursday {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.enterpriseSelectServiceOccursSpan {
+  text-decoration: underline;
+}
+
+.deliveryboyScheduleApprovedImg {
+  width: 207px;
+  height: 137px;
+}
+
+.ServiceSelectedIcon {
+  color: var(--secondary-color); /* Change to the desired color */
+}
+/* ---------------- Enterprise Schedule Approved ------------------  */
+
+.enterpriseSchduleApprovedCard {
+  position: relative;
+}
+
+.enterpriseSchduleApprovedImg {
+  position: absolute;
+  width: 100%;
+  margin-top: -240px;
+}
+
+/* ---------------- Enterprise Multiple Delivery Img -----------------------  */
+
+.enterpriseMultipleCalenderImg {
+  width: 200px;
+  height: 200px;
+  margin-top: 50%;
+  margin-left: 50px;
+}
+
+.enterpriseMultipleDeliveryResturentSelect {
+  width: 100% !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 13px 15px !important;
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.enterpriseMultipleSelectServiceTimeCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterpriseSelectMultipleServiceDaysText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 1px solid #000;
+  padding: 5px 0px 0px 6px;
+  margin-right: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.enterpriseSelectMultipleServiceDaysCard {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.enterpriseSelectMultipleServiceDaysText.selected {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--white-color);
+}
+
+/* ---------- Enterprise Create Shift Select Loc ----------------- */
+
+.enterpriseCreateShiftTrackImg {
+  width: 300px;
+  height: 150px;
+  margin-top: 25px;
+}
+
+.enterpriseCreateShiftImg {
+  width: 200px;
+  height: 200px;
+  margin-top: 50%;
+  margin-left: 50px;
+}
+
+.enterpriseCreateShiftSetavailabilityMainCard {
+  padding: 0px 20px 0px 50px;
+}
+
+.enterpriseCreateShiftSetavailabilitycancelBtn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary-color);
+  padding: 10px 40px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 8px;
+  background-color: transparent;
+  margin-right: 15px;
+}
+
+.enterpriseCreateShiftSetavailabilitySaveBtn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white-color);
+  padding: 11px 40px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--secondary-color);
+}
+
+.enterpriseCreateShiftSetavailabilityActionBtnCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterpriseCreateShiftSetavailabilityActionBtnCard {
+  padding: 20px 50px;
+}
+
+.enterpriseCreateShiftAvailabilityText {
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.enterpriseCreateShiftAvailabilityDate {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0px;
+}
+
+.enterpriseCreateShiftAvailabilityHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 15px;
+  background-color: var(--primary-color);
+  border-radius: 8px 8px 0px 0px;
+  align-items: baseline;
+}
+
+.enterpriseCreateShiftAvailabilityPasteSlot {
+  font-size: 12px;
+  font-weight: 500;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  border-radius: 20px;
+  padding: 10px 15px;
+  margin-right: 15px;
+}
+
+.enterpriseCreateShiftAvailabilityCopySlot {
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+}
+
+.enterpriseCreateShiftAvailabilitySlotsMainCard {
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  margin: 0px 1px;
+  border-radius: 0px 0px 8px 8px;
+  height: 80vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.enterpriseCreateShiftAvailabilityFromInput {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0px !important;
+}
+
+.enterpriseCreateShiftAvailabilityFromCard {
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px !important;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  margin-right: 10px;
+}
+
+.enterpriseCreateShiftAvailabilityEnableClock {
+  font-size: 15px;
+  color: var(--secondary-color);
+}
+
+.enterpriseCreateShiftAvailabilityPlusBtn {
+  border: none;
+  padding: 8px 15px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+}
+
+.enterpriseCreateShiftAvailabilityAddrowCard {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+  gap: 30px;
+}
+
+.enterpriseCreateShiftAvailabilityDeleteBtn {
+  border: 1px solid var(--secondary-color);
+  padding: 8px 15px;
+  background-color: transparent;
+  color: var(--secondary-color);
+  border-radius: 10px;
+}
+
+.enterpriseCreateShiftAvailabilityMainCard {
+  margin: 0px 10px;
+}
+
+.enterpriseCreateShiftAvailabilityFinish {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  padding: 10px 50px;
+  border-radius: 8px;
+}
+
+.enterpriseCreateShiftAvailabilityFinishCard {
+  text-align: end;
+  margin: 30px 10px 30px 0px;
+}
+
+.enterpriseCreateShiftRequestSubmitText {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.enterpriseCreateShiftRequestSubmitDiscription {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  margin: 0px;
+}
+
+.enterpriseCreateShiftRequestLoaderImage {
+  width: 79px;
+  height: 137px;
+  margin-bottom: 30px;
+}
+
+.enterpriseCreateShiftRequestLoaderImageCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enterpriseCreateShiftRequestLoaderMainCard {
+  margin: 18% 0%;
+}
+
+.enterpriseCreateShiftRequestSubmitBtn {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 70px;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  color: var(--text-color);
+}
+
+.enterpriseCreateShiftRequestSubmitBtnCard {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0px 30px;
+}
+
+/* ------------ Enterprise History CSS Start Here ------------  */
+
+.enterpriseHistoryDeliveryActive {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--active-color);
+  background-color: #27ae6012;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 0px 0px 0px 10px;
+}
+
+.enterpriseHistoryVehicleNameCard {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.enterpriseShiftsHistoryCalenderImg {
+  width: 23px;
+  height: 23px;
+  margin-right: 10px;
+}
+
+.enterpriseShiftHistoryTitleText {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+  color: var(--text-color);
+}
+
+.enterpriseShiftHistoryShiftsInHours {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  margin-left: auto;
+  color: var(--text-color);
+}
+
+.enterpriseShiftsHistoryHeader {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftsHistoryHeaderMain {
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  margin: 15px 0px;
+  border-radius: 10px;
+}
+
+.enterpriseShiftsHistoryTopMainDiv {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftHistoryCompanyLoc {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  color: var(--text-color);
+}
+
+.enterpriseShiftHistoryCompanyLocIcon {
+  font-size: 12px;
+  color: #717172;
+  margin-right: 10px;
+}
+
+.enterpriseShiftHistoryCompanyLocCard {
+  display: flex;
+  align-items: center;
+  margin: 13px 0px;
+}
+
+.enterpriseShiftHistoryPending {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--pending-color);
+  background-color: #f39c1212;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 0px 0px 0px 10px;
+}
+
+.enterpriseShiftHistoryActive {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--active-color);
+  background-color: #27ae6012;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 0px 0px 0px 10px;
+}
+
+.enterpriseShiftsHistoryApprovelStatusCard {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px 0px;
+}
+
+/* --------------- Enterprise Shift Detail Page ----------------  */
+
+.enterpriseShiftDetailGearIcon {
+  color: var(--text-color);
+  font-size: 18px;
+}
+
+.enterpriseShiftDetailsHeaderCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterpriseShiftDetailHomeIcon {
+  width: 28px;
+  height: 23px;
+  margin-right: 10px;
+}
+
+.enterpriseShiftDetailCompanyName {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterpriseShiftDetailHomeIconCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftDetailLocDotIcon {
+  font-size: 12px;
+  color: #717172;
+  margin-right: 5px;
+}
+
+.enterpriseShiftDetailAddressText {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.enterpriseShiftDetailAddresCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftDetailCompanyDetailCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  margin: 15px 0px;
+  border-radius: 10px;
+}
+
+.enterpriseShiftDetailDrivertruckDetails {
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.enterpriseShiftDetailDriverCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftDetailDriverImg {
+  width: 31px;
+  height: 31px;
+  margin-right: 10px;
+  border-radius: 100%;
+}
+
+.enterpriseShiftDetailDriverName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.enterpriseShiftDetailDriverCardMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  margin: 15px 0px;
+  border-radius: 10px;
+}
+
+.enterpriseShiftDetailCalenderImg {
+  width: 23px;
+  height: 23px;
+  margin-right: 10px;
+}
+
+.enterpriseShiftDetailStarteddatetime {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseShiftDetailShiftDurationText {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0px 20px 0px 0px;
+}
+
+.enterpriseShiftDetailCalenderCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftDetailShiftDurationCard {
+  display: flex;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.enterpriseShiftDetailVehiclenameType {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseShiftDetailCalenderCardMain {
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  margin: 15px 0px;
+  border-radius: 10px;
+}
+
+/* ------------- Enterprise Shift page Css start Here -------------- */
+
+.enterpriseShiftPageDetailsDriverImg {
+  width: 123px;
+  height: 123px;
+  border-radius: 100%;
+}
+
+.enterpriseShiftPagDriverReadyText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white-color);
+  background-color: var(--active-color);
+  padding: 4px 8px;
+  border-radius: 20px;
+  position: absolute;
+  bottom: -28px;
+  left: 190px;
+}
+
+.enterpriseShiftPageDetailsDriverCard {
+  position: relative;
+  text-align: center;
+}
+
+.enterpriseShiftPageDeliveryBoyReadyText {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.enterpriseShiftPageDeliveryBoyReadyDiscription {
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.enterpriseShiftPageDeliveryBoyReadyCard {
+  margin: 20px 0px 20px;
+}
+
+.enterpriseShiftPageDeliveryTimerCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enterpriseShiftPageDeliveryTimerText {
+  font-size: 24px;
+  font-weight: bold;
+  white-space: nowrap;
+  margin-bottom: 0px;
+}
+
+.enterpriseShiftPageShiftEndHours {
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.enterpriseShiftPageTotaldeliveryCount {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.enterpriseShiftPageTotaldeliveryText {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0px;
+  text-align: center;
+}
+
+.enterpriseShiftPageTotaldeliveryCountCard {
+  margin: 20px 0px;
+}
+
+.enterpriseShiftPageActiveDelivriesPackageImg {
+  width: 50px;
+  height: 31px;
+  margin-right: 10px;
+}
+
+.enterpriseShiftPageActiveDelivriesText {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  color: var(--text-color);
+}
+
+.enterpriseShiftPageActiveDelivriesUpperCard {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #b9b9b9;
+  padding: 20px 15px;
+}
+
+.enterpriseShiftPageActiveDelivriesPackageCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftPageActiveDelivriesPackageArrowIcon {
+  margin-left: auto;
+  color: var(--text-color);
+}
+
+.enterpriseShiftPageActiveDelivriesLowerCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--primary-color);
+  padding: 20px 15px;
+}
+
+.enterpriseShiftPageSection {
+  background-color: var(--mainbg-color);
+}
+
+.enterpriseShiftPageDetailsDriverMainCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 25px 0px 0px;
+}
+
+.enterpriseShiftPageActiveDelivriesHeadTitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.enterpriseShiftPageActiveDelivriesDetailMaincard {
+  padding: 25px 60px 20px 60px;
+}
+
+.enterpriseShiftPageOrderId {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterpriseShiftPageOrderDetailFromLoc {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseShiftPageOrderDetailFromLocIcon {
+  font-size: 12px;
+  margin-right: 10px;
+  color: #606060;
+}
+
+.enterpriseShiftPageOrderDetailFromLocCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftPageOrderDetailLocmaincard {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.enterpriseShiftPageOrderDetailBorderShowOff {
+  border: 1px dashed #606060;
+  width: 50px;
+  margin: 0px 20px;
+}
+
+.enterpriseShiftPageOrderDetailMainBorderShowOff {
+  border: 1px solid #dbdbdb;
+  width: 100%;
+  margin: 20px 0px;
+}
+
+.enterpriseShiftPageOrderDetaildistance {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px 20px 0px 0px;
+}
+
+.enterpriseShiftPageOrderDetaildistanceCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftPageOrderDetailPending {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+  padding: 5px 8px;
+  border-radius: 20px;
+  background-color: #f39c1212;
+  color: var(--pending-color);
+  margin-left: auto;
+}
+
+.enterpriseShiftPageOrderDetailprogress {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+  padding: 5px 8px;
+  border-radius: 20px;
+  background-color: #3498db12;
+  color: var(--progress-color);
+  margin-left: auto;
+}
+
+.enterpriseShiftPageOrderDetailComplete {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+  padding: 5px 8px;
+  border-radius: 20px;
+  background-color: #27ae6012;
+  color: var(--active-color);
+  margin-left: auto;
+}
+
+.enterpriseShiftPageOrderDetaildistanceCardMain {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseShiftPageOrderDetailMainCard {
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  border-radius: 8px;
+  margin: 10px 0px;
+}
+
+/* --------------- Enterprise Manage company locations Css ---------------  */
+
+.enterpriseManagecompanyLocationsMapcard {
+  width: 160px;
+  height: 120px;
+}
+
+.enterpriseManagecompanyLocationsmainCard {
+  display: flex;
+  align-items: center;
+  border: 1px solid #c0c0c0;
+  border-radius: 8px;
+  padding: 2px;
+  margin-bottom: 15px;
+}
+
+.enterpriseManagecompanyLocationAddressCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterpriseManagecompanyLocationAddressText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseManagecompanyLocationAddressIcon {
+  font-size: 12px;
+  color: #606060;
+  margin-right: 5px;
+}
+
+.enterpriseManagecompanyLocationCompanyName {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+.enterpriseManagecompanyLocationAddressEditIcon {
+  font-size: 15px;
+  color: #606060;
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+}
+
+.enterpriseManagecompanyLocationAddressMainCard {
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.enterpriseNewCompanyLocationTitleLabel {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 3px !important;
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.enterpriseNewCompanyLocationTitleinput {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.enterpriseNewCompanyLocationSearchInput {
+  border: none;
+  width: 95%;
+  outline: none;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif !important;
+}
+
+.enterpriseNewCompanyLocationSetBtn {
+  border: none;
+  background-color: transparent;
+  padding: 0px !important;
+}
+
+.enterpriseNewCompany-LocationSearchCard {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 2px 10px;
+}
+
+.enterpriseNewCompanyLocationAddressDeleteBtn {
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 9px 30px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 20px !important;
+}
+
+.enterpriseNewCompanyLocationaddressSaveBtn {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 30px;
+}
+
+.addressBookManageAdsCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+/* ------------ Enterprise manage Ads ------------  */
+
+.enterprisemanageAdsCompanyAddressCard {
+  display: flex;
+  align-items: center;
+}
+
+.enterprisemanageAdsCompanyAddressLocIcon {
+  font-size: 12px;
+  color: #606060;
+  margin-right: 5px;
+}
+
+.enterprisemanageAdsCompanyAddressText {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.enterprisemanageAdsCompanyNameText {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.enterprisemanageAdsCompanyImg {
+  width: 47px;
+  height: 47px;
+  margin-right: 10px;
+}
+
+.enterprisemanageAdsCompanyImpressionsText {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px 10px 0px 0px;
+}
+
+.enterprisemanageAdsCompanyAdsMainCard {
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  margin: 10px 5px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.enterprisemanageAdsCompanyImpressionsCard {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.deliveryBoySignupCustomCheckbox .form-check-input:checked {
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
+}
+
+.deliveryBoySignupCheckboxCard {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.deliveryBoySignupCheckboxCard:focus {
+  outline: none;
+  border-color: var(--secondary-color); /* Focus color */
+  box-shadow: 0 0 4px var(--secondary-color);
+}
+
+.deliveryBoySignupCheckboxCard:checked {
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
+}
+
+/* end  */
+
+/* add radio */
+.addPickupDetailRadioBtn input[type="radio"] + .form-check-label {
+  position: relative;
+  padding-left: 30px; /* Adjust based on the size of the            custom radio */
+  cursor: pointer;
+}
+
+.addPickupDetailRadioBtn {
+  appearance: none; /* Hides the default radio button */
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  margin-right: 8px;
+}
+
+.addPickupDetailRadioBtn:checked {
+  border-color: var(--secondary-color); /* Changes the outer border color */
+}
+
+.addPickupDetailRadioBtn:checked::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background-color: var(--secondary-color); /* Dot color */
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.addPickupDetailRadioCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.addPickupDetailFormCards {
+  margin-right: 20px;
+}
+
+/* -------------- new Home page css start here ----------------  */
+
+.OnDemandDeliverySec {
+  padding: 50px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.onDemandDeliveryTitleDiv {
+  padding: 100px 50px;
+}
+
+.onDemandDeliveryTitleDiv h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.onDemandDeliveryTitleDiv p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.onDemandDeliveryImage {
+  max-width: 100%;
+}
+
+.homeTrackYourOrderTitle h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.homeTrackYourOrderTitle p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.homeTrackYourOrderTitle {
+  padding-top: 100px;
+}
+
+.homeTrackYourOrderImage {
+  max-width: 100%;
+}
+
+.homeTrackYourOrderSec {
+  padding: 50px 0px;
+}
+
+.homeChooseDeliveryVehicleSec {
+  padding: 50px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.homeChooseDeliveryVehicleTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.homeChooseDeliveryVehicleTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.homeChooseDeliveryVehicleTitleCard {
+  text-align: center;
+  padding-bottom: 100px;
+}
+
+.homeChooseDeliveryVehicleImg {
+  max-width: 100%;
+}
+
+.homeEfficientCardTitle h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.homeEfficientCardTitle p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.homeEfficientCardTitle {
+  padding-top: 100px;
+}
+
+.homeEfficientCardImage {
+  max-width: 100%;
+}
+
+.homeEfficientCardSec {
+  padding: 50px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.HomeTalktoTeamTitleCard h2 {
+  font-size: 35px;
+  font-weight: 700;
+}
+
+.HomeTalktoTeamTitleCard p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.HomeTalktoTeamTitleCard {
+  padding-top: 50px;
+}
+
+.HomeTalktoTeamSec {
+  padding: 50px 0px;
+  background-color: var(--mainbg-color);
+}
+
+.HomeTalktoTeamMainCard {
+  padding: 0% 20%;
+  text-align: center;
+}
+
+.HomeTalktoTeamBannerCard img {
+  max-width: 70%;
+}
+
+.HomeContactUsActionBtn {
+  padding: 8px 20px 10px 20px;
+  background: var(--secondary-color);
+  border: none;
+  border-radius: 30px;
+  color: var(--white-color);
+  transition: all 0.7s;
+}
+
+.HomeContactUsActionBtn:hover {
+  background-color: var(--primary-color);
+}
+
+.HomeEcoFriendlyFleetSec {
+  padding: 80px 0px;
+}
+
+.EcoFriendlyFleetMainCard {
+  padding: 50px;
+  background-color: var(--mainbg-color);
+  text-align: center;
+  height: 570px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.EcoFriendlyFleettitleCard h4 {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 25px 0px;
+}
+
+.EcoFriendlyFleettitleCard p {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+.EcoFriendlyFleetMainCard img {
+  max-width: 100%;
+}
+
+.paymentSuccessSec {
+  padding: 60px 0;
+  background-color: #f9f9f9;
+}
+
+.paymentSuccessCard {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.paymentSuccessIcon {
+  color: #4caf50; /* Green color for success */
+  margin-bottom: 20px;
+}
+
+.paymentSuccessText {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.paymentSuccessSubText {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.paymentSuccessDetails {
+  margin-top: 30px;
+}
+
+.orderSummaryText {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.paymentDetailsCard {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.paymentDetailsText {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.backToDashboardBtn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.backToDashboardBtn:hover {
+  background-color: #0056b3;
+}
+
+.oneTimeVehicleCard {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 10px 0px;
+}
+
+.onleTimeVehicleNameText {
+  font-size: 12px;
+  margin-bottom: 0px;
+}
+
+.oneTimeActiveText {
+  background: #27ae6012;
+  color: var(--active-color);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 0px;
+  font-weight: 600;
+}
+
+.pickupHistoryMultipleLocationCard {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.shiftOrderHeaderMainCard {
+  display: flex;
+}
+
+.shiftOrderhoursText {
+  font-size: 15px;
+  color: var(--text-color);
+  font-weight: 700;
+  margin: 0px;
+  margin-left: auto;
+}
+
+.oneTimePendingText {
+  background: #f39c1212;
+  color: var(--pending-color);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 0px;
+  font-weight: 600;
+}
+
+.pickupHistoryPastVehicleText {
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.updateProfileCard {
+  position: relative;
+  top: 14px;
+  right: 33px;
+  cursor: pointer;
+}
+.updateProfileImg {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  position: absolute;
+  background-color: var(--white-color);
+  padding: 2px;
+  color: var(--secondary-color);
+}
+
+.pickupAccountUserProfileUpdate {
+  width: 100px;
+  height: 100px;
+  display: block;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.addPickupUploadPhotoUpdate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #ccc;
+  padding: 20px;
+}
+
+.addPickupDragTextUpdate {
+  text-align: center;
+}
+
+.plusIcon {
+  font-size: 30px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.profileImageContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.changeImageLabel {
+  position: absolute;
+  bottom: -10px;
+  right: 0px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.PaymentSuccessfulImage {
+  height: 150px;
+  width: auto;
+}
+
+.driverDotAvailableImg {
+  height: 350px;
+  width: auto;
+}
+
+.driverNotAvailableHeadCard {
+  display: flex;
+  align-items: baseline;
+  justify-content: end;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.driverFindCancelBtn {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  padding: 8px 55px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.startPreviewDateCard h5 {
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.startPreviewDateCard p {
+  font-size: 12px;
+  margin: 0px;
+  padding: 5px 10px;
+  width: 120px;
+  background-color: var(--white-color);
+  border-radius: 6px;
+  border: 1px solid #a1a1a9;
+}
+
+.previewDateMainCard {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.previewTimeCard {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.previewTimeCard p {
+  font-size: 12px;
+  margin: 0px;
+  padding: 5px 10px;
+  width: 120px;
+  background-color: var(--white-color);
+  border-radius: 6px;
+  border: 1px solid #a1a1a9;
+}
+
+.previewTimeDateText {
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.previewHeaderMainCard {
+  background-color: var(--white-color);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.previewbottomMainCard {
+  padding: 20px;
+  height: 67vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 0px 0px 8px 8px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.previewbottomMainCard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.previewbottomMainCard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.previewbottomMainCard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.previewbottomMainCard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.enterpriseCreateShiftAvailabilitySlotsMainCard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.enterpriseCreateShiftAvailabilitySlotsMainCard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.enterpriseCreateShiftAvailabilitySlotsMainCard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.enterpriseCreateShiftAvailabilitySlotsMainCard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.previewPageTitle {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.previewPageColGapping {
+  margin: 0px 10px;
+}
+
+.createShiftAvailabilityText {
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.totalAboutCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.totalAboutCard h4 {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 0px;
+}
+
+.totalAboutCard h4 span {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.enterprseShiftFinalBtnCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.pickupDeliveryNumberplate {
+  font-size: 12px;
+  margin-bottom: 0px;
+}
+
+.pickupDeliveryDetailPackageImg {
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}
+
+.paymentAllCardsDataShow {
+  background-color: var(--white-color);
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.paymentAddCardBtn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--secondary-color);
+}
+
+.paymentAddCardText {
+  font-size: 14px;
+  margin-bottom: 0px;
+  margin-top: 3px;
+}
+
+.paymentAddCardMain {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pickupOrderOtpCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.max75 {
+  max-width: 75% !important;
+  margin: 0 auto;
+}
+
+.customSwitch input:checked {
+  background-color: yellow !important;
+  border-color: yellow !important;
+}

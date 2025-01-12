@@ -1,0 +1,46 @@
+.EnterpriseOrderFilterHeader {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 10px !important;
+  background-color: antiquewhite;
+}
+
+.enterpriseOrderdatepickerCard{
+  display: grid;
+  margin-bottom: 15px;
+}
+
+.datepickerContainer {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.enterpriseOderDatepicker {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  padding: 5px;
+}
+
+.calendarIcon {
+  margin-left: 8px;
+  color: #FFC72B;
+  font-size: 16px;
+}
+
+.enterpriseOrderFilterApplyBtn{
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #FFC72B;
+  color: #fff;
+  border: none;
+  padding: 5px 30px;
+}

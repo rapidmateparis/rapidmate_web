@@ -1,0 +1,203 @@
+:root {
+  --primary-color: #ffc72b;
+  --secondary-color: #ff0058;
+  --text-color: #000;
+  --white-color: #fff;
+  --gradiantbg-color: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 242, 206, 1) 100%
+  );
+  --mainbg-color: #fbfaf5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  font-family: "Montserrat", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.pickupHeader .nav {
+  width: 100%;
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin-bottom: 0px;
+}
+.pickupHeader .nav > .navHeader {
+  flex: 0.95;
+  padding-left: 1rem;
+  margin-left: 0px;
+}
+.pickupHeader .nav > .navList {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 0px;
+  align-items: center;
+}
+.pickupHeader .nav > .navList > li {
+  list-style-type: none;
+}
+.pickupHeader .nav > .navList > li a {
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+.pickupHeader .nav > #navCheck {
+  display: none;
+}
+@media (max-width: 480px) {
+  .pickupHeader .nav {
+    padding: 1rem;
+  }
+  .pickupHeader .nav > .navBtn {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-top: 0.2rem;
+  }
+  .pickupHeader .nav > .navBtn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  .pickupHeader .nav > .navBtn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #000;
+  }
+  .pickupHeader .nav > .navList {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    background-color: #fff;
+    height: 0;
+    transition: all 0.3s ease-in;
+    top: 40px;
+    left: 0;
+    overflow: hidden;
+  }
+  .pickupHeader .nav > .navList > li {
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  .pickupHeader .nav > #navCheck:checked ~ .navList {
+    height: calc(80vh - 50px);
+    margin-top: 30px;
+  }
+}
+
+.pickupHeader .homeHeaderLogo {
+  width: 41px;
+  height: 44px;
+  margin-right: 10px;
+}
+
+.pickupHeader .homeHeaderCompanyName {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0px;
+}
+.pickupHeader .homeHeaderLogocard {
+  display: flex;
+  align-items: center;
+}
+
+.pickupHeader .homeHeaderSignuplink {
+  background-color: var(--secondary-color);
+  color: #fff !important;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.pickupHeader .loginnavList {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0px;
+  margin-left: 30px;
+  align-items: center;
+}
+
+.pickupHeader .loginnavList li {
+  list-style: none;
+}
+
+.pickupHeader .loginnavList li a {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.pickupHeader .pickupHomeSettingsBtn {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+}
+
+.pickupHeader .pickupHeaderProfileImg {
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+}
+
+.pickupHeader .pickupHeaderProfileActionBtn {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.pickupHeader .pickupHeaderAccountsIcons {
+  color: #969696;
+  font-size: 13px;
+  margin-right: 5px;
+}
+
+.pickupHeader .pickupHeaderAccountTextsActions {
+  font-size: 12px !important;
+  color: #191d16;
+}
+
+.loginNavList {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0px;
+  margin-left: 30px;
+  align-items: center;
+}
+
+.loginNavList li {
+  list-style: none;
+}
+
+.loginNavList li a {
+  cursor: pointer;
+  color: var(--textColor);
+  font-size: 16px;
+  font-weight: 500;
+}
