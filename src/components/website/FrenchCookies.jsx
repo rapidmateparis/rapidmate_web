@@ -110,7 +110,7 @@ const FrenchCookies = () => {
                 <p>
                   Pour plus de détails sur la manière dont nous traitons vos
                   données et gérons votre vie privée, veuillez consulter notre
-                  <Link to="/web-privacy-policy">
+                  <Link to="/web_privacy_policy">
                     Politique de confidentialité
                   </Link>{" "}
                   et nos{" "}
