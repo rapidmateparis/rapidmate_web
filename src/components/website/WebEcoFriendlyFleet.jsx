@@ -54,7 +54,6 @@ const WebEcoFriendlyFleet = () => {
 
             <div className="col-md-4">
               <div className={Styles.EcoRouteOptimizationCard}>
-                electric_hybrid
                 <div className="text-center">
                   <Lottie
                     className={Styles.EcoRouteOptimizationEScooterCard}

@@ -479,7 +479,7 @@ a {
 }
 
 .webHomeBlogSec {
-  margin: 20px 50px 80px 50px;
+  margin: 50px 50px 80px 50px;
 }
 
 .webHomeBlogHeadCard {
@@ -2077,3 +2077,24 @@ a {
   font-weight: 600;
   margin-bottom: 30px;
 }
+
+.GoToTopButton {
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+.GoToTopButton svg {
+  width: 16px;
+  height: 16px;
+}
+

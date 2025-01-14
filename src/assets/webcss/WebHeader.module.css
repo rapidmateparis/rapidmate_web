@@ -191,7 +191,12 @@ a {
 }
 
 /* Dropdown menu */
+.dropdownHover:hover .dropdownMenu {
+  display: block;
+}
+
 .dropdownMenu {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
