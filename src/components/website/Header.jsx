@@ -3,7 +3,7 @@ import Styles from "../../assets/webcss/WebHeader.module.css";
 import Logo from "../../assets/images/Logo-icon.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import WebContactModal from "./WebContactModal";
 import HeaderLanguageSwitcher from "../../common/HeaderlanguageOptions";
 import i18n from "i18next";
@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { t } = useTranslation();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -22,14 +21,9 @@ const Header = () => {
     setLang(newLang); // Update the language in state
   };
 
-  // Function to toggle dropdown visibility
-  const toggleDropdown = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
-
   return (
     <>
-      {/* contact modal link here  */}
+      {/* contact modal link here */}
       <WebContactModal show={showModal} handleClose={handleClose} />
       {/*  */}
       <div className={Styles.homeHeader}>
@@ -52,46 +46,34 @@ const Header = () => {
             </label>
           </div>
           <ul className={Styles.navList}>
-            <li className={Styles.dropdown}>
-              <button
-                className={Styles.dropdownToggle}
-                onClick={toggleDropdown}
-              >
+            <li className={`${Styles.dropdown} ${Styles.dropdownHover}`}>
+              <button className={Styles.dropdownToggle}>
                 {t("business_solutions")}{" "}
-                {dropdownVisible ? (
-                  <FontAwesomeIcon
-                    className={Styles.iconDrop}
-                    icon={faChevronUp}
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    className={Styles.iconDrop}
-                    icon={faChevronDown}
-                  />
-                )}
+                <FontAwesomeIcon
+                  className={Styles.iconDrop}
+                  icon={faChevronDown}
+                />
               </button>
-              {dropdownVisible && (
-                <ul className={Styles.dropdownMenu}>
-                  <li>
-                    <Link to="/web-restaurants">{t("restaurants")}</Link>
-                  </li>
-                  <li>
-                    <Link to="/web-grocery">{t("grocery")}</Link>
-                  </li>
-                  <li>
-                    <Link to="/web-pharmacy-meds">{t("pharmacy")}</Link>
-                  </li>
-                  <li>
-                    <Link to="/web-gifts">{t("gifts")}</Link>
-                  </li>
-                  <li>
-                    <Link to="/web-e-commerce">{t("e_commerce")}</Link>
-                  </li>
-                  <li>
-                    <Link to="/web-more">{t("more")}</Link>
-                  </li>
-                </ul>
-              )}
+              <ul className={Styles.dropdownMenu}>
+                <li>
+                  <Link to="/web-restaurants">{t("restaurants")}</Link>
+                </li>
+                <li>
+                  <Link to="/web-grocery">{t("grocery")}</Link>
+                </li>
+                <li>
+                  <Link to="/web-pharmacy-meds">{t("pharmacy")}</Link>
+                </li>
+                <li>
+                  <Link to="/web-gifts">{t("gifts")}</Link>
+                </li>
+                <li>
+                  <Link to="/web-e-commerce">{t("e_commerce")}</Link>
+                </li>
+                <li>
+                  <Link to="/web-more">{t("more")}</Link>
+                </li>
+              </ul>
             </li>
             <li>
               <Link to="/web-individuals">{t("individual")}</Link>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LogoFooter from "../../assets/webImages/FooterLogo.png";
 import Twitter from "../../assets/webImages/Twitter-icon.png";
 import Tiktok from "../../assets/webImages/Tiktok-icon.png";
@@ -10,6 +10,7 @@ import {
   faPhone,
   faEnvelope,
   faLocationDot,
+  faArrowUp
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import WebContactModal from "./WebContactModal";
@@ -18,6 +19,8 @@ import { useTranslation } from "react-i18next";
 const WebFooter = () => {
   const { t, i18n } = useTranslation();
   const [showModal, setShowModal] = useState(false);
+  const [showTopButton, setShowTopButton] = useState(false);
+
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
@@ -27,6 +30,22 @@ const WebFooter = () => {
     i18n.language === "fr" ? "/french-terms-service" : "/web-terms-service";
   const cookiesLink =
     i18n.language === "fr" ? "/french-cookies" : "/web-cookies";
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopButton(window.scrollY > 200);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -255,6 +274,15 @@ const WebFooter = () => {
                   {t("cookies")}
                 </Link>
               </div>
+              {showTopButton && (
+                <button
+                  onClick={scrollToTop}
+                  className={Styles.GoToTopButton}
+                  aria-label="Scroll to top"
+                >
+                  <FontAwesomeIcon icon={faArrowUp} />
+                </button>
+              )}
             </div>
           </div>
         </div>
