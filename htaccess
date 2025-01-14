@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^rapidmate.fr [NC]
+RewriteRule ^(.*)$ https://rapidmate.fr/$1 [L,R=301]

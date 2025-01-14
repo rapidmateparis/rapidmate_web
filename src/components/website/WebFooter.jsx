@@ -25,7 +25,7 @@ const WebFooter = () => {
   const handleShow = () => setShowModal(true);
 
   const privacyPolicyLink =
-    i18n.language === "fr" ? "/french-privacy-policy" : "/web-privacy-policy";
+    i18n.language === "fr" ? "/french-privacy-policy" : "/web_privacy_policy";
   const termOfServicesLink =
     i18n.language === "fr" ? "/french-terms-service" : "/web-terms-service";
   const cookiesLink =
