@@ -22,9 +22,10 @@ import {
   getViewEnterpriseOrderDetail,
   getViewOrderDetail,
 } from "../../data_manager/dataManage";
-import { API } from "../../utils/Constants";
+import { API} from "../../utils/Constants";
 import { useSelector } from "react-redux";
 import DeliveryDetailsMap from "../../common/DeliveryDetailsMap";
+import { showErrorToast } from "../../utils/Toastify";
 
 const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
   const [orders, setOrders] = useState({});
@@ -41,6 +42,28 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
   useEffect(() => {
     orderDetail();
   }, []);
+  const goTracking = () => {
+    const getLocationsData = () => {
+      getLocations(
+        null,
+        (successResponse) => {
+          if (successResponse[0]._success) {
+            let tempOrderList = successResponse[0]._response;
+            navigate("/enterprise/order-tracking", {
+              state: {
+                orderNumber: orderNumber,
+                locationList: tempOrderList,
+              },
+            });
+          }
+        },
+        (errorResponse) => {
+          console.log(errorResponse[0]._errors.message);
+        }
+      );
+    };
+    getLocationsData();
+  };
   const orderDetail = async () => {
     setLoading(true);
     getViewEnterpriseOrderDetail(
@@ -116,6 +139,39 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
       }
     );
   };
+
+  const downloadInvoice = async (orderNumber, pdfUrl) => {
+    try {
+      // Fetch the PDF
+      const response = await fetch(pdfUrl, { method: "GET" });
+  
+      if (!response.ok) {
+        showErrorToast(`Failed to fetch PDF: ${response.statusText}`);
+        return
+      }
+  
+      // Convert response to Blob
+      const blob = await response.blob();
+  
+      // Create a download link and trigger the download
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${orderNumber}.pdf`; // Use orderNumber as file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      showErrorToast("Failed to download the invoice. Please try again.");
+    }
+  };
+  
+
+  const handleDownload = () => {
+    const pdfUrl = API.downloadInvoice + orderNumber+'/enterprise?show=true'
+    downloadInvoice(orderNumber, pdfUrl);
+  };
+  
   return (
     <section className={Styles.pickupDeliveryDetails}>
       <div className="container">
@@ -165,15 +221,16 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                   </div>
                 </div>
                 <p className={Styles.pickupDevliveryDetailVehicleNumber}>
-                  <Link
-                    to={"#"}
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={goTracking}
                     className={Styles.pickupDeliveryDetailDownloadIcon}
                   >
                     <FontAwesomeIcon
                       className={Styles.pickupHomeLocationIcon}
                       icon={faLocationCrosshairs}
                     />
-                  </Link>
+                  </div>
                 </p>
               </div>
 
@@ -295,7 +352,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      Travelled 12 km in 32 mins
+                      Travelled {orders?.distance} km
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
@@ -360,7 +417,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                     Download invoice
                   </p>
                 </div>
-                <button className={Styles.pickupDeliveryDetailDownloadIcon}>
+                <button  onClick={handleDownload} className={Styles.pickupDeliveryDetailDownloadIcon}>
                   <FontAwesomeIcon icon={faDownload} />
                 </button>
               </div>
@@ -488,7 +545,37 @@ const ConsumerOrder = ({ user, order, navigate }) => {
       }
     );
   };
+  const downloadInvoice = async (orderNumber, pdfUrl) => {
+    try {
+      // Fetch the PDF
+      const response = await fetch(pdfUrl, { method: "GET" });
+  
+      if (!response.ok) {
+        showErrorToast(`Failed to fetch PDF: ${response.statusText}`);
+        return
+      }
+  
+      // Convert response to Blob
+      const blob = await response.blob();
+  
+      // Create a download link and trigger the download
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${orderNumber}.pdf`; // Use orderNumber as file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      showErrorToast("Failed to download the invoice. Please try again.");
+    }
+  };
+  
 
+  const handleDownload = () => {
+    const pdfUrl = API.downloadInvoice + orderNumber+'/consumer?show=true'
+    downloadInvoice(orderNumber, pdfUrl);
+  };
   return (
     <section className={Styles.pickupDeliveryDetails}>
       <div className="container">
@@ -669,7 +756,7 @@ const ConsumerOrder = ({ user, order, navigate }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      Travelled 12 km in 32 mins
+                      Travelled {orders?.distance} km
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
@@ -734,7 +821,7 @@ const ConsumerOrder = ({ user, order, navigate }) => {
                     Download invoice
                   </p>
                 </div>
-                <button className={Styles.pickupDeliveryDetailDownloadIcon}>
+                <button  onClick={handleDownload} className={Styles.pickupDeliveryDetailDownloadIcon}>
                   <FontAwesomeIcon icon={faDownload} />
                 </button>
               </div>
@@ -749,42 +836,8 @@ function OrderDetail() {
   const location = useLocation();
   const { order } = location.state || {};
   const user = useSelector((state) => state.auth.user);
-  const [destinationAddress, setDestinationAddress] = useState({});
-  const [vehicleType, setVehicleType] = useState({});
   const navigate = useNavigate();
 
-  const getDestinationAddress = async (locationId) => {
-    setLoading(true);
-    getLocationById(
-      locationId,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]._success) {
-          setDestinationAddress(successResponse[0]._response[0]);
-        }
-      },
-      (errorResponse) => {
-        setLoading(false);
-      }
-    );
-  };
-  const vehicleDetail = async (vehicleTypeId) => {
-    setLoading(true);
-    getAVehicleByTypeId(
-      vehicleTypeId,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]._success) {
-          setVehicleType(successResponse[0]._response[0]);
-        }
-      },
-      (errorResponse) => {
-        setLoading(false);
-      }
-    );
-  };
-
-  console.log("sdf", user?.userDetails.role);
   return (
     <>
       <CommonHeader userData={user} />

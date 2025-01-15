@@ -30,7 +30,8 @@ const SetNewSchedule = () => {
     moment(new Date()).format("MMMM D, YYYY")
   );
   const location = useLocation();
-  const { vehicletypeId, serviceType, branch, deliveryType } = location.state;
+  const { vehicletypeId, serviceType, branch, deliveryType, amount } =
+    location.state;
   const [value, setValue] = useState(new Date());
   const [rows, setRows] = useState([]);
   const [events, setEvents] = useState([]);
@@ -38,8 +39,34 @@ const SetNewSchedule = () => {
   const [slots, setSlots] = useState(null);
   const [orders, setOrders] = useState([]);
   const [orderNumber, setOrderNumber] = useState(null);
-  const handleRepeatOrder = (event) => {
-    setRepeatOrder(event.target.checked);
+  const [isPreview, setIsPreview] = useState(false);
+
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalDays, setTotalDays] = useState(null);
+  const [totalHour, setTotalHour] = useState(0);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+
+  const handleRepeatOrder = (isApplyForAllDays) => {
+    setRepeatOrder(isApplyForAllDays); // Update the toggle state
+    setRows((prevRows) => {
+      if (isApplyForAllDays) {
+        // Copy the first row's slots to all other rows
+        const firstRowSlots = prevRows[0]?.slots || [];
+        return prevRows.map((row, index) => {
+          if (index === 0) return row; // Keep the first row unchanged
+          return { ...row, slots: [...firstRowSlots] }; // Copy slots to other rows
+        });
+      } else {
+        return prevRows.map((row, index) => ({
+          ...row,
+          slots:
+            index === 0
+              ? row.slots
+              : row.slots.map(() => ({ from: "", to: "" })),
+        }));
+      }
+    });
   };
 
   // console.log("vehicleId",vehicletypeId)
@@ -107,7 +134,6 @@ const SetNewSchedule = () => {
   // useEffect(()=>{
   //   getOrder()
   // },[user])
-  console.log("order", orders);
   const [calendarDate, setCalendarDate] = useState(new Date());
 
   const handleGenerateRows = (e) => {
@@ -142,6 +168,7 @@ const SetNewSchedule = () => {
     }));
 
     setRows(newRows);
+    setIsPreview(false);
   };
 
   const handleSlotChange = (date, index, field, value) => {
@@ -174,6 +201,12 @@ const SetNewSchedule = () => {
           : row
       )
     );
+    isPreview(false);
+    setTotalAmount(0);
+    setTotalHour(0);
+    setTotalDays(null);
+    setFromDate(null);
+    setToDate(null);
   };
 
   const handleAddEvent = () => {
@@ -201,37 +234,128 @@ const SetNewSchedule = () => {
     setNewEvent({ title: "", start: "", end: "", allDay: false });
     const slots = rows
       .map((item) => {
-        return item.slots.map((itemSlot) => ({
-          date: item.date,
-          day: moment(item.date).format("dddd"),
-          from_time: itemSlot?.from,
-          to_time: itemSlot?.to,
-        }));
+        return item.slots
+          .filter((itemSlot) => itemSlot?.from && itemSlot?.to) // Skip if from or to time is empty
+          .map((itemSlot) => ({
+            slot_date: item.date,
+            date: item.date,
+            day: moment(item.date).format("dddd"),
+            from_time: itemSlot?.from,
+            to_time: itemSlot?.to,
+            total_hours: calculateTotalHours(itemSlot),
+          }));
       })
       .flat();
+
     setSlots(slots);
+
+    setIsPreview(true);
+    setTotalAmount(
+      calculateTotalAmount(calculateTotalHours(slots), parseFloat(amount))
+    );
+    setTotalDays(calculateScheduleDays(slots));
+    setTotalHour(calculateTotalHours(slots));
+    setFromDate(moment(start).format("DD-MM-YYYY"));
+    setToDate(moment(end).format("DD-MM-YYYY"));
     setRows([]);
+    setRepeatOrder(false);
   };
 
+  const calculateTotalHours = (slots) => {
+    let totalMinutes = 0;
+    if (slots?.from) {
+      const fromTime = moment(slots.from, "HH:mm");
+      const toTime = moment(slots.to, "HH:mm");
+      // Validate times
+      if (!fromTime.isValid() || !toTime.isValid()) {
+        showErrorToast("Invalid time format in slot.");
+        return;
+      }
+      // Calculate time difference
+      let diffMinutes = toTime.diff(fromTime, "minutes");
+      // Handle crossing midnight
+      if (diffMinutes < 0) {
+        diffMinutes += 24 * 60; // Add 24 hours in minutes
+      }
+      totalMinutes += diffMinutes;
+    } else {
+      slots.forEach((slot) => {
+        // Parse the times
+        const fromTime = moment(slot.from_time, "HH:mm");
+        const toTime = moment(slot.to_time, "HH:mm");
+        // Validate times
+        if (!fromTime.isValid() || !toTime.isValid()) {
+          showErrorToast("Invalid time format in slot.");
+          return;
+        }
+        // Calculate time difference
+        let diffMinutes = toTime.diff(fromTime, "minutes");
+        // Handle crossing midnight
+        if (diffMinutes < 0) {
+          diffMinutes += 24 * 60; // Add 24 hours in minutes
+        }
+        totalMinutes += diffMinutes;
+      });
+    }
+    // Convert to HH.MM format
+    const totalHours = Math.floor(totalMinutes / 60)
+      .toString()
+      .padStart(2, "0");
+    const remainingMinutes = (totalMinutes % 60).toString().padStart(2, "0");
+
+    return `${totalHours}.${remainingMinutes}`;
+  };
+
+  const calculateScheduleDays = (slots) => {
+    if (!Array.isArray(slots) || slots.length === 0) {
+      showErrorToast("Invalid slots array.");
+      return 0;
+    }
+
+    // Extract all dates from slots
+    const dates = slots.map((slot) => moment(slot.date, "YYYY-MM-DD"));
+    const areDatesValid = dates.every((date) => date.isValid());
+    if (!areDatesValid) {
+      return 0;
+    }
+
+    // Find the minimum (start) and maximum (end) dates
+    const minDate = moment.min(dates);
+    const maxDate = moment.max(dates);
+
+    // Calculate the total number of days (inclusive)
+    const totalDays = maxDate.diff(minDate, "days") + 1;
+
+    return totalDays;
+  };
+
+  const calculateTotalAmount = (totalHours, perHourAmount) => {
+    const [hours, minutes] = totalHours.split(".").map(Number);
+    const totalDecimalHours = hours + minutes / 60;
+    return totalDecimalHours * perHourAmount;
+  };
   const continueHanger = () => {
-    // setLoading(!loading);
     if (events.length <= 0 || slots == null) {
       showErrorToast("Please provide shift details.");
       return;
     }
+    const startDate = moment(new Date(events[0].start)).format("YYYY-MM-DD");
+    const endDate = moment(new Date(events[0].start)).format("YYYY-MM-DD");
     let requestParams = {
       enterprise_ext_id: user?.userDetails.ext_id,
       branch_id: branch?.id,
       delivery_type_id: deliveryType?.id,
       service_type_id: serviceType?.id,
       vehicle_type_id: vehicletypeId,
-      shift_from_date: moment(new Date(events[0].start)).format("YYYY-MM-DD"),
-      shift_tp_date: moment(new Date(events[0].end)).format("YYYY-MM-DD"),
+      shift_from_date: startDate,
+      shift_tp_date: endDate,
       is_same_slot_all_days: repeatOrder ? 1 : 0,
+      amount,
+      total_amount: totalAmount,
+      total_hours: totalHour,
+      total_days: totalDays,
       slots: slots,
     };
-
-    console.log("requestParam for createShift", requestParams);
     try {
       setLoading(true);
 
@@ -240,7 +364,6 @@ const SetNewSchedule = () => {
         (successResponse) => {
           setLoading(false);
           if (successResponse[0]?._success) {
-            console.log("createEnterpriseOrder", successResponse[0]._response);
             setOrderNumber(successResponse[0]._response[0]?.order_number);
             navigate("/enterprise/schedule-request", {
               state: {
@@ -262,9 +385,16 @@ const SetNewSchedule = () => {
       );
     } catch (error) {
       setLoading(false);
-      console.error("Error placing order:", error);
       showErrorToast("An unexpected error occurred. Please try again.");
     }
+  };
+
+  const resetHandler = () => {
+    setEvents([]);
+    setIsPreview(false);
+    setSlots(null);
+    setTotalHour(0);
+    setTotalAmount(0);
   };
   return (
     <>
@@ -274,50 +404,50 @@ const SetNewSchedule = () => {
           <div className={`row ${Styles.manageRow}`}>
             <div className="col-md-3">
               <div className={Styles.previewPageColGapping}>
+                <h4 className={Styles.previewPageTitle}>Preview</h4>
+                {isPreview}
                 <div>
                   <div className={Styles.previewHeaderMainCard}>
-                    <h4 className={Styles.previewPageTitle}>Preview</h4>
                     <div className={Styles.totalAboutCard}>
                       <h4>
-                        Total hours: <span>70</span>
+                        Total hours: <span>{totalHour}</span>
                       </h4>
                       <h4>
-                        Estimated cost: <span>€34</span>
+                        Estimated cost: <span>€ {totalAmount}</span>
                       </h4>
                     </div>
-                    <div className={Styles.previewDateMainCard}>
-                      <div className={Styles.startPreviewDateCard}>
-                        <h5>Start date</h5>
-                        <p>20/02/2024</p>
-                      </div>
-                      <div className={Styles.startPreviewDateCard}>
-                        <h5>Start date</h5>
-                        <p>20/02/2024</p>
-                      </div>
-                    </div>
                   </div>
-
-                  <div className={Styles.previewbottomMainCard}>
-                    <div className="mb-2">
-                      <p className={Styles.previewTimeDateText}>
-                        Tuesday 21 February, 2024
-                      </p>
-                      <div className={Styles.previewTimeCard}>
-                        <p>From Time</p>
-                        <p>To Time</p>
+                  {isPreview ? (
+                    <div className={Styles.previewbottomMainCard}>
+                      {slots?.map((slot, index) => (
+                        <div key={index} className="mb-2">
+                          <p className={Styles.previewTimeDateText}>
+                            {moment(slot.date).format("dddd, MMMM D, YYYY")}
+                          </p>
+                          <div className={Styles.previewTimeCard}>
+                            <p>{slot.from_time}</p>
+                            <p>{slot.to_time}</p>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="d-flex justify-content-end w-100 mt-2">
+                        <button
+                          onClick={resetHandler}
+                          className={
+                            Styles.enterpriseCreateShiftSetavailabilitySaveBtn
+                          }
+                        >
+                          Reset
+                        </button>
                       </div>
                     </div>
-
-                    <div className="mb-2">
-                      <p className={Styles.previewTimeDateText}>
-                        Friday 22 February, 2024
-                      </p>
-                      <div className={Styles.previewTimeCard}>
-                        <p>From Time</p>
-                        <p>To Time</p>
+                  ) : (
+                    <div className={Styles.previewbottomMainCard}>
+                      <div className="mb-2 text-center">
+                        <p className={Styles.previewTimeDateText}>No data</p>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -462,7 +592,9 @@ const SetNewSchedule = () => {
                             type="switch"
                             id="repeat-switch"
                             checked={repeatOrder}
-                            onChange={handleRepeatOrder}
+                            onChange={(e) =>
+                              handleRepeatOrder(e.target.checked)
+                            }
                             className={repeatOrder ? "repeat-switch" : ""}
                           />
                         </Form>

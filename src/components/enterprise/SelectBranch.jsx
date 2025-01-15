@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "../../common/CommonHeader";
-import ScheduleImg from "../../assets/images/schedule-calender.png";
-import Track from "../../assets/images/Track-Order-img.png";
 import Package from "../../assets/images/One-TimePackage-big.png";
 import Home from "../../assets/images/home-icon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -68,7 +66,7 @@ const SelectBranch = () => {
       showErrorToast('Undefined branch')
       return 
     }
-    navigate(`/enterprise/${serviceType?.delivery_type?.toLowerCase().replace(/ /g, '-')}`, { state: { selectedBranch: branch,serviceType:serviceType } })
+    navigate(`/enterprise/${serviceType?.delivery_type?.toLowerCase().replace(/ /g, '-')}`, { state: { selectedBranch: branch,deliveryType:serviceType } })
   }
   return (
     <>

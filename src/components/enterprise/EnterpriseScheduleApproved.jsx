@@ -4,8 +4,10 @@ import Timeline from "../../assets/images/Signup-Loader.png";
 import CommonHeader from "../../common/CommonHeader";
 import { useSelector } from "react-redux";
 import SideComponent from "./common/SideComponent";
+import { useNavigate } from "react-router-dom";
 
 const EnterpriseScheduleApproved = memo(() => {
+  const navigate =useNavigate()
   const user = useSelector((state) => state.auth.user);
   return (
     <>

@@ -3,8 +3,21 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Styles from "../assets/css/home.module.css";
 import DriverCircle from "../assets/images/DriverBackgroun-Circle.png";
 import DriverProfiles from "../assets/images/driver-not-available-Icon.png";
+import { useSelector } from "react-redux";
 
 const DriverNotAvailable = () => {
+  const userRole = useSelector((state) => state.auth.role);
+  const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { orderNumber } = location.state || {};
+  const tryAgainHandler = () => {
+    navigate(`/${baseUrl}/find-driver`, {
+      state: {
+        orderNumber: orderNumber,
+      },
+    });
+  };
   return (
     <>
       <section className={Styles.lookingDriverSection}>
@@ -12,22 +25,6 @@ const DriverNotAvailable = () => {
           <div className="row">
             <div className="col-md-12">
               <div>
-                <div className={Styles.driverNotAvailableHeadCard}>
-                  <Link
-                    to=""
-                    className={Styles.driverFindCancelBtn}
-                    type="button"
-                  >
-                    Cancel
-                  </Link>
-                  <Link
-                    to=""
-                    className={Styles.pickupSignupContinueBtn}
-                    type="button"
-                  >
-                    Try again
-                  </Link>
-                </div>
                 <div className={Styles.driverBackgroundMiddleCard}>
                   <img
                     className={Styles.backgroundDriverCircle}
@@ -48,6 +45,22 @@ const DriverNotAvailable = () => {
                       again later
                     </p>
                   </div>
+                </div>
+                <div className={Styles.driverNotAvailableHeadCard}>
+                  <Link
+                    to={`/${baseUrl}/dashboard`}
+                    className={Styles.driverFindCancelBtn}
+                    type="button"
+                  >
+                    Go home
+                  </Link>
+                  <button
+                    onClick={tryAgainHandler}
+                    className={Styles.pickupSignupContinueBtn}
+                    type="button"
+                  >
+                    Try again
+                  </button>
                 </div>
               </div>
             </div>
