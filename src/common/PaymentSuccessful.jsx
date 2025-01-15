@@ -7,20 +7,21 @@ import CommonHeader from "./CommonHeader";
 
 const PaymentSuccessful = () => {
   const user = useSelector((state) => state.auth.user);
+  const userRole = useSelector((state) => state.auth.role);
+  const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const location = useLocation();
   const navigate = useNavigate();
-  const {orderNumber,date} = location.state || {};
-  console.log(date)
+  const {orderNumber,date,isSchedule} = location.state || {};
   useEffect(() => {
     const timer = setTimeout(() => {
-      if(date){
-        navigate("/consumer/schedule-created", {
+      if(isSchedule){
+        navigate(`/${baseUrl}/schedule-created`, {
           state: {
             date: date,
           },
         });
       }else{
-        navigate("/consumer/find-driver", {
+        navigate(`/${baseUrl}/find-driver`, {
           state: {
             orderNumber: orderNumber,
           },

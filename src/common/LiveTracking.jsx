@@ -30,7 +30,6 @@ function LiveTracking() {
   const [showModal, setShowModal] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const commonData = useSelector((state)=>state.commonData.commonData)
-  
   const location = useLocation();
   const { driverDetails, locationList, orderNumber } = location.state || {};
   const [locationLists, setLocationLists] = useState(locationList);
