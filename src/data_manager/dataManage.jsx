@@ -367,7 +367,7 @@ export const getAllocatedDeliveryBoy = (
   errorCallback,
 ) => {
   axiosCall(
-    API.getAllocatedDeliveryBoy + params.orderNumber,
+    params.userRole=='CONSUMER' ? API.getAllocatedDeliveryBoy + params.orderNumber : API.getAllocatedEnterpriseDeliveryBoy + params.orderNumber,
     HTTPMethod.GET,
     null,
     response => {

@@ -168,7 +168,8 @@ a {
 /* Optional: Add some hover effects */
 .circle:hover {
   cursor: pointer;
-  background-color: darkblue;
+  background-color: #ff0058;
+  color: white;
 }
 
 
