@@ -103,7 +103,7 @@ const WebCookies = () => {
                 <p>
                   For further details on how we process your data and manage
                   your privacy, please review our{" "}
-                  <Link to="/web-privacy-policy">Privacy Policy</Link> and{" "}
+                  <Link to="/web_privacy_policy">Privacy Policy</Link> and{" "}
                   <Link to="/web-terms-service">Terms & Conditions</Link>.
                 </p>
                 <h3>6. Updates to This Cookie Consent</h3>

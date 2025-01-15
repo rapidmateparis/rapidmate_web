@@ -10,7 +10,7 @@ import {
   faPhone,
   faEnvelope,
   faLocationDot,
-  faArrowUp
+  faArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import WebContactModal from "./WebContactModal";
@@ -25,7 +25,7 @@ const WebFooter = () => {
   const handleShow = () => setShowModal(true);
 
   const privacyPolicyLink =
-    i18n.language === "fr" ? "/french-privacy-policy" : "/web-privacy-policy";
+    i18n.language === "fr" ? "/french-privacy-policy" : "/web_privacy_policy";
   const termOfServicesLink =
     i18n.language === "fr" ? "/french-terms-service" : "/web-terms-service";
   const cookiesLink =
@@ -112,8 +112,12 @@ const WebFooter = () => {
                 <div className={Styles.HomeFooterSocialMediaCard}>
                   <img src={Twitter} alt="Twitter" />
                   <img src={Tiktok} alt="Tiktok" />
-                  <img src={Insta} alt="Insta" />
-                  <img src={Linkdin} alt="Linkdin" />
+                  <a href="https://www.instagram.com/ajshireup?igsh=MWtraGljOG4zZ2xkZQ==" target="_blank">
+                    <img src={Insta} alt="Insta" />
+                  </a>
+                  <a href="https://www.linkedin.com/company/ajs-hireup/" target="_blank">
+                    <img src={Linkdin} alt="Linkdin" />
+                  </a>
                 </div>
               </div>
             </div>

@@ -638,6 +638,7 @@ a {
   padding: 20px;
   border-radius: 15px;
   border: 2px solid var(--secondary-color);
+  height: 400px;
 }
 
 .HomeTestimonialClientImgsCard {
@@ -665,6 +666,12 @@ a {
 .HomeTestimonialClientDescription {
   font-size: 16px;
   font-weight: 400;
+}
+
+.HomeTestimonialClientSubText{
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--secondary-color);
 }
 
 .HomeTestimonialClientRatinCard {
