@@ -12,64 +12,81 @@ import { getAllocatedDeliveryBoy, getLocations } from "../data_manager/dataManag
 const SearchDriver = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useSelector((state) => state.auth.user);
-  const {orderNumber} = location.state || {};
+  const timeoutRef = useRef(null); // Timeout reference for cleanup
+  const [retryCount, setRetryCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [selectedReason, setSelectedReason] = useState(null); 
-  const [searchMessage, setSearchMessage] = useState("please wait, we are looking for a driver to pick up and deliver your order..");
-  const openModal = () => {
-    setShowModal(true);
-  };
+  const [selectedReason, setSelectedReason] = useState(null);
+  const [searchMessage, setSearchMessage] = useState(
+    "Please wait, we are looking for a driver to pick up and deliver your order."
+  );
+  const user = useSelector((state) => state.auth.user);
+  const { orderNumber } = location.state || {};
 
+  const openModal = () => setShowModal(true);
 
   const handleReasonSelect = (reason) => {
     setSelectedReason(reason);
   };
 
+  const getLocationsData = () => {
+    getLocations(
+      null,
+      (locationResponse) => {
+        if (locationResponse[0]._success) {
+          const locationList = locationResponse[0]._response;
+          const params = {
+            userRole: user?.userDetails?.role,
+            orderNumber,
+          };
+
+          getAllocatedDeliveryBoy(
+            params,
+            (driverResponse) => {
+              clearTimeout(timeoutRef.current); // Clear timeout if successful
+              setRetryCount(null); // Stop retries
+              const baseUrl = user?.userDetails?.role?.toLowerCase().replace(/_/g, "");
+
+              navigate(`/${baseUrl}/order-tracking`, {
+                state: {
+                  driverDetails: driverResponse[0]._response,
+                  locationList,
+                },
+              });
+            },
+            (errorResponse) => {
+              // Retry logic if the driver allocation fails
+              timeoutRef.current = setTimeout(() => {
+                setRetryCount((prevCount) => prevCount + 1);
+
+                if (retryCount === 5) {
+                  navigate("/driver-not-available", {
+                    state: { orderNumber },
+                  });
+                }
+              }, 15000); // Retry after 15 seconds
+            }
+          );
+        }
+      },
+      (errorResponse) => {
+        console.error("Location fetch error:", errorResponse[0]?._errors?.message);
+      }
+    );
+  };
+
   useEffect(() => {
+    if (retryCount !== null && retryCount <= 5) {
+      getLocationsData();
+    }
+  }, [retryCount]);
 
-    const getLocationsData = () => {
-      getLocations(
-        null,
-        successResponse => {
-          if (successResponse[0]._success) {
-            let tempOrderList = successResponse[0]._response;
-            const params = {
-              userRole: user?.userDetails?.role,
-              orderNumber: orderNumber,
-            };
-         
-            getAllocatedDeliveryBoy(
-              params,
-              successResponse => {
-                navigate('/consumer/order-tracking',
-                {
-                  state: {
-                    driverDetails: successResponse[0]._response,
-                    locationList: tempOrderList,
-                  },
-                });
-            console.log(successResponse[0]._response)
-              },
-              errorResponse => {
-                console.log(errorResponse[0]._errors.message)
-              },
-            );
-          }
-        },
-        errorResponse => {
-          console.log(errorResponse[0]._errors.message)
-        },
-      );
-    };
-    getLocationsData()
+  useEffect(() => {
+    getLocationsData(); // Initial fetch
     return () => {
-      clearInterval();
+      // Cleanup on unmount
+      clearTimeout(timeoutRef.current);
     };
-   
   }, []);
-
- 
 
   return (
     <>
@@ -78,34 +95,28 @@ const SearchDriver = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <div>
-                <div className={Styles.driverCancelCard}>
-                  <button
-                    className={Styles.driverCancelModalBtn}
-                    onClick={openModal}
-                  >
-                    Cancel request
-                  </button>
-                </div>
-                <div className={Styles.driverBackgroundMiddleCard}>
+              <div className={Styles.driverCancelCard}>
+                <button
+                  className={Styles.driverCancelModalBtn}
+                  onClick={openModal}
+                >
+                  Cancel request
+                </button>
+              </div>
+              <div className={Styles.driverBackgroundMiddleCard}>
+                <img
+                  className={Styles.backgroundDriverCircle}
+                  src={DriverCircle}
+                  alt="Driver Background Circle"
+                />
+                <div className={Styles.DriverProfileCardMainBg}>
                   <img
-                    className={Styles.backgroundDriverCircle}
-                    src={DriverCircle}
-                    alt="Icon"
+                    className={Styles.backgroundDriverCircleProfiles}
+                    src={DriverProfiles}
+                    alt="Driver Profile"
                   />
-                  <div className={Styles.DriverProfileCardMainBg}>
-                    <img
-                      className={Styles.backgroundDriverCircleProfiles}
-                      src={DriverProfiles}
-                      alt="Icon"
-                    />
-                    <h1 className={Styles.lookingDriverText}>
-                      Looking for driver
-                    </h1>
-                    <p className={Styles.lookingDriverSubText}>
-                      {searchMessage}
-                    </p>
-                  </div>
+                  <h1 className={Styles.lookingDriverText}>Looking for driver</h1>
+                  <p className={Styles.lookingDriverSubText}>{searchMessage}</p>
                 </div>
               </div>
             </div>

@@ -350,5 +350,11 @@
   "now_your_fingertips_description": "Download the app today on the App Store and Play Store.",
   "contact_us_description": "We're here to help! Reach out to us for any queries, support, or partnership opportunities. Let's connect and make your deliveries seamless.",
   "send_message": "Send Message",
-  "close": "Close"
+  "close": "Close",
+  "testimonialsPizzhutText": "“Rapidmate’s availability and commitment have been game-changers for our delivery operations.”",
+  "testimonialsPizzhutSubText": "“Result: Achieved a 99.9% success rate for peak-hour deliveries”",
+  "testimonialsDominosText": "“Reliable, efficient, and always on time – Rapidmate has transformed how we serve our customers.”",
+  "testimonialsDominosSubText": "“Result: Reduced average delivery time to 25 minutes.”",
+  "testimonialsShusiText": "“Their professionalism and adaptability ensure our customers are happy every time.”",
+  "testimonialsShusiSubText": "“Result: Improved customer satisfaction ratings by 15% in Q4 2024”"
 }

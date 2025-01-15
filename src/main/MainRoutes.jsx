@@ -210,7 +210,7 @@ function MainRoutes() {
           }
         />
         <Route
-          path={`/consumer/find-driver`}
+          path={`/${baseUrl}/find-driver`}
           element={
             <ProtectedRoute requiredRole={userRole}>
               <SearchDriver />
@@ -218,7 +218,7 @@ function MainRoutes() {
           }
         />
         <Route
-          path={`/consumer/order-tracking`}
+          path={`/${baseUrl}/order-tracking`}
           element={
             <ProtectedRoute requiredRole={userRole}>
               <LiveTracking />
@@ -267,7 +267,7 @@ function MainRoutes() {
           }
         />
         <Route
-          path="/consumer/schedule-created"
+          path={`/${baseUrl}/schedule-created`}
           element={
             <ProtectedRoute requiredRole={userRole}>
               <ScheduleSuccess />

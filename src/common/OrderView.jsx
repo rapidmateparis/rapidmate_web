@@ -3,37 +3,35 @@ import Styles from "../assets/css/home.module.css";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowLeft,
   faLocationDot,
   faLocationCrosshairs,
   faGlobe,
   faPhone,
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
-import Truck from "../assets/images/Truck.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SidebarImg from "../assets/images/Pickup-Order-preview-Banner.png";
 import CommonHeader from "../common/CommonHeader";
 import getImage from "../components/consumer/common/GetImage";
-import { uploadDocumentsApi } from "../data_manager/dataManage";
 import { useSelector } from "react-redux";
 
 function OrderView() {
   const navigate = useNavigate();
   const location = useLocation();
   const { order, orderCustomerDetails, dropoffDetail } = location.state || {};
-  const [loading, setLoading] = useState(false);
-  const [packageImageId, setPackageImageId] = useState(null);
+  const userRole = useSelector((state) => state.auth.role);
+  const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const [isAddressAdd, setIsAddressAdd] = useState(false);
   const [imageView, setImageView] = useState(
     URL.createObjectURL(orderCustomerDetails?.file[0]) || null
   );
+  // console.log(order)
   const checkboxTypes = ["checkbox"];
   const user = useSelector((state)=>state.auth.user)
   const submitHandler = async (e) => {
     e.preventDefault();
     
-    navigate("/consumer/payment", {
+    navigate(`/${baseUrl}/payment`, {
       state: {
         order,
         orderCustomerDetails,

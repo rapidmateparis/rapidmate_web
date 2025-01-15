@@ -30,7 +30,7 @@ const libraries = ["places"];
 function OneTimeDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { serviceType, selectedBranch } = location.state;
+  const { deliveryType, selectedBranch } = location.state;
   const user = useSelector((state) => state.auth.user);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
@@ -180,7 +180,7 @@ function OneTimeDelivery() {
       selectedVehiclePrice,
       selectedServiceType,
       selectedBranch,
-      serviceType,
+      deliveryType,
     };
 
     navigate("/enterprise/add-pickup-details", {
