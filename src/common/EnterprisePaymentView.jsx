@@ -61,8 +61,7 @@ const PaymentPage = ({
 
   const { order, orderCustomerDetails } = location.state || {};
 
-  console.log("oprder",order)
-  console.log("detail",orderCustomerDetails)
+ 
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -80,7 +79,7 @@ const PaymentPage = ({
   const openAddModal = () => {
     setShowAddModal(true);
   };
-
+ 
   // Toggle the selected state when the div is clicked
   const handleClick = (paymentcard) => {
      setIsSelected(paymentcard);
@@ -125,7 +124,7 @@ const PaymentPage = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (order?.serviceType.id == 2) {
+    if (order?.deliveryType.id == 2) {
       showErrorToast(
         "Multiple deliveries not available service for this moment."
       );
@@ -185,7 +184,7 @@ const PaymentPage = ({
     let requestParams = {
       enterprise_ext_id: user.userDetails.ext_id,
       branch_id: order?.selectedBranch?.id,
-      delivery_type_id: order?.serviceType?.id,
+      delivery_type_id: order?.deliveryType?.id,
       service_type_id: order?.selectedServiceType,
       vehicle_type_id: order?.selectedVehicleDetails?.id,
       pickup_date: localToUTC(orderCustomerDetails?.pickupDate),
@@ -214,7 +213,7 @@ const PaymentPage = ({
     };
 
     if(orderCustomerDetails?.isSchedule==false){
-      requestParams.schedule_date_time=moment(orderCustomerDetails?.pickupDate) + ' ' + orderCustomerDetails?.pickupTime
+      requestParams.schedule_date_time=moment(orderCustomerDetails?.pickupDate).format('YYYY-MM-DD') + ' ' + orderCustomerDetails?.pickupTime
     }
 
     if (promoCodeResponse) {
@@ -222,7 +221,7 @@ const PaymentPage = ({
       requestParams.promo_value = promoCodeResponse.discount;
       requestParams.order_amount = parseFloat(totalAmount);
     }
-    console.log(requestParams)
+    // console.log(requestParams)
     try {
       setLoading(true);
 
@@ -232,7 +231,7 @@ const PaymentPage = ({
           setLoading(false);
 
           if (successResponse[0]?._success) {
-            console.log("createEnterpriseOrder", successResponse[0]._response);
+            // console.log("createEnterpriseOrder", successResponse[0]._response);
             setOrderNumber(successResponse[0]._response[0]?.order_number);
           } else {
             showErrorToast("Order creation failed. Please try again.");
@@ -360,9 +359,11 @@ const PaymentPage = ({
       (successResponse) => {
         setLoading(false);
         if (successResponse[0]._success) {
-          navigate("/enterprise/find-driver", {
+          navigate("/payment-successfull", {
             state: {
               orderNumber: orderNumber,
+              date:orderCustomerDetails?.pickupDate,
+              isSchedule:orderCustomerDetails?.isSchedule ? false : true,
             },
           });
         }
@@ -431,16 +432,16 @@ const PaymentPage = ({
                             Pickup
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
-                            {getOrderAddress(order?.serviceType?.id, order)
+                            {getOrderAddress(order?.deliveryType?.id, order)
                               ?.length <= 27
-                              ? getOrderAddress(order?.serviceType?.id, order)
+                              ? getOrderAddress(order?.deliveryType?.id, order)
                               : `${getOrderAddress(
-                                  order?.serviceType?.id,
+                                  order?.deliveryType?.id,
                                   order
                                 ).substring(0, 27)}...`}
                           </p>
                         </div>
-                        {order?.serviceType?.id === 2 ? (
+                        {order?.deliveryType?.id === 2 ? (
                           order?.dropoffLocation?.map((location, index) => (
                             <div className={Styles.paymentInvoiceDetailsText}>
                               <p className={Styles.paymentAddressDetailText}>

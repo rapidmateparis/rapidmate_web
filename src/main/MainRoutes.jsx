@@ -75,13 +75,14 @@ import WebCookies from "../components/website/WebCookies";
 import FrenchPrivacyPolicy from "../components/website/FrenchPrivacyPolicy";
 import FrenchTermsOfService from "../components/website/FrenchTermsOfService";
 import FrenchCookies from "../components/website/FrenchCookies";
-
+import ScrollToTop from "../main/ScrollToTop";
 function MainRoutes() {
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<WebHome />} />
         <Route path="/web-restaurants" element={<WebRestaurants />} />
@@ -93,7 +94,7 @@ function MainRoutes() {
         <Route path="/web-individuals" element={<WebIndividuals />} />
         <Route path="/web-become-courier" element={<WebBecomeCourier />} />
         <Route path="/web-about-us" element={<WebAboutUs />} />
-        <Route path="/web-privacy-policy" element={<WebPrivacyPolicy />} />
+        <Route path="/web_privacy_policy" element={<WebPrivacyPolicy />} />
         <Route path="/web-terms-service" element={<WebTermsOfService />} />
         <Route path="/web-cookies" element={<WebCookies/>} />
         <Route path="/french-privacy-policy" element={<FrenchPrivacyPolicy/>} />
@@ -209,7 +210,7 @@ function MainRoutes() {
           }
         />
         <Route
-          path={`/consumer/find-driver`}
+          path={`/${baseUrl}/find-driver`}
           element={
             <ProtectedRoute requiredRole={userRole}>
               <SearchDriver />
@@ -217,7 +218,7 @@ function MainRoutes() {
           }
         />
         <Route
-          path={`/consumer/order-tracking`}
+          path={`/${baseUrl}/order-tracking`}
           element={
             <ProtectedRoute requiredRole={userRole}>
               <LiveTracking />
@@ -266,7 +267,7 @@ function MainRoutes() {
           }
         />
         <Route
-          path="/consumer/schedule-created"
+          path={`/${baseUrl}/schedule-created`}
           element={
             <ProtectedRoute requiredRole={userRole}>
               <ScheduleSuccess />

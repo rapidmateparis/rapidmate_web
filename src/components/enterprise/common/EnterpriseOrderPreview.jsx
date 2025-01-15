@@ -28,8 +28,8 @@ const EnterpriseOrderPreview = () => {
   );
 
 
-  console.log('order',order)
-  console.log('orderDetails',orderCustomerDetails)
+  // console.log('order',order)
+  // console.log('orderDetails',orderCustomerDetails)
   const [isAddressAdd, setIsAddressAdd] = useState(false);
 
   const submitHandler = async (e) => {
@@ -114,13 +114,13 @@ const EnterpriseOrderPreview = () => {
                     />
 
                     <p className={Styles.pickuporderPreviewPickupAddressText}>
-                      {getOrderAddress(order?.serviceType?.id, order)}
+                      {getOrderAddress(order?.deliveryType?.id, order)}
                     </p>
                   </div>
 
                   <div className={Styles.PickupOrderPreviewBorderShowOff} />
 
-                  {order?.serviceType?.id === 2 ? (
+                  {order?.deliveryType?.id === 2 ? (
                     order?.dropoffLocation?.map((location, index) => (
                       <div
                         key={index}

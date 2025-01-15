@@ -48,6 +48,7 @@ export const API = {
   viewImageUrl: BASE_URL + "documents/view/",
   lookupDataUrl: BASE_URL + "lookup",
   getAllocatedDeliveryBoy: BASE_URL + "order/allocated/details?o=",
+  getAllocatedEnterpriseDeliveryBoy: BASE_URL + "enterprise/order/allocated/details?o=",
   viewOrderDetail: BASE_URL + "order/view/",
   enterprisebranch: BASE_URL + "enterprisebranch/get/",
   enterpriseOrder: BASE_URL + "enterprise/order/",
@@ -95,7 +96,7 @@ export const API = {
   deleteNotification:BASE_URL + 'notification/',
 
   notificationCount:BASE_URL + 'notification/count/',
-
+  downloadInvoice: BASE_URL + 'admin/invoice/view/',
   deliveryBoyBillingAddressUpdate:BASE_URL + 'deliveryboy/billing/address/update/',
   deliveryBoyBillingAddressGet: BASE_URL + 'deliveryboy/billing/address/get/'
 };

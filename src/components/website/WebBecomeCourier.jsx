@@ -134,7 +134,7 @@ function WebBecomeCourier() {
   };
 
   const privacyPolicyLink =
-    i18n.language === "fr" ? "/french-privacy-policy" : "/web-privacy-policy";
+    i18n.language === "fr" ? "/french-privacy-policy" : "/web_privacy_policy";
 
   const {
     control,

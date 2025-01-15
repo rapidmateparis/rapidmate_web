@@ -8,11 +8,13 @@ import { localToUTC } from "../utils/Constants";
 
 const ScheduleSuccess = () => {
   const user = useSelector((state) => state.auth.user);
+  const userRole = useSelector((state) => state.auth.role);
+  const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const navigate = useNavigate();
   const location = useLocation();
   const { date } = location.state || {};
   const handleGoHome = () => {
-    navigate("/consumer/dashboard", { replace: true, state: {} });
+    navigate(`/${baseUrl}/dashboard`, { replace: true, state: {} });
   };
 
   useEffect(() => {

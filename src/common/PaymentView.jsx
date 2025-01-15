@@ -292,6 +292,7 @@ const PaymentPage = ({
             state: {
               orderNumber: orderNumber,
               date:order?.date,
+              isSchedule:order?.isSchedule,
             },
           });
         }
@@ -542,6 +543,7 @@ const PaymentPage = ({
         handleClose={() => setShowAddModal(false)}
         getPaymentCard={()=>getPaymentCard()}
       />
+      <ToastContainer />
     </>
   );
 };
@@ -630,7 +632,7 @@ function PaymentView() {
           <p>Loading...</p>
         </>
       )}
-      <ToastContainer />
+      
     </div>
   );
 }
