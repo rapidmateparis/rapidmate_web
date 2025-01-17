@@ -129,33 +129,7 @@ const EnterpriseDeliveryboyShiftPage = () => {
               </div>
 
               <Link
-                className={Styles.enterpriseShiftPageActiveDelivriesUpperCard}
-              >
-                <div
-                  className={
-                    Styles.enterpriseShiftPageActiveDelivriesPackageCard
-                  }
-                >
-                  <img
-                    className={
-                      Styles.enterpriseShiftPageActiveDelivriesPackageImg
-                    }
-                    src={Package}
-                    alt="img"
-                  />
-                  <p className={Styles.enterpriseShiftPageActiveDelivriesText}>
-                    Active deliveries <span>(02)</span>
-                  </p>
-                </div>
-                <FontAwesomeIcon
-                  className={
-                    Styles.enterpriseShiftPageActiveDelivriesPackageArrowIcon
-                  }
-                  icon={faArrowRight}
-                />
-              </Link>
-
-              <Link
+                to="/enterprise/shift-request-new-delivery"
                 className={Styles.enterpriseShiftPageActiveDelivriesLowerCard}
               >
                 <div
