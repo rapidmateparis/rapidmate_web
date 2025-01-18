@@ -1327,6 +1327,10 @@ a {
   overflow-x: hidden;
 }
 
+.shiftRequestNewDeliveryCard{
+  padding: 20px 17px;
+}
+
 .requestPickupMaincard::-webkit-scrollbar {
   width: 4px;
 }
@@ -1703,6 +1707,12 @@ a {
   margin: 40px 0px 20px;
 }
 
+.EnterpriseShiftAddPickupDetailsBtnCard {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0px 20px;
+}
+
 .addPickupDetailsBackArrow {
   color: var(--text-color);
 }
@@ -1774,7 +1784,7 @@ a {
 
 .pickupOrderPreviewAdminDetailsCard {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   margin-right: 15px;
 }
 
@@ -2432,7 +2442,7 @@ a {
 
 .pickupHistoryHeaderTitle {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0px;
 }
 
@@ -4879,12 +4889,46 @@ a {
 .enterpriseShiftDetailDrivertruckDetails {
   font-size: 12px;
   font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseShiftRequestNewDeliveryTruckDetails {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseShiftRequestNewDeliveryVehicleImg{
+  margin-left: auto;
+}
+
+.enterpriseShiftRequestNewDeliveryVehicleImg img{
+  height: 50px;
+  width: auto;
+}
+
+.enterpriseShiftAssignDeliveryBtn{
+  color: var(--white-color);
+  background-color: var(--secondary-color);
+  padding: 7px 15px;
+  border-radius: 25px;
+  font-size: 14px;
+}
+
+.enterpriseShiftAssignDeliveryBtnCard{
   margin-left: auto;
 }
 
 .enterpriseShiftDetailDriverCard {
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+.enterpriseShiftRequestNewDeliveryCard {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .enterpriseShiftDetailDriverImg {
@@ -4894,7 +4938,20 @@ a {
   border-radius: 100%;
 }
 
+.enterpriseShiftRequestNewDeliveryDriverImg {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  border-radius: 100%;
+}
+
 .enterpriseShiftDetailDriverName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.enterpriseShiftRequestNewDeliveryDriverName {
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 0px;
@@ -4909,6 +4966,22 @@ a {
   background-color: var(--white-color);
   margin: 15px 0px;
   border-radius: 10px;
+}
+
+.enterpriseShiftRequestNewDeliveryMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: var(--white-color);
+  margin-top: 80%;
+}
+
+.enterpriseShiftPreviewMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .enterpriseShiftDetailCalenderImg {
@@ -4971,12 +5044,13 @@ a {
   border-radius: 20px;
   position: absolute;
   bottom: -28px;
-  left: 190px;
 }
 
 .enterpriseShiftPageDetailsDriverCard {
   position: relative;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .enterpriseShiftPageDeliveryBoyReadyText {
@@ -5068,6 +5142,7 @@ a {
   align-items: center;
   background-color: var(--primary-color);
   padding: 20px 15px;
+  margin-top: 18%;
 }
 
 .enterpriseShiftPageSection {
@@ -5109,7 +5184,6 @@ a {
 
 .enterpriseShiftPageOrderDetailFromLocCard {
   display: flex;
-  align-items: center;
 }
 
 .enterpriseShiftPageOrderDetailLocmaincard {

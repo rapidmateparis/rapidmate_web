@@ -15,72 +15,83 @@ import MasterCard from "../../assets/images/MasterCard-Logo.png";
 import OrderTag from "../../assets/images/OrderFare-Tag.png";
 import Invoice from "../../assets/images/Invoice-Img.png";
 import { useSelector } from "react-redux";
-import { getAVehicleByTypeId, getLocationById, getViewEnterpriseOrderDetail } from "../../data_manager/dataManage";
+import {
+  getAVehicleByTypeId,
+  getLocationById,
+  getViewEnterpriseOrderDetail,
+} from "../../data_manager/dataManage";
 import { buildAddress } from "../../utils/Constants";
+import DeliveryboyAssignedModal from "./common/DeliveryboyAssignedModal";
 
 const EnterpriseShiftDetails = () => {
-  const user = useSelector((state)=>state.auth.user)
-  const {vehicleType}=useSelector((state)=>state.commonData.commonData)
-  const location =useLocation()
-  const {order,branches}=location.state
+  const user = useSelector((state) => state.auth.user);
+  const { vehicleType } = useSelector((state) => state.commonData.commonData);
+  const location = useLocation();
+  const { order, branches } = location.state;
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
   const [destinationAddress, setDestinationAddress] = useState({});
-    const [sourceAddress, setSourceAddress] = useState({});
-    const [loading,setLoading]=useState(false)
-  
+  const [sourceAddress, setSourceAddress] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   const getBranch = (branchId) => {
     let result = branches?.filter((branch) => branch.id == branchId);
 
-    if(result==undefined){
+    if (result == undefined) {
       return {
-        branch_name:"not found",
-        address:"not found"
-      }
-    }else{
+        branch_name: "not found",
+        address: "not found",
+      };
+    } else {
       return {
-        branch_name:result && result[0]?.branch_name,
-        address:buildAddress(result[0]?.address,result[0]?.city,result[0]?.state,result[0]?.country,result[0]?.postal_code)
-      }
+        branch_name: result && result[0]?.branch_name,
+        address: buildAddress(
+          result[0]?.address,
+          result[0]?.city,
+          result[0]?.state,
+          result[0]?.country,
+          result[0]?.postal_code
+        ),
+      };
     }
-    
   };
 
-  const getVehicleType= (vehicleId) =>{
-    const vehicletype= vehicleType?.filter((vehicle) => vehicle.id == vehicleId);
-    return vehicletype
-  }
-
-
+  const getVehicleType = (vehicleId) => {
+    const vehicletype = vehicleType?.filter(
+      (vehicle) => vehicle.id == vehicleId
+    );
+    return vehicletype;
+  };
 
   const orderDetail = async () => {
-      setLoading(true);
-      getViewEnterpriseOrderDetail(
-        order,
-        (successResponse) => {
-          setLoading(false);
-          if (successResponse[0]._success) {
-            setOrders(successResponse[0]._response.order);
-            setDeliveryboy(successResponse[0]._response.deliveryBoy);
-          }
-        },
-        (errorResponse) => {
-          setLoading(false);
+    setLoading(true);
+    getViewEnterpriseOrderDetail(
+      order,
+      (successResponse) => {
+        setLoading(false);
+        if (successResponse[0]._success) {
+          setOrders(successResponse[0]._response.order);
+          setDeliveryboy(successResponse[0]._response.deliveryBoy);
         }
-      );
+      },
+      (errorResponse) => {
+        setLoading(false);
+      }
+    );
   };
 
-
-
-  useEffect(()=>{
-    orderDetail()
-  },[order])
- 
+  useEffect(() => {
+    orderDetail();
+  }, [order]);
 
   // console.log("order",orders)
   return (
     <>
-      <CommonHeader userData={user}/>
+      <CommonHeader userData={user} />
       <section className={Styles.pickupHistorySec}>
         <div className="container">
           <div className="row">
@@ -90,12 +101,12 @@ const EnterpriseShiftDetails = () => {
                   <p className={Styles.pickupHistoryHeaderTitle}>
                     Shift Details
                   </p>
-                  <Link>
+                  <button onClick={handleShowModal}>
                     <FontAwesomeIcon
                       className={Styles.enterpriseShiftDetailGearIcon}
                       icon={faGear}
                     />
-                  </Link>
+                  </button>
                 </div>
                 <div className={Styles.enterpriseShiftDetailCompanyDetailCard}>
                   <div className={Styles.enterpriseShiftDetailHomeIconCard}>
@@ -114,7 +125,7 @@ const EnterpriseShiftDetails = () => {
                       icon={faLocationDot}
                     />
                     <p className={Styles.enterpriseShiftDetailAddressText}>
-                    {getBranch(order?.branch_id)?.address}
+                      {getBranch(order?.branch_id)?.address}
                     </p>
                   </div>
                 </div>
@@ -126,13 +137,27 @@ const EnterpriseShiftDetails = () => {
                       src={Driver}
                       alt="img"
                     />
-                    <h4 className={Styles.enterpriseShiftDetailDriverName}>
-                      John Doe
-                    </h4>
+                    <div>
+                      <h4 className={Styles.enterpriseShiftDetailDriverName}>
+                        John Doe
+                      </h4>
+                      <p
+                        className={
+                          Styles.enterpriseShiftDetailDrivertruckDetails
+                        }
+                      >
+                        VOLVO FH16 2022
+                      </p>
+                    </div>
+                    <div className={Styles.enterpriseShiftAssignDeliveryBtnCard}>
+                      <Link
+                        to="/enterprise/deliveryboy-shift-details"
+                        className={Styles.enterpriseShiftAssignDeliveryBtn}
+                      >
+                        Assign Delivery
+                      </Link>
+                    </div>
                   </div>
-                  <p className={Styles.enterpriseShiftDetailDrivertruckDetails}>
-                    VOLVO FH16 2022
-                  </p>
                 </div>
 
                 <div className={Styles.enterpriseShiftDetailCalenderCardMain}>
@@ -161,7 +186,8 @@ const EnterpriseShiftDetails = () => {
                     </p>
                   </div>
                   <p className={Styles.enterpriseShiftDetailVehiclenameType}>
-                    {getVehicleType(orders?.vehicle_type_id)?.vehicle_type} sdfsd
+                    {getVehicleType(orders?.vehicle_type_id)?.vehicle_type}{" "}
+                    sdfsd
                   </p>
                 </div>
 
@@ -260,6 +286,12 @@ const EnterpriseShiftDetails = () => {
           </div>
         </div>
       </section>
+
+      {/* modal use here  */}
+      <DeliveryboyAssignedModal
+        show={showModal}
+        handleClose={handleCloseModal}
+      />
     </>
   );
 };

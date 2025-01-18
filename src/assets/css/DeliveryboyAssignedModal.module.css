@@ -1,0 +1,197 @@
+.driverImgSmall {
+  width: 123px;
+  height: 123px;
+  border-radius: 100%;
+}
+
+.driverlogoHeaderMainCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 142px;
+  height: 142px;
+  border-radius: 100%;
+  background-color: var(--white-color);
+  position: absolute;
+  top: -70px;
+  left: 130px;
+}
+
+.modalMainHeader {
+  padding: 10px 10px 0px 10px;
+  position: relative;
+}
+
+.modal {
+  --bs-modal-width: 400px !important;
+}
+
+.modal-header {
+  border: none !important;
+}
+
+.forgotPasswordTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0px;
+  text-align: center;
+}
+
+.forgotPasswordSubtitle {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 3px 0px;
+  text-align: center;
+}
+
+.DeliveryboyTitleHeaderCard {
+  margin: 20px 35px 10px 35px;
+}
+
+.modalBackClose {
+  cursor: pointer;
+}
+
+.modal-email-submit-btn {
+  border: none;
+  background-color: var(--secondary-color);
+  padding: 8px 80px;
+  border-radius: 8px;
+  color: var(--white-color);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modal-footer {
+  justify-content: center !important;
+  border: none !important;
+}
+
+.modal-content {
+  background-color: var(--mainbg-color) !important;
+}
+
+.resend-code-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-color);
+  border: none;
+  background-color: transparent;
+  text-transform: uppercase;
+}
+
+.resend-code-card {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.enterpriseDeliveryboyDeliveriesCount {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.enterpriseDeliveryboyDeliveriesText {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.enterpriseDeliveryboyDeliveriesMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enterpriseDeliveryboyProfileCard {
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.enterpriseDeliveryboyProfileText {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.enterpriseDeliveryboyScheduleOverviewMainCard {
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  border-radius: 10px;
+}
+
+.enterpriseDeliveryboyScheduleOverviewCard {
+  padding: 10px;
+}
+
+.enterpriseDeliveryboyScheduleFrom {
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.enterpriseDeliveryboyScheduleDateTimeCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0px;
+}
+
+.enterpriseDeliveryboyScheduleDtailsText {
+  font-size: 10px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+.enterpriseDeliveryboyScheduleSeeDetailsCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffe2ec;
+  padding: 8px 15px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.enterpriseDeliveryboyScheduleSeeDetailsText {
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0px;
+  color: var(--secondary-color);
+}
+
+.enterpriseDeliveryboyScheduleSeeDetailsRightIcon {
+  color: var(--secondary-color);
+  font-size: 14px;
+}
+
+.enterpriseDeliveryboyScheduledOkBtn {
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #000;
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.enterpriseDeliveryboyScheduleFooter {
+  display: block !important;
+}
+
+.enterpriseDeliveryboyScheduledGotoBtn {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.enterpriseDeliveryboyScheduledGotoBtnCard {
+  background-color: var(--primary-color);
+  padding: 10px;
+  width: 100%;
+  border-radius: 10px;
+  text-align: center;
+}
