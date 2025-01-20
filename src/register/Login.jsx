@@ -13,15 +13,18 @@ import { loginSuccess, loginStart, loginFailed } from "../redux/authSlice";
 import { authenticateUser, getLookupData } from "../data_manager/dataManage";
 import localforage from "localforage";
 import { commonDataList } from "../redux/commonDataSlice";
-import { UseFetch } from "../utils/UseFetch";
+
 import { ToastContainer } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../utils/Toastify";
+import { UseFetch } from "../utils/UseFetch";
+
 const Login = () => {
-  const {lookup}=UseFetch()
-  const { loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, role } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const [lookup, setLookup] = useState(null);  // Set the initial state of lookup to null.
   const [showPassword, setShowPassword] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState("");
@@ -29,26 +32,26 @@ const Login = () => {
   const [fcmToken, setFcmToken] = useState('');
   const [errors, setErrors] = useState({});
   const [iserror, setIserror] = useState(false);
-  const checkboxTypes = ["checkbox"];
+
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const validateForm = () => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      errors.email = "Email is required.";
+      errors.email = t("email_required");
     } else if (!emailRegex.test(email)) {
-      errors.email = "Please enter a valid email address.";
+      errors.email = t("email_invalid");
     }
     if (!password) {
-      errors.password = "Password is required.";
+      errors.password = t("password_required");
     } else if (password.length < 6) {
-      errors.password = "Password must be at least 6 characters long.";
+      errors.password = t("password_min_length");
     }
-
     return errors;
   };
 
@@ -73,18 +76,16 @@ const Login = () => {
       (successResponse) => {
         if (successResponse[0]._success) {
           if (successResponse[0]._response) {
-            if (successResponse[0]._response.name == "NotAuthorizedException") {
-              showErrorToast("Username or password is incorrect");
+            if (successResponse[0]._response.name === "NotAuthorizedException") {
+              showErrorToast(t("username_or_password_incorrect"));
               dispatch(loginFailed());
-            } else if (
-              successResponse[0]._response.name == "UserNotConfirmedException"
-            ) {
-              showErrorToast("Delivery Boy Verfication Pending");
+            } else if (successResponse[0]._response.name === "UserNotConfirmedException") {
+              showErrorToast(t("verification_pending"));
               dispatch(loginFailed());
             } else {
-              const dataRes =successResponse[0]._response.user?.idToken?.payload;
-              let userDetail=successResponse[0]._response.user_profile[0];
-              userDetail.vehicleAdd=true;
+              const dataRes = successResponse[0]._response.user?.idToken?.payload;
+              let userDetail = successResponse[0]._response.user_profile[0];
+              userDetail.vehicleAdd = true;
               const userData = {
                 userInfo: {
                   username: dataRes["cognito:username"],
@@ -94,52 +95,60 @@ const Login = () => {
                   auth_time: dataRes.auth_time,
                   exp: dataRes.exp,
                 },
-                
-
                 userDetails: userDetail,
               };
               const getToken = successResponse[0]._response?.rapid_token;
-              const userRole=successResponse[0]._response.user_profile[0].role
               const refreshToken = successResponse[0]._response?.refreshtoken;
               if (getToken && userData) {
-                // const userInfo={role:userRole, user: userData }
-                localforage.setItem(1, getToken);
-                // localforage.setItem(2, refreshToken);
-                dispatch(loginSuccess({role:userRole, user: userData }));
-                dispatch(commonDataList(lookup))
-                showSuccessToast('Login successful! Welcome back!')
-                navigateBasedOnRole(successResponse[0]._response.user_profile[0].role);
+                localforage.setItem("1", getToken);
+                dispatch(loginSuccess({ role: userDetail.role, user: userData }));
+                showSuccessToast(t("login_successful"));
               } else {
-                showErrorToast("Login failed due to missing token or user data.")
+                showErrorToast(t("login_failed"));
                 dispatch(loginFailed());
               }
             }
           }
         } else {
-          showErrorToast("Invalid credentials")
+          showErrorToast(t("invalid_credentials"));
           dispatch(loginFailed());
         }
       },
       (errorResponse) => {
-        let err = "";
-        if (errorResponse.errors) {
-          err = errorResponse.errors.msg[0].msg;
-        } else {
-          err = errorResponse[0]._errors.message;
-        }
-        showErrorToast(err)
+        const errorMsg = errorResponse.errors?.msg?.[0]?.msg || errorResponse[0]?._errors?.message || t("login_failed");
+        showErrorToast(errorMsg);
         dispatch(loginFailed());
       }
     );
   };
 
   const navigateBasedOnRole = (role) => {
-    const baseUrl=role?.toLowerCase().replace(/_/g, '');
-    setTimeout(()=>{
-      navigate("/"+baseUrl+"/dashboard")
-    },2000)
-    
+    const baseUrl = role?.toLowerCase().replace(/_/g, '');
+    setTimeout(() => {
+      navigate("/" + baseUrl + "/dashboard");
+    }, 2000);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isAuthenticated) {
+        try {
+          const token = await localforage.getItem("1");
+          if (token) {
+            // Only fetch lookup if authenticated
+            const {lookup} = UseFetch();  // Use the UseFetch hook to fetch lookup data
+            setLookup(lookup);  // Set the lookup data once fetched
+            dispatch(commonDataList(lookup));  // Dispatch common data with the lookup
+            navigateBasedOnRole(role);  // Navigate based on the user's role
+          }
+        } catch (error) {
+          console.error(t("login_failed"));
+        }
+      }
+    };
+    fetchData();
+  }, [isAuthenticated, role]);  // Dependency array includes all relevant values
+
   return (
     <>
       <section className={Styles.loginSection}>
@@ -166,14 +175,12 @@ const Login = () => {
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Label className={`${Styles.loginLabels} ${errors.email ? Styles.forgotPassword : ''}`}>
-                      {errors.email !== undefined && errors.email !== null ? errors.email : t("email")}
-
+                        {errors.email || t("email")}
                       </Form.Label>
-                      
                       <Form.Control
                         className={Styles.loginInputs}
                         type="email"
-                        placeholder={t("email") + "..."}
+                        placeholder={t("email") + "..." }
                         onChange={(e) => setEmail(e.target.value)}
                         isInvalid={!!errors.email}
                       />
@@ -183,13 +190,13 @@ const Login = () => {
                       controlId="formPlaintextPassword"
                     >
                       <Form.Label className={`${Styles.loginLabels} ${errors.password ? Styles.forgotPassword : ''}`}>
-                      {errors.password !== undefined && errors.password !== null ? errors.password : t("password")}
+                        {errors.password || t("password")}
                       </Form.Label>
                       <div className={Styles.passwordInputContainer}>
                         <Form.Control
                           className={`password-field ${Styles.loginInputs}`}
                           type={showPassword ? "text" : "password"}
-                          placeholder={t("password") + "..."}
+                          placeholder={t("password") + "..." }
                           onChange={(e) => setPassword(e.target.value)}
                           isInvalid={!!errors.password}
                         />
@@ -219,21 +226,6 @@ const Login = () => {
                   >
                     {loading ? "Logging in..." : t("sign_in")}
                   </Link>
-                  {/* <div>
-                    <Form>
-                      {checkboxTypes.map((type) => (
-                        <div key={`default-${type}`} className={`mb-3 ${Styles.checkboxCard}`}>
-                          <Form.Check
-                            type={type}
-                            id={`default-${type}`}
-                            label={null}
-                            className={Styles.customCheckbox}
-                          />
-                          <p className={Styles.checkText}>{t('i_have_read_agree')} <Link className={Styles.termsCheck} to="#">{t('terms_of_use')}</Link></p>
-                        </div>
-                      ))}
-                    </Form>
-                  </div> */}
                 </div>
               </div>
 
@@ -258,7 +250,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* ---------- Modal include here ---------  */}
           <ForgotPasswordEmailModal
             show={showModal}
             handleClose={handleCloseModal}
@@ -270,4 +261,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;

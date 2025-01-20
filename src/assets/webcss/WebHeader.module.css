@@ -262,32 +262,47 @@ a {
 }
 
 .languageDropdown {
-  width: 120px;
+  width: 140px;
   display: flex;
   align-items: center;
   position: relative;
   border: 1px solid var(--secondaryColor);
   border-radius: 5px;
+  gap:10px;
 }
 
 .customSelect {
-  appearance: none; /* Remove default arrow */
+  border: 1px solid #ccc;
+  border-radius: 5px;
   background: none;
-  border: none;
   font-size: 16px;
   padding: 5px 10px;
   cursor: pointer;
+
+  
 }
 
 .customSelect:focus {
   outline: none;
+  box-shadow: 0 0 5px var(--secondaryColor);
+}
+.customSelect:hover {
+  border-color: var(--secondaryColor);
+  /* background-color: var(--primaryColor);  */
 }
 
 .flagContainer {
-  margin-left: 10px;
+  margin-left: 3px;
 }
 
 .flagIcon {
-  width: 20px;
-  height: auto;
+  width: 100%;
+  height: 40%;
+  border-radius: 3px;
 }
+
+.customSelect option:checked {
+  background-color: var(--secondaryColor); /* Selected option background color */
+  color: #fff; /* Selected option text color */
+}
+
