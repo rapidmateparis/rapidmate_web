@@ -13,7 +13,7 @@ import { buildAddress } from "../../../utils/Constants";
 
 function OrderCardBox({ order, locationList,vehicleTypeList,branches}) {
   const getLocationAddress = (locationId) => {
-    let result = locationList.filter((location) => location.id == locationId);
+    let result = locationList?.filter((location) => location.id == locationId);
     return buildAddress(
       result[0]?.address,
       result[0]?.city,
@@ -24,7 +24,7 @@ function OrderCardBox({ order, locationList,vehicleTypeList,branches}) {
   };
 
   const getVehicleType = vehicleId => {
-    let result = vehicleTypeList.filter(vehicle => vehicle.id == vehicleId);
+    let result = vehicleTypeList?.filter(vehicle => vehicle.id == vehicleId);
     return result[0]?.vehicle_type;
   };
 

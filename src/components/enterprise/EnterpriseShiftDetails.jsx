@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Styles from "../../assets/css/home.module.css";
+import SlotCss from "../../assets/css/shiftDetail.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDownload,
   faGear,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Home from "../../assets/images/home-icon.png";
 import Driver from "../../assets/images/Driver-Image.jpeg";
 import Calender from "../../assets/images/Calender-withBg.png";
@@ -14,25 +15,29 @@ import CommonHeader from "../../common/CommonHeader";
 import MasterCard from "../../assets/images/MasterCard-Logo.png";
 import OrderTag from "../../assets/images/OrderFare-Tag.png";
 import Invoice from "../../assets/images/Invoice-Img.png";
+import { Table, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {
   getAVehicleByTypeId,
   getLocationById,
   getViewEnterpriseOrderDetail,
 } from "../../data_manager/dataManage";
-import { buildAddress } from "../../utils/Constants";
+import { buildAddress, formatDate } from "../../utils/Constants";
+import moment from "moment";
 import DeliveryboyAssignedModal from "./common/DeliveryboyAssignedModal";
 
 const EnterpriseShiftDetails = () => {
   const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
   const location = useLocation();
-  const { order, branches } = location.state;
+  const { order, branches } = location.state || {}; // Adding fallback in case location.state is undefined or null.
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
   const [destinationAddress, setDestinationAddress] = useState({});
   const [sourceAddress, setSourceAddress] = useState({});
   const [loading, setLoading] = useState(false);
+  const [viewType, setViewType] = useState("table");
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
@@ -40,7 +45,6 @@ const EnterpriseShiftDetails = () => {
 
   const getBranch = (branchId) => {
     let result = branches?.filter((branch) => branch.id == branchId);
-
     if (result == undefined) {
       return {
         branch_name: "not found",
@@ -68,27 +72,32 @@ const EnterpriseShiftDetails = () => {
   };
 
   const orderDetail = async () => {
-    setLoading(true);
-    getViewEnterpriseOrderDetail(
-      order,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]._success) {
-          setOrders(successResponse[0]._response.order);
-          setDeliveryboy(successResponse[0]._response.deliveryBoy);
-        }
-      },
-      (errorResponse) => {
-        setLoading(false);
-      }
-    );
+    setOrders(order);
   };
 
   useEffect(() => {
-    orderDetail();
-  }, [order]);
+    // If location.state is null or undefined, navigate back
+    if (!location.state) {
+      console.log("Location state is null or undefined, navigating back");
+      navigate(-1); // Go back to the previous page
+    } else {
+      orderDetail();
+    }
+  }, [location.state, order, navigate]); // Add location.state to dependencies
 
-  // console.log("order",orders)
+  const AssignDelivery = (slots) => {
+    navigate("/enterprise/deliveryboy-shift-details", {
+      state: {
+        slot: slots,
+        vehicle_type_id:orders?.vehicle_type_id,
+        orderNumber:orders?.order_number,
+        branchId:orders?.branch_id,
+        branchAddress:getBranch(orders?.branch_id) || " "
+      },
+    });
+  };
+
+  console.log(orders);
   return (
     <>
       <CommonHeader userData={user} />
@@ -101,12 +110,12 @@ const EnterpriseShiftDetails = () => {
                   <p className={Styles.pickupHistoryHeaderTitle}>
                     Shift Details
                   </p>
-                  <button onClick={handleShowModal}>
+                  <Link>
                     <FontAwesomeIcon
                       className={Styles.enterpriseShiftDetailGearIcon}
                       icon={faGear}
                     />
-                  </button>
+                  </Link>
                 </div>
                 <div className={Styles.enterpriseShiftDetailCompanyDetailCard}>
                   <div className={Styles.enterpriseShiftDetailHomeIconCard}>
@@ -130,36 +139,6 @@ const EnterpriseShiftDetails = () => {
                   </div>
                 </div>
 
-                <div className={Styles.enterpriseShiftDetailDriverCardMain}>
-                  <div className={Styles.enterpriseShiftDetailDriverCard}>
-                    <img
-                      className={Styles.enterpriseShiftDetailDriverImg}
-                      src={Driver}
-                      alt="img"
-                    />
-                    <div>
-                      <h4 className={Styles.enterpriseShiftDetailDriverName}>
-                        John Doe
-                      </h4>
-                      <p
-                        className={
-                          Styles.enterpriseShiftDetailDrivertruckDetails
-                        }
-                      >
-                        VOLVO FH16 2022
-                      </p>
-                    </div>
-                    <div className={Styles.enterpriseShiftAssignDeliveryBtnCard}>
-                      <Link
-                        to="/enterprise/deliveryboy-shift-details"
-                        className={Styles.enterpriseShiftAssignDeliveryBtn}
-                      >
-                        Assign Delivery
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-
                 <div className={Styles.enterpriseShiftDetailCalenderCardMain}>
                   <div className={Styles.enterpriseShiftDetailCalenderCard}>
                     <img
@@ -168,7 +147,8 @@ const EnterpriseShiftDetails = () => {
                       alt="calender-icon"
                     />
                     <p className={Styles.enterpriseShiftDetailStarteddatetime}>
-                      Started 11 AM to 04 PM
+                      Started {formatDate(orders?.shift_from_date).date} To{" "}
+                      {formatDate(orders?.shift_tp_date).date}
                     </p>
                   </div>
                   <div
@@ -177,117 +157,213 @@ const EnterpriseShiftDetails = () => {
                     <p
                       className={Styles.enterpriseShiftDetailShiftDurationText}
                     >
-                      Total duration: <b>5 hours</b>
+                      Total duration:{" "}
+                      <b>
+                        {orders?.total_hours
+                          ? orders?.total_hours?.toFixed(2)
+                          : 0}{" "}
+                        hours
+                      </b>
                     </p>
                     <p
                       className={Styles.enterpriseShiftDetailShiftDurationText}
                     >
-                      Total deliveries: <b>12</b>
+                      Total deliveries: <b>{orders?.slots?.length || 0}</b>
                     </p>
                   </div>
                   <p className={Styles.enterpriseShiftDetailVehiclenameType}>
-                    {getVehicleType(orders?.vehicle_type_id)?.vehicle_type}{" "}
-                    sdfsd
+                    {getVehicleType(orders?.vehicle_type_id)?.vehicle_type}
                   </p>
                 </div>
-
-                <div className={Styles.pickupDeliveryDetailOrderfareMainCard}>
-                  <div>
-                    <div className={Styles.pickupDeliveryDetailOrderPrice}>
-                      <div className={Styles.pickupDeliveryDetailPickupCard}>
-                        <img
-                          className={Styles.pickupdeliveryDetailOrderfareIcon}
-                          src={OrderTag}
-                          alt="icon"
-                        />
-                        <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                          Order fare
-                        </p>
-                      </div>
-                      <h4 className={Styles.pickupDeliveryDetailOrderPriceText}>
-                        €000
-                      </h4>
-                    </div>
-                    <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
-                      <p
-                        className={Styles.pickupDeliveryDetailTraveledDistance}
-                      >
-                        Travelled 12 km in 32 mins
-                      </p>
-                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Order fare
-                        </p>
-                        <p className={Styles.pickupDeliveryDetailPricesText}>
-                          €000
-                        </p>
-                      </div>
-                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Waiting
-                        </p>
-                        <p className={Styles.pickupDeliveryDetailPricesText}>
-                          €0.00
-                        </p>
-                      </div>
-                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Platform fee
-                        </p>
-                        <p className={Styles.pickupDeliveryDetailPricesText}>
-                          €000
-                        </p>
-                      </div>
-                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Amount charged
-                        </p>
-                        <p className={Styles.pickupDeliveryDetailPricesText}>
-                          €000
-                        </p>
-                      </div>
-                      <div
-                        className={Styles.pickupDeliveryDetailMastercardCard}
-                      >
-                        <img
-                          className={Styles.pickupDeliveryDetailMastercardImg}
-                          src={MasterCard}
-                          alt="mastercard"
-                        />
-                        <p
-                          className={Styles.pickupDeliveryDetailMasterCardtext}
-                        >
-                          Paid with mastercard
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={Styles.pickupDeliveryDetailInvoiceCard}>
-                  <div className={Styles.pickupDeliveryDetailInvoiceTextCard}>
-                    <img
-                      className={Styles.pickupDeliveryDetailsInvoiceImg}
-                      src={Invoice}
-                      alt="invoice"
-                    />
-                    <p
-                      className={Styles.pickupDeliveryDetailDownloadInvoiceText}
+                {/* Slot Details */}
+                <div>
+                  {/* <h3 className={SlotCss.slotsContainer}>Slots</h3> */}
+                  {/* <div className={SlotCss.viewToggle}>
+                    <button
+                      className={
+                        viewType === "table" ? SlotCss.activeButton : ""
+                      }
+                      onClick={() => setViewType("table")}
                     >
-                      Download invoice
-                    </p>
-                  </div>
-                  <button className={Styles.pickupDeliveryDetailDownloadIcon}>
-                    <FontAwesomeIcon icon={faDownload} />
-                  </button>
+                      Table View
+                    </button>
+                    <button
+                      className={
+                        viewType === "grid" ? SlotCss.activeButton : ""
+                      }
+                      onClick={() => setViewType("grid")}
+                    >
+                      Grid View
+                    </button>
+                  </div> */}
+                  {viewType === "grid" ? (
+                    <div className={SlotCss.slotsGrid}>
+                      {order?.slots?.map((slot, index) => (
+                        <div
+                          key={slot.id}
+                          className={SlotCss.slotCard}
+                          onClick={() => AssignDelivery(slot)}
+                        >
+                          <div className={SlotCss.slotHeader}>
+                            <h4>{slot.day}</h4>
+                            <p>
+                              {moment(formatDate(slot.slot_date).date).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </p>
+                          </div>
+                          <div className={SlotCss.slotBody}>
+                            <p>
+                              <strong>Time:</strong> {slot.from_time} -{" "}
+                              {slot.to_time}
+                            </p>
+                            <p>
+                              <strong>Total Hours:</strong>{" "}
+                              {slot.total_hours
+                                ? `${slot.total_hours} hrs`
+                                : "N/A"}
+                            </p>
+                            <p>
+                              <strong>Order Status:</strong>{" "}
+                              <span
+                                className={
+                                  slot.order_status === "ORDER_PLACED"
+                                    ? SlotCss.statusPlaced
+                                    : slot.order_status === "ORDER_IN_PROGRESS"
+                                    ? SlotCss.statusInProgress
+                                    : slot.order_status === "COMPLETED"
+                                    ? SlotCss.statusCompleted
+                                    : SlotCss.statusError
+                                }
+                              >
+                                {slot.order_status}
+                              </span>
+                            </p>
+                            <p>
+                              <strong>Next Action:</strong>{" "}
+                              {slot.next_action_status}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="mt-4">
+                      <Table bordered hover responsive>
+                        <thead className="table-success">
+                          <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Day</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Total Hours</th>
+                            <th>Delivery Boy</th>
+                            <th>Status</th>
+                            <th>Next Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {orders?.slots?.map((slot, index) => (
+                            <tr key={slot.id}>
+                              <td>{index + 1}</td>
+                              <td>
+                                {moment(formatDate(slot.slot_date).date).format(
+                                  "DD-MM-YYYY"
+                                )}
+                              </td>
+                              <td>{slot.day}</td>
+                              <td>{slot.from_time}</td>
+                              <td>{slot.to_time}</td>
+                              <td>
+                                {slot.total_hours
+                                  ? `${slot.total_hours} hrs`
+                                  : "N/A"}{" "}
+                              </td>
+                              <td>
+                                {slot?.delivery_boy_id ? (
+                                  <div
+                                    className={
+                                      Styles.enterpriseShiftDetailDriverCard
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                    onClick={handleShowModal}
+                                  >
+                                    <img
+                                      className={
+                                        Styles.enterpriseShiftDetailDriverImg
+                                      }
+                                      src={Driver}
+                                      alt="img"
+                                    />
+                                    <div>
+                                      <h4
+                                        className={
+                                          Styles.enterpriseShiftDetailDriverName
+                                        }
+                                      >
+                                        John Doe
+                                      </h4>
+                                      <p
+                                        className={
+                                          Styles.enterpriseShiftDetailDrivertruckDetails
+                                        }
+                                      >
+                                        VOLVO FH16 2022
+                                      </p>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  "Not Assign"
+                                )}
+                              </td>
+                              <td>
+                                <span
+                                  className={
+                                    slot.order_status === "ORDER_PLACED"
+                                      ? "badge bg-warning text-dark"
+                                      : slot.order_status ===
+                                        "ORDER_IN_PROGRESS"
+                                      ? "badge bg-info text-dark"
+                                      : slot.order_status === "COMPLETED"
+                                      ? "badge bg-success text-dark"
+                                      : "badge bg-danger text-dark"
+                                  }
+                                >
+                                  {slot.order_status}
+                                </span>
+                              </td>
+                              <td>{slot.next_action_status}</td>
+                              <td>
+                                {slot?.delivery_boy_id ? (
+                                  <Button
+                                    onClick={() => AssignDelivery(slot)}
+                                    variant="outline-primary"
+                                    className={SlotCss.customAssignButton}
+                                  >
+                                    Assign Deliveries
+                                  </Button>
+                                ) : (
+                                  <span
+                                    className={"badge bg-warning text-dark"}
+                                  >
+                                    Waiting for deliveryboy
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* modal use here  */}
       <DeliveryboyAssignedModal
         show={showModal}
         handleClose={handleCloseModal}

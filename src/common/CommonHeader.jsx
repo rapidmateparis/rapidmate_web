@@ -26,6 +26,9 @@ import {
 import { persistor } from "../redux/store";
 import MessageModal from "./MessageModal";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n/i18n";
+import HeaderLanguageSwitcher from "./HeaderlanguageOptions";
+
 
 const CommonHeader = memo(({ userData }) => {
   const location = useLocation();
@@ -40,6 +43,11 @@ const CommonHeader = memo(({ userData }) => {
   const [supportModal, setSupportModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [lang, setLang] = useState(i18n.language); 
+  const switchLanguage = (newLang) => {
+    i18n.changeLanguage(newLang); // Update i18n language
+    setLang(newLang); // Update the language in state
+  };
   const { isAuthenticated, role } = useSelector((state) => state.auth);
   const baseUrl = role?.toLowerCase().replace(/_/g, "");
   const handleLogout = async () => {
@@ -134,7 +142,9 @@ const CommonHeader = memo(({ userData }) => {
                 </button>
               </li>
             )}
-
+            <li>
+            <HeaderLanguageSwitcher lang={lang} switcher={switchLanguage} />
+            </li>
             <li>
               <Dropdown>
                 <Dropdown.Toggle
@@ -183,8 +193,11 @@ const CommonHeader = memo(({ userData }) => {
                     {t("sign_out")}
                   </Dropdown.Item>
                 </Dropdown.Menu>
+               
               </Dropdown>
             </li>
+
+            
           </div>
         </ul>
       </nav>

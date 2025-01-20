@@ -8,6 +8,7 @@ import WebContactModal from "./WebContactModal";
 import HeaderLanguageSwitcher from "../../common/HeaderlanguageOptions";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -15,7 +16,8 @@ const Header = () => {
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
   const [lang, setLang] = useState(i18n.language); // Set initial language from i18n
-
+  const { isAuthenticated, role } = useSelector((state) => state.auth);
+  const baseUrl = role?.toLowerCase().replace(/_/g, "");
   const switchLanguage = (newLang) => {
     i18n.changeLanguage(newLang); // Update i18n language
     setLang(newLang); // Update the language in state
@@ -103,9 +105,17 @@ const Header = () => {
                 {t("get_in_touch")}
               </button>
             </li>
-            <li>
-              <Link to="/login">{t("login")}</Link>
-            </li>
+            {!isAuthenticated && !role ? (
+                <>
+                  <li>
+                    <Link to="/login">{t("login")}</Link>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link to={`/${baseUrl}/dashboard`}>{t("dashboard")}</Link>
+                </li>
+              )}
           </ul>
         </nav>
       </div>
