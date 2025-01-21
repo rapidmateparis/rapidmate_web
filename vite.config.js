@@ -38,7 +38,10 @@ export default defineConfig({
   },
   server: {
     // Add this to catch all routes and redirect them to index.html
-    historyApiFallback: true
+    historyApiFallback: true,
+    host: '0.0.0.0',
+    port: 5173,
+   
   },
   optimizeDeps: {
     include: ['lottie-react'], // Pre-bundle lottie-react for better optimization

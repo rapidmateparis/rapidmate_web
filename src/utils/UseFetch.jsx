@@ -33,7 +33,6 @@ export const getLookup = () => {
         resolve(successResponse[0]._response);
       },
       (errorResponse) => {
-        console.log("getLookup==>errorResponse", errorResponse);
         reject(errorResponse);
       }
     );
