@@ -11,35 +11,85 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import PhoneInput from "react-phone-input-2";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
+import TextInput from "../../../common/TextInput";
 
+
+const FILE_SIZE = 5 * 1024 * 1024; // 2MB
+const SUPPORTED_FORMATS = ["image/jpeg", "image/png", "application/pdf"];
 const schema = yup.object().shape({
-  name: yup.string().required("First name is required"),
-  lastname: yup.string().required("Last name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  phoneNumber: yup.string().required("Phone number is required"),
-  packageId: yup.string().required("Package ID is required"),
-  file: yup.mixed().required("Package photo is required"),
-});
+    company: yup.string().required("Company name is required"),
+    packageId: yup
+      .string()
+      .required("Package id is required")
+      .min(3, "Package id must be at least 3 characters long"),
+    pickupnote: yup.string(),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Please enter a valid email"),
+    phoneNumber: yup
+      .string()
+      .required("Phone number is required")
+      .matches(/^\d+$/, "Phone number should contain only digits")
+      .test("length", "Phone number length is invalid", function (value) {
+        const { country } = this.parent; // Assuming country is selected in the form
+        const phoneLengthByCountry = {
+          in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+          fr: { min: 11, max: 11 },
+          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
+          // Add other countries and their phone number lengths here
+        };
+        const countryCode = country ? country : null;
+        if (countryCode && phoneLengthByCountry[countryCode]) {
+          const { min, max } = phoneLengthByCountry[countryCode];
+          return value.length >= min && value.length <= max;
+        }
+        return true; // If no country is selected, do not apply length validation
+      }),
+    file: yup
+      .mixed()
+      .required("A file is required")
+      .test("fileSize", "File size is too large", (value) => {
+        return value && value[0] && value[0].size <= FILE_SIZE;
+      })
+      .test("fileType", "Unsupported file type", (value) => {
+        return value && value[0] && SUPPORTED_FORMATS.includes(value[0].type);
+      }),
+   
+    name: yup
+      .string()
+      .required("Name is required")
+      .min(3, "Name must be at least 3 characters long"),
+    lastname: yup
+      .string()
+      .required("Last name is required")
+      .min(2, "Last name must be at least 2 characters long"),
+    
+  });
 
 const EnterpriseShiftAddDropDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-
+  const defaultEmail = user?.userDetails?.email || "";
+  const defaultCompany = user?.userDetails?.company_name || "";
+  const defaultPhone = user?.userDetails?.phone.replace("+", "") || "";
   const {
     control,
     handleSubmit,
     resetField,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const [selectedOption, setSelectedOption] = useState("Myself");
+ 
   const [isFocused, setIsFocused] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
 
-  const handleRadioChange = (event) => setSelectedOption(event.target.value);
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -49,8 +99,15 @@ const EnterpriseShiftAddDropDetails = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    
     // Handle form submission logic
+    //enterprise/shift-order-preview
+    navigate("/enterprise/shift-order-preview", {
+      state: {
+        ...location.state,
+        dropoffDetail: data,
+      },
+    });
   };
 
   return (
@@ -79,23 +136,13 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         First name: <span className={Styles.textColor}>*</span>
                       </label>
-                      <Controller
-                        name="name"
+                      <TextInput
                         control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            placeholder="First name"
-                            style={{ width: "100%", padding: "5px" }}
-                          />
-                        )}
+                        name="name"
+                        placeholder="Name"
+                        error={errors.name}
+                        defaultValue={""}
                       />
-                      {errors.name && (
-                        <p className={Styles.errorText}>
-                          {errors.name.message}
-                        </p>
-                      )}
                     </div>
                   </div>
 
@@ -107,23 +154,13 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         Last name: <span className={Styles.textColor}>*</span>
                       </label>
-                      <Controller
-                        name="lastname"
+                      <TextInput
                         control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            placeholder="Last name"
-                            style={{ width: "100%", padding: "5px" }}
-                          />
-                        )}
+                        name="lastname"
+                        placeholder="Lastname"
+                        error={errors.lastname}
+                        defaultValue={""}
                       />
-                      {errors.lastname && (
-                        <p className={Styles.errorText}>
-                          {errors.lastname.message}
-                        </p>
-                      )}
                     </div>
                   </div>
 
@@ -135,17 +172,12 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         Company:
                       </label>
-                      <Controller
-                        name="company"
+                      <TextInput
                         control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            placeholder="Company"
-                            style={{ width: "100%", padding: "5px" }}
-                          />
-                        )}
+                        name="company"
+                        placeholder="Company"
+                        error={errors.company}
+                        defaultValue={""}
                       />
                     </div>
                   </div>
@@ -158,23 +190,13 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         Email: <span className={Styles.textColor}>*</span>
                       </label>
-                      <Controller
-                        name="email"
+                      <TextInput
                         control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            placeholder="Email"
-                            style={{ width: "100%", padding: "5px" }}
-                          />
-                        )}
+                        name="email"
+                        placeholder="email"
+                        error={errors.email}
+                        defaultValue={""}
                       />
-                      {errors.email && (
-                        <p className={Styles.errorText}>
-                          {errors.email.message}
-                        </p>
-                      )}
                     </div>
                   </div>
 
@@ -186,23 +208,13 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         Package ID <span className={Styles.textColor}>*</span>
                       </label>
-                      <Controller
-                        name="packageId"
+                      <TextInput
                         control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            type="text"
-                            placeholder="Package Id ..."
-                            style={{ width: "100%", padding: "5px" }}
-                          />
-                        )}
+                        name="packageId"
+                        placeholder="Package Id ..."
+                        error={errors.packageId}
+                        defaultValue=""
                       />
-                      {errors.packageId && (
-                        <p className={Styles.errorText}>
-                          {errors.packageId.message}
-                        </p>
-                      )}
                     </div>
                   </div>
 
@@ -220,35 +232,39 @@ const EnterpriseShiftAddDropDetails = () => {
                         control={control}
                         render={({ field: { onChange, value } }) => (
                           <PhoneInput
-                            country={"fr"}
-                            value={value}
-                            countryCodeEditable={false}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                            onChange={onChange}
-                            inputStyle={{
-                              width: "100%",
-                              paddingLeft: "42px",
-                              borderColor: isFocused ? "#ff4081" : "#ccc",
-                              boxShadow: isFocused
-                                ? "0 0 5px rgba(255, 64, 129, 0.5)"
-                                : "none",
-                              transition:
-                                "border-color 0.3s ease, box-shadow 0.3s ease",
-                            }}
-                            buttonStyle={{
-                              border: "none",
-                              background: "transparent",
-                            }}
-                            dropdownStyle={{ borderColor: "#ccc" }}
-                            enableSearch
-                            searchPlaceholder="Search country"
-                            specialLabel=""
-                          />
+                              country={"fr"}
+                              value={value}
+                              onlyCountries={["fr", "in", "ru"]}
+                              countryCodeEditable={false}
+                              isValid={(value, country) => {
+                                setValue("country", country.iso2);
+                              }}
+                              onFocus={handleFocus}
+                              onBlur={handleBlur}
+                              onChange={onChange}
+                              inputStyle={{
+                                width: "100%",
+                                paddingLeft: "42px",
+                                borderColor: isFocused ? "#ff4081" : "#ccc", // Border color changes on focus
+                                boxShadow: isFocused
+                                  ? "0 0 5px rgba(255, 64, 129, 0.5)"
+                                  : "none", // Glowing effect
+                                transition:
+                                  "border-color 0.3s ease, box-shadow 0.3s ease", // Smooth transition
+                              }}
+                              buttonStyle={{
+                                border: "none", // Removes border from the flag dropdown
+                                background: "transparent", // Keeps flag dropdown appearance intact
+                              }}
+                              dropdownStyle={{ borderColor: "#ccc" }}
+                              enableSearch
+                              searchPlaceholder="Search country"
+                              specialLabel=""
+                            />
                         )}
                       />
                       {errors.phoneNumber && (
-                        <p className={Styles.errorText}>
+                        <p style={{ color: "red", fontSize: "13px" }}>
                           {errors.phoneNumber.message}
                         </p>
                       )}
@@ -324,7 +340,15 @@ const EnterpriseShiftAddDropDetails = () => {
                       </div>
                     )}
                     {errors.file && (
-                      <p className={Styles.errorText}>{errors.file.message}</p>
+                      <p
+                        style={{
+                          color: "red",
+                          fontSize: "13px",
+                          textAlign: "center",
+                        }}
+                      >
+                        {errors.file.message}
+                      </p>
                     )}
                   </div>
 
@@ -336,23 +360,13 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         Drop notes
                       </label>
-                      <Controller
-                        name="pickupnote"
-                        control={control}
-                        render={({ field }) => (
-                          <textarea
-                            {...field}
-                            placeholder="Type here..."
-                            style={{
-                              width: "100%",
-                              padding: "5px",
-                              height: "100px",
-                              textAlign: "left",
-                              verticalAlign: "top",
-                            }}
-                          />
-                        )}
-                      />
+                      <TextInput
+                          control={control}
+                          name="pickupnote"
+                          placeholder="Type here ..."
+                          error={errors.pickupnote}
+                          defaultValue=""
+                        />
                     </div>
                   </div>
                 </div>
@@ -368,13 +382,13 @@ const EnterpriseShiftAddDropDetails = () => {
                       >
                         Back
                       </Link>
-                      <Link
-                        to="/enterprise/shift-order-preview"
+                      <button
                         type="submit"
+                        onClick={handleSubmit(onSubmit)}
                         className={Styles.addPickupDetailsNextBtn}
                       >
                         Next
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>

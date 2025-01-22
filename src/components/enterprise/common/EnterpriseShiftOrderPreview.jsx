@@ -15,32 +15,69 @@ import CommonHeader from "../../../common/CommonHeader";
 import Driver from "../../../assets/images/Driver-Image.jpeg";
 import Pickup from "../../../assets/images/Pickup.png";
 import { useSelector } from "react-redux";
+import { buildAddress, getLocation } from "../../../utils/Constants";
+import getImage from "../../consumer/common/GetImage";
+import { showErrorToast } from "../../../utils/Toastify";
 
 function EnterpriseShiftOrderPreview() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { order, orderCustomerDetails, dropoffDetail } = location.state || {};
+  const { order,dropoffDetail } = location.state || {};
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
-  const [isAddressAdd, setIsAddressAdd] = useState(false);
-  // console.log(order)
-  const checkboxTypes = ["checkbox"];
+  const { vehicleType } = useSelector((state) => state.commonData.commonData);
+  
   const user = useSelector((state) => state.auth.user);
+
+  
+    const getOrderAddress = (order) => {
+      return (
+        order?.addPickupLocation?.address +
+        "," +
+        order?.addPickupLocation?.city +
+        "," +
+        order?.addPickupLocation?.state +
+        "," +
+        order?.addPickupLocation?.country +
+        "-" +
+        order?.addPickupLocation?.postal_code
+      );
+    };
+
+    const getOrderdAddress = (order) => {
+      return (
+        order?.addDestinationLocation?.address +
+        "," +
+        order?.addDestinationLocation?.city +
+        "," +
+        order?.addDestinationLocation?.state +
+        "," +
+        order?.addDestinationLocation?.country +
+        "-" +
+        order?.addDestinationLocation?.postal_code
+      );
+    };
+
+    const getVehicleType = (vehicleId) => {
+      let result = vehicleType?.filter((vehicle) => vehicle.id == vehicleId);
+      return result[0]?.vehicle_type;
+    };
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    showErrorToast("Under the development.....")
+    // navigate(`/${baseUrl}/payment`, {
+    //   state: {
+    //     order,
+    //     orderCustomerDetails,
+    //     dropoffDetail,
+    //     isAddressAdd,
+    //   },
+    // });
+  };
 
-    navigate(`/${baseUrl}/payment`, {
-      state: {
-        order,
-        orderCustomerDetails,
-        dropoffDetail,
-        isAddressAdd,
-      },
-    });
-  };
-  const handleSaveAddress = (e) => {
-    setIsAddressAdd(!isAddressAdd);
-  };
+  
+ 
 
   return (
     <>
@@ -74,7 +111,7 @@ function EnterpriseShiftOrderPreview() {
                       icon={faLocationDot}
                     />
                     <p className={Styles.pickuporderPreviewPickupAddressText}>
-                      3891 Ranchview , California 62639
+                    {getOrderAddress(order)}
                     </p>
                   </div>
 
@@ -86,7 +123,7 @@ function EnterpriseShiftOrderPreview() {
                       icon={faLocationCrosshairs}
                     />
                     <p className={Styles.pickuporderPreviewPickupAddressText}>
-                      1901 Thornridge Cir. Shiloh, California
+                      {getOrderdAddress(order)}
                     </p>
                   </div>
                 </div>
@@ -112,14 +149,14 @@ function EnterpriseShiftOrderPreview() {
                             Styles.enterpriseShiftRequestNewDeliveryDriverName
                           }
                         >
-                          John Doe
+                          {order?.slot?.first_name + " "+order?.slot?.last_name}
                         </h4>
                         <p
                           className={
                             Styles.enterpriseShiftRequestNewDeliveryTruckDetails
                           }
                         >
-                          VOLVO FH16 2022
+                          {getVehicleType(order?.vehicle_type_id)}
                         </p>
                       </div>
                       <div
@@ -127,7 +164,7 @@ function EnterpriseShiftOrderPreview() {
                           Styles.enterpriseShiftRequestNewDeliveryVehicleImg
                         }
                       >
-                        <img src={Pickup} alt="img" />
+                        <img src={getImage({id:order?.vehicle_type_id})} alt={`${getVehicleType(order?.vehicle_type_id)} Icon`} />
                       </div>
                     </div>
                   </div>
@@ -135,15 +172,15 @@ function EnterpriseShiftOrderPreview() {
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Pickup details
+                    Dropoff details
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
                       <h5 className={Styles.pickupOrderPreviewVehicleType}>
-                      Adam Smith
+                      {dropoffDetail?.name+ " "+ dropoffDetail?.lastname}
                       </h5>
                       <p className={Styles.pickupOrderPreviewCompanyName}>
-                      Adam Inc.
+                      {dropoffDetail?.company}
                       </p>
                     </div>
                   </div>
@@ -157,7 +194,7 @@ function EnterpriseShiftOrderPreview() {
                         icon={faGlobe}
                       />
                       <p className={Styles.pickupOrderAdminEmail}>
-                      adaminc@email.com
+                      {dropoffDetail?.email}
                       </p>
                     </div>
 
@@ -167,7 +204,7 @@ function EnterpriseShiftOrderPreview() {
                         icon={faPhone}
                       />
                       <p className={Styles.pickupOrderAdminEmail}>
-                      +33 1 23 45 67 89
+                      +{dropoffDetail?.phoneNumber}
                       </p>
                     </div>
                   </div>
@@ -178,18 +215,19 @@ function EnterpriseShiftOrderPreview() {
                       icon={faCommentDots}
                     />
                     <p className={Styles.pickupOrderPreviewPickupNotes}>
-                    Lorem ipsum dolor sit amet consectetur. Ornare faucibus ac ultricies sed penatibus. Integer sit sagit tis tempor cursus amet. Nunc cursus cras fermen tum elit pulvinar amet.
+                    {dropoffDetail?.pickupnote}
                     </p>
                   </div>
                 </div>
 
                 <div className={Styles.EnterpriseShiftAddPickupDetailsBtnCard}>
-                  <Link
-                    to="#"
-                    className={Styles.addPickupDetailsNextBtn}
-                  >
+                  <div
+                                      onClick={submitHandler}
+                                      className={Styles.addPickupDetailsNextBtn}
+                                      style={{ cursor: "pointer" }}
+                                    >
                     Place Order
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>
