@@ -8,7 +8,7 @@ import {
   faArrowRight,
   faLocationCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "../../../common/CommonHeader";
 import { useSelector } from "react-redux";
 
@@ -56,6 +56,21 @@ const Stopwatch = () => {
 
 const EnterpriseDeliveryboyShiftPage = () => {
   const user = useSelector((state) => state.auth.user);
+  const navigate=useNavigate()
+  const location = useLocation();
+    const { slot, vehicle_type_id,orderNumber,branchId,branchAddress } = location.state || {};
+    const requestDeliveries = () => {
+    
+      navigate("/enterprise/shift-request-new-delivery", {
+        state: {
+          slot,
+          vehicle_type_id,
+          orderNumber,
+          branchId,
+          branchAddress
+        },
+      });
+    };
   return (
     <>
       {/* Header Start Here */}
@@ -84,7 +99,7 @@ const EnterpriseDeliveryboyShiftPage = () => {
                     Styles.enterpriseShiftPageDeliveryBoyReadyDiscription
                   }
                 >
-                  John Doe is at your location and ready to deliver
+                  {slot?.first_name+ " "+ slot?.last_name} is at your location and ready to deliver
                 </p>
               </div>
               <div>
@@ -128,9 +143,10 @@ const EnterpriseDeliveryboyShiftPage = () => {
                 </div>
               </div>
 
-              <Link
-                to="/enterprise/shift-request-new-delivery"
+              <div
+                onClick={requestDeliveries}
                 className={Styles.enterpriseShiftPageActiveDelivriesLowerCard}
+                style={{cursor:"pointer"}}
               >
                 <div
                   className={
@@ -154,7 +170,7 @@ const EnterpriseDeliveryboyShiftPage = () => {
                   }
                   icon={faArrowRight}
                 />
-              </Link>
+              </div>
             </div>
           </div>
 

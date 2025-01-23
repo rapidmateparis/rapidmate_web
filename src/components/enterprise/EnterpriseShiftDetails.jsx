@@ -33,10 +33,6 @@ const EnterpriseShiftDetails = () => {
   const location = useLocation();
   const { order, branches } = location.state || {}; // Adding fallback in case location.state is undefined or null.
   const [orders, setOrders] = useState({});
-  const [deliveryboy, setDeliveryboy] = useState({});
-  const [destinationAddress, setDestinationAddress] = useState({});
-  const [sourceAddress, setSourceAddress] = useState({});
-  const [loading, setLoading] = useState(false);
   const [viewType, setViewType] = useState("table");
   const [showModal, setShowModal] = useState(false);
 
@@ -65,10 +61,8 @@ const EnterpriseShiftDetails = () => {
   };
 
   const getVehicleType = (vehicleId) => {
-    const vehicletype = vehicleType?.filter(
-      (vehicle) => vehicle.id == vehicleId
-    );
-    return vehicletype;
+    let result = vehicleType?.filter((vehicle) => vehicle.id == vehicleId);
+    return result[0]?.vehicle_type;
   };
 
   const orderDetail = async () => {
@@ -78,7 +72,6 @@ const EnterpriseShiftDetails = () => {
   useEffect(() => {
     // If location.state is null or undefined, navigate back
     if (!location.state) {
-      console.log("Location state is null or undefined, navigating back");
       navigate(-1); // Go back to the previous page
     } else {
       orderDetail();
@@ -96,8 +89,6 @@ const EnterpriseShiftDetails = () => {
       },
     });
   };
-
-  console.log(orders);
   return (
     <>
       <CommonHeader userData={user} />
@@ -172,7 +163,7 @@ const EnterpriseShiftDetails = () => {
                     </p>
                   </div>
                   <p className={Styles.enterpriseShiftDetailVehiclenameType}>
-                    {getVehicleType(orders?.vehicle_type_id)?.vehicle_type}
+                    {getVehicleType(orders?.vehicle_type_id)}
                   </p>
                 </div>
                 {/* Slot Details */}
@@ -282,7 +273,7 @@ const EnterpriseShiftDetails = () => {
                                   : "N/A"}{" "}
                               </td>
                               <td>
-                                {slot?.delivery_boy_id ? (
+                                {slot?.ext_id ? (
                                   <div
                                     className={
                                       Styles.enterpriseShiftDetailDriverCard
@@ -303,14 +294,14 @@ const EnterpriseShiftDetails = () => {
                                           Styles.enterpriseShiftDetailDriverName
                                         }
                                       >
-                                        John Doe
+                                        {slot?.first_name+ " "+slot?.last_name}
                                       </h4>
                                       <p
                                         className={
                                           Styles.enterpriseShiftDetailDrivertruckDetails
                                         }
                                       >
-                                        VOLVO FH16 2022
+                                        {getVehicleType(orders?.vehicle_type_id)}
                                       </p>
                                     </div>
                                   </div>
@@ -336,7 +327,7 @@ const EnterpriseShiftDetails = () => {
                               </td>
                               <td>{slot.next_action_status}</td>
                               <td>
-                                {slot?.delivery_boy_id ? (
+                                {slot?.ext_id ? (
                                   <Button
                                     onClick={() => AssignDelivery(slot)}
                                     variant="outline-primary"

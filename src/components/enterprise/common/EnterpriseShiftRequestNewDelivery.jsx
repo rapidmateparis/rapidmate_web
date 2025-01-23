@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Styles from "../../../assets/css/home.module.css";
-import { MAPS_API_KEY } from "../../../utils/Constants";
+import { getLocation, MAPS_API_KEY } from "../../../utils/Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -22,45 +22,36 @@ import CommonHeader from "../../../common/CommonHeader";
 import Driver from "../../../assets/images/Driver-Image.jpeg";
 import Pickup from "../../../assets/images/Pickup.png";
 import { useSelector } from "react-redux";
+import getImage from "../../consumer/common/GetImage";
+import { showErrorToast } from "../../../utils/Toastify";
 
 const libraries = ["places"];
 
 function EnterpriseShiftRequestNewDelivery() {
   const user = useSelector((state) => state.auth.user);
+  const { vehicleType } = useSelector((state) => state.commonData.commonData);
   const navigate = useNavigate();
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [center, setCenter] = useState({
     lat: 48.85754309772872,
     lng: 2.3513877855537912,
   });
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [addPickupLocation, setAddPickupLocation] = useState(null);
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const [distancePriceList, setDistancePriceList] = useState([]);
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropoffLocation, setDropoffLocation] = useState("");
-  const [date, setDate] = useState("");
-  const [isSchedule, setIsSchedule] = useState(false);
-  const [map, setMap] = useState(null);
+  const [addDestinationLocation, setAddDestinationLocation] = useState(null);
 
+  const [map, setMap] = useState(null);
+  const location = useLocation();
+  const { slot, vehicle_type_id, orderNumber, branchId, branchAddress } =location.state || {};
+ 
   useEffect(() => {
     setLoading(true);
-    getAllVehicleTypes(
-      null,
-      (successResponse) => {
-        setLoading(false);
-        setVehicleTypeList(successResponse[0]._response);
-      },
-      (errorResponse) => {
-        setLoading(false);
-        setErrorMessage(errorResponse[0]._errors.message);
-      }
-    );
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -74,6 +65,10 @@ function EnterpriseShiftRequestNewDelivery() {
       );
     }
   }, []);
+  const getVehicleType = (vehicleId) => {
+    let result = vehicleType?.filter((vehicle) => vehicle.id == vehicleId);
+    return result[0]?.vehicle_type;
+  };
 
   useEffect(() => {
     if (pickupLocation && dropoffLocation) {
@@ -108,16 +103,47 @@ function EnterpriseShiftRequestNewDelivery() {
   const calculateRoute = async () => {
     const directionsService = new google.maps.DirectionsService();
     const results = await directionsService.route({
-      origin: { lat: pickupLocation.lat, lng: pickupLocation.lng },
-      destination: { lat: dropoffLocation.lat, lng: dropoffLocation.lng },
+      origin: { lat: parseFloat(pickupLocation.lat), lng: parseFloat(pickupLocation.lng) },
+      destination: { lat: parseFloat(dropoffLocation.lat), lng: parseFloat(dropoffLocation.lng) },
       travelMode: google.maps.TravelMode.DRIVING,
     });
 
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
+    const pickup = getLocation(
+      pickupLocation,
+      pickupLocation.lat,
+      pickupLocation.lng
+    );
+    setAddPickupLocation(pickup);
+    const dropoff = getLocation(
+      dropoffLocation,
+      dropoffLocation.lat,
+      dropoffLocation.lng
+    );
+    setAddDestinationLocation(dropoff);
   };
 
+  const handleContinue = () => {
+    if (!pickupLocation || !dropoffLocation) {
+      showErrorToast("Please fill all fields.");
+      return;
+    }
+
+    const payload = {
+      addPickupLocation,
+      addDestinationLocation,
+      distance,
+      duration,
+      ...location.state
+    };
+    // console.log(payload)
+    navigate("/enterprise/shift-add-drop-details", {
+      state: { order: payload },
+    });
+  };
+ 
   return (
     <>
       <CommonHeader userData={user} />
@@ -145,20 +171,16 @@ function EnterpriseShiftRequestNewDelivery() {
                       Styles.enterpriseShiftRequestNewDeliveryDriverName
                     }
                   >
-                    John Doe
+                    {slot?.first_name + " " + slot?.last_name}
                   </h4>
-                  <p
-                    className={
-                      Styles.enterpriseShiftRequestNewDeliveryTruckDetails
-                    }
-                  >
-                    VOLVO FH16 2022
+                  <p className={Styles.enterpriseShiftRequestNewDeliveryTruckDetails}>
+                    {getVehicleType(vehicle_type_id)}
                   </p>
                 </div>
                 <div
                   className={Styles.enterpriseShiftRequestNewDeliveryVehicleImg}
                 >
-                  <img src={Pickup} alt="img" />
+                  <img src={getImage({id:vehicle_type_id})} alt={`${getVehicleType(vehicle_type_id)} Icon`} />
                 </div>
               </div>
             </div>
@@ -172,8 +194,8 @@ function EnterpriseShiftRequestNewDelivery() {
                 zIndex: "1000",
               }}
             >
-              <Link
-                to="/enterprise/shift-add-drop-details"
+              <button
+                onClick={handleContinue}
                 className={Styles.goToOrderDetails}
               >
                 <p className={Styles.pickuphomeContinueBt}>
@@ -183,7 +205,7 @@ function EnterpriseShiftRequestNewDelivery() {
                   className="pickupHome-rightArrow-icon"
                   icon={faArrowRight}
                 />
-              </Link>
+              </button>
             </div>
           </div>
           <div className="col-md-9">
