@@ -17,7 +17,7 @@ const defaultCenter =  {
     lng: 86.9924864,
   };
 
-const MapComponent = ({ locations }) => {
+const MapComponent = ({ locations,setDistances }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: MAPS_API_KEY, // Replace with your API key
     libraries,
@@ -25,7 +25,7 @@ const MapComponent = ({ locations }) => {
 
   const [directions, setDirections] = useState(null);
   const [markers, setMarkers] = useState([]);
-  const [distances, setDistances] = useState([]);
+  
 
   useEffect(() => {
     if (locations.length > 0) {

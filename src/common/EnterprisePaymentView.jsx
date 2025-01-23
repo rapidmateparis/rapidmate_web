@@ -43,6 +43,7 @@ import {
 } from "../utils/Constants";
 import PickupAddPaymentMethodsModal from "../components/consumer/account/PickupAddPaymentMethodsModal";
 import moment from "moment";
+import localforage from "localforage";
 
 const stripePromise = loadStripe(
   "pk_test_51PgiLhLF5J4TIxENPZOMh8xWRpEsBxheEx01qB576p0vUZ9R0iTbzBFz0QvnVaoCZUwJu39xkym38z6nfNmEgUMX00SSmS6l7e"
@@ -651,12 +652,13 @@ function EnterprisePaymentView() {
   useEffect(() => {
     if (paymentAmount > 0) {
       const createPaymentIntent = async () => {
+        const token = await localforage.getItem('1');
         try {
           const response = await fetch(
             `${BASE_URL}payment/create-payment-intent`,
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: { "Content-Type": "application/json",'Authorization': token },
               body: JSON.stringify({
                 amount: paymentAmount, // Convert to cents for Stripe
                 currency: "eur",

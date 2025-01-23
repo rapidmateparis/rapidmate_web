@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import Autocomplete from "react-google-autocomplete";
 import { MAPS_API_KEY } from "../../utils/Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faLocationCrosshairs, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../../assets/css/home.module.css";
-const LocationInput = ({ onLocationChange }) => {
+const LocationInput = ({ onLocationChange,title ,icon}) => {
   return (
-    <div className={Styles.homePickupDropAddressCards}>
-      <div className={Styles.pickupAddresAutocompleteCard}>
+   
+      <>
         <FontAwesomeIcon
           className={Styles.pickupHomeLocationIcon}
-          icon={faLocationDot}
+          icon={icon=='faLocationDot'? faLocationDot : faLocationCrosshairs}
         />
         <div style={{ width: "100%" }}>
           <Autocomplete
@@ -23,7 +23,7 @@ const LocationInput = ({ onLocationChange }) => {
             options={{
               types: ["address"],
             }}
-            placeholder="Enter pickup location"
+            placeholder={title}
             className={Styles.homeMapPlaceSearch}
           />
         </div>
@@ -31,10 +31,10 @@ const LocationInput = ({ onLocationChange }) => {
           className="pickupHome-rightArrow-icon"
           icon={faArrowRight}
         />
-      </div>
+      </>
 
-      <div className={Styles.homePickupLocationsBorderShowoff} />
-    </div>
+      
+   
   );
 };
 
