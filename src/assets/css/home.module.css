@@ -1521,7 +1521,11 @@ a {
   font-size: 15px;
   color: var(--secondary-color);
   margin: 0px;
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.enterpriseHomeMainSec{
+  margin: 0px 50px;
 }
 
 /* --------------- DateTimePicker ------------  */
@@ -1965,7 +1969,7 @@ a {
   background-size: cover;
   background-position: center;
   width: 100%;
-  height: 100vh;
+  height: 91vh;
 }
 
 .driverBackgroundMiddleCard {
@@ -2530,7 +2534,7 @@ a {
 
 .pickupHistoryFromLocaCard {
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
 .pickupHistoryShowOff {
@@ -3715,6 +3719,7 @@ a {
   padding: 15px;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  margin-left: 20px;
 }
 
 .enterpriseHomeResturentCircle {
@@ -4074,8 +4079,35 @@ a {
   background: #717172;
 }
 
+.pickuporderTrackingMainScroll{
+  height: 91vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.pickuporderTrackingMainScroll::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.pickuporderTrackingMainScroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.pickuporderTrackingMainScroll::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.pickuporderTrackingMainScroll::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
 .enterpriseNewScheduleLinkCard {
   display: flex;
+  gap: 20px;
   align-items: center;
   background-color: var(--white-color);
   padding: 10px 15px;
@@ -4087,7 +4119,6 @@ a {
 .enterpriseNewScheduleOneTimeImg {
   height: 31px;
   width: auto;
-  margin-right: 15px;
 }
 
 .enterpriseNewScheduleDeliveryTitle {
@@ -6061,11 +6092,48 @@ a {
 }
 
 .max75 {
-  max-width: 75% !important;
+  max-width: 65% !important;
   margin: 0 auto;
 }
 
 .customSwitch input:checked {
   background-color: yellow !important;
   border-color: yellow !important;
+}
+
+.enterpriseHomeCompanyLocMainCard{
+  height: 91vh;
+  padding: 0px 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.enterpriseHomeCompanyLocMainCard::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+.enterpriseHomeCompanyLocMainCard::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.enterpriseHomeCompanyLocMainCard::-webkit-scrollbar-thumb {
+  background: #717172;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.enterpriseHomeCompanyLocMainCard::-webkit-scrollbar-thumb:hover {
+  background: #717172;
+}
+
+.driverAnimation svg{
+  height: 700px !important;
+  margin-top: -150px;
+}
+
+.lookingDriverMainTitlesCard{
+  text-align: center;
+  margin-top: -150px;
 }
