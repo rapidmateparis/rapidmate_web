@@ -4,10 +4,14 @@ import Styles from "../assets/css/home.module.css";
 import { useSelector } from "react-redux";
 import CommonHeader from "./CommonHeader";
 import DriverCircle from "../assets/images/DriverBackgroun-Circle.png";
-import DriverProfiles from "../assets/images/DriverLoader-Profiles.png";
+import DriverProfiles from "../assets/webImages/LookingForDriver.json";
 import PickupCancellationReasonModal from "./PickupCancellationReasonModal";
 import { ToastContainer } from "react-toastify";
-import { getAllocatedDeliveryBoy, getLocations } from "../data_manager/dataManage";
+import {
+  getAllocatedDeliveryBoy,
+  getLocations,
+} from "../data_manager/dataManage";
+import Lottie from "lottie-react";
 
 const SearchDriver = () => {
   const navigate = useNavigate();
@@ -44,7 +48,9 @@ const SearchDriver = () => {
             (driverResponse) => {
               clearTimeout(timeoutRef.current); // Clear timeout if successful
               setRetryCount(null); // Stop retries
-              const baseUrl = user?.userDetails?.role?.toLowerCase().replace(/_/g, "");
+              const baseUrl = user?.userDetails?.role
+                ?.toLowerCase()
+                .replace(/_/g, "");
 
               navigate(`/${baseUrl}/order-tracking`, {
                 state: {
@@ -69,7 +75,10 @@ const SearchDriver = () => {
         }
       },
       (errorResponse) => {
-        console.error("Location fetch error:", errorResponse[0]?._errors?.message);
+        console.error(
+          "Location fetch error:",
+          errorResponse[0]?._errors?.message
+        );
       }
     );
   };
@@ -104,19 +113,20 @@ const SearchDriver = () => {
                 </button>
               </div>
               <div className={Styles.driverBackgroundMiddleCard}>
-                <img
-                  className={Styles.backgroundDriverCircle}
-                  src={DriverCircle}
-                  alt="Driver Background Circle"
-                />
-                <div className={Styles.DriverProfileCardMainBg}>
-                  <img
-                    className={Styles.backgroundDriverCircleProfiles}
-                    src={DriverProfiles}
-                    alt="Driver Profile"
+                <div>
+                  <Lottie
+                    animationData={DriverProfiles}
+                    loop={true}
+                    className={Styles.driverAnimation}
                   />
-                  <h1 className={Styles.lookingDriverText}>Looking for driver</h1>
-                  <p className={Styles.lookingDriverSubText}>{searchMessage}</p>
+                  <div className={Styles.lookingDriverMainTitlesCard}>
+                    <h1 className={Styles.lookingDriverText}>
+                      Looking for driver
+                    </h1>
+                    <p className={Styles.lookingDriverSubText}>
+                      {searchMessage}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

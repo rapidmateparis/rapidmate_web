@@ -4,8 +4,10 @@ import Styles from "../assets/css/home.module.css";
 import DriverCircle from "../assets/images/DriverBackgroun-Circle.png";
 import DriverProfiles from "../assets/images/driver-not-available-Icon.png";
 import { useSelector } from "react-redux";
+import CommonHeader from "./CommonHeader";
 
 const DriverNotAvailable = () => {
+  const user = useSelector((state) => state.auth.user);
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const navigate = useNavigate();
@@ -20,11 +22,12 @@ const DriverNotAvailable = () => {
   };
   return (
     <>
+      <CommonHeader userData={user} />
       <section className={Styles.lookingDriverSection}>
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <div>
+              <div className="mt-5">
                 <div className={Styles.driverBackgroundMiddleCard}>
                   <img
                     className={Styles.backgroundDriverCircle}

@@ -250,7 +250,7 @@ function LiveTracking() {
       <section>
         <div className={`row ${Styles.manageRow}`}>
           <div className="col-md-3">
-            <div>
+            <div className={Styles.pickuporderTrackingMainScroll}>
               <div className={Styles.pickuporderTrackingAddressCardMain}>
                 <div className={Styles.pickupOrderTrackingPickupAddressCard}>
                   <FontAwesomeIcon

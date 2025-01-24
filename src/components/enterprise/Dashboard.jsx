@@ -228,8 +228,8 @@ function CommonDashboard() {
   return (
     <>
       <section className={Styles.enterpriseHomeSec}>
-        <div className="container">
-          <div className="row">
+        <div className={Styles.enterpriseHomeMainSec}>
+          <div className={`row ${Styles.manageRow}`}>
             <div className="col-md-8">
               <div>
                 <p className={Styles.enterprisesHomeUserWelcomeText}>

@@ -22,7 +22,7 @@ const VehicleSelection = ({
           <p className={Styles.pickupRequestText}>Choose the vehicle</p>
           {selectedVehiclePrice && (
             <p className={Styles.selectedVehiclePriceText}>
-              {selectedVehiclePrice} €
+             <b>€ {selectedVehiclePrice}</b> {''}Excl. VAT
             </p>
           )}
         </div>
