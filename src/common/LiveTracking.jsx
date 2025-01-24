@@ -175,6 +175,8 @@ function LiveTracking() {
     switch (order?.order_status) {
       case "ON_THE_WAY_PICKUP":
         return 2;
+      case "REACHED":
+          return 2;
       case "OTP_VERIFIED":
         return 3;
       case "ON_THE_WAY_DROP_OFF":
@@ -185,7 +187,7 @@ function LiveTracking() {
         return 1;
     }
   };
-
+  console.log(order?.order_status)
   // Ensure `getStep` is used consistently to initialize and update the step.
   const [currentStep, setCurrentStep] = useState(() => getStep(order));
 

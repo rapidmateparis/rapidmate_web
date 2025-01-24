@@ -13,17 +13,17 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
   const handleNowClick = () => {
     const now = new Date();
     const formattedDate = now.toISOString().split("T")[0];
-    const formattedTime = now.toTimeString().split(" ")[0].slice(0, 5);
+    const formattedTime = now.toTimeString().split(" ")[0];
     setSelectedDate(formattedDate);
     setSelectedTime(formattedTime);
     const combinedDateTime = new Date(`${formattedDate}T${formattedTime}`);
-    onDateTimeChange(combinedDateTime,false);
+    onDateTimeChange(combinedDateTime, false);
   };
 
   const calendarClick = () => {
     const now = new Date();
     const formattedDate = now.toISOString().split("T")[0];
-    const formattedTime = now.toTimeString().split(" ")[0].slice(0, 5);
+    const formattedTime = now.toTimeString().split(" ")[0];
     setSelectedDate(formattedDate);
     setSelectedTime(formattedTime);
     setShowPicker(true);
@@ -31,13 +31,13 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
 
   const handleSave = () => {
     const combinedDateTime = new Date(`${selectedDate}T${selectedTime}`);
-    onDateTimeChange(combinedDateTime,true);
+    onDateTimeChange(combinedDateTime, true);
     setShowPicker(false);
   };
   return (
     <div className={Styles.homepickupScheduleRequestCardMain}>
       <div className={Styles.pickupHomeScheduleselectCard}>
-        <div onClick={calendarClick}  style={{ cursor: "pointer" }}>
+        <div onClick={calendarClick} style={{ cursor: "pointer" }}>
           <FontAwesomeIcon
             className={Styles.pickupHomeCalenderIcon}
             icon={faCalendarDays}
@@ -45,8 +45,14 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
         </div>
 
         <p className={Styles.pickupHomeWhenNeedText}>
-          When do you need it? {selectedDate?.toString()}{" "}
-          {selectedTime?.toString()}
+          {selectedDate ? (
+            <>
+              {selectedDate.toString()}{" "}
+              <strong>{selectedTime?.toString()}</strong>
+            </>
+          ) : (
+            "When do you need it?"
+          )}
         </p>
         <p
           className={Styles.pickupHomeNowText}
@@ -161,7 +167,6 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
           }}
           onClick={() => setShowPicker(false)}
         />
-    
       )}
     </div>
   );
