@@ -81,6 +81,7 @@ import EnterpriseDeliveryboyShiftPage from "../components/enterprise/common/Ente
 import EnterpriseShiftRequestNewDelivery from "../components/enterprise/common/EnterpriseShiftRequestNewDelivery";
 import EnterpriseShiftAddDropDetails from "../components/enterprise/common/EnterpriseShiftAddDropDetails";
 import EnterpriseShiftOrderPreview from "../components/enterprise/common/EnterpriseShiftOrderPreview";
+import SupportPage from "../common/SupportPage";
 function MainRoutes() {
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
@@ -105,6 +106,7 @@ function MainRoutes() {
         <Route path="/french-privacy-policy" element={<FrenchPrivacyPolicy/>} />
         <Route path="/french-terms-service" element={<FrenchTermsOfService/>} />
         <Route path="/french-cookies" element={<FrenchCookies/>} />
+        <Route path="/support-page" element={<SupportPage/>} />
 
 
         <Route path="/login" element={<Login />} />

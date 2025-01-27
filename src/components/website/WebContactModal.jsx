@@ -97,7 +97,7 @@ function WebContactModal({ show, handleClose }) {
                         icon={faEnvelope}
                       />
                       <p className={Styles.homeContactModalNumbertext}>
-                        elyas@rapidmate.fr
+                        contact@rapidmate.fr
                       </p>
                     </div>
 
