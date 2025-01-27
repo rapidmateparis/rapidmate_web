@@ -23,46 +23,59 @@ import { showErrorToast } from "../../utils/Toastify";
 
 import MapComponent from "./MapComponent";
 import LocationInput from "./LocationInput";
+import VehicleSelection from "../consumer/common/VehicleSelection";
+import DateTimePicker from "../consumer/common/DateTimePicker";
 
 function MultipleDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { deliveryType, selectedBranch } = location.state;
+
   const user = useSelector((state) => state.auth.user);
-  const [currentLocation, setCurrentLocation] = useState();
+  const [center, setCenter] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [pickupLoc,setPickupLoc]=useState("")
+  const [dropoffLocations, setDropoffLocations] = useState([""]);
+  const [dropoffLoc, setDropoffLoc] = useState([""]);
+  const [distances, setDistances] = useState([]);
+  const [distancePriceList, setDistancePriceList] = useState([]);
+  const [date, setDate] = useState("");
+  const [isSchedule, setIsSchedule] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
-  const [distancePriceList, setDistancePriceList] = useState([]);
-  const [selectedServiceType, setSelectedServiceType] = useState("");
-  const { enterpriseServiceType } = useSelector(
-      (state) => state.commonData.commonData
-    );
-  const [vehicleDetail, setVehicleDetail] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [dropoffLocations, setDropoffLocations] = useState([""]);
-  const [distances, setDistances] = useState([]);
+  const [distance, setDistance] = useState(null);
+  const [duration, setDuration] = useState(null);
 
-  const handlePickupChange = (location) => {
+  const handlePickupChange = (location,locationDetails) => {
     setPickupLocation(location);
+    setPickupLoc(locationDetails)
   };
 
-  const handleDropoffChange = (index, location) => {
+  const handleDropoffChange = (index, location,locationDetails) => {
     setDropoffLocations((prev) => {
       const updatedLocations = [...prev];
       updatedLocations[index] = location;
       return updatedLocations;
     });
+   
+    setDropoffLoc((prev) => {
+      const updatedDropoff = [...prev];
+      updatedDropoff[index] = locationDetails;
+      return updatedDropoff;
+    })
   };
 
   const addDropoffRow = () => {
     setDropoffLocations((prev) => [...prev, ""]);
+    setDropoffLoc((prev) => [...prev, ""]);
   };
 
   const removeDropoffRow = (index) => {
     setDropoffLocations((prev) => prev.filter((_, i) => i !== index));
+    setDropoffLoc((prev) => prev.filter((_, i) => i !== index));
   };
 
   const combinedLocations = [pickupLocation, ...dropoffLocations].filter(
@@ -98,7 +111,6 @@ function MultipleDelivery() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setCurrentLocation({ lat: latitude, lng: longitude });
           setCenter({ lat: latitude, lng: longitude });
         },
         (error) => {
@@ -108,17 +120,75 @@ function MultipleDelivery() {
       );
     }
   }, []);
+
   const getPriceUsingVehicleType = (vehicleTypeId) => {
-    const result = distancePriceList.find(
+    const result = distancePriceList?.find(
       (priceList) => priceList.vehicle_type_id === vehicleTypeId
     );
     return result?.total_price || 0;
   };
+
   const openModal = (vehicle) => {
     setVehicleDetail(vehicle);
     setShowModal(true);
   };
 
+  useEffect(() => {
+    const getDistancePrice = () => {
+      getDistancePriceList(
+        distance,
+        (successResponse) => {
+          setDistancePriceList(successResponse[0]._response);
+        },
+        (errorResponse) => {
+          console.log("Error fetching distance price:", errorResponse[0]);
+        }
+      );
+    };
+    if (distance) {
+      setSelectedVehicle(null)
+      setSelectedVehiclePrice(null)
+      setSelectedVehicleDetails(null)
+      getDistancePrice()
+
+      console.log("pickup location",dropoffLocations)
+      console.log("dropoff location",dropoffLoc)
+    }
+  }, [distance]);
+
+   const handleContinue = () => {
+      if (
+        !pickupLoc ||
+        !dropoffLoc ||
+        !selectedVehicle
+      ) {
+        showErrorToast("Please fill all fields.");
+        return;
+      }
+
+      if(date==""){
+        showErrorToast("Plz select pickup time.")
+        return 
+      }
+
+  
+      const payload = {
+        pickupLoc,
+        dropoffLoc,
+        selectedVehicle,
+        distance,
+        duration,
+        selectedVehicleDetails,
+        selectedVehiclePrice,
+        deliveryType,
+        selectedBranch,
+      };
+  
+      navigate("/enterprise/add-dropoff-details", {
+        state: { order: payload },
+      });
+    };
+  
   return (
     <>
       <CommonHeader userData={user} />
@@ -144,8 +214,8 @@ function MultipleDelivery() {
                     className={Styles.pickupAddresAutocompleteCard}
                   >
                     <LocationInput
-                      onLocationChange={(location) =>
-                        handleDropoffChange(index, location)
+                      onLocationChange={(location,locationDetails) =>
+                        handleDropoffChange(index, location,locationDetails)
                       }
                       title="Enter drop-off location"
                       icon="faLocationCrosshairs"
@@ -166,7 +236,9 @@ function MultipleDelivery() {
                   onClick={addDropoffRow}
                 />
               </div>
-              <ServiceTypeSelection
+              <DateTimePicker setDate={setDate} setIsSchedule={setIsSchedule} />
+
+              <VehicleSelection
                 vehicleTypeList={vehicleTypeList}
                 selectedVehicle={selectedVehicle}
                 setSelectedVehicle={setSelectedVehicle}
@@ -176,9 +248,6 @@ function MultipleDelivery() {
                 getPriceUsingVehicleType={getPriceUsingVehicleType}
                 openModal={openModal}
                 dropoffLocation={dropoffLocations}
-                selectedServiceType={selectedServiceType}
-                setSelectedServiceType={setSelectedServiceType}
-                enterpriseServiceType={enterpriseServiceType}
               />
             </div>
 
@@ -192,7 +261,7 @@ function MultipleDelivery() {
                 zIndex: "1000",
               }}
             >
-              <button className={Styles.goToOrderDetails}>
+              <button onClick={handleContinue} className={Styles.goToOrderDetails}>
                 <p className={Styles.pickuphomeContinueBt}>
                   Continue to order details
                 </p>
@@ -204,7 +273,13 @@ function MultipleDelivery() {
             </div>
           </div>
           <div className="col-md-9">
-            <MapComponent locations={combinedLocations} setDistances={setDistances} />
+            <MapComponent
+              locations={combinedLocations}
+              setDistances={setDistances}
+              center={center}
+              setDistance={setDistance}
+              setDuration={setDuration}
+            />
           </div>
         </div>
 

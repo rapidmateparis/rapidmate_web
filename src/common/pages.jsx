@@ -26,6 +26,7 @@ import EnterpriseScheduleApproved from "../components/enterprise/EnterpriseSched
 import EnterpriseMultipleDeliveriesSelectService from "../components/enterprise/EnterpriseMultipleDeliveriesSelectService";
 import EnterpriseMultipleDeliverySelectLocation from "../components/enterprise/EnterpriseMultipleDeliverySelectLocation";
 import EnterpriseAddPickupDetails from "../components/enterprise/EnterpriseAddPickupDetails";
+import EnterpriseAddDropoffDetails from "../components/enterprise/EnterpriseAddDropoffDetails";
 import EnterpriseOrderPreview from "../components/enterprise/common/EnterpriseOrderPreview";
 import DeliveryboyProfile from "../components/consumer/account/DeliveryboyProfile";
 import ManageCompanyLocation from "../components/consumer/account/ManageCompanyLocation"
@@ -81,6 +82,7 @@ export {
     EnterpriseMultipleDeliveriesSelectService,
     EnterpriseMultipleDeliverySelectLocation,
     EnterpriseAddPickupDetails,
+    EnterpriseAddDropoffDetails,
     EnterpriseOrderPreview,
     DeliveryboyProfile,
     ManageCompanyLocation,

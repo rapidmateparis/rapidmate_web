@@ -12,12 +12,9 @@ const mapContainerStyle = {
   width: "100%", height: "90.5vh"
 };
 
-const defaultCenter =  {
-    lat: 25.2411904, // Default center (San Francisco)
-    lng: 86.9924864,
-  };
 
-const MapComponent = ({ locations,setDistances }) => {
+
+const MapComponent = ({ locations,setDistances,center,setDistance,setDuration }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: MAPS_API_KEY, // Replace with your API key
     libraries,
@@ -26,7 +23,6 @@ const MapComponent = ({ locations,setDistances }) => {
   const [directions, setDirections] = useState(null);
   const [markers, setMarkers] = useState([]);
   
-
   useEffect(() => {
     if (locations.length > 0) {
       createMarkers(locations);
@@ -81,8 +77,73 @@ const MapComponent = ({ locations,setDistances }) => {
       duration:leg.duration.text,
     }));
     setDistances(distancesArray);
+
+    // Calculate total distance and update state
+    const totalDistance = results.routes[0].legs.reduce((sum, leg) => {
+      // Convert distance from text (e.g., "10.5 km") to a numeric value
+      const distanceValue = parseFloat(leg.distance.text.replace(" km", ""));
+      return sum + distanceValue;
+    }, 0);
+
+    setDistance((prevDistance) => {
+      if (prevDistance !== totalDistance.toFixed(2)) {
+        return totalDistance.toFixed(2); 
+      }
+      return prevDistance;
+    });
+
+     // Calculate total duration
+   
+    const totalDurationMinutes = results.routes[0].legs.reduce((sum, leg) => {
+      const durationValue = parseDurationToMinutes(leg.duration.text);
+      return sum + durationValue;
+    }, 0);
+  
+   
+  
+    // Check if total minutes are less than 60
+    if (totalDurationMinutes < 60) {
+      setDuration((prevDuration) => {
+        if (prevDuration !== totalDurationMinutes) {
+          return `${totalDurationMinutes} min`;
+        }
+        return prevDuration;
+      });
+    } else {
+      // Convert to hours and minutes
+      const hours = Math.floor(totalDurationMinutes / 60);
+      const minutes = totalDurationMinutes % 60;
+  
+      if (minutes === 0) {
+        setDuration((prevDuration) => {
+          if (prevDuration !== hours) {
+            return `${hours} hours`;
+          }
+          return prevDuration;
+        });
+      } else {
+       
+        setDuration(`${hours} hours ${minutes} minutes`);
+      }
+    }
   };
 
+   // Helper function to parse duration (e.g., "1 hour 25 mins") into minutes
+   const parseDurationToMinutes = (durationText) => {
+    const timeParts = durationText.match(/(\d+)\s*(hour|minute|mins|min)/gi);
+    let totalMinutes = 0;
+
+    if (timeParts) {
+      timeParts.forEach((part) => {
+        if (part.includes("hour")) {
+          totalMinutes += parseInt(part) * 60;
+        } else {
+          totalMinutes += parseInt(part);
+        }
+      });
+    }
+    return totalMinutes;
+  };
   if (!isLoaded) return <div>Loading map...</div>;
 
   return (
@@ -90,7 +151,7 @@ const MapComponent = ({ locations,setDistances }) => {
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={10}
-        center={defaultCenter}
+        center={center}
         options={{
             zoomControl: false,
             streetViewControl: false,

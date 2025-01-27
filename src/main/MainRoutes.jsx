@@ -22,6 +22,7 @@ import {
   PickupPaymentMethods,
   PickupChangePassword,
   EnterpriseAddPickupDetails,
+  EnterpriseAddDropoffDetails,
   EnterpriseOrderPreview,
   MultipleDelivery,
   EnterpriseScheduleApproved,
@@ -170,6 +171,10 @@ function MainRoutes() {
         <Route
           path="/enterprise/add-pickup-details"
           element={<EnterpriseAddPickupDetails />}
+        />
+        <Route
+          path="/enterprise/add-dropoff-details"
+          element={<EnterpriseAddDropoffDetails />}
         />
         <Route
           path="/enterprise/order-preview"

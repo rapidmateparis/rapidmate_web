@@ -16,8 +16,16 @@ const LocationInput = ({ onLocationChange,title ,icon}) => {
           <Autocomplete
             apiKey={MAPS_API_KEY} // Replace with your API key
             onPlaceSelected={(place) => {
+              const locationDetails = {
+                address: place.formatted_address,
+                displayedAddress:place.name || place.formatted_address,
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+                components: place.address_components,
+              };
+
               if (place && place.formatted_address) {
-                onLocationChange(place.formatted_address);
+                onLocationChange(place.formatted_address,locationDetails);
               }
             }}
             options={{
