@@ -26,6 +26,7 @@ import { API} from "../../utils/Constants";
 import { useSelector } from "react-redux";
 import DeliveryDetailsMap from "../../common/DeliveryDetailsMap";
 import { showErrorToast } from "../../utils/Toastify";
+import localforage from "localforage";
 
 const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
   const [orders, setOrders] = useState({});
@@ -143,8 +144,20 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
   const downloadInvoice = async (orderNumber, pdfUrl) => {
     try {
       // Fetch the PDF
-      const response = await fetch(pdfUrl, { method: "GET" });
-  
+    const token = await localforage.getItem('1');
+    if (!token) {
+      showErrorToast("Authorization token not found.");
+      return;
+    }
+
+    // Fetch the PDF with the token
+    const response = await fetch(pdfUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${token}`, // Ensure proper token format
+      },
+    });
       if (!response.ok) {
         showErrorToast(`Failed to fetch PDF: ${response.statusText}`);
         return
@@ -548,8 +561,20 @@ const ConsumerOrder = ({ user, order, navigate }) => {
   const downloadInvoice = async (orderNumber, pdfUrl) => {
     try {
       // Fetch the PDF
-      const response = await fetch(pdfUrl, { method: "GET" });
+      const token = await localforage.getItem('1');
+      if (!token) {
+        showErrorToast("Authorization token not found.");
+        return;
+      }
   
+      // Fetch the PDF with the token
+      const response = await fetch(pdfUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`, // Ensure proper token format
+        },
+      });
       if (!response.ok) {
         showErrorToast(`Failed to fetch PDF: ${response.statusText}`);
         return

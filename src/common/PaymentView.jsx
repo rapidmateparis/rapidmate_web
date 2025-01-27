@@ -246,7 +246,7 @@ const PaymentPage = ({
     }
     
     getPaymentCard();
-  }, []);
+  }, [user]);
 
   const handleApplyCoupon = () => {
     let params = {

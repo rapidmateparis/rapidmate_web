@@ -317,7 +317,7 @@ const PaymentPage = ({
         setPaymentAmount(calculateFinalPrice(paymentAmount, offerDiscount));
     }
     getPaymentCard();
-  }, []);
+  }, [user]);
 
   const handleApplyCoupon = () => {
     let params = {
