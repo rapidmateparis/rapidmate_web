@@ -65,7 +65,7 @@ const PaymentPage = ({
   const [packageImageId, setPackageImageId] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [paymentCard, setPaymentCard] = useState([]);
+  const [paymentCard, setPaymentCard] = useState(null);
   const openAddModal = () => {
     setShowAddModal(true);
   };

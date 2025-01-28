@@ -1,13 +1,14 @@
 // LocationInput.js
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
-  faArrowRight,
   faLocationCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Styles from "../../../assets/css/home.module.css";
+import FavoriteAddressModal from "../../../common/FavoriteAddressModal";
 
 const LocationInput = ({
   setPickupLocation,
@@ -18,6 +19,9 @@ const LocationInput = ({
   const destinationRef = useRef();
   const originAutocomplete = useRef(null);
   const destinationAutocomplete = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
 
   const handlePlaceChanged = (ref, setLocation) => {
     const autocomplete = ref.current.getPlace();
@@ -42,12 +46,16 @@ const LocationInput = ({
 
           // Reverse Geocoding using Google Maps API
           const geocoder = new window.google.maps.Geocoder();
-          const response = await geocoder.geocode({ location: { lat: latitude, lng: longitude } });
+          const response = await geocoder.geocode({
+            location: { lat: latitude, lng: longitude },
+          });
 
           if (response.results && response.results.length > 0) {
             const locationDetails = {
               address: response.results[0].formatted_address,
-              displayedAddress: response.results[0].address_components[0]?.long_name || response.results[0].formatted_address,
+              displayedAddress:
+                response.results[0].address_components[0]?.long_name ||
+                response.results[0].formatted_address,
               lat: latitude,
               lng: longitude,
               components: response.results[0].address_components,
@@ -97,8 +105,9 @@ const LocationInput = ({
             </Autocomplete>
           </div>
           <FontAwesomeIcon
-            className="pickupHome-rightArrow-icon"
-            icon={faArrowRight}
+            onClick={handleShow}
+            style={{ cursor: "pointer" }}
+            icon={faHeart}
           />
         </div>
 
@@ -128,21 +137,23 @@ const LocationInput = ({
             </Autocomplete>
           </div>
           <FontAwesomeIcon
-            className="pickupHome-rightArrow-icon"
-            icon={faArrowRight}
+            onClick={handleShow}
+            style={{ cursor: "pointer" }}
+            icon={faHeart}
           />
         </div>
       </div>
       <div className="d-flex justify-content-end ">
-      <p
-        className={`${Styles.pickupHomeNowText} cursor-pointer`}
-        onClick={handleUseCurrentLocation}
-        style={{cursor:"pointer"}}
-      >
-        Use Current Location
-      </p>
+        <p
+          className={`${Styles.pickupHomeNowText} cursor-pointer`}
+          onClick={handleUseCurrentLocation}
+          style={{ cursor: "pointer" }}
+        >
+          Use Current Location
+        </p>
       </div>
-      
+      {/* Modal start here  */}
+      <FavoriteAddressModal show={showModal} handleClose={handleClose} />
     </>
   );
 };

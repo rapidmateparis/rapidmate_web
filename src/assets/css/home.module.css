@@ -2617,6 +2617,7 @@ a {
 .pickupDeliveryDetailsSettingsIcon {
   font-size: 20px;
   border: none;
+  color: #000;
   background-color: transparent;
 }
 

@@ -220,7 +220,7 @@ const Login = () => {
                           isInvalid={!!errors.password}
                         />
                         <FontAwesomeIcon
-                          icon={showPassword ? faEyeSlash : faEye}
+                          icon={showPassword ? faEye : faEyeSlash}
                           onClick={togglePasswordVisibility}
                           className={Styles.eyeIcon}
                         />

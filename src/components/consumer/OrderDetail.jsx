@@ -190,9 +190,9 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                     Delivery Details
                   </h4>
                 </div>
-                <button className={Styles.pickupDeliveryDetailsSettingsIcon}>
+                <Link to="/support-page" className={Styles.pickupDeliveryDetailsSettingsIcon}>
                   <FontAwesomeIcon icon={faGear} />
-                </button>
+                </Link>
               </div>
               {/* Map  */}
               <div className={Styles.pickupDeliveryDetailsMapCard}>
@@ -594,9 +594,9 @@ const ConsumerOrder = ({ user, order, navigate }) => {
                     Delivery Details
                   </h4>
                 </div>
-                <button className={Styles.pickupDeliveryDetailsSettingsIcon}>
+                <Link to="/support-page" className={Styles.pickupDeliveryDetailsSettingsIcon}>
                   <FontAwesomeIcon icon={faGear} />
-                </button>
+                </Link>
               </div>
               {/* Map  */}
               <div className={Styles.pickupDeliveryDetailsMapCard}>
