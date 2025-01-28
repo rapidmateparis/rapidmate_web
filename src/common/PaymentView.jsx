@@ -65,7 +65,7 @@ const PaymentPage = ({
   const [packageImageId, setPackageImageId] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [paymentCard, setPaymentCard] = useState([]);
+  const [paymentCard, setPaymentCard] = useState(null);
   const openAddModal = () => {
     setShowAddModal(true);
   };
@@ -246,7 +246,7 @@ const PaymentPage = ({
     }
     
     getPaymentCard();
-  }, []);
+  }, [user]);
 
   const handleApplyCoupon = () => {
     let params = {
@@ -459,7 +459,7 @@ const PaymentPage = ({
                       </p>
 
                       <div className={Styles.paymentAllCardsDataShow}>
-                        {paymentCard?.map((cardInfo, index) => (
+                        {paymentCard && paymentCard?.map((cardInfo, index) => (
                           <div onClick={()=>handleClick(cardInfo)} key={index}>
                             <div className={Styles.paymentMethodAddedCards}>
                               <img

@@ -36,7 +36,8 @@ const VehicleSelection = ({
                     : ""
                 }`}
                 onClick={() => {
-                  if (dropoffLocation!=='') {
+                  console.log(dropoffLocation)
+                  if (dropoffLocation!=='' && dropoffLocation[0] !=='') {
                     setSelectedVehicle(vehicle.vehicle_type);
                     setSelectedVehicleDetails(vehicle);
                     const price = getPriceUsingVehicleType(vehicle.id);
