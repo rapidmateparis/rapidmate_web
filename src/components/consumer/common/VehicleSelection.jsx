@@ -3,6 +3,7 @@ import Styles from "../../../assets/css/home.module.css";
 import Info from "../../../assets/images/info.png";
 import getImage from "./GetImage";
 import { showErrorToast } from "../../../utils/Toastify";
+import { useTranslation } from "react-i18next";
 
 const VehicleSelection = ({
   vehicleTypeList,
@@ -15,11 +16,12 @@ const VehicleSelection = ({
   openModal,
   dropoffLocation,
 }) => {
+  const {t}=useTranslation()
   return (
     <>
       <div className={Styles.homePickupVehicleCardMain}>
         <div className={Styles.selectedVehiclePriceCard}>
-          <p className={Styles.pickupRequestText}>Choose the vehicle</p>
+          <p className={Styles.pickupRequestText}>{t("chooseVehicle")}</p>
           {selectedVehiclePrice && (
             <p className={Styles.selectedVehiclePriceText}>
              <b>€ {selectedVehiclePrice}</b> {''}Excl. VAT

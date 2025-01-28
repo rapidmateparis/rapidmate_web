@@ -20,6 +20,7 @@ import Calender from "../../assets/images/Calender-withBg.png";
 import { buildAddress, titleFormat } from "../../utils/Constants";
 import moment from "moment";
 import EnterpriseOrderFilterModal from "./common/EnterpriseOrderFilterModal";
+import { useTranslation } from "react-i18next";
 
 const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
   const getLocationAddress = (locationId) => {
@@ -513,6 +514,7 @@ const Order = () => {
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
   const navigation = useNavigate();
   const navigate = useNavigate();
+  const {t}=useTranslation()
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTab, setSelectedTab] = useState("tab1");
   const [locationList, setLocationList] = useState([]);
@@ -628,7 +630,7 @@ const Order = () => {
                         icon={faArrowLeft}
                       />
                     </Link>
-                    <h4 className={Styles.pickupHistoryHeaderTitle}>History</h4>
+                    <h4 className={Styles.pickupHistoryHeaderTitle}>{t("order_history")}</h4>
                   </div>
                   <div className={Styles.pickupHistorySearchFillterCard}>
                     <div className={Styles.pickupHistorySearchCard}>
@@ -689,7 +691,7 @@ const Order = () => {
                       className={`${selectedTab == "tab1" ? "activetab" : ""}`}
                     >
                       <label htmlFor="tab1" role="button" className="tab-label">
-                        <span>One Time</span>
+                        <span>{t("oneTime")}</span>
                       </label>
                     </li>
                     <li
@@ -697,7 +699,7 @@ const Order = () => {
                       className={`${selectedTab == "tab2" ? "activetab" : ""}`}
                     >
                       <label htmlFor="tab2" role="button" className="tab-label">
-                        <span>Multiples</span>
+                        <span>{t("multiples")}</span>
                       </label>
                     </li>
                     <li
@@ -705,7 +707,7 @@ const Order = () => {
                       className={`${selectedTab == "tab3" ? "activetab" : ""}`}
                     >
                       <label htmlFor="tab3" role="button" className="tab-label">
-                        <span>Shifts</span>
+                        <span>{t("shifts")}</span>
                       </label>
                     </li>
                     <li
@@ -713,7 +715,7 @@ const Order = () => {
                       className={`${selectedTab == "tab4" ? "activetab" : ""}`}
                     >
                       <label htmlFor="tab4" role="button" className="tab-label">
-                        <span>Past</span>
+                        <span>{t("past")}</span>
                       </label>
                     </li>
                   </ul>
