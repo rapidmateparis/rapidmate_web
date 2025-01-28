@@ -29,7 +29,7 @@ function LiveTracking() {
   const [timeLeft15, setTimeLeft15] = useState(15 * 60); // 15 minutes in seconds
   const [showModal, setShowModal] = useState(false);
   const user = useSelector((state) => state.auth.user);
-  const commonData = useSelector((state)=>state.commonData.commonData)
+  const commonData = useSelector((state) => state.commonData.commonData);
   const location = useLocation();
   const { driverDetails, locationList, orderNumber } = location.state || {};
   const [locationLists, setLocationLists] = useState(locationList);
@@ -171,25 +171,26 @@ function LiveTracking() {
     );
   };
 
-  
   const getStep = (order) => {
     switch (order?.order_status) {
-      case 'ON_THE_WAY_PICKUP':
+      case "ON_THE_WAY_PICKUP":
         return 2;
-      case 'OTP_VERIFIED':
+      case "REACHED":
+          return 2;
+      case "OTP_VERIFIED":
         return 3;
-      case 'ON_THE_WAY_DROP_OFF':
+      case "ON_THE_WAY_DROP_OFF":
         return 4;
-      case 'COMPLETED' :
+      case "COMPLETED":
         return 4;
       default:
         return 1;
     }
   };
-  
+  console.log(order?.order_status)
   // Ensure `getStep` is used consistently to initialize and update the step.
   const [currentStep, setCurrentStep] = useState(() => getStep(order));
-  
+
   // Update the current step if the `order` prop changes.
   useEffect(() => {
     setCurrentStep(getStep(order));
@@ -204,7 +205,7 @@ function LiveTracking() {
   if (order == null) {
     return <Spinners />;
   }
- 
+
   if (markAsComplepleted) {
     return (
       <>
@@ -249,7 +250,7 @@ function LiveTracking() {
       <section>
         <div className={`row ${Styles.manageRow}`}>
           <div className="col-md-3">
-            <div>
+            <div className={Styles.pickuporderTrackingMainScroll}>
               <div className={Styles.pickuporderTrackingAddressCardMain}>
                 <div className={Styles.pickupOrderTrackingPickupAddressCard}>
                   <FontAwesomeIcon
@@ -301,24 +302,25 @@ function LiveTracking() {
                           onClick={() => copyToClipboard(order?.otp, "otp")}
                         />
                       </div>
-
-                      <div className={Styles.pickupOrderTrackingOrderIdCard}>
-                        <p className={Styles.pickupOrderTrackingOrderId}>
-                          Delivered OTP: <b>{order?.delivered_otp}</b>
-                        </p>
-                        <FontAwesomeIcon
-                          className={Styles.pickupOrderTrackingCopyIcon}
-                          icon={
-                            copiedField === "delivered_otp" ? faCheck : faCopy
-                          }
-                          onClick={() =>
-                            copyToClipboard(
-                              order?.delivered_otp,
-                              "delivered_otp"
-                            )
-                          }
-                        />
-                      </div>
+                      {order?.delivered_otp && (
+                        <div className={Styles.pickupOrderTrackingOrderIdCard}>
+                          <p className={Styles.pickupOrderTrackingOrderId}>
+                            Delivered OTP: <b>{order?.delivered_otp}</b>
+                          </p>
+                          <FontAwesomeIcon
+                            className={Styles.pickupOrderTrackingCopyIcon}
+                            icon={
+                              copiedField === "delivered_otp" ? faCheck : faCopy
+                            }
+                            onClick={() =>
+                              copyToClipboard(
+                                order?.delivered_otp,
+                                "delivered_otp"
+                              )
+                            }
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                   {/* <div>

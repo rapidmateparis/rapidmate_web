@@ -62,6 +62,10 @@ a {
   font-weight: 700;
 }
 
+.mainSupportSecCard{
+  margin: 50px 15px;
+}
+
 .homeContactModalDiscriptionText {
   font-size: 16px;
   font-weight: 400;
@@ -82,6 +86,7 @@ a {
 .homeContactModalNumberCard {
   display: flex;
   margin: 10px 0px;
+  color: var(--text-color);
 }
 
 .homeContactModalNumberMainCard {

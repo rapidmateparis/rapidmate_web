@@ -44,6 +44,9 @@ const EnterpriseHomeCalender = ({setCurrentDate}) => {
           .react-calendar__tile {
             position: relative;
           }
+          .react-calendar{
+            width: 100%;
+          }
           .marked-date-orange::after {
             content: '';
             position: absolute;

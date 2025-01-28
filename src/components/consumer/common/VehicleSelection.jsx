@@ -22,7 +22,7 @@ const VehicleSelection = ({
           <p className={Styles.pickupRequestText}>Choose the vehicle</p>
           {selectedVehiclePrice && (
             <p className={Styles.selectedVehiclePriceText}>
-              {selectedVehiclePrice} €
+             <b>€ {selectedVehiclePrice}</b> {''}Excl. VAT
             </p>
           )}
         </div>
@@ -36,7 +36,8 @@ const VehicleSelection = ({
                     : ""
                 }`}
                 onClick={() => {
-                  if (dropoffLocation!=='') {
+                  console.log(dropoffLocation)
+                  if (dropoffLocation!=='' && dropoffLocation[0] !=='') {
                     setSelectedVehicle(vehicle.vehicle_type);
                     setSelectedVehicleDetails(vehicle);
                     const price = getPriceUsingVehicleType(vehicle.id);

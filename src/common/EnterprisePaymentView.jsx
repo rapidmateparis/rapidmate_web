@@ -43,6 +43,7 @@ import {
 } from "../utils/Constants";
 import PickupAddPaymentMethodsModal from "../components/consumer/account/PickupAddPaymentMethodsModal";
 import moment from "moment";
+import localforage from "localforage";
 
 const stripePromise = loadStripe(
   "pk_test_51PgiLhLF5J4TIxENPZOMh8xWRpEsBxheEx01qB576p0vUZ9R0iTbzBFz0QvnVaoCZUwJu39xkym38z6nfNmEgUMX00SSmS6l7e"
@@ -74,7 +75,7 @@ const PaymentPage = ({
   const [destinationLocationId, setDestinationLocationId] = useState("");
   const [packageImageId, setPackageImageId] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
-  const [paymentCard, setPaymentCard] = useState([]);
+  const [paymentCard, setPaymentCard] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddModal = () => {
     setShowAddModal(true);
@@ -316,7 +317,7 @@ const PaymentPage = ({
         setPaymentAmount(calculateFinalPrice(paymentAmount, offerDiscount));
     }
     getPaymentCard();
-  }, []);
+  }, [user]);
 
   const handleApplyCoupon = () => {
     let params = {
@@ -544,7 +545,7 @@ const PaymentPage = ({
                         Credit & Debit Cards
                       </p>
 
-                      {paymentCard?.map((cardInfo, index) => (
+                      {paymentCard && paymentCard?.map((cardInfo, index) => (
                         <div onClick={() => handleClick(cardInfo)} key={index}>
                           <div className={Styles.paymentMethodAddedCards}>
                             <img
@@ -651,12 +652,13 @@ function EnterprisePaymentView() {
   useEffect(() => {
     if (paymentAmount > 0) {
       const createPaymentIntent = async () => {
+        const token = await localforage.getItem('1');
         try {
           const response = await fetch(
             `${BASE_URL}payment/create-payment-intent`,
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: { "Content-Type": "application/json",'Authorization': token },
               body: JSON.stringify({
                 amount: paymentAmount, // Convert to cents for Stripe
                 currency: "eur",

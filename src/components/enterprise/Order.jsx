@@ -290,10 +290,10 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
     return result[0]?.vehicle_type;
   };
 
-  const detailShiftHandler = (order_number) => {
+  const detailShiftHandler = (orders) => {
     navigation("/enterprise/shift-details", {
       state: {
-        order: order_number,
+        order: orders,
         branches: branches,
       },
     });
@@ -307,9 +307,8 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
             orders.map((item, index) => (
               <div
                 key={index}
-                onClick={() => detailShiftHandler(item.order_number)}
+                onClick={() => detailShiftHandler(item)}
               >
-                {console.log(item.order_number)}
                 <div className={Styles.pickuphistoryMainCard}>
                   <div className={Styles.shiftOrderHeaderMainCard}>
                     <div className={Styles.pickupHistoryPackageCard}>

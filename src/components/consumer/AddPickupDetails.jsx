@@ -81,7 +81,7 @@ const AddPickupDetails = () => {
     file: yup
       .mixed()
       .required("A file is required")
-      .test("fileSize", "File size is too large", (value) => {
+      .test("fileSize", "File size is too large. Max size 5MB", (value) => {
         return value && value[0] && value[0].size <= FILE_SIZE;
       })
       .test("fileType", "Unsupported file type", (value) => {
@@ -501,7 +501,7 @@ const AddPickupDetails = () => {
                         style={{
                           color: "red",
                           fontSize: "13px",
-                          textAlign: "center",
+                          textAlign: imagePreview ? "left" : "center",
                         }}
                       >
                         {errors.file.message}

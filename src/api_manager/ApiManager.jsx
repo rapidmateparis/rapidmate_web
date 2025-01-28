@@ -15,25 +15,25 @@ export async function axiosCall(
     baseURL: BASE_URL,
     timeout: 20000,
     headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache',
-      'Access-Control-Allow-Origin': '*',
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
     },
   });
 
-  // axiosInstance.interceptors.request.use(
-  //   function (config) {
-  //     if (token) {
-  //       config.headers.Authorization = `Bearer ${token}`;
-  //     }
-  //     return config;
-  //   },
-  //   function (error) {
-  //     let parseError = JSON.stringify(error);
-  //     let errorResponse = JSON.parse(parseError);
-  //     return callbackErrorResponse(axiosError(errorResponse.code));
-  //   },
-  // );
+  axiosInstance.interceptors.request.use(
+    function (config) {
+      if (token) {
+        config.headers.authorization = token;
+        config.headers.Authorization = token;
+      }
+      return config;
+    },
+    function (error) {
+      let parseError = JSON.stringify(error);
+      let errorResponse = JSON.parse(parseError);
+      return callbackErrorResponse(axiosError(errorResponse.code));
+    },
+  );
 
   axiosInstance.interceptors.response.use(
     function (response) {

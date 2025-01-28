@@ -22,6 +22,7 @@ import {
   PickupPaymentMethods,
   PickupChangePassword,
   EnterpriseAddPickupDetails,
+  EnterpriseAddDropoffDetails,
   EnterpriseOrderPreview,
   MultipleDelivery,
   EnterpriseScheduleApproved,
@@ -76,6 +77,11 @@ import FrenchPrivacyPolicy from "../components/website/FrenchPrivacyPolicy";
 import FrenchTermsOfService from "../components/website/FrenchTermsOfService";
 import FrenchCookies from "../components/website/FrenchCookies";
 import ScrollToTop from "../main/ScrollToTop";
+import EnterpriseDeliveryboyShiftPage from "../components/enterprise/common/EnterpriseDeliveryboyShiftPage";
+import EnterpriseShiftRequestNewDelivery from "../components/enterprise/common/EnterpriseShiftRequestNewDelivery";
+import EnterpriseShiftAddDropDetails from "../components/enterprise/common/EnterpriseShiftAddDropDetails";
+import EnterpriseShiftOrderPreview from "../components/enterprise/common/EnterpriseShiftOrderPreview";
+import SupportPage from "../common/SupportPage";
 function MainRoutes() {
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
@@ -100,6 +106,7 @@ function MainRoutes() {
         <Route path="/french-privacy-policy" element={<FrenchPrivacyPolicy/>} />
         <Route path="/french-terms-service" element={<FrenchTermsOfService/>} />
         <Route path="/french-cookies" element={<FrenchCookies/>} />
+        <Route path="/support-page" element={<SupportPage/>} />
 
 
         <Route path="/login" element={<Login />} />
@@ -166,6 +173,10 @@ function MainRoutes() {
         <Route
           path="/enterprise/add-pickup-details"
           element={<EnterpriseAddPickupDetails />}
+        />
+        <Route
+          path="/enterprise/add-dropoff-details"
+          element={<EnterpriseAddDropoffDetails />}
         />
         <Route
           path="/enterprise/order-preview"
@@ -259,6 +270,38 @@ function MainRoutes() {
           }
         />
         <Route
+          path="/enterprise/deliveryboy-shift-details"
+          element={
+            <ProtectedRoute requiredRole={userRole}>
+              <EnterpriseDeliveryboyShiftPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/enterprise/shift-request-new-delivery"
+          element={
+            <ProtectedRoute requiredRole={userRole}>
+              <EnterpriseShiftRequestNewDelivery />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/enterprise/shift-add-drop-details"
+          element={
+            <ProtectedRoute requiredRole={userRole}>
+              <EnterpriseShiftAddDropDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/enterprise/shift-order-preview"
+          element={
+            <ProtectedRoute requiredRole={userRole}>
+              <EnterpriseShiftOrderPreview />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
           path="/payment-successfull"
           element={
             <ProtectedRoute requiredRole={userRole}>
