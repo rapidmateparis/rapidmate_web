@@ -59,6 +59,14 @@
   "shifts": "Quarts",
   "multiples": "Multiples",
   "past": "Passé",
+  "account":"Compte",
+  "address":"Adresse",
+  "country": "Pays",
+  "city": "Ville",
+  "state": "État",
+   "postal_code": "Code Postal",
+   "dni_number": "Numéro DNI",
+
 
   "StartAnotherSection": "----------------- Website Pages Start Here ----------------------------",
   "webHome_bannerTitle": "Votre partenaire de livraison fiable pour une logistique sans tracas et des livraisons à temps.",

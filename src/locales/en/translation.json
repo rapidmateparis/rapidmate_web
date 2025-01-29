@@ -60,6 +60,16 @@
   "shifts": "Shifts",
   "multiples": "Multiples",
   "past": "Past",
+  "account":"Account",
+  "address":"Address",
+  "country": "Country",
+  "city": "City",
+  "state": "State",
+  "postal_code": "Postal Code",
+  "dni_number": "DNI Number",
+
+
+
 
   "StartAnotherSection": "----------------- Website Pages Start Here ----------------------------",
   "webHome_bannerTitle": "Your Reliable Delivery Partner For Hassle-Free Logistics & On-Time Deliveries.",

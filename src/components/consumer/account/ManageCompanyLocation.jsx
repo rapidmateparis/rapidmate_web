@@ -78,12 +78,12 @@ function ManageCompanyLocation() {
     <section className={Styles.addressBookMainSec}>
       <div className="row">
         <div className="col-md-12">
-          <div className={Styles.addressBookAddressCard}>
+          <div className={Styles.addressBookAddressCard} onClick={toggleAddHandler} style={{cursor:"pointer"}}>
             <p className={Styles.addressBookHeaderTitleText}>
               Manage company locations
             </p>
             <button
-              onClick={toggleAddHandler}
+              
               className={Styles.addressBookPlusIconBtn}
             >
               <FontAwesomeIcon icon={faPlus} />
