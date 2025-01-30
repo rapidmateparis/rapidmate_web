@@ -11,9 +11,11 @@ import {
 } from "../data_manager/dataManage";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useTranslation } from "react-i18next";
 
 const BillingAddressBook = memo(
   ({ user, control, errors, setValue, billingDetails }) => {
+    const {t}=useTranslation()
     const [masterStateList, setMasterStateList] = useState([]);
     const [masterCityList, setMasterCityList] = useState([]);
 
@@ -23,6 +25,7 @@ const BillingAddressBook = memo(
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [selectedState, setSelectedState] = useState(null);
     const [selectedCity, setSelectedCity] = useState(null);
+    const [selectedAccountType, setSelectedAccountType] = useState(null);
 
     const account = [
       { label: "Individual", value: 1 },
@@ -50,7 +53,57 @@ const BillingAddressBook = memo(
           setMasterCityList(successResponse[0]._response);
         }
       });
+     
     }, []);
+    useEffect(() => {
+     
+      if (billingDetails) {
+        setValue("firstname", billingDetails.first_name || "");
+        setValue("lastname", billingDetails.last_name || "");
+        setValue("address", billingDetails.address || "");
+        setValue("dninumber", billingDetails.dni_number || "");
+        setValue("postalcode", billingDetails.postal_code || "");
+        setValue("account",{value:billingDetails.account_type})
+        setValue("country",{value:billingDetails.country_id})
+        setValue("state",{value:billingDetails.state_id})
+        setValue("city",{value:billingDetails.city_id})
+
+        // setValue("phoneNumber", billingDetails.phone || "");
+        setSelectedCountry(
+          countryList.find(
+            (country) => country.value === billingDetails.country_id
+          ) || null
+        );
+        const filteredStates = masterStateList.filter(
+          (state) => state.country_id === billingDetails.country_id
+        );
+        const formattedStateList = filteredStates.map((state) => ({
+          label: state.state_name,
+          value: state.id,
+        }));
+        setStateList(formattedStateList)
+        setSelectedState(
+          formattedStateList.find((state) => state.value === billingDetails.state_id) ||
+            null
+        );
+
+        const accounttype=account.filter(
+          (state) => state.value === billingDetails.account_type
+        );
+        setSelectedAccountType(accounttype)
+        const filteredCities = masterCityList.filter(
+          (city) => city.state_id === billingDetails.state_id
+        );
+        const formattedCityList = filteredCities.map((city) => ({
+          label: city.city_name,
+          value: city.id,
+        }));
+        setCityList(formattedCityList)
+        
+        const citylist=formattedCityList.find((city) => city.value === billingDetails.city_id)
+        setSelectedCity(citylist);
+      }
+    }, [billingDetails,masterCityList]);
 
     // Handle country change
     const handleCountryChange = (selectedOption) => {
@@ -85,28 +138,7 @@ const BillingAddressBook = memo(
       setCityList(formattedCityList);
     };
 
-    useEffect(() => {
-      if (billingDetails) {
-        setValue("firstname", billingDetails.first_name || "");
-        setValue("lastname", billingDetails.last_name || "");
-        setValue("address", billingDetails.address || "");
-        setValue("dninumber", billingDetails.dni_number || "");
-        setValue("postalcode", billingDetails.postal_code || "");
-        // setValue("phoneNumber", billingDetails.phone || "");
-        setSelectedCountry(
-          countryList.find(
-            (country) => country.value === billingDetails.country_id
-          ) || null
-        );
-        setSelectedState(
-          masterStateList.find((state) => state.value === billingDetails.state_id) ||
-            null
-        );
-        setSelectedCity(
-          masterCityList.find((city) => city.value === billingDetails.city_id) || null
-        );
-      }
-    }, [billingDetails]);
+  
     return (
       <>
         <div className={`row ${Styles.manageRow}`}>
@@ -118,12 +150,12 @@ const BillingAddressBook = memo(
                   htmlFor="account"
                   className={Styles.addPickupDetailFormLabels}
                 >
-                  Account:
+                  {t("account")}:
                 </label>
                 <Controller
                   name="account"
                   control={control}
-                  defaultValue={null}
+                  defaultValue={selectedAccountType}
                   render={({ field }) => (
                     <Select
                       {...field}
@@ -131,10 +163,11 @@ const BillingAddressBook = memo(
                       placeholder="Select your account"
                       styles={customSelectStyles}
                       isSearchable
-                      value={account.find(
-                        (option) =>
-                          option.value === billingDetails?.account_type
-                      )}
+                      onChange={(option) => {
+                        field.onChange(option);
+                        setSelectedAccountType(option)
+                      }}
+                      value={selectedAccountType}
                     />
                   )}
                 />
@@ -150,7 +183,7 @@ const BillingAddressBook = memo(
                   htmlFor="company"
                   className={Styles.addPickupDetailFormLabels}
                 >
-                  Company:
+                  {t("company")}:
                 </label>
                 <TextInput
                   control={control}
@@ -162,14 +195,14 @@ const BillingAddressBook = memo(
               </div>
             )}
           </div>
-
+          
           <div className="col-md-6">
             <div className={`mb-1 ${Styles.addPickupDetailsInputs}`}>
               <label
                 htmlFor="firstname"
                 className={Styles.addPickupDetailFormLabels}
               >
-                First name:
+                {t("first_name")}:
               </label>
               <TextInput
                 control={control}
@@ -187,7 +220,7 @@ const BillingAddressBook = memo(
                 htmlFor="lastname"
                 className={Styles.addPickupDetailFormLabels}
               >
-                Last name:
+                {t("last_name")}:
               </label>
               <TextInput
                 control={control}
@@ -204,7 +237,7 @@ const BillingAddressBook = memo(
                 htmlFor="address"
                 className={Styles.addPickupDetailFormLabels}
               >
-                Address :
+                {t("address")} :
               </label>
               <TextInput
                 control={control}
@@ -258,7 +291,7 @@ const BillingAddressBook = memo(
                 htmlFor="email"
                 className={Styles.addPickupDetailFormLabels}
               >
-                Country :
+                {t("country")} :
               </label>
               <Controller
                 name="country"
@@ -272,13 +305,11 @@ const BillingAddressBook = memo(
                     styles={customSelectStyles}
                     isSearchable={true}
                     onChange={(option) => {
-                      field.onChange(option);
+                      field.onChange(option); // Update form value
+                      setSelectedCountry(option); // Update local state
                       handleCountryChange(option);
                     }}
-                    value={countryList.find(
-                      (option) =>
-                        option.value === billingDetails?.country_id
-                    )}
+                    value={selectedCountry}
                   />
                 )}
               />
@@ -295,12 +326,12 @@ const BillingAddressBook = memo(
                 htmlFor="state"
                 className={Styles.addPickupDetailFormLabels}
               >
-                State :
+                {t("state")} :
               </label>
               <Controller
                 name="state"
                 control={control}
-                defaultValue={null}
+                defaultValue={selectedState}
                 render={({ field }) => (
                   <Select
                     {...field}
@@ -308,15 +339,12 @@ const BillingAddressBook = memo(
                     placeholder="Select your state"
                     styles={customSelectStyles}
                     isSearchable={true}
+                    isDisabled={billingDetails?.state_id ?  false : !selectedCountry}
                     onChange={(option) => {
-                      field.onChange(option);
+                      field.onChange(option); // Update form value
                       handleStateChange(option);
                     }}
-                    isDisabled={billingDetails?.state_id ?  false : !selectedCountry}
-                    value={stateList.find(
-                      (option) =>
-                        option.value === billingDetails?.state_id
-                    )}
+                    value={selectedState}
                   />
                 )}
               />
@@ -333,12 +361,12 @@ const BillingAddressBook = memo(
                 htmlFor="city"
                 className={Styles.addPickupDetailFormLabels}
               >
-                City :
+                {t("city")} :
               </label>
               <Controller
                 name="city"
                 control={control}
-                defaultValue={null}
+                defaultValue={selectedCity}
                 render={({ field }) => (
                   <Select
                     {...field}
@@ -346,10 +374,11 @@ const BillingAddressBook = memo(
                     placeholder="Select your city"
                     styles={customSelectStyles}
                     isSearchable={true}
-                    value={cityList.find(
-                      (option) =>
-                        option.value === billingDetails?.city_id
-                    )}
+                    onChange={(option) => {
+                      field.onChange(option);
+                      setSelectedCity(option)
+                    }}
+                    value={selectedCity}
                   />
                 )}
               />
@@ -366,7 +395,7 @@ const BillingAddressBook = memo(
                 htmlFor="postalcode"
                 className={Styles.addPickupDetailFormLabels}
               >
-                Postal code:
+                {t("postal_code")}:
               </label>
               <TextInput
                 control={control}
@@ -383,7 +412,7 @@ const BillingAddressBook = memo(
                 htmlFor="dninumber"
                 className={Styles.addPickupDetailFormLabels}
               >
-                DNI Number:
+                {t("dni_number")}:
               </label>
               <TextInput
                 control={control}

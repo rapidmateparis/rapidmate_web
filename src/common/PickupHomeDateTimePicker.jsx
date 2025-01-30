@@ -4,11 +4,12 @@ import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import Styles from "../assets/css/home.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 const DateAndTimePicker = ({ onDateTimeChange }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-
+  const {t} = useTranslation()
   // Handles the "Now" button click
   const handleNowClick = () => {
     const now = new Date();
@@ -51,7 +52,7 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
               <strong>{selectedTime?.toString()}</strong>
             </>
           ) : (
-            "When do you need it?"
+            t("whenDoYouNeedIt")
           )}
         </p>
         <p
@@ -59,7 +60,7 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
           onClick={handleNowClick}
           style={{ cursor: "pointer" }}
         >
-          Now
+          {t("now")}
         </p>
       </div>
       {/* Modal */}

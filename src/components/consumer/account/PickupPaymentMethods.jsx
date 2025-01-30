@@ -61,9 +61,9 @@ const PickupPaymentMethods = () => {
     <section className={Styles.addressBookMainSec}>
       <div className="row">
         <div className="col-md-12">
-          <div className={Styles.addressBookAddressCard}>
+          <div className={Styles.addressBookAddressCard} onClick={openAddModal} style={{cursor:"pointer"}}>
             <p className={Styles.addressBookHeaderTitleText}>Payment methods</p>
-            <button onClick={openAddModal} className={Styles.addressBookPlusIconBtn}>
+            <button  className={Styles.addressBookPlusIconBtn}>
               <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>

@@ -14,7 +14,6 @@ import MasterCard from "../../../assets/images/MasterCard-Logo.png";
 import PickupAddPaymentMethodsModal from "./PickupAddPaymentMethodsModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getConsumerWallet,
   updateUserProfile,
 } from "../../../data_manager/dataManage";
 import Calender from "../../../assets/images/Calender-Icon.png";
@@ -25,9 +24,8 @@ import { ToastContainer } from "react-toastify";
 const DeliveryboyProfile = () => {
   // const user = useSelector((state) => state?.auth?.user.userDetails);
   const dispatch = useDispatch();
-
-  const [selectedCard, setSelectedCard] = useState(null);
-  const { lookup, user } = UseFetch();
+  const user = useSelector((state) => state.auth.user);
+  const { lookup } = UseFetch();
   const [workType, setWorkType] = useState(
     user?.userDetails?.work_type_id || null
   );
@@ -36,8 +34,7 @@ const DeliveryboyProfile = () => {
     setWorkType(workTypeId);
   };
 
-  const continueHandler = (e) => {
-    e.preventDefault();
+  const updateHandler = async () => {
     let profileParams = {
       ext_id: user.userDetails.ext_id,
       work_type_id: workType,
@@ -51,7 +48,9 @@ const DeliveryboyProfile = () => {
           vehicleAdd: true,
         };
         dispatch(updateUserDetails({ userDetails: userDetailsData }));
-        showSuccessToast('Record Updated Successfully.')
+        //
+        
+        ("Record Updated Successfully.");
       },
       (errorResponse) => {
         console.log("updateUserProfile", errorResponse);
@@ -62,6 +61,7 @@ const DeliveryboyProfile = () => {
   // const handleCardClick = (cardId) => {
   //   setSelectedCard(cardId);
   // };
+  
 
   return (
     <section className={Styles.profileChooseSec}>
@@ -114,18 +114,16 @@ const DeliveryboyProfile = () => {
               </div>
             </div>
           ))}
-          
         </div>
         <div className="mt-5  d-flex justify-content-end">
-            <div
-              to="#"
-              className={Styles.pickupSignupContinueBtn}
-              type="button"
-              onClick={continueHandler}
-            >
-              update
-            </div>
+          <div
+            className={Styles.pickupSignupContinueBtn}
+            type="button"
+            onClick={updateHandler}
+          >
+            update
           </div>
+        </div>
       </div>
       <ToastContainer />
     </section>

@@ -50,6 +50,26 @@
   "login_successful": "Login successful! Welcome back!",
   "verification_pending": "User Verification Pending",
   "welcome_back": "Welcome back!",
+  "requestPickup": "Request a Pick up!",
+  "requestNowOrLater": "Request it now or schedule for later",
+  "chooseVehicle": "Choose the vehicle",
+  "continueToOrderDetails": "Continue to order details",
+  "whenDoYouNeedIt": "When do you need it?",
+  "now": "Now",
+  "oneTime": "One Time",
+  "shifts": "Shifts",
+  "multiples": "Multiples",
+  "past": "Past",
+  "account":"Account",
+  "address":"Address",
+  "country": "Country",
+  "city": "City",
+  "state": "State",
+  "postal_code": "Postal Code",
+  "dni_number": "DNI Number",
+
+
+
 
   "StartAnotherSection": "----------------- Website Pages Start Here ----------------------------",
   "webHome_bannerTitle": "Your Reliable Delivery Partner For Hassle-Free Logistics & On-Time Deliveries.",

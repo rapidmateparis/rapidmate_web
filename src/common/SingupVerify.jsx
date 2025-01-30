@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticateUser, signUpVerifyApi } from "../data_manager/dataManage";
 import { loginStart, loginSuccess } from "../redux/authSlice";
 import { getLookup } from "../utils/UseFetch";
+import { commonDataList } from "../redux/commonDataSlice";
 
 const SingupVerify = () => {
   const userRole = useSelector((state) => state.auth.role);
@@ -59,7 +60,7 @@ const SingupVerify = () => {
             } else {
               authenticateUser(
                 loginParams,
-                (successResponse) => {
+                async (successResponse) => {
                   if (successResponse[0]._success) {
                     const dataRes =
                       successResponse[0]._response.user?.idToken?.payload;
@@ -80,14 +81,11 @@ const SingupVerify = () => {
                     const refreshToken =
                       successResponse[0]._response?.refreshtoken;
                     if (getToken && userData) {
-                      localforage.setItem(1, getToken);
-                      dispatch(
-                        loginSuccess({ role: userRole, user: userData })
-                      );
-                      const objData = getLookup();
-                      navigateBasedOnRole(
-                        successResponse[0]._response.user_profile[0].role
-                      );
+                      await localforage.setItem(1, getToken);
+                      dispatch(loginSuccess({ role: userRole, user: userData }));
+                      const objData = await getLookup();
+                      dispatch(commonDataList(objData));
+                      navigateBasedOnRole(successResponse[0]._response.user_profile[0].role);
                     } else {
                       setErrors(
                         "Login failed due to missing token or user data."

@@ -94,10 +94,10 @@ function PickupAddressBook() {
     <section className={Styles.addressBookMainSec}>
       <div className="row">
         <div className="col-md-12">
-          <div className={Styles.addressBookAddressCard}>
+          <div className={Styles.addressBookAddressCard} onClick={openAddModal} style={{cursor:"pointer"}}>
             <p className={Styles.addressBookHeaderTitleText}>Address book</p>
             <button
-              onClick={openAddModal}
+              
               className={Styles.addressBookPlusIconBtn}
             >
               <FontAwesomeIcon icon={faPlus} />

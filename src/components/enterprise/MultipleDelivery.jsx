@@ -25,6 +25,7 @@ import MapComponent from "./MapComponent";
 import LocationInput from "./LocationInput";
 import VehicleSelection from "../consumer/common/VehicleSelection";
 import DateTimePicker from "../consumer/common/DateTimePicker";
+import { useTranslation } from "react-i18next";
 
 function MultipleDelivery() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function MultipleDelivery() {
 
   const user = useSelector((state) => state.auth.user);
   const [center, setCenter] = useState(null);
+  const {t}=useTranslation()
   const [loading, setLoading] = useState(false);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [pickupLocation, setPickupLocation] = useState("");
@@ -196,7 +198,7 @@ function MultipleDelivery() {
         <div className={`row ${Styles.manageRow}`}>
           <div className="col-md-3">
             <div className={Styles.requestPickupMaincard}>
-              <p className={Styles.pickupRequestText}>Request a Pick up!</p>
+              <p className={Styles.pickupRequestText}>{t("requestPickup")}</p>
               <div className={Styles.homePickupDropAddressCards}>
                 <div className={Styles.pickupAddresAutocompleteCard}>
                   <LocationInput
@@ -263,7 +265,7 @@ function MultipleDelivery() {
             >
               <button onClick={handleContinue} className={Styles.goToOrderDetails}>
                 <p className={Styles.pickuphomeContinueBt}>
-                  Continue to order details
+                 {t("continueToOrderDetails")}
                 </p>
                 <FontAwesomeIcon
                   className="pickupHome-rightArrow-icon"

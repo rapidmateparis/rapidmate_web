@@ -13,16 +13,9 @@ export const PORT = {
   uat: "3000",
   prod: "3008",
 };
-export const MAPS_API_KEY = "AIzaSyC_pj9pk_9fMHL0JDsgstUXlc67nqB97zw";
-export const BASE_URL = `https://api.rapidmate.fr/api/`;
+export const MAPS_API_KEY ="AIzaSyC_pj9pk_9fMHL0JDsgstUXlc67nqB97zw";
+export const BASE_URL = "https://api.rapidmate.fr/api/";
 
-export const apiHost = {
-  // baseURL: 'http://10.0.2.2:3005/api/',
-  // baseURL: "http://www.api.astafa.in/api/",
-  // baseURL: "https://api.astafa.in/api/",
-  baseURL: "https://api.rapidamte.fr/api/",
-  apiKey: "",
-};
 
 export const API = {
   loginAuthenticateUrl: BASE_URL + "authuser/login",
