@@ -13,10 +13,12 @@ import { getConsumerViewOrdersListBySearch, getLocations } from "../../data_mana
 import { getOrderList } from "../../utils/getOrderList";
 import { useSelector } from "react-redux";
 import Spinners from "../../common/Loader";
+import { useTranslation } from "react-i18next";
 
 const PastOrder = () => {
   const user = useSelector((state)=>state.auth.user)
   const navigate=useNavigate()
+  const {t}=useTranslation()
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTab, setSelectedTab] = useState("tab1");
   const [orderList, setOrderList] = useState([]);
@@ -24,13 +26,14 @@ const PastOrder = () => {
   const [locationList, setLocationList] = useState([]);
   const [loading, setLoading] = useState([]);
   const goBack = () => {
-    navigate(-1);  // Navigate back to the previous page
+    navigate(-1);
   };
   useEffect(() => {
     getLocationsData();
     getOrder("current");
     getOrder("past");
   }, []);
+
   const getOrder = async (status) => {
     const userExtId = user.userDetails.ext_id;
     const orders = await getOrderList(userExtId, status);
@@ -40,6 +43,7 @@ const PastOrder = () => {
       setPastOrderList(orders);
     }
   };
+
   const getLocationsData = () => {
     setLoading(true);
     setLocationList([]);
@@ -60,6 +64,7 @@ const PastOrder = () => {
       }
     );
   };
+
   const handleInputChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
@@ -80,7 +85,7 @@ const PastOrder = () => {
   };
 
   const handleTabChange = (event) => {
-    setSelectedTab(event.target.id); // Set the selected tab based on the clicked tab's ID
+    setSelectedTab(event.target.id); 
   };
 
   const getOrderListinSearch = (searchValue,status) => {
@@ -110,8 +115,6 @@ const PastOrder = () => {
       },
     );
   };
-
-
   
   return (
     <>
@@ -132,7 +135,7 @@ const PastOrder = () => {
                         icon={faArrowLeft}
                       />
                     </Link>
-                    <h4 className={Styles.pickupHistoryHeaderTitle}>History</h4>
+                    <h4 className={Styles.pickupHistoryHeaderTitle}>{t("order_history")}</h4>
                   </div>
                   <div className={Styles.pickupHistorySearchFillterCard}>
                     <div className={Styles.pickupHistorySearchCard}>
@@ -143,7 +146,7 @@ const PastOrder = () => {
                       <input
                         className={Styles.pickupHistorySearchInput}
                         type="text"
-                        placeholder="Search your deliveries"
+                        placeholder={t("search_your_deliveries")}
                         value={searchTerm}
                         onChange={handleInputChange}
                       />
@@ -172,12 +175,12 @@ const PastOrder = () => {
                   <ul>
                     <li title="Ongoing order"  className={`${selectedTab == "tab1" ? "activetab" : ""}`}>
                       <label htmlFor="tab1" role="button" className="tab-label">
-                        <span>Ongoing</span>
+                        <span>{t("ongoing")}</span>
                       </label>
                     </li>
                     <li title="Past order "  className={`${selectedTab == "tab2" ? "activetab" : ""}`}>
                       <label htmlFor="tab2" role="button" className="tab-label">
-                        <span>Past</span>
+                        <span>{t("past")}</span>
                       </label>
                     </li>
                   </ul>

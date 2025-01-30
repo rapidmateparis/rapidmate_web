@@ -22,7 +22,7 @@ import {
   getViewEnterpriseOrderDetail,
   getViewOrderDetail,
 } from "../../data_manager/dataManage";
-import { API} from "../../utils/Constants";
+import { API } from "../../utils/Constants";
 import { useSelector } from "react-redux";
 import DeliveryDetailsMap from "../../common/DeliveryDetailsMap";
 import { showErrorToast } from "../../utils/Toastify";
@@ -144,28 +144,28 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
   const downloadInvoice = async (orderNumber, pdfUrl) => {
     try {
       // Fetch the PDF
-    const token = await localforage.getItem('1');
-    if (!token) {
-      showErrorToast("Authorization token not found.");
-      return;
-    }
+      const token = await localforage.getItem("1");
+      if (!token) {
+        showErrorToast("Authorization token not found.");
+        return;
+      }
 
-    // Fetch the PDF with the token
-    const response = await fetch(pdfUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`, // Ensure proper token format
-      },
-    });
+      // Fetch the PDF with the token
+      const response = await fetch(pdfUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`, // Ensure proper token format
+        },
+      });
       if (!response.ok) {
         showErrorToast(`Failed to fetch PDF: ${response.statusText}`);
-        return
+        return;
       }
-  
+
       // Convert response to Blob
       const blob = await response.blob();
-  
+
       // Create a download link and trigger the download
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -178,13 +178,12 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
       showErrorToast("Failed to download the invoice. Please try again.");
     }
   };
-  
 
   const handleDownload = () => {
-    const pdfUrl = API.downloadInvoice + orderNumber+'/enterprise?show=true'
+    const pdfUrl = API.downloadInvoice + orderNumber + "/enterprise?show=true";
     downloadInvoice(orderNumber, pdfUrl);
   };
-  
+
   return (
     <section className={Styles.pickupDeliveryDetails}>
       <div className="container">
@@ -203,7 +202,10 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                     Delivery Details
                   </h4>
                 </div>
-                <Link to="/support-page" className={Styles.pickupDeliveryDetailsSettingsIcon}>
+                <Link
+                  to="/support-page"
+                  className={Styles.pickupDeliveryDetailsSettingsIcon}
+                >
                   <FontAwesomeIcon icon={faGear} />
                 </Link>
               </div>
@@ -326,22 +328,26 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                           : ""}
                       </p>
                     </div>
-                    <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                      <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Pickup OTP:
-                      </p>
-                      <p className={Styles.pickupDeliveryDetailPricesText}>
-                        {/* {route.params?.orderItem?.otp} */}
-                      </p>
-                    </div>
-                    <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                      <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Delivered OTP:
-                      </p>
-                      <p className={Styles.pickupDeliveryDetailPricesText}>
-                        {/* {route.params?.orderItem?.delivered_otp} */}
-                      </p>
-                    </div>
+                    {orders?.otp && (
+                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
+                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
+                          Pickup OTP:
+                        </p>
+                        <p className={Styles.pickupDeliveryDetailPricesText}>
+                          {orders?.otp}
+                        </p>
+                      </div>
+                    )}
+                    {orders?.delivered_otp && (
+                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
+                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
+                          Delivered OTP:
+                        </p>
+                        <p className={Styles.pickupDeliveryDetailPricesText}>
+                          {orders?.delivered_otp}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -430,7 +436,10 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
                     Download invoice
                   </p>
                 </div>
-                <button  onClick={handleDownload} className={Styles.pickupDeliveryDetailDownloadIcon}>
+                <button
+                  onClick={handleDownload}
+                  className={Styles.pickupDeliveryDetailDownloadIcon}
+                >
                   <FontAwesomeIcon icon={faDownload} />
                 </button>
               </div>
@@ -561,12 +570,12 @@ const ConsumerOrder = ({ user, order, navigate }) => {
   const downloadInvoice = async (orderNumber, pdfUrl) => {
     try {
       // Fetch the PDF
-      const token = await localforage.getItem('1');
+      const token = await localforage.getItem("1");
       if (!token) {
         showErrorToast("Authorization token not found.");
         return;
       }
-  
+
       // Fetch the PDF with the token
       const response = await fetch(pdfUrl, {
         method: "GET",
@@ -577,12 +586,12 @@ const ConsumerOrder = ({ user, order, navigate }) => {
       });
       if (!response.ok) {
         showErrorToast(`Failed to fetch PDF: ${response.statusText}`);
-        return
+        return;
       }
-  
+
       // Convert response to Blob
       const blob = await response.blob();
-  
+
       // Create a download link and trigger the download
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -595,10 +604,9 @@ const ConsumerOrder = ({ user, order, navigate }) => {
       showErrorToast("Failed to download the invoice. Please try again.");
     }
   };
-  
 
   const handleDownload = () => {
-    const pdfUrl = API.downloadInvoice + orderNumber+'/consumer?show=true'
+    const pdfUrl = API.downloadInvoice + orderNumber + "/consumer?show=true";
     downloadInvoice(orderNumber, pdfUrl);
   };
   return (
@@ -619,7 +627,10 @@ const ConsumerOrder = ({ user, order, navigate }) => {
                     Delivery Details
                   </h4>
                 </div>
-                <Link to="/support-page" className={Styles.pickupDeliveryDetailsSettingsIcon}>
+                <Link
+                  to="/support-page"
+                  className={Styles.pickupDeliveryDetailsSettingsIcon}
+                >
                   <FontAwesomeIcon icon={faGear} />
                 </Link>
               </div>
@@ -742,22 +753,26 @@ const ConsumerOrder = ({ user, order, navigate }) => {
                           : ""}
                       </p>
                     </div>
-                    <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                      <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Pickup OTP:
-                      </p>
-                      <p className={Styles.pickupDeliveryDetailPricesText}>
-                        {/* {route.params?.orderItem?.otp} */}
-                      </p>
-                    </div>
-                    <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
-                      <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Delivered OTP:
-                      </p>
-                      <p className={Styles.pickupDeliveryDetailPricesText}>
-                        {/* {route.params?.orderItem?.delivered_otp} */}
-                      </p>
-                    </div>
+                    {orders?.otp && (
+                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
+                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
+                          Pickup OTP:
+                        </p>
+                        <p className={Styles.pickupDeliveryDetailPricesText}>
+                          {orders?.otp}
+                        </p>
+                      </div>
+                    )}
+                    {orders?.delivered_otp && (
+                      <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
+                        <p className={Styles.pickupDeliveryDetailOrderfaretext}>
+                          Delivered OTP:
+                        </p>
+                        <p className={Styles.pickupDeliveryDetailPricesText}>
+                          {orders?.delivered_otp}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -846,7 +861,10 @@ const ConsumerOrder = ({ user, order, navigate }) => {
                     Download invoice
                   </p>
                 </div>
-                <button  onClick={handleDownload} className={Styles.pickupDeliveryDetailDownloadIcon}>
+                <button
+                  onClick={handleDownload}
+                  className={Styles.pickupDeliveryDetailDownloadIcon}
+                >
                   <FontAwesomeIcon icon={faDownload} />
                 </button>
               </div>

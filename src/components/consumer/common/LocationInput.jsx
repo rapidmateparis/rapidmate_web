@@ -9,12 +9,14 @@ import {
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Styles from "../../../assets/css/home.module.css";
 import FavoriteAddressModal from "../../../common/FavoriteAddressModal";
+import { useTranslation } from "react-i18next";
 
 const LocationInput = ({
   setPickupLocation,
   setDropoffLocation,
   calculateRoute,
 }) => {
+  const {t}=useTranslation()
   const originRef = useRef();
   const destinationRef = useRef();
   const originAutocomplete = useRef(null);
@@ -99,7 +101,7 @@ const LocationInput = ({
               <input
                 className={Styles.homeMapPlaceSearch}
                 type="text"
-                placeholder="Enter pickup location"
+                placeholder={t("enter_pickup_location")}
                 ref={originRef}
               />
             </Autocomplete>
@@ -131,7 +133,7 @@ const LocationInput = ({
               <input
                 className={Styles.homeMapPlaceSearch}
                 type="text"
-                placeholder="Enter drop-off location"
+                placeholder={t("enter_dropoff_location")}
                 ref={destinationRef}
               />
             </Autocomplete>
@@ -149,7 +151,7 @@ const LocationInput = ({
           onClick={handleUseCurrentLocation}
           style={{ cursor: "pointer" }}
         >
-          Use Current Location
+          {t("use_current_location")}
         </p>
       </div>
       {/* Modal start here  */}

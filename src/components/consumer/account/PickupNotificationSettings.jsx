@@ -6,9 +6,11 @@ import { updateUserProfile } from "../../../data_manager/dataManage";
 import { ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../../redux/authSlice";
+import { useTranslation } from "react-i18next";
 
 const PickupNotificationSettings = () => {
   const dispatch = useDispatch();
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const [isPushNotificationChecked, setIsPushNotificationChecked] =useState(user?.userDetails?.enable_push_notification == 1 ? true : false);
   const [isPromotionalEmailChecked, setIsPromotionalEmailChecked] =useState(user?.userDetails?.enable_email_notification == 1 ? true : false);
@@ -61,13 +63,13 @@ const PickupNotificationSettings = () => {
       <div className="row">
         <div className="col-md-12">
           <div className={Styles.addressBookAddressCard}>
-            <p className={Styles.addressBookHeaderTitleText}>Notifications</p>
+            <p className={Styles.addressBookHeaderTitleText}>{t("notifications")}</p>
           </div>
 
           <div>
             <div className={Styles.pickupPushNotificationEnableCard}>
               <p className={Styles.pickupPushNotificationSettings}>
-                Receive push notifications
+                {t("receive_push_notifications")}
               </p>
               <Form>
                 <Form.Check
@@ -86,7 +88,7 @@ const PickupNotificationSettings = () => {
 
             <div className={Styles.pickupPushNotificationEnableCard}>
               <p className={Styles.pickupPushNotificationSettings}>
-                Receive promotional emails
+                {t("receive_promotional_emails")}
               </p>
               <Form>
                 <Form.Check
