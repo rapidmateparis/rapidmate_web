@@ -94,6 +94,9 @@ const PickupPaymentMethods = () => {
   const openAddModal = () => {
     setShowAddModal(true);
   };
+  const deleteCard = (rowId) =>{
+
+  }
   return (
     <section className={Styles.addressBookMainSec}>
       <div className="row">
@@ -178,9 +181,9 @@ const PickupPaymentMethods = () => {
                           {cardInfo.card_number?.replace(/\d(?=\d{4})/g, "*")}
                         </p>
                       </div>
-                      <button className={Styles.paymentMethodEditBtn}>
+                      {/* <button className={Styles.paymentMethodEditBtn}>
                         <FontAwesomeIcon icon={faTrash} />
-                      </button>
+                      </button> */}
                     </div>
                   ))}
               </div>

@@ -18,7 +18,7 @@ import Styles from "../assets/css/home.module.css";
 import PickupHomeMap from "./PickupHomeMap";
 import { ToastContainer } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../utils/Toastify";
-import { API, buildAddress } from "../utils/Constants";
+import { API, buildAddress, formatPhoneNumber } from "../utils/Constants";
 import { getViewOrderDetail } from "../data_manager/dataManage";
 import Spinners from "./Loader";
 import Payment from "../assets/images/Payment-Successful-Icon.png";
@@ -38,6 +38,8 @@ function LiveTracking() {
   const [vehicle, setVehicle] = useState(null);
   const [driverPhone, setDriverPhone] = useState(null);
   const [loading, setLoading] = useState(false);
+  const userRole = useSelector((state) => state.auth.role);
+  const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const [markAsComplepleted, setMarkAsCompleted] = useState(false);
   const [orderNum, setOrderNum] = useState(
     driverDetails == undefined
@@ -48,6 +50,7 @@ function LiveTracking() {
   const [copiedField, setCopiedField] = useState(null);
   useEffect(() => {
     if (deliveryBoy?.phone) {
+     
       setDriverPhone(deliveryBoy.phone);
     }
     const orderDetail = async () => {
@@ -62,6 +65,7 @@ function LiveTracking() {
             ) {
               setMarkAsCompleted(true);
               setOrder(successResponse[0]._response.order);
+              console.log("deliveryboy",successResponse[0]._response.deliveryBoy)
               setDeliveryBoy(successResponse[0]._response.deliveryBoy);
               if (successResponse[0]._response.vehicle) {
                 setVehicle(successResponse[0]._response.vehicle);
@@ -158,6 +162,7 @@ function LiveTracking() {
   //   };
   // }, []);
 
+
   const ProgressStep = ({ stepNumber, stepText, isActive, isCompleted }) => {
     return (
       <div
@@ -187,7 +192,7 @@ function LiveTracking() {
         return 1;
     }
   };
-  console.log(order?.order_status)
+ 
   // Ensure `getStep` is used consistently to initialize and update the step.
   const [currentStep, setCurrentStep] = useState(() => getStep(order));
 
@@ -205,6 +210,7 @@ function LiveTracking() {
   if (order == null) {
     return <Spinners />;
   }
+
 
   if (markAsComplepleted) {
     return (
@@ -230,7 +236,7 @@ function LiveTracking() {
                       <Link
                         className={`${Styles.addPickupDetailsCancelBTn} m-5`}
                         style={{ color: "#000" }}
-                        to="/consumer/orders"
+                        to={`/${baseUrl}/orders`}
                       >
                         Go order Lists
                       </Link>
@@ -244,6 +250,19 @@ function LiveTracking() {
       </>
     );
   }
+
+  const actionToCall = () => {
+  if (!driverPhone && !order?.delivery_boy_mobile) {
+    showErrorToast("Phone number not available");
+    return;
+  }
+
+  const phoneNumber = formatPhoneNumber(driverPhone || order?.delivery_boy_mobile);
+  console.log("calling...")
+  setTimeout(() => {
+    window.location.href = `tel:${phoneNumber}`; // Ensure it's executed inside a direct click event
+  }, 0);
+};
   return (
     <>
       <CommonHeader userData={user} />
@@ -387,13 +406,7 @@ function LiveTracking() {
                     </div>
                     <div className={Styles.pickupOrderTrackingButtonCard}>
                       <button
-                        onClick={() => {
-                          if (driverPhone) {
-                            window.location.href = `tel:${driverPhone}`;
-                          } else {
-                            alert("Phone number not available");
-                          }
-                        }}
+                        onClick={actionToCall}
                         className={Styles.pickupOrderTrackingChatButton}
                       >
                         <img
@@ -404,13 +417,7 @@ function LiveTracking() {
                       </button>
                       <button
                         className={Styles.pickupOrderTrackingChatButton}
-                        onClick={() => {
-                          if (driverPhone) {
-                            window.location.href = `tel:${driverPhone}`;
-                          } else {
-                            alert("Phone number not available");
-                          }
-                        }}
+                        onClick={actionToCall}
                       >
                         <img
                           className={Styles.pickupOrderTrackingCallIcon}

@@ -211,3 +211,6 @@ export const titleFormat=(date=new Date())=>{
 export const DATE_FORMAT ={
   titleFormat:'MMM DD, YYYY [at] hh:mm A'
 }
+export const formatPhoneNumber = (phoneNumber) => {
+  return phoneNumber.replace(/^\+(\d+)\+/, "+");
+};
