@@ -75,13 +75,13 @@ const SingupVerify = () => {
                       },
                       userDetails: successResponse[0]._response.user_profile[0],
                     };
-                    const getToken = successResponse[0]._response?.token;
+                    const getToken = successResponse[0]._response?.rapid_token;
                     const userRole =
                       successResponse[0]._response.user_profile[0].role;
                     const refreshToken =
                       successResponse[0]._response?.refreshtoken;
                     if (getToken && userData) {
-                      await localforage.setItem(1, getToken);
+                      await localforage.setItem("1", getToken);
                       dispatch(loginSuccess({ role: userRole, user: userData }));
                       const objData = await getLookup();
                       dispatch(commonDataList(objData));

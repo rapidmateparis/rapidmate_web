@@ -83,7 +83,9 @@ const EnterpriseAddPickupDetails = () => {
         const phoneLengthByCountry = {
           in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
           fr: { min: 11, max: 11 },
-          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
+          ru: { min: 11, max: 11 }, 
+          us: { min: 10, max: 10 },
+          nz: { min: 12, max: 12 }, 
           // Add other countries and their phone number lengths here
         };
         const countryCode = country ? country : null;
@@ -124,7 +126,9 @@ const EnterpriseAddPickupDetails = () => {
         const phoneLengthByCountry = {
           in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
           fr: { min: 11, max: 11 },
-          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
+          ru: { min: 11, max: 11 }, 
+          us: { min: 10, max: 10 },
+          nz: { min: 12, max: 12 }, 
           // Add other countries and their phone number lengths here
         };
         const countryCode = dcountry ? dcountry : null;
@@ -218,7 +222,6 @@ const EnterpriseAddPickupDetails = () => {
       setValue("dropoffdetail", false);
     }
 
-    console.log("data", data);
 
     navigate("/enterprise/order-preview", {
       state: {
@@ -257,7 +260,6 @@ const EnterpriseAddPickupDetails = () => {
     }
   }, [user]);
   const handleTimeset = (e) => {
-    console.log(e.target.value);
     setSelectedTime(e.target.value);
     setValue("pickupTime", e.target.value);
   };
@@ -349,7 +351,7 @@ const EnterpriseAddPickupDetails = () => {
                           <PhoneInput
                             country={"fr"}
                             value={value}
-                            onlyCountries={["fr", "in", "ru"]}
+                            onlyCountries={["fr", "in", "ru","us","nz"]}
                             countryCodeEditable={false}
                             isValid={(value, country) => {
                               setValue("country", country.iso2);
@@ -1123,7 +1125,7 @@ const EnterpriseAddPickupDetails = () => {
                             <PhoneInput
                               country={"fr"}
                               value={value}
-                              onlyCountries={["fr", "in", "ru"]}
+                              onlyCountries={["fr", "in", "ru","us","nz"]}
                               countryCodeEditable={false}
                               isValid={(value, country) => {
                                 setValue("dcountry", country.iso2);

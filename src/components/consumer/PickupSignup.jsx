@@ -45,13 +45,16 @@ const schema = yup.object().shape({
     .required("Phone number is required")
     .matches(/^\d+$/, "Phone number should contain only digits")
     .test("length", "Phone number length is invalid", function (value) {
-      const { country } = this.parent; // Assuming country is selected in the form
+      const { pcountry } = this.parent; // Assuming country is selected in the form
       const phoneLengthByCountry = {
-        101: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-        75: { min: 11, max: 11 }, // Example for the US: 10 digits
+        in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+        fr: { min: 11, max: 11 },
+        ru: { min: 11, max: 11 }, 
+        us: { min: 10, max: 10 },
+        nz: { min: 12, max: 12 }, 
         // Add other countries and their phone number lengths here
       };
-      const countryCode = country ? country.value : null;
+      const countryCode = pcountry ? pcountry : null;
       if (countryCode && phoneLengthByCountry[countryCode]) {
         const { min, max } = phoneLengthByCountry[countryCode];
         return value.length >= min && value.length <= max;
@@ -111,7 +114,6 @@ const PickupSignup = () => {
         }
       },
       (errorResponse) => {
-        console.log("errorResponse", errorResponse[0]._errors.message);
         setErmessage(errorResponse[0]._errors.message);
       }
     );
@@ -143,7 +145,6 @@ const PickupSignup = () => {
       params,
       (successResponse) => {
         if (successResponse[0]._success) {
-          console.log(successResponse[0]);
           if (successResponse[0]._response) {
             if (successResponse[0]._response.name == "NotAuthorizedException") {
               showErrorToast(successResponse[0]._response.name);
@@ -180,9 +181,6 @@ const PickupSignup = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(countryCode);
-  }, [countryCode]);
 
   return (
     <>
@@ -392,6 +390,9 @@ const PickupSignup = () => {
                               onlyCountries={["fr", "in"]}
                               value={value}
                               countryCodeEditable={false}
+                              isValid={(value, country) => {
+                                setValue("pcountry", country.iso2);
+                              }}
                               onFocus={handleFocus}
                               onBlur={handleBlur}
                               onChange={onChange}

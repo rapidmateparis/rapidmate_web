@@ -20,7 +20,7 @@ function EnterpriseNotificationModal({ show, handleClose }) {
   const baseUrl = role?.toLowerCase().replace(/_/g, "");
   const getNotification = () => {
     getNotificationList(
-      user.userDetails.ext_id,
+      user?.userDetails?.ext_id,
       (successResponse) => {
         const transformedData = successResponse[0]._response;
         setNotificationList(transformedData);
