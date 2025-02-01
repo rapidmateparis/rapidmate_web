@@ -180,13 +180,11 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                             {vehicle.vehicle_type}
                           </p>
                           {selectedVehicle == vehicle.id && (
-                            <div className={Styles.enterpriseVehilces}>
                               <p
-                                className={`${Styles.enterpriseSelectServiceVehicleName} ${Styles.textColor}`}
+                                className={`${Styles.enterpriseSelectServicePrices} ${Styles.textColor}`}
                               >
-                                € {amount}
+                                €{amount}/Hrs
                               </p>
-                            </div>
                           )}
 
                           <img

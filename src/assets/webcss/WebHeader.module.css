@@ -268,7 +268,7 @@ a {
   position: relative;
   border: 1px solid var(--secondaryColor);
   border-radius: 5px;
-  gap:10px;
+  gap: 10px;
 }
 
 .customSelect {
@@ -278,8 +278,6 @@ a {
   font-size: 16px;
   padding: 5px 10px;
   cursor: pointer;
-
-  
 }
 
 .customSelect:focus {
@@ -302,7 +300,16 @@ a {
 }
 
 .customSelect option:checked {
-  background-color: var(--secondaryColor); /* Selected option background color */
+  background-color: var(
+    --secondaryColor
+  ); /* Selected option background color */
   color: #fff; /* Selected option text color */
 }
 
+/* Mobile Responsive Start Here  */
+
+@media (max-width: 768px) {
+  .headerOffterCard {
+    display: none;
+  }
+}
