@@ -10,7 +10,6 @@ import Van from "../../assets/images/Van-Vehicle.png";
 import Pickup from "../../assets/images/Pickup-Vehicle.png";
 import Truck from "../../assets/images/Truck-Vehicle.png";
 import Package from "../../assets/images/Package.png";
-import { Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {
   addVehicleApi,
@@ -19,8 +18,8 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { uploadImage } from "../../utils/Constants";
+import { useTranslation } from "react-i18next";
 const schema = yup.object().shape({
   vehicleNo: yup
     .string()
@@ -30,13 +29,30 @@ const schema = yup.object().shape({
   make: yup.string().required("Make field is required"),
   variant: yup.string().required("Variant field is required"),
   vehicelTypeId: yup.string().required("Vehicle type is required"),
-  reg_doc: yup.mixed().required("File is required"),
-  driving_license: yup.mixed().required("File is required"),
-  insurance: yup.mixed().required("File is required"),
-  passport: yup.mixed().required("File is required"),
+  reg_doc: yup.mixed().when("vehicelTypeId", {
+    is: (value) => value !== "1", // Assuming "1" is the ID for Bicycle
+    then: (schema) => schema.required("File is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  driving_license: yup.mixed().when("vehicelTypeId", {
+    is: (value) => value !== "1", // Assuming "1" is the ID for Bicycle
+    then: (schema) => schema.required("File is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  insurance: yup.mixed().when("vehicelTypeId", {
+    is: (value) => value !== "1", // Assuming "1" is the ID for Bicycle
+    then: (schema) => schema.required("File is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  passport: yup.mixed().when("vehicelTypeId", {
+    is: (value) => value !== "1", // Assuming "1" is the ID for Bicycle
+    then: (schema) => schema.required("File is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 });
 function AddVehicle() {
   const navigate = useNavigate();
+  const {t}=useTranslation()
   const user = useSelector((state)=>state.auth.user)
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const { isAuthenticated, role } = useSelector((state) => state.auth);
@@ -109,7 +125,6 @@ function AddVehicle() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const onSubmit = async (data) => {
-    console.log(data)
     let params = {
       delivery_boy_ext_id: user?.userDetails?.ext_id,
       vehicle_type_id: data?.vehicelTypeId || vehicleId,
@@ -118,41 +133,37 @@ function AddVehicle() {
       make: data.make,
       variant: data.variant,
     };
-    if (data.reg_doc) {
+    if (data.reg_doc && vehicleId !== 1) {
       const regDocFormData = new FormData();
       regDocFormData.append("file", data.reg_doc);
       const regDocResponse = await uploadImage(regDocFormData);
       params.reg_doc = regDocResponse;
     }
-    if (data.driving_license) {
+    if (data.driving_license && vehicleId !== 1) {
       const drivingLicenseFormData = new FormData();
       drivingLicenseFormData.append("file", data.driving_license);
       const drivingLicenseResponse = await uploadImage(drivingLicenseFormData);
       params.driving_license = drivingLicenseResponse;
     }
-    if (data.insurance) {
+    if (data.insurance && vehicleId !== 1) {
       const insuranceFormData = new FormData();
       insuranceFormData.append("file", data.insurance);
       const insuranceResponse = await uploadImage(insuranceFormData);
-      console.log("insurance", insuranceResponse);
       params.insurance = insuranceResponse;
     }
-    if (data.passport) {
+    if (data.passport && vehicleId !== 1) {
       const passportFormData = new FormData();
       passportFormData.append("file", data.passport);
       const passportResponse = await uploadImage(passportFormData);
-      console.log("passport", passportResponse);
       params.passport = passportResponse;
     }
 
     addVehicleApi(
       params,
       (successResponse) => {
-        console.log("successResponse", successResponse);
         setLoading(false);
         if (successResponse[0]._success) {
           if (successResponse[0]._response) {
-            console.log("print_data==>addVehicle", successResponse[0]);
             if (successResponse[0]._response.name == "NotAuthorizedException") {
               // successResponse[0]._response.name
             } else if (successResponse[0]._httpsStatusCode == 200) {
@@ -200,15 +211,15 @@ function AddVehicle() {
               <div className={Styles.pickupSignupFormMainCard}>
                 <div className={Styles.chooseMainCard}>
                   <div className={Styles.chooseProfileCard}>
-                    <h2 className={Styles.chooseProfileHeading}>Add vehicle</h2>
+                    <h2 className={Styles.chooseProfileHeading}>{t("add_vehicle")}</h2>
                     <p className={Styles.chooseProfileSubheading}>
-                      Please add vehicle you will use for delivery
+                      {t("vehicle_description")}
                     </p>
                   </div>
                 </div>
                 <div>
                   <p className={Styles.deliveryboyVehicleSelectText}>
-                    Select vehicle type
+                   {t("select_vehicle_type")}
                   </p>
                   <div className={Styles.deliveryboyAddVehicleAllImagesCard}>
                     {vehicleTypeList.map((vehicle, index) => (
@@ -252,7 +263,7 @@ function AddVehicle() {
                   )}
                   <div>
                     <p className={Styles.deliveryboyVehicleFormDetailText}>
-                      Fill vehicle details
+                      {t("fill_vehicle_details")}
                     </p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="row">
@@ -260,7 +271,7 @@ function AddVehicle() {
                           (field, idx) => (
                             <div className="col-md-6" key={idx}>
                               <div className="mb-3">
-                                <label htmlFor={field}>{field}</label>
+                                <label htmlFor={field}>{t(field)}</label>
                                 <div className={Styles.pickupSignupContainer}>
                                   <Controller
                                     name={field}
@@ -299,8 +310,7 @@ function AddVehicle() {
                           <div className="col-md-6" key={fileField}>
                             <div className="mb-2">
                               <label htmlFor={fileField}>
-                                {fileField.charAt(0).toUpperCase() +
-                                  fileField.slice(1)}
+                                {t(fileField)}
                               </label>
                               <div className={Styles.pickupSignupContainer}>
                                 <input
@@ -334,7 +344,7 @@ function AddVehicle() {
                         type="submit"
                         className={Styles.pickupSignupContinueBtn}
                       >
-                        Submit
+                        {t("submit")}
                       </button>
                     </form>
                   </div>

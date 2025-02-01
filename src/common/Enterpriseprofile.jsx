@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Styles from "../assets/css/home.module.css";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
@@ -6,13 +6,14 @@ import { Controller } from "react-hook-form";
 import TextInput from "./TextInput";
 import Select from "react-select";
 import { useSelector } from "react-redux";
-function Enterpriseprofile({ user, control, errors}) {
+function Enterpriseprofile({ user, control, errors,onImageChange,setValue}) {
   const defaultEmail = user?.userDetails?.email || "";
   const defaultName = user?.userDetails?.first_name || "";
   const defaultLastName = user?.userDetails?.last_name || "";
   const defaultCompany = user?.userDetails?.company_name || "";
   const defaultPhone = user?.userDetails?.phone.replace("+", "") || "";
   const defaultDeliveries =user?.userDetails?.deliveryMonthHours || ""
+  const [selectedIndustry,setSelectedIndustry]=useState(null)
   const { industryType } = useSelector((state) => state.commonData.commonData);
 
   const industryList = industryType?.map((item) => ({
@@ -20,6 +21,15 @@ function Enterpriseprofile({ user, control, errors}) {
     value: item.id,
   }));
   
+  useEffect(()=>{
+    if(user){
+      setValue("industry",{value:user.userDetails.industry_type_id})
+      const industrytype=industryList.filter(
+        (state) => state.value === user.userDetails.industry_type_id
+      );
+      setSelectedIndustry(industrytype)
+    }
+  },[user])
   return (
     <>
       
@@ -134,7 +144,7 @@ function Enterpriseprofile({ user, control, errors}) {
             <Controller
               name="industry"
               control={control}
-              defaultValue={null}
+              defaultValue={selectedIndustry}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -142,9 +152,11 @@ function Enterpriseprofile({ user, control, errors}) {
                   placeholder="Select your industry"
                   styles={customSelectStyles}
                   isSearchable={true}
-                  value={industryList.find(
-                    (option) => option.value === user.userDetails.industry_type_id
-                  )}
+                  onChange={(option) => {
+                    field.onChange(option);
+                    setSelectedIndustry(option);
+                  }}
+                  value={selectedIndustry}
                 />
               )}
             />

@@ -37,7 +37,6 @@ const CalenderEvent = ({
           style={{ height: "100%", width: "100%" }}
           views={["month", "week","day"]}
           defaultView="month"
-          onSelectEvent={(event) => handleDeleteEvent(event)}
         />
       </div>
     </div>

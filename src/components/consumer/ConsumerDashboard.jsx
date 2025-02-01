@@ -26,11 +26,13 @@ import { ToastContainer } from "react-toastify";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarger from "../../assets/images/pickup-marker.png";
 import { showErrorToast, showSuccessToast } from "../../utils/Toastify";
+import { useTranslation } from "react-i18next";
 
 const libraries = ["places"];
 
 function ConsumerDashboard() {
   const navigate = useNavigate();
+  const {t}=useTranslation()
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
@@ -156,7 +158,7 @@ function ConsumerDashboard() {
 
   const handleContinue = () => {
     if (!pickupLocation || !dropoffLocation || !selectedVehicle) {
-      alert("Please fill all fields.");
+      showErrorToast("Please fill all fields.");
       return;
     }
 
@@ -194,7 +196,7 @@ function ConsumerDashboard() {
       <div className={`row ${Styles.manageRow}`}>
         <div className="col-md-3">
           <div className={Styles.requestPickupMaincard}>
-            <p className={Styles.pickupRequestText}>Request a Pick up!</p>
+            <p className={Styles.pickupRequestText}>{t("requestPickup")}</p>
             <LocationInput
               setPickupLocation={setPickupLocation}
               setDropoffLocation={setDropoffLocation}
@@ -231,7 +233,7 @@ function ConsumerDashboard() {
               className={Styles.goToOrderDetails}
             >
               <p className={Styles.pickuphomeContinueBt}>
-                Continue to order details
+              {t("continueToOrderDetails")}
               </p>
               <FontAwesomeIcon
                 className="pickupHome-rightArrow-icon"

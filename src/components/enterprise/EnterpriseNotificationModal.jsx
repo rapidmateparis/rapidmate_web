@@ -10,9 +10,11 @@ import { deleteNotificationList, getNotificationList } from "../../data_manager/
 import moment from "moment";
 import { ToastContainer } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../../utils/Toastify";
+import { useTranslation } from "react-i18next";
 
 function EnterpriseNotificationModal({ show, handleClose }) {
   const navigate = useNavigate();
+  const {t}=useTranslation()
   const [notificationList, setNotificationList] = useState([]);
   const {role, user } = useSelector((state) => state.auth);
   const baseUrl = role?.toLowerCase().replace(/_/g, "");
@@ -67,7 +69,7 @@ function EnterpriseNotificationModal({ show, handleClose }) {
         >
           <Modal.Header>
             <div className={`${Styles.pickupNotificationHeader}`}>
-              <p className={Styles.pickupnotificationTitle}>Notifications</p>
+              <p className={Styles.pickupnotificationTitle}>{t("notifications")}</p>
               {/* <button
                 onClick={handleClose}
                 className={Styles.pickupNotificationClearBtn}
@@ -121,7 +123,7 @@ function EnterpriseNotificationModal({ show, handleClose }) {
                 style={{ cursor: "pointer" }}
                 className={Styles.pickupNotificationSeeallBtn}
               >
-                See all
+                {t("see_all")}
               </div>
             </div>
           </Modal.Footer>

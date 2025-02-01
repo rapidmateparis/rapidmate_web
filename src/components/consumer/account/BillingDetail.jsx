@@ -16,8 +16,10 @@ import {
   updateDeliveryBoyBillingDetails,
 } from "../../../data_manager/dataManage";
 import { showErrorToast, showSuccessToast } from "../../../utils/Toastify";
+import { useTranslation } from "react-i18next";
 
 const BillingDetail = () => {
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
   const [billingDetails, setBillingDetails] = useState(null);
@@ -162,7 +164,7 @@ const BillingDetail = () => {
         <div className="col-md-12">
           <div className={Styles.addressBookAddressCard}>
             <p className={Styles.addressBookHeaderTitleText}>
-              Manage billing address
+              {t("manage_billing_address")}
             </p>
           </div>
         </div>

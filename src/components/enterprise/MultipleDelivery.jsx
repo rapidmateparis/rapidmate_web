@@ -203,7 +203,7 @@ function MultipleDelivery() {
                 <div className={Styles.pickupAddresAutocompleteCard}>
                   <LocationInput
                     onLocationChange={handlePickupChange}
-                    title="Enter pickup location"
+                    title={t("enter_pickup_location")}
                     icon="faLocationDot"
                   />
                 </div>
@@ -219,7 +219,7 @@ function MultipleDelivery() {
                       onLocationChange={(location,locationDetails) =>
                         handleDropoffChange(index, location,locationDetails)
                       }
-                      title="Enter drop-off location"
+                      title={t("enter_dropoff_location")}
                       icon="faLocationCrosshairs"
                     />
                     {dropoffLocations.length > 1 && (

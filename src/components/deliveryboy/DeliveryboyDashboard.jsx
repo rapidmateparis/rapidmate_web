@@ -7,6 +7,7 @@ import { getCompanyList, getDeliveryBoyViewOrdersList, getLocations } from "../.
 import CardComponent from "./CardComponent";
 import CompanyItemCart from "./CompanyItemCart";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Loader = () => (
   <div className="col-md-12">
@@ -18,6 +19,7 @@ const Loader = () => (
 
 function DeliveryboyDashboard() {
   const user = useSelector((state)=>state.auth.user)
+  const {t}=useTranslation()
   const [orderList, setOrderList] = useState([]);
   const [recentOrderList, setRecentOrderList] = useState([]);
   const [locationList, setLocationList] = useState([]);
@@ -103,41 +105,41 @@ function DeliveryboyDashboard() {
     <section className={Styles.profileChooseSec}>
       <div className="container">
         <p className={Styles.enterprisesHomeUserWelcomeText}>
-          Welcome <b>{user?.userDetails?.first_name} {user?.userDetails?.last_name}</b>
+          {t("welcome")} <b>{user?.userDetails?.first_name} {user?.userDetails?.last_name}</b>
         </p>
         <p className={Styles.enterprisesHomeDashbordDiscription}>
-          This is your Rapidmate dashboard!
+          {t("dashboard_welcome")}
         </p>
         {loading ? <Loader /> : (
           <>
             <div className="row mt-3">
               <div className={Styles.enterpriseHomeOrderidCard}>
-                <p className={Styles.enterpriseHomePickupTimeinfo}>Upcoming Deliveries</p>
+                <p className={Styles.enterpriseHomePickupTimeinfo}>{t("upcoming_deliveries")}</p>
                 <Link className={Styles.enterpriseHomeOrderIdText} style={{ fontSize: "13px" }}>
-                  All <FontAwesomeIcon className={Styles.enterpriseHomeAddresslocDotIcon} icon={faAngleDown} />
+                  {t("all")} <FontAwesomeIcon className={Styles.enterpriseHomeAddresslocDotIcon} icon={faAngleDown} />
                 </Link>
               </div>
-              <CardComponent orderList={orderList} locationList={locationList} msg="No upcoming orders" />
+              <CardComponent orderList={orderList} locationList={locationList} msg={t("no_upcoming_orders")} />
             </div>
 
             <div className="row">
               <div className={Styles.enterpriseHomeOrderidCard}>
-                <p className={Styles.enterpriseHomePickupTimeinfo}>Recently Delivered</p>
+                <p className={Styles.enterpriseHomePickupTimeinfo}>{t("recently_delivered")}</p>
                 <Link className={Styles.enterpriseHomeOrderIdText} style={{ fontSize: "13px" }}>
-                  All <FontAwesomeIcon className={Styles.enterpriseHomeAddresslocDotIcon} icon={faAngleDown} />
+                  {t("all")} <FontAwesomeIcon className={Styles.enterpriseHomeAddresslocDotIcon} icon={faAngleDown} />
                 </Link>
               </div>
-              <CardComponent orderList={recentOrderList} locationList={locationList} msg="No recent deliveries" />
+              <CardComponent orderList={recentOrderList} locationList={locationList} msg={t("no_recent_deliveries")} />
             </div>
 
             <div className="row">
               <div className={Styles.enterpriseHomeOrderidCard}>
-                <p className={`${Styles.enterpriseHomePickupTimeinfo} mb-2`}>My Companies</p>
+                <p className={`${Styles.enterpriseHomePickupTimeinfo} mb-2`}>{t("my_companies")}</p>
                 <Link className={Styles.enterpriseHomeOrderIdText} style={{ fontSize: "13px" }}>
-                  All <FontAwesomeIcon className={Styles.enterpriseHomeAddresslocDotIcon} icon={faAngleDown} />
+                  {t("all")} <FontAwesomeIcon className={Styles.enterpriseHomeAddresslocDotIcon} icon={faAngleDown} />
                 </Link>
               </div>
-              <CompanyItemCart companyList={companyList} msg="No company listing" />
+              <CompanyItemCart companyList={companyList} msg={t("no_company_listing")} />
             </div>
           </>
         )}

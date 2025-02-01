@@ -20,9 +20,11 @@ import Consumerprofile from "../../../common/Consumerprofile";
 import Enterpriseprofile from "../../../common/Enterpriseprofile";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 function ProfileUpdate() {
   const dispatch = useDispatch();
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -111,7 +113,7 @@ function ProfileUpdate() {
         company_name: data.company,
       }),
     };
-    updateProfile(user.userDetails.role, profileParams, profilePicId);
+    // updateProfile(user.userDetails.role, profileParams, profilePicId);
   };
 
   return (
@@ -166,8 +168,8 @@ function ProfileUpdate() {
         <div className={`row ${Styles.manageRow}`}>
           <div className="col-md-12">
             <div className={Styles.pickupAddpickupDetailsMaincard}>
-              <h2 className={Styles.addPickupDetailsText}>Update Profile</h2>
-              <p className={Styles.pickupPersonalDetails}>Personal Details</p>
+              <h2 className={Styles.addPickupDetailsText}>{t("update_profile")}</h2>
+              <p className={Styles.pickupPersonalDetails}>{t("personal_details")}</p>
 
               {user.userDetails.role === "DELIVERY_BOY" && (
                 <Deliveryboyprofile
@@ -194,6 +196,7 @@ function ProfileUpdate() {
                   errors={errors}
                   imagePreview={imagePreview}
                   onImageChange={handleImageChange}
+                  setValue={setValue}
                 />
               )}
 

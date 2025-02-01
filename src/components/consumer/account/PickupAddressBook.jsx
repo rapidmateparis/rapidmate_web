@@ -18,9 +18,11 @@ import {
 import { ToastContainer } from "react-toastify";
 import DeleteModal from "./DeleteModal";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function PickupAddressBook() {
   const user = useSelector((state)=>state.auth.user)
+  const {t}=useTranslation()
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -95,7 +97,7 @@ function PickupAddressBook() {
       <div className="row">
         <div className="col-md-12">
           <div className={Styles.addressBookAddressCard} onClick={openAddModal} style={{cursor:"pointer"}}>
-            <p className={Styles.addressBookHeaderTitleText}>Address book</p>
+            <p className={Styles.addressBookHeaderTitleText}>{t("address_book")}</p>
             <button
               
               className={Styles.addressBookPlusIconBtn}

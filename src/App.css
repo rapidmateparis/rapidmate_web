@@ -188,3 +188,47 @@ a {
 .activetab{
   border-bottom: 2px solid #ff0058;
 }
+
+#push-notification-switch:checked{
+  background-color: #ffc72b;
+  border-color: #ffc72b;
+}
+
+#push-notification-switch:hover{
+  background-color: #ff0058;
+  border-color: #ff0058;
+}
+
+#push-notification-switch:focus {
+  box-shadow: 0 0 5px rgba(255, 64, 129, 0.5);
+}
+/* Checked (Active) switch */
+#fr-switch:checked {
+  background-color: #ffc72b; /* Change to your preferred active color */
+  border-color: #ffc72b;
+}
+
+/* Hover effect */
+#fr-switch.form-check-input:hover {
+  background-color: #ff0058;
+  border-color: #ff0058;
+}
+
+/* Focus (when clicked or tabbed) */
+#fr-switch.form-check-input:focus {
+  box-shadow: 0 0 5px rgba(255, 64, 129, 0.5);
+}
+
+#promotional-email-switch:checked{
+  background-color: #ffc72b;
+  border-color: #ffc72b;
+}
+
+#promotional-email-switch:hover{
+  background-color: #ff0058;
+  border-color: #ff0058;
+}
+
+#promotional-email-switch:focus {
+  box-shadow: 0 0 5px rgba(255, 64, 129, 0.5);
+}

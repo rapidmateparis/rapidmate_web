@@ -6,8 +6,11 @@ import { faMailBulk, faPhone, faX } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../assets/css/PickupNotificationModal.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "../assets/css/home.module.css";
+import { useTranslation } from "react-i18next";
 
 function MessageModal({ show, handleClose }) {
+    const {t}=useTranslation()
+  
   return (
     <>
       <div>
@@ -18,7 +21,7 @@ function MessageModal({ show, handleClose }) {
         >
           <Modal.Header>
             <div className={`${Styles.pickupNotificationHeader}`}>
-              <p className={Styles.pickupnotificationTitle}>Supports</p>
+              <p className={Styles.pickupnotificationTitle}>{t("supports")}</p>
             </div>
           </Modal.Header>
           <Modal.Body>
@@ -32,7 +35,7 @@ function MessageModal({ show, handleClose }) {
                   </div>
                   <div>
                     <h4 className={customStyle.deliveryboyProfiletypeText}>
-                      Support phone
+                      {t("support_phone")}
                     </h4>
                     <p
                        className={`${customStyle.deliveryboyProfileTypeDiscription} ${customStyle.textColor}`}
@@ -51,7 +54,7 @@ function MessageModal({ show, handleClose }) {
                   </div>
                   <div>
                     <h4 className={customStyle.deliveryboyProfiletypeText}>
-                      Support Email
+                      {t("support_email")}
                     </h4>
                     <p
                       className={`${customStyle.deliveryboyProfileTypeDiscription} ${customStyle.textColor}`}

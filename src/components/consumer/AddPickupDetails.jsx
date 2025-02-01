@@ -59,7 +59,6 @@ const AddPickupDetails = () => {
     pickupnote: yup.string(),
     email: yup
       .string()
-      .required("Email is required")
       .email("Please enter a valid email"),
     phoneNumber: yup
       .string()
@@ -99,7 +98,6 @@ const AddPickupDetails = () => {
       .min(2, "Last name must be at least 2 characters long"),
     demail: yup
       .string()
-      .required("Email is required")
       .email("Please enter a valid email"),
     dphoneNumber: yup
       .string()

@@ -65,7 +65,7 @@ const EnterpriseAddPickupDetails = () => {
   const FILE_SIZE = 5 * 1024 * 1024; // 2MB
   const SUPPORTED_FORMATS = ["image/jpeg", "image/png", "application/pdf"];
   const schema = yup.object().shape({
-    company: yup.string().required("Company name is required"),
+    company: yup.string(),
     packageId: yup
       .string()
       .required("Package id is required")
@@ -73,7 +73,6 @@ const EnterpriseAddPickupDetails = () => {
     pickupnote: yup.string(),
     email: yup
       .string()
-      .required("Email is required")
       .email("Please enter a valid email"),
     phoneNumber: yup
       .string()
@@ -115,7 +114,6 @@ const EnterpriseAddPickupDetails = () => {
       .min(2, "Last name must be at least 2 characters long"),
     demail: yup
       .string()
-      .required("Email is required")
       .email("Please enter a valid email"),
     dphoneNumber: yup
       .string()

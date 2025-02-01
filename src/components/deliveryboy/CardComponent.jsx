@@ -7,9 +7,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Package from "../../assets/images/Package.png";
 import { formatDate } from "../../utils/Constants";
+import { useTranslation } from "react-i18next";
 
 function CardComponent({ orderList = [], locationList = [],msg=''}) {
- 
+  const {t}=useTranslation()
   const getLocationAddress = (locationId) => {
     let result = locationList.filter((location) => location.id === locationId);
     return result[0]?.address || "Unknown Address";
@@ -29,7 +30,7 @@ function CardComponent({ orderList = [], locationList = [],msg=''}) {
                   />
                 </div>
                 <p className={Styles.enterpriseHomePickupTimeinfo}>
-                  Pickup in {formatDate(order.delivery_date).date +' '+ formatDate(order.delivery_date).time || "N/A"}
+                  {t("pickup_in")} {formatDate(order.delivery_date).date +' '+ formatDate(order.delivery_date).time || "N/A"}
                 </p>
               </div>
               <div className={Styles.enterpriseHomeAddressFromCard}>
@@ -38,7 +39,7 @@ function CardComponent({ orderList = [], locationList = [],msg=''}) {
                   icon={faLocationDot}
                 />
                 <p className={Styles.enterpriseHomeAddressText}>
-                  From{" "}
+                  {t("from")}{" "}
                   <b>{getLocationAddress(order.pickup_location_id) || "N/A"}</b>
                 </p>
               </div>
@@ -48,7 +49,7 @@ function CardComponent({ orderList = [], locationList = [],msg=''}) {
                   icon={faLocationCrosshairs}
                 />
                 <p className={Styles.enterpriseHomeAddressText}>
-                  To{" "}
+                  {t("to")}{" "}
                   <b>
                     {getLocationAddress(order.dropoff_location_id) || "N/A"}
                   </b>
@@ -56,7 +57,7 @@ function CardComponent({ orderList = [], locationList = [],msg=''}) {
               </div>
               <div className={Styles.enterpriseHomeOrderidCard}>
                 <p className={Styles.enterpriseHomeOrderIdText}>
-                  Order ID: <span>{order.order_number}</span>
+                  {t("order_id")}: <span>{order.order_number}</span>
                 </p>
               </div>
             </div>

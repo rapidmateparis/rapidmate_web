@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Styles from "../../../assets/css/home.module.css";
-import { Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import { showErrorToast, showSuccessToast } from "../../../utils/Toastify";
 import localforage from "localforage";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/authSlice";
+import { useTranslation } from "react-i18next";
 const schema = yup.object().shape({
   currentPassword: yup
     .string()
@@ -29,6 +30,7 @@ const schema = yup.object().shape({
 });
 const PickupChangePassword = () => {
   const user = useSelector((state)=>state.auth.user)
+  const {t}=useTranslation()
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -100,7 +102,7 @@ const PickupChangePassword = () => {
       <div className="row">
         <div className="col-md-12">
           <div className={Styles.addressBookAddressCard}>
-            <p className={Styles.addressBookHeaderTitleText}>Change password</p>
+            <p className={Styles.addressBookHeaderTitleText}>{t("change_password")}</p>
           </div>
 
           <div>
@@ -113,8 +115,7 @@ const PickupChangePassword = () => {
                         htmlFor="currentPassword"
                         className={Styles.pickupChangePasswordLabelText}
                       >
-                        Before setting up a new password, please confirm your
-                        current password
+                        {t("before_setting_up_new_password")}
                       </label>
                       <div className={Styles.pickupChangePasswordCard}>
                         <FontAwesomeIcon
@@ -129,7 +130,7 @@ const PickupChangePassword = () => {
                             <input
                               {...field}
                               type={showCurrentPassword ? "text" : "password"}
-                              placeholder={`Current password`}
+                              placeholder={t("current_password")}
                               style={{
                                 width: "100%",
                                 padding: "5px",
@@ -152,8 +153,8 @@ const PickupChangePassword = () => {
                       )}
                     </div>
                     <div className={Styles.changepasswordLinkCard}>
-                      <Link className={Styles.changePasswordForgotPassword}>
-                        Forgot your password?
+                      <Link className={`${Styles.changePasswordForgotPassword} ${Styles.textColor}`}>
+                        {t("forgot_password")}
                       </Link>
                     </div>
                   </div>
@@ -163,8 +164,7 @@ const PickupChangePassword = () => {
                         htmlFor="currentPassword"
                         className={Styles.pickupChangePasswordLabelText}
                       >
-                        Use at least 6 characters, mixing uppercase, lowercase,
-                        numbers, and symbols.
+                        {t("use_at_least_6_characters")}
                       </label>
                       <div className={`${Styles.pickupChangePasswordCard}`}>
                         <FontAwesomeIcon
@@ -179,7 +179,7 @@ const PickupChangePassword = () => {
                             <input
                               {...field}
                               type={showNewPassword ? "text" : "password"}
-                              placeholder={`password`}
+                              placeholder={t("password")}
                               style={{
                                 width: "100%",
                                 padding: "5px",
@@ -215,7 +215,7 @@ const PickupChangePassword = () => {
                             <input
                               {...field}
                               type={showConfirmPassword ? "text" : "password"}
-                              placeholder={`Confirm new password`}
+                              placeholder={t("confirm_new_password")}
                               style={{
                                 width: "100%",
                                 padding: "5px",
@@ -245,7 +245,7 @@ const PickupChangePassword = () => {
                     className={Styles.pickupUpdatePasswordBtn}
                     disabled={loading}
                   >
-                    {loading ? "Updating ...":"Update password"}
+                    {loading ? <Spinner/>:t("update_password")}
                   </button>
                 </div>
               </form>
