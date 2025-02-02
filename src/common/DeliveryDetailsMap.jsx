@@ -98,7 +98,14 @@ export default function DeliveryDetailsMap({ addressData = null }) {
       <Marker position={origin} label="Start" />
       <Marker position={destination} label="End" />
       {directionsResponse && (
-        <DirectionsRenderer directions={directionsResponse} />
+        <DirectionsRenderer directions={directionsResponse} options={{
+          polylineOptions: {
+            strokeColor: "#FF0058", 
+            strokeOpacity: 0.9,    
+            strokeWeight: 3,       
+          },
+          suppressMarkers: false,   // Use your custom markers
+        }}/>
       )}
     </GoogleMap>
   );

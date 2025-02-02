@@ -59,13 +59,16 @@ const schema = yup.object().shape({
     .required("Phone number is required")
     .matches(/^\d+$/, "Phone number should contain only digits")
     .test("length", "Phone number length is invalid", function (value) {
-      const { country } = this.parent; // Assuming country is selected in the form
+      const { pcountry } = this.parent; // Assuming country is selected in the form
       const phoneLengthByCountry = {
-        101: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-        75: { min: 11, max: 11 }, // Example for the US: 10 digits
+        in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+        fr: { min: 11, max: 11 },
+        ru: { min: 11, max: 11 }, 
+        us: { min: 10, max: 10 },
+        nz: { min: 12, max: 12 }, 
         // Add other countries and their phone number lengths here
       };
-      const countryCode = country ? country.value : null;
+      const countryCode = pcountry ? pcountry : null;
       if (countryCode && phoneLengthByCountry[countryCode]) {
         const { min, max } = phoneLengthByCountry[countryCode];
         return value.length >= min && value.length <= max;
@@ -139,7 +142,7 @@ const EnterpriseSignup = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors },setValue,
   } = useForm({ resolver: yupResolver(schema) });
   const onSubmit = (data) => {
     setHitButton(true);
@@ -529,6 +532,9 @@ const EnterpriseSignup = () => {
                               onlyCountries={["fr", "in"]}
                               value={value}
                               countryCodeEditable={false}
+                              isValid={(value, country) => {
+                                setValue("pcountry", country.iso2);
+                              }}
                               onFocus={handleFocus}
                               onBlur={handleBlur}
                               onChange={onChange}

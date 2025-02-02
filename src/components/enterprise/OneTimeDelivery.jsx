@@ -25,7 +25,6 @@ import OneLocation from "./common/OneLocation";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
 
-const libraries = ["places"];
 
 function OneTimeDelivery() {
   const navigate = useNavigate();
@@ -122,10 +121,11 @@ function OneTimeDelivery() {
     };
     getDistancePrice();
   }, [duration]);
-
+  const libraries = ["places"];
+  
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: MAPS_API_KEY,
-    libraries: libraries,
+    libraries,
   });
 
   if (!isLoaded) {
@@ -324,7 +324,14 @@ function OneTimeDelivery() {
               {directionsResponse && (
                 <DirectionsRenderer
                   directions={directionsResponse}
-                  options={{ suppressMarkers: true }}
+                  options={{
+                    polylineOptions: {
+                      strokeColor: "#FF0058", // Blue color
+                      strokeOpacity: 0.9,    // 90% opacity
+                      strokeWeight: 3,       // 5px thick line
+                    },
+                    suppressMarkers: true,   // Use your custom markers
+                  }}
                 />
               )}
             </GoogleMap>

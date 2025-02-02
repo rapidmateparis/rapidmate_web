@@ -6,7 +6,8 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { MAPS_API_KEY } from "../utils/Constants";
-
+import DropoffMarker from "../assets/images/dropoff-marker.png";
+import PickupMarger from "../assets/images/pickup-marker.png";
 const libraries = ["places"];
 
 const center = { lat: 28.56341236809311, lng: 77.33609181917045 };
@@ -74,13 +75,26 @@ function PickupHomeMap({ latitude, longitude }) {
           }}
           onLoad={(map) => setMap(map)}
         >
-          <Marker position={center} />
+          <Marker position={{
+            lat: parseFloat(latitude.lat),
+            lng: parseFloat(latitude.lng),
+          }} icon={{
+                                  url: PickupMarger,
+                                  scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+                                }} />
+          <Marker position={{
+            lat: parseFloat(longitude.lat),
+            lng: parseFloat(longitude.lng),
+          }} icon={{
+                                  url: DropoffMarker,
+                                  scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+                                }} />
           {directionsResponse && (
             <DirectionsRenderer directions={directionsResponse} options={{
               polylineOptions: {
                 strokeColor: "#FF0058", // Blue color
                 strokeOpacity: 0.9,    // 90% opacity
-                strokeWeight: 5,       // 5px thick line
+                strokeWeight: 3,       // 5px thick line
               },
               suppressMarkers: false,   // Use your custom markers
             }} />

@@ -20,6 +20,7 @@ import PhoneInput from "react-phone-input-2";
 import { showErrorToast } from "../../utils/Toastify";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
+import { formatPhoneNumber } from "../../utils/Constants";
 
 const AddPickupDetails = () => {
   const location = useLocation();
@@ -61,22 +62,26 @@ const AddPickupDetails = () => {
       .string()
       .email("Please enter a valid email"),
     phoneNumber: yup
-      .string()
-      .required("Phone number is required")
-      .matches(/^\d+$/, "Phone number should contain only digits")
-      .test("length", "Phone number length is invalid", function (value) {
-        const { country } = this.parent; // Assuming country is selected in the form
-        const phoneLengthByCountry = {
-          101: { min: 12, max: 12 },
-          75: { min: 11, max: 11 },
-        };
-        const countryCode = country ? country.value : null;
-        if (countryCode && phoneLengthByCountry[countryCode]) {
-          const { min, max } = phoneLengthByCountry[countryCode];
-          return value.length >= min && value.length <= max;
-        }
-        return true; // If no country is selected, do not apply length validation
-      }),
+    .string()
+    .required("Phone number is required")
+    .matches(/^\d+$/, "Phone number should contain only digits")
+    .test("length", "Phone number length is invalid", function (value) {
+      const { pcountry } = this.parent; // Assuming country is selected in the form
+      const phoneLengthByCountry = {
+        in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+        fr: { min: 11, max: 11 },
+        ru: { min: 11, max: 11 }, // Example for the US: 10 digits
+        us: { min: 11, max: 11 }, // Example for the US: 10 digits
+        nz: { min: 12, max: 12 }, // Example for the US: 10 digits
+        // Add other countries and their phone number lengths here
+      };
+      const countryCode = pcountry ? pcountry : null;
+      if (countryCode && phoneLengthByCountry[countryCode]) {
+        const { min, max } = phoneLengthByCountry[countryCode];
+        return value.length >= min && value.length <= max;
+      }
+      return true; // If no country is selected, do not apply length validation
+    }),
     file: yup
       .mixed()
       .required("A file is required")
@@ -100,17 +105,20 @@ const AddPickupDetails = () => {
       .string()
       .email("Please enter a valid email"),
     dphoneNumber: yup
-      .string()
+       .string()
       .required("Phone number is required")
       .matches(/^\d+$/, "Phone number should contain only digits")
       .test("length", "Phone number length is invalid", function (value) {
-        const { country } = this.parent; // Assuming country is selected in the form
+        const { dcountry } = this.parent;
         const phoneLengthByCountry = {
-          101: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-          75: { min: 11, max: 11 }, // Example for the US: 10 digits
+          in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+          fr: { min: 11, max: 11 },
+          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
+          us: { min: 10, max: 10 }, // Example for the US: 10 digits
+          nz: { min: 12, max: 12 }, // Example for the US: 10 digits
           // Add other countries and their phone number lengths here
         };
-        const countryCode = country ? country.value : null;
+        const countryCode = dcountry ? dcountry : null;
         if (countryCode && phoneLengthByCountry[countryCode]) {
           const { min, max } = phoneLengthByCountry[countryCode];
           return value.length >= min && value.length <= max;
@@ -123,11 +131,11 @@ const AddPickupDetails = () => {
     setSelectedCheckOption(seletedValue);
     setValue("selectCheckOption", seletedValue);
   };
-
+ 
   const defaultFirstName = user?.userDetails?.first_name || "";
   const defaultLastName = user?.userDetails?.last_name || "";
   const defaultEmail = user?.userDetails?.email || "";
-  const defaultPhone = user?.userDetails?.phone.replace("+", "") || "";
+  const defaultPhone = user?.userDetails?.phone?.replace("+", "") || "";
   const [imagePreview, setImagePreview] = useState(null);
 
   const {
@@ -384,8 +392,11 @@ const AddPickupDetails = () => {
                           <PhoneInput
                             country={"fr"}
                             value={value}
-                            // onlyCountries={["fr", "in"]}
+                            onlyCountries={["fr", "in","ru","us","nz"]}
                             countryCodeEditable={false}
+                            isValid={(value, country) => {
+                              setValue("pcountry", country.iso2);
+                            }}
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             onChange={onChange}
@@ -427,7 +438,7 @@ const AddPickupDetails = () => {
                       htmlFor="file"
                       className={Styles.addPickupDetailFormLabels}
                     >
-                      Package photo <span className={Styles.textColor}>*</span>
+                      Package photo <span className={Styles.textColor}>*</span> : <span className={Styles.textColor}>Max size: 5mb</span>
                     </label>
 
                     {imagePreview ? (
@@ -719,7 +730,10 @@ const AddPickupDetails = () => {
                             <PhoneInput
                               country={"fr"}
                               value={value}
-                              onlyCountries={["fr", "in"]}
+                              onlyCountries={["fr", "in","ru","us","nz"]}
+                              isValid={(value, country) => {
+                                setValue("dcountry", country.iso2);
+                              }}
                               countryCodeEditable={false}
                               onFocus={handleFocus}
                               onBlur={handleBlur}
