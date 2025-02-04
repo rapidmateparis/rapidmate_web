@@ -9,8 +9,8 @@ export const showSuccessToast = (message) => {
     position: 'top-right',
     autoClose: 3000,
     hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
+    closeOnClick: false,
+    pauseOnHover: false,
     draggable: true,
     theme: 'colored',
   });
@@ -25,8 +25,8 @@ export const showErrorToast = (message) => {
     position: 'top-right',
     autoClose: 3000,
     hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
+    closeOnClick: false,
+    pauseOnHover: false,
     draggable: true,
     theme: 'colored',
   });

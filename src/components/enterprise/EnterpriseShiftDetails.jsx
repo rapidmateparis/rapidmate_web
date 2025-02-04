@@ -269,7 +269,7 @@ const EnterpriseShiftDetails = () => {
                               <td>{slot.to_time}</td>
                               <td>
                                 {slot.total_hours
-                                  ? `${slot.total_hours} hrs`
+                                  ? `${slot.total_hours?.toFixed(2)} hrs`
                                   : "N/A"}{" "}
                               </td>
                               <td>

@@ -61,8 +61,8 @@ const PaymentPage = ({
   const navigate = useNavigate();
 
   const { order, orderCustomerDetails } = location.state || {};
-
  
+  console.log("user",user?.userDetails?.is_pay_later)
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -77,6 +77,7 @@ const PaymentPage = ({
   const [isSelected, setIsSelected] = useState(false);
   const [paymentCard, setPaymentCard] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [isPayLater,setIsPayLater]=useState(0)
   const openAddModal = () => {
     setShowAddModal(true);
   };
@@ -161,6 +162,37 @@ const PaymentPage = ({
       setLoading(false);
     }
   };
+  
+  const isPaylaterFun = async () =>{
+   setLoading(true);
+   setIsPayLater(1)
+    try {
+      const pickupLocationParam = order?.addPickupLocation;
+      const dropoffLocationParam = order?.addDestinationLocation;
+      const pickupLocatiId = await addLocation(pickupLocationParam);
+      const dropoffLocatiId = await addLocation(dropoffLocationParam);
+      if (pickupLocatiId == "false") {
+        showErrorToast("Something went wrong.");
+        return true;
+      }
+      if (dropoffLocatiId == "false") {
+        showErrorToast("Something went wrong.");
+        return true;
+      }
+      setSourceLocationId(pickupLocatiId);
+      setDestinationLocationId(dropoffLocatiId);
+      const passportFormData = new FormData();
+      passportFormData.append("file", orderCustomerDetails?.file[0]);
+      const passportResponse = await uploadImage(passportFormData);
+      setPackageImageId(passportResponse);
+    } catch (error) {
+      showErrorToast(
+        error.message || "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     const callPlaceOrder = async () => {
@@ -203,7 +235,7 @@ const PaymentPage = ({
       distance: floatDistance,
       total_amount: parseFloat(paymentAmount),
       pickup_notes: orderCustomerDetails?.pickupnote,
-      is_scheduled_order: orderCustomerDetails?.isSchedule ? 1 : 0,
+      is_scheduled_order: orderCustomerDetails?.isSchedule ? 0 : 1,
 
       drop_first_name: orderCustomerDetails?.dname,
       drop_last_name: orderCustomerDetails?.dlastname,
@@ -221,6 +253,9 @@ const PaymentPage = ({
       requestParams.promo_code = promoCodeResponse.promoCode;
       requestParams.promo_value = promoCodeResponse.discount;
       requestParams.order_amount = parseFloat(totalAmount);
+    }
+    if(isPayLater){
+      requestParams.is_pay_later=isPayLater;
     }
     // console.log(requestParams)
     try {
@@ -295,9 +330,25 @@ const PaymentPage = ({
 
   useEffect(() => {
     if (orderNumber) {
-      doPayment();
+      if(!isPayLater){
+        doPayment();
+      }else{
+        OnlyForPayLater()
+      }
+      // 
     }
   }, [orderNumber]);
+  const OnlyForPayLater = () =>{
+    if(isPayLater){
+      navigate("/payment-successfull", {
+        state: {
+          orderNumber: orderNumber,
+          date:orderCustomerDetails?.pickupDate,
+          isSchedule:orderCustomerDetails?.isSchedule ? false : true,
+        },
+      });
+    }
+  }
   const getPaymentCard = () => {
     getEnterprisePaymentMethod(
       user?.userDetails.ext_id,
@@ -601,6 +652,15 @@ const PaymentPage = ({
                         {loading ? "Processing..." : "Pay Now"}
                       </button>
                     </form>
+                    {user?.userDetails?.is_pay_later==1 && <div
+                        onClick={isPaylaterFun}
+                        disabled={loading}
+                        className={`${Styles.addPickupDetailsNextBtn} m-2`}
+                        style={{cursor:"pointer"}}
+                      >
+                        {loading ? "Processing..." : "Pay Later"}
+                      </div>}
+                     
                     {message && <p>{showSuccessToast(message)}</p>}
                     {/* </div> */}
                   </div>

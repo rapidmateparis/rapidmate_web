@@ -340,7 +340,7 @@ const SetNewSchedule = () => {
       return;
     }
     const startDate = moment(new Date(events[0].start)).format("YYYY-MM-DD");
-    const endDate = moment(new Date(events[0].start)).format("YYYY-MM-DD");
+    const endDate = moment(new Date(events[0].end)).format("YYYY-MM-DD");
     let requestParams = {
       enterprise_ext_id: user?.userDetails.ext_id,
       branch_id: branch?.id,
@@ -413,7 +413,7 @@ const SetNewSchedule = () => {
                         Total hours: <span>{totalHour}</span>
                       </h4>
                       <h4>
-                        Estimated cost: <span>€ {totalAmount}</span>
+                        Estimated cost: <span>€ {totalAmount?.toFixed(2)}</span>
                       </h4>
                     </div>
                   </div>

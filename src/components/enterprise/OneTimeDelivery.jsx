@@ -312,7 +312,7 @@ function OneTimeDelivery() {
                   }}
                 />
               )}
-              {currentLocation && (
+              {!pickupLocation && currentLocation && (
                 <Marker
                   position={currentLocation}
                   icon={{
