@@ -2368,4 +2368,461 @@ a {
   .HomeFooterBottomNavCard {
     flex-direction: column;
   }
+
+  .RestaurantBannerMainSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .RestaurantBannerMainRowCard {
+    padding: 20px 20px;
+    flex-direction: column-reverse;
+  }
+
+  .RestaurantBannerTextCard {
+    padding-right: 0px;
+  }
+
+  .RestaurantBannerTextCard h2 {
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .RestaurantBannerTextCard p {
+    font-size: 16px;
+  }
+
+  .RestaurantDeliverySolutionSec {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .RestaurantDeliveryTitleText {
+    font-size: 25px;
+  }
+
+  .RestaurantCountText {
+    width: 20px;
+    height: 20px;
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .RestaurantCommissionsCard h2 {
+    font-size: 18px;
+  }
+
+  .RestaurantCommissionsCard p {
+    font-size: 16px;
+  }
+
+  .RestaurantDeliverySolutionMainCard {
+    padding: 15px;
+  }
+
+  .RestaurantShiftBasedSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .RestaurantShiftBasedRow {
+    flex-direction: column;
+  }
+
+  .RestaurantShiftBasedTextCard {
+    padding-left: 0px;
+  }
+
+  .RestaurantShiftBasedTextCard h2 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  .RestaurantScheduleSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .RestaurantScheduleMainCard {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .RestaurantScheduleTextCard {
+    padding: 0px;
+  }
+
+  .RestaurantScheduleTextCard h2 {
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
+
+  .RestaurantScheduleTextCard p {
+    font-size: 16px;
+  }
+
+  .RestaurantScheduleImgCard {
+    margin-top: 15px;
+  }
+
+  .RestaurantRealTimeTrackingSec {
+    margin: 30px 20px 20px 30px;
+  }
+
+  .RestaurantRealTimeTrackingTextCard h2 {
+    font-size: 25px;
+  }
+
+  .RestaurantRealTimeTrackingRow {
+    flex-direction: column;
+  }
+
+  .RestaurantRealTimeTrackingTextCard {
+    margin-right: 0px;
+  }
+
+  .RestaurantProfileFeedbackSec {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .RestaurantProfileFeedbackRow {
+    flex-direction: column-reverse;
+  }
+
+  .RestaurantProfileFeedbackTextCard {
+    padding-left: 0px;
+  }
+
+  .RestaurantProfileFeedbackTextCard h2 {
+    font-size: 25px;
+  }
+
+  .RestaurantProfileFeedbackTextCard p {
+    margin-bottom: 15px;
+  }
+
+  .RestaurantRealTimeTrackingTextCard p {
+    margin-bottom: 15px;
+  }
+
+  .RestaurantLogingTrackingSec {
+    margin: 30px 0px;
+  }
+
+  .RestaurantLogingTrackingRow {
+    flex-direction: column-reverse;
+  }
+
+  .RestaurantLogingTrackinTextCard h2 {
+    font-size: 25px;
+  }
+
+  .RestaurantLogingTrackinTextCard p {
+    margin-bottom: 15px;
+  }
+
+  .WebPartnersSec {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebPartnersTitleText {
+    font-size: 25px;
+  }
+
+  .PartnerImage {
+    height: 240px;
+  }
+
+  .GroceryCustomerSatisfactionTextCard h2 {
+    font-size: 25px;
+  }
+
+  .WebPharmacyUrgentDeliverySec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebPharmacyUrgentDeliveryMainCard {
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebPharmacyUrgentDeliveryTextCard h2 {
+    font-size: 25px;
+  }
+
+  .WebPharmacyLiveTrackingTextCard {
+    padding: 20px 20px;
+  }
+
+  .WebPharmacyLiveTrackingTextCard h2 {
+    font-size: 25px;
+  }
+
+  .CommerceMultipleDeliverySec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .CommerceMultipleDeliveryMainCard {
+    padding: 20px;
+  }
+
+  .CommerceMultipleDeliveryTextMainCard {
+    max-width: 100%;
+  }
+
+  .CommerceMultipleDeliveryTextMainCard h2 {
+    font-size: 25px;
+  }
+
+  .WebMoreBannerSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebMoreBannerRowCard {
+    padding: 20px;
+    flex-direction: column-reverse;
+  }
+
+  .WebMoreBannerTextCard h2 {
+    font-size: 25px;
+    margin-top: 15px;
+  }
+
+  .WebMoreBannerTextCard p {
+    margin-bottom: 0px;
+  }
+
+  .WebMoreAreaMainSec {
+    padding: 20px 20px 20px 20px;
+    margin: 20px 0px;
+  }
+
+  .WebMoreAreaTitleText {
+    font-size: 25px;
+  }
+
+  .WebMoreAreaCategoryRow {
+    gap: 15px;
+  }
+
+  .WebMoreAreaCategoryImageCard img {
+    height: 80px;
+  }
+
+  .WebMoreAreaCategoryTextCard h2 {
+    font-size: 18px;
+  }
+
+  .WebMoreAreaCategoryTextCard p {
+    font-size: 13px;
+  }
+
+  .WebIndividualsSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebIndividualsMainCard {
+    padding: 20px;
+  }
+
+  .WebIndividualsMainTextCard h2 {
+    font-size: 25px;
+  }
+
+  .WebIndividualsScheduledMainCard h2 {
+    font-size: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .WebPackersMoversSec {
+    margin: 20px 0px;
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebIndividualsPackersMoversMainCard {
+    padding-left: 0px;
+  }
+
+  .WebIndividualsPackersMoversMainCard h2 {
+    font-size: 25px;
+  }
+
+  .WebBecomeCourierSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebJoinRapidmateSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebJoinRapidmateTextMainRow {
+    flex-direction: column;
+  }
+
+  .WebJoinRapidmateTextCard {
+    padding: 20px;
+  }
+
+  .WebJoinRapidmateTextCard h2 {
+    font-size: 25px;
+  }
+
+  .WebJoinRapidmateTextCard p {
+    font-size: 16px;
+  }
+
+  .WebJoinRapidmateFormMainCard {
+    padding: 20px 20px;
+    border-radius: 0px 0px 0px 0px;
+  }
+
+  .WebWhyWithRapidmateSec {
+    margin: 20px 20px 20px 20px;
+    padding: 20px 20px;
+  }
+
+  .WebWhyWithRapidmateTitle {
+    font-size: 25px;
+  }
+
+  .WebWhyFlexibleScheduleMainAllCard {
+    padding-left: 0px;
+  }
+
+  .WebWhyFlexibleScheduleImgCard img {
+    height: 80px;
+  }
+
+  .WebWhyFlexibleScheduleCard h2 {
+    font-size: 20px;
+  }
+
+  .WebWhyFlexibleScheduleCard p {
+    font-size: 13px;
+  }
+
+  .WebEssentialsKickstartSec {
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebEssentialsKickstartTitleText {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+
+  .WebEssentialsKickstartMainCard {
+    padding: 20px;
+  }
+
+  .WebEssentialsKickstartMainCard h2 {
+    font-size: 25px;
+  }
+
+  .WebJoinRapidmatePlateformSec {
+    margin: 20px 0px;
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebJoinRapidmatePlateformTitle {
+    font-size: 25px;
+  }
+
+  .WebJoinRapidmateQuickApplyCard {
+    padding: 20px;
+  }
+
+  .WebRapidmateTrustReviewSec{
+    margin: 20px 20px 20px 20px;
+    padding: 20px 20px;
+  }
+
+  .WebRapidmateTrustReviewRow{
+    flex-direction: column-reverse;
+  }
+
+  .WebRapidmateTrustReviewTextCard{
+     padding-left: 0px;
+  }
+
+  .WebRapidmateTrustReviewTextCard h2{
+    font-size: 25px;
+  }
+
+  .WebRapidmateVerifiedReviewCard img{
+    height: 45px;
+  }
+
+  .WebRapidmateVerifiedReviewCard p{
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .WebRapidmateFaqMainSec{
+    margin: 20px 20px 20px 20px;
+  }
+
+  .WebRapidmateFaqMainTitle{
+    font-size: 25px;
+  }
+
+  .FaqQuestion span{
+    font-size: 18px;
+  }
+
+  .WebRapidmateSignupEarningSec{
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebRapidmateSignupEarningTextCard{
+    margin-top: 20px;
+  }
+
+  .WebRapidmateSignupEarningTextCard h2{
+    font-size: 25px;
+  }
+
+  .WebRapidmateSignupEarningTextCard button{
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .WebWhyChooseUsFlexibleDelivery{
+    height: 225px;
+    padding: 20px 20px;
+  }
+
+  .WebWhyChooseUsSec{
+    padding: 20px 20px;
+  }
+
+  .WebOurTeamSec{
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebOurTeamTitleText{
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+
+  .WebOurTeamDesignationCard{
+    margin-bottom: 20px;
+  }
+
+  .WebOurCoreValuesSec{
+    padding: 20px 20px 20px 20px;
+  }
+
+  .WebOurCoreValuesTitleText{
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+
+  .WebOurCoreValuesMainCard h2{
+    font-size: 20px;
+  }
+
+  .WebOurCoreValuesMainCard p{
+    font-size: 14px;
+  }
+
+  .WebAboutUsTitleTextCard h2{
+    font-size: 25px;
+  }
 }
