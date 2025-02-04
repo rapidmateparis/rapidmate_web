@@ -62,7 +62,6 @@ const PaymentPage = ({
 
   const { order, orderCustomerDetails } = location.state || {};
 
- 
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -80,11 +79,10 @@ const PaymentPage = ({
   const openAddModal = () => {
     setShowAddModal(true);
   };
- 
+
   // Toggle the selected state when the div is clicked
   const handleClick = (paymentcard) => {
-     setIsSelected(paymentcard);
-    
+    setIsSelected(paymentcard);
   };
   // console.log("order", order);
   // console.log("ordercus", orderCustomerDetails);
@@ -181,7 +179,7 @@ const PaymentPage = ({
     const floatDistance = distance
       ? parseFloat(distance.replace(" km", ""))
       : 0;
-    const isInstantDate=orderCustomerDetails?.isSchedule
+    const isInstantDate = orderCustomerDetails?.isSchedule;
     let requestParams = {
       enterprise_ext_id: user.userDetails.ext_id,
       branch_id: order?.selectedBranch?.id,
@@ -189,15 +187,19 @@ const PaymentPage = ({
       service_type_id: order?.selectedServiceType,
       vehicle_type_id: order?.selectedVehicleDetails?.id,
       pickup_date: localToUTC(orderCustomerDetails?.pickupDate),
-      order_date: isInstantDate ? moment(orderCustomerDetails?.pickupDate).format('YYYY-MM-DD hh:mm'):'',
-      pickup_time: isInstantDate ? moment(orderCustomerDetails?.pickupDate).format('hh:mm') : orderCustomerDetails?.pickupTime,
+      order_date: isInstantDate
+        ? moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD hh:mm")
+        : "",
+      pickup_time: isInstantDate
+        ? moment(orderCustomerDetails?.pickupDate).format("hh:mm")
+        : orderCustomerDetails?.pickupTime,
       pickup_location_id: sourceLocationId,
       dropoff_location_id: destinationLocationId,
       is_repeat_mode: orderCustomerDetails?.repeatOrder ? 1 : 0,
       repeat_mode: orderCustomerDetails?.selectCheckOption || "",
       repeat_every: orderCustomerDetails?.repeatEvery,
       repeat_until: localToUTC(orderCustomerDetails?.until),
-      repeat_day:orderCustomerDetails?.days || "",
+      repeat_day: orderCustomerDetails?.days || "",
       package_photo: packageImageId,
       package_id: orderCustomerDetails?.packageId,
       distance: floatDistance,
@@ -210,11 +212,14 @@ const PaymentPage = ({
       drop_mobile: orderCustomerDetails?.dphoneNumber,
       drop_notes: orderCustomerDetails?.dropoffnote,
       drop_email: orderCustomerDetails?.demail,
-      drop_company_name: orderCustomerDetails?.dcompany
+      drop_company_name: orderCustomerDetails?.dcompany,
     };
 
-    if(orderCustomerDetails?.isSchedule==false){
-      requestParams.schedule_date_time=moment(orderCustomerDetails?.pickupDate).format('YYYY-MM-DD') + ' ' + orderCustomerDetails?.pickupTime
+    if (orderCustomerDetails?.isSchedule == false) {
+      requestParams.schedule_date_time =
+        moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD") +
+        " " +
+        orderCustomerDetails?.pickupTime;
     }
 
     if (promoCodeResponse) {
@@ -363,8 +368,8 @@ const PaymentPage = ({
           navigate("/payment-successfull", {
             state: {
               orderNumber: orderNumber,
-              date:orderCustomerDetails?.pickupDate,
-              isSchedule:orderCustomerDetails?.isSchedule ? false : true,
+              date: orderCustomerDetails?.pickupDate,
+              isSchedule: orderCustomerDetails?.isSchedule ? false : true,
             },
           });
         }
@@ -500,6 +505,33 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
+                            Estimated cost
+                          </p>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            € {paymentAmount || 0.0}
+                          </p>
+                        </div>
+
+                        <div className={Styles.paymentTotalAmountCard}>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            Tax 20%
+                          </p>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            € {paymentAmount || 0.0}
+                          </p>
+                        </div>
+
+                        <div className={Styles.paymentTotalAmountCard}>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            Discount
+                          </p>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            € {paymentAmount || 0.0}
+                          </p>
+                        </div>
+
+                        <div className={Styles.paymentTotalAmountCard}>
+                          <p className={Styles.paymentTotalAmounttext}>
                             Total amount
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
@@ -545,37 +577,41 @@ const PaymentPage = ({
                         Credit & Debit Cards
                       </p>
 
-                      {paymentCard && paymentCard?.map((cardInfo, index) => (
-                        <div onClick={() => handleClick(cardInfo)} key={index}>
-                          <div className={Styles.paymentMethodAddedCards}>
-                            <img
-                              className={Styles.paymentMethodMastercardsLogos}
-                              src={MasterCard}
-                              alt="card"
-                            />
-                            <div>
-                              <p className={Styles.paymentMethodCardName}>
-                                {cardInfo?.card_holder_name}
-                              </p>
-                              <p className={Styles.paymentmethodUserEmail}>
-                                {cardInfo.card_number?.replace(
-                                  /\d(?=\d{4})/g,
-                                  "*"
-                                )}
-                              </p>
-                            </div>
-                            <button className={Styles.paymentMethodEditBtn}>
-                              <FontAwesomeIcon
-                                icon={
-                                  isSelected.id == cardInfo.id
-                                    ? faCircleCheck
-                                    : faCircle
-                                }
+                      {paymentCard &&
+                        paymentCard?.map((cardInfo, index) => (
+                          <div
+                            onClick={() => handleClick(cardInfo)}
+                            key={index}
+                          >
+                            <div className={Styles.paymentMethodAddedCards}>
+                              <img
+                                className={Styles.paymentMethodMastercardsLogos}
+                                src={MasterCard}
+                                alt="card"
                               />
-                            </button>
+                              <div>
+                                <p className={Styles.paymentMethodCardName}>
+                                  {cardInfo?.card_holder_name}
+                                </p>
+                                <p className={Styles.paymentmethodUserEmail}>
+                                  {cardInfo.card_number?.replace(
+                                    /\d(?=\d{4})/g,
+                                    "*"
+                                  )}
+                                </p>
+                              </div>
+                              <button className={Styles.paymentMethodEditBtn}>
+                                <FontAwesomeIcon
+                                  icon={
+                                    isSelected.id == cardInfo.id
+                                      ? faCircleCheck
+                                      : faCircle
+                                  }
+                                />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
 
                       <div className={Styles.paymentsOffCreaditCardInfo}>
                         <FontAwesomeIcon
@@ -652,13 +688,16 @@ function EnterprisePaymentView() {
   useEffect(() => {
     if (paymentAmount > 0) {
       const createPaymentIntent = async () => {
-        const token = await localforage.getItem('1');
+        const token = await localforage.getItem("1");
         try {
           const response = await fetch(
             `${BASE_URL}payment/create-payment-intent`,
             {
               method: "POST",
-              headers: { "Content-Type": "application/json",'Authorization': token },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
               body: JSON.stringify({
                 amount: paymentAmount, // Convert to cents for Stripe
                 currency: "eur",
