@@ -17,7 +17,7 @@ const WebHomeBannerCard = () => {
       {/* modal start here  */}
       <section className={Styles.homeSection}>
         <div className={Styles.bannerMainCard}>
-          <div className={`${Styles.manageRow} row`}>
+          <div className={Styles.BannerMainRowCard}>
             <div className="col-md-6">
               <div className={Styles.homeInfoCard}>
                 <h1 className={Styles.homeTitle}>{t("webHome_bannerTitle")}</h1>

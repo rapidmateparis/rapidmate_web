@@ -413,6 +413,33 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
+                          Estimated cost
+                          </p>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            € {paymentAmount || 0.0}
+                          </p>
+                        </div>
+
+                        <div className={Styles.paymentTotalAmountCard}>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            Tax 20%
+                          </p>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            € {paymentAmount || 0.0}
+                          </p>
+                        </div>
+
+                        <div className={Styles.paymentTotalAmountCard}>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            Discount
+                          </p>
+                          <p className={Styles.paymentTotalAmounttext}>
+                            € {paymentAmount || 0.0}
+                          </p>
+                        </div>
+
+                        <div className={Styles.paymentTotalAmountCard}>
+                          <p className={Styles.paymentTotalAmounttext}>
                             Total amount
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>

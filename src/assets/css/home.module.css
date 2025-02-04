@@ -3083,14 +3083,14 @@ a {
 }
 
 .pickupOrderTrackingOrderId {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   margin: 0px;
 }
 
 .pickupOrderTrackingCopyIcon {
   color: var(--secondary-color);
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .pickupOrderTrackingOrderIdCard {
@@ -4160,7 +4160,7 @@ a {
 }
 
 .enterpriseOneTimePackageImg {
-  width: 258px;
+  width: auto;
   height: 158px;
   margin-top: 50%;
 }
@@ -4551,7 +4551,7 @@ a {
 /* ---------- Enterprise Create Shift Select Loc ----------------- */
 
 .enterpriseCreateShiftTrackImg {
-  width: 300px;
+  width: auto;
   height: 150px;
   margin-top: 25px;
 }
@@ -6137,4 +6137,12 @@ a {
 .lookingDriverMainTitlesCard{
   text-align: center;
   margin-top: -150px;
+}
+
+.enterpriseSelectServicePrices{
+  color: var(--secondary-color);
+  font-weight: 700;
+  margin-bottom: 0px;
+  font-size: 13px;
+  margin-left: 5px;
 }
