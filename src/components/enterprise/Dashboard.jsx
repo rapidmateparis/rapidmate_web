@@ -492,47 +492,8 @@ function CommonDashboard() {
                 {/* Calender Start Here  */}
                 <EnterpriseHomeCalender setCurrentDate={setCurrentDate} />
                 {/* Calender End Here  */}
-                <div className={Styles.enterprisesHomeEnterpriesNameCard}>
-                  <div className={Styles.enterpriseHomeResturntCard}>
-                    <FontAwesomeIcon
-                      className={Styles.enterpriseHomeResturentCircle}
-                      icon={faCircle}
-                    />
-                    <p className={Styles.enerpriseHomeResturentText}>
-                      Restaurant
-                    </p>
-                  </div>
-
-                  <div className={Styles.enterpriseHomeResturntCard}>
-                    <FontAwesomeIcon
-                      className={Styles.enterpriseHomeSupermarketsCircle}
-                      icon={faCircle}
-                    />
-                    <p className={Styles.enerpriseHomeResturentText}>
-                      Supermarkets
-                    </p>
-                  </div>
-
-                  <div className={Styles.enterpriseHomeResturntCard}>
-                    <FontAwesomeIcon
-                      className={Styles.enterpriseHomeEcommerceCircle}
-                      icon={faCircle}
-                    />
-                    <p className={Styles.enerpriseHomeResturentText}>
-                      E-Commerce
-                    </p>
-                  </div>
-                </div>
-                <div className={Styles.enterpriseHomeResturntCard}>
-                  <FontAwesomeIcon
-                    className={Styles.enterpriseHomeMoversCircle}
-                    icon={faCircle}
-                  />
-                  <p className={Styles.enerpriseHomeResturentText}>
-                    Packers & Movers
-                  </p>
-                </div>
-
+                
+               
                 <div>
                   {enterprisePlans?.length >= 5 && (
                     <div className="container">
