@@ -122,6 +122,11 @@
   "manage_billing_address": "Gérer l'adresse de facturation",
   "ongoing": "En cours",
   "search_your_deliveries": "Recherchez vos livraisons",
+  "applyFilter": "Appliquer le filtre",
+  "fromDate": "Date de début",
+  "toDate": "Date de fin",
+  "apply": "Appliquer",
+  "selectDate": "Sélectionner une date",
 
 
 

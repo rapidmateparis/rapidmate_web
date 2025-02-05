@@ -10,11 +10,12 @@ import { useSelector } from "react-redux";
 import { buildAddress } from "../../utils/Constants";
 import { getEnterpriseBranch } from "../../data_manager/dataManage";
 import { showErrorToast } from "../../utils/Toastify";
+import NoDataImage from "../../assets/images/NoOrder.png";
 
 const SelectBranch = () => {
-  const user = useSelector((state)=>state.auth.user)
-  const location=useLocation()
-  const serviceType = location.state.servicetype
+  const user = useSelector((state) => state.auth.user);
+  const location = useLocation();
+  const serviceType = location.state.servicetype;
   const navigate = useNavigate();
   const [enterpriseBranch, setEnterpriseBranches] = useState(null);
   const getBranchLocation = () => {
@@ -47,31 +48,41 @@ const SelectBranch = () => {
     );
   };
 
-
-  const getLocationAddress = branchId => {
-    let result = enterpriseBranch?.filter(branch => branch.id == branchId);
-    return buildAddress(result[0]?.address,result[0]?.city,result[0]?.state,result[0]?.country,result[0]?.postal_code);
+  const getLocationAddress = (branchId) => {
+    let result = enterpriseBranch?.filter((branch) => branch.id == branchId);
+    return buildAddress(
+      result[0]?.address,
+      result[0]?.city,
+      result[0]?.state,
+      result[0]?.country,
+      result[0]?.postal_code
+    );
   };
   useEffect(() => {
     getBranchLocation();
   }, [user]);
   useEffect(() => {
     if (!serviceType) {
-      navigate('/enterprise/schedules');
+      navigate("/enterprise/schedules");
     }
   }, [serviceType, navigate]);
 
-  const handleRoute = (branch) =>{
-    if(!branch) {
-      showErrorToast('Undefined branch')
-      return 
+  const handleRoute = (branch) => {
+    if (!branch) {
+      showErrorToast("Undefined branch");
+      return;
     }
-    navigate(`/enterprise/${serviceType?.delivery_type?.toLowerCase().replace(/ /g, '-')}`, { state: { selectedBranch: branch,deliveryType:serviceType } })
-  }
+    navigate(
+      `/enterprise/${serviceType?.delivery_type
+        ?.toLowerCase()
+        .replace(/ /g, "-")}`,
+      { state: { selectedBranch: branch, deliveryType: serviceType } }
+    );
+  };
   return (
     <>
       {/* Header Start Here */}
-      <CommonHeader userData={user}/>
+      <CommonHeader userData={user} />
       {/* Header End Here */}
       <section className={Styles.enterprisenewScheduleSec}>
         <div>
@@ -95,39 +106,77 @@ const SelectBranch = () => {
 
             <div className="col-md-8">
               <div className={Styles.enterpriseNewScheduletypeMainCard}>
-                <h4 className={Styles.enterpriseNewScheduleSelectType}>
+                {enterpriseBranch && enterpriseBranch.length > 0 &&  <h4 className={Styles.enterpriseNewScheduleSelectType}>
                   Select company location
-                </h4>
-
+                </h4>}
+               
                 <div className={Styles.enterpriseOneTimeCompanyLocMainCard}>
-                  {enterpriseBranch?.map((branch, index) => (
-                    <div
-                      key={index}
-                      onClick={()=>handleRoute(branch)}
-                    >
-                      <div className={Styles.enterpriseOneTimeCompanyLocCard}>
-                        <img
-                          className={Styles.enterpriseOneTimeHomeIcon}
-                          src={Home}
-                          alt="icon"
-                        />
-                        <h4 className={Styles.enterpriseOneTimeCompanyName}>
-                          {branch?.branch_name}
-                        </h4>
-                        <div
-                          className={Styles.enterpriseOneTimeCompanyAddressCard}
-                        >
-                          <FontAwesomeIcon
-                            className={Styles.enterpriseOneTimeLocDot}
-                            icon={faLocationDot}
+                  {enterpriseBranch && enterpriseBranch?.length > 0 ? (
+                    enterpriseBranch?.map((branch, index) => (
+                      <div key={index} onClick={() => handleRoute(branch)} style={{cursor:"pointer"}}>
+                        <div className={Styles.enterpriseOneTimeCompanyLocCard}>
+                          <img
+                            className={Styles.enterpriseOneTimeHomeIcon}
+                            src={Home}
+                            alt="icon"
                           />
-                          <p className={Styles.enterpriseOneTimeCompanyAddress}>
-                            {getLocationAddress(branch?.id)?.length <= 28 ? getLocationAddress(branch?.id) : `${getLocationAddress(branch?.id).substring(0, 28)}...`}
-                          </p>
+                          <h4 className={Styles.enterpriseOneTimeCompanyName}>
+                            {branch?.branch_name}
+                          </h4>
+                          <div
+                            className={
+                              Styles.enterpriseOneTimeCompanyAddressCard
+                            }
+                          >
+                            <FontAwesomeIcon
+                              className={Styles.enterpriseOneTimeLocDot}
+                              icon={faLocationDot}
+                            />
+                            <p
+                              className={Styles.enterpriseOneTimeCompanyAddress}
+                            >
+                              {getLocationAddress(branch?.id)?.length <= 28
+                                ? getLocationAddress(branch?.id)
+                                : `${getLocationAddress(branch?.id).substring(
+                                    0,
+                                    28
+                                  )}...`}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <>
+                      <div className={Styles.pickupHistoryNoDataMainCard}>
+                        <div className={Styles.pickupHistoryNoDataCard}>
+                          <img
+                            className={Styles.pickupHistoryNodataImage}
+                            src={NoDataImage}
+                            alt="No-Data"
+                          />
+                        </div>
+                        <div>
+                          <h4 className={Styles.pickupHistoryNoDatatext}>
+                            No company location to show
+                          </h4>
+                          <p className={Styles.pickupHistoryNodataSubText}>
+                            If there is any company location, it will be shown
+                            here..
+                          </p>
+                          <div className="text-center">
+                          <Link
+                          to="/enterprise/setting/manage-company-location"
+                            className={`${Styles.addPickupDetailsNextBtn}`}
+                          >
+                            Add
+                          </Link>
+                          </div>
+                         
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

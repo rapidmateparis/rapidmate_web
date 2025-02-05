@@ -122,6 +122,11 @@
   "manage_billing_address": "Manage billing address",
   "ongoing": "Ongoing",
   "search_your_deliveries": "Search your deliveries",
+  "applyFilter": "Apply Filter",
+  "fromDate": "From Date",
+  "toDate": "To Date",
+  "apply": "Apply",
+  "selectDate": "Select a date",
 
 
   "StartAnotherSection": "----------------- Website Pages Start Here ----------------------------",

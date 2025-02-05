@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Styles from "../../assets/css/home.module.css";
+import Info from "../../assets/images/info.png";
 
 import CommonHeader from "../../common/CommonHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +12,7 @@ import { showErrorToast } from "../../utils/Toastify";
 import { ToastContainer } from "react-toastify";
 import SideComponent from "./common/SideComponent";
 import { getAllVehicleTypes } from "../../data_manager/dataManage";
+import PickupVehicleDimensionsModal from "../consumer/PickupVehicleDimensionsModal";
 
 const EnterpriseCreateShiftSelectServiceType = () => {
   const user = useSelector((state) => state.auth.user);
@@ -26,10 +28,12 @@ const EnterpriseCreateShiftSelectServiceType = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVehicle, setSelectedVehicle] = useState(1);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
+  const [vehicleDetail,setVehicleDetail]=useState(null)
+  const [showModal,setShowModal]=useState(false)
   const [amount, setAmount] = useState(0);
   const handleServiceTypeClick = (serviceType) => {
     if (serviceType.id == 3 || serviceType.id == 4) {
-      setAmount(serviceType?.hour_amount || 0)
+      setAmount(serviceType?.hour_amount || 0);
       setSelectedVehicle(null);
     } else {
       const vehicle = vehicleTypeList.filter((val) =>
@@ -68,7 +72,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
       },
     });
   };
-  
+
   useEffect(() => {
     setLoading(true);
     const getAllVehiclesType = () => {
@@ -95,6 +99,13 @@ const EnterpriseCreateShiftSelectServiceType = () => {
     };
     getAllVehiclesType();
   }, []);
+
+  const openModal = (vehicle) => {
+    setVehicleDetail(vehicle);
+    setShowModal(true);
+  };
+
+  
 
   return (
     <>
@@ -148,7 +159,18 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                 <div className={Styles.enterpriseSelectServiceVehicleCardMain}>
                   <div className="row">
                     {vehicleTypeList.map((vehicle, index) => (
-                      <div className="col-md-4" key={index}>
+                      <div className="col-md-4" key={index} style={{position:"relative"}}>
+                        <p style={{position:"absolute",marginLeft:"319px",marginTop:"-10px",cursor:"pointer"}} onClick={(e) => {
+                          e.stopPropagation(); 
+                          openModal(vehicle)
+                        }}>
+                            <img
+                              className={Styles.homePickupInfo}
+                              src={Info}
+                              alt="info-Icon"
+                            />
+                        
+                          </p>
                         <div
                           className={`${
                             Styles.enterpriseSelectServiceVehicleCard
@@ -156,7 +178,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                             selectedVehicle === vehicle.id
                               ? Styles.selected
                               : ""
-                          }`}
+                          } mt-2`}
                           onClick={
                             selectedServiceType?.id !== 3 &&
                             selectedServiceType?.id !== 4
@@ -180,13 +202,13 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                             {vehicle.vehicle_type}
                           </p>
                           {selectedVehicle == vehicle.id && (
-                              <p
-                                className={`${Styles.enterpriseSelectServicePrices} ${Styles.textColor}`}
-                              >
-                                €{amount}/Hrs
-                              </p>
+                            <p
+                              className={`${Styles.enterpriseSelectServicePrices} ${Styles.textColor}`}
+                            >
+                              €{amount}/Hrs
+                            </p>
                           )}
-
+                          
                           <img
                             className={Styles.enterpriseVehilces}
                             src={getImage(vehicle)}
@@ -211,6 +233,11 @@ const EnterpriseCreateShiftSelectServiceType = () => {
             </div>
           </div>
         </div>
+        <PickupVehicleDimensionsModal
+          show={showModal}
+          handleClose={() => setShowModal(false)}
+          vehicle={vehicleDetail}
+        />
         <ToastContainer />
       </section>
     </>

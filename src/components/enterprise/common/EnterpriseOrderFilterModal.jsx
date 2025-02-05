@@ -6,37 +6,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons"; // Import the calendar icon
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
-function EnterpriseOrderFilterModal({ handleClose }) {
+function EnterpriseOrderFilterModal({ handleClose,onFilterSelected }) {
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
-
+    const { t } = useTranslation();
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
     <div className={`${Styles.datepickerContainer}`} onClick={onClick} ref={ref}>
       <input
         value={value}
         readOnly
         className={`${Styles.enterpriseOderDatepicker}`}
-        placeholder="Select a date"
+        placeholder={t("selectDate")}
       />
       <FontAwesomeIcon icon={faCalendarAlt} className={Styles.calendarIcon} />
     </div>
   ));
 
   const handleApply = () => {
-    if (onApply) onApply({ fromDate, toDate });
+    onFilterSelected({fromDate: fromDate, toDate: toDate});
   };
 
   return (
     <Modal show onHide={handleClose}>
       <Modal.Header className={Styles.EnterpriseOrderFilterHeader} closeButton>
-        <Modal.Title>Apply Filter</Modal.Title>
+        <Modal.Title>{t("applyFilter")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         <div>
           <div className={Styles.enterpriseOrderdatepickerCard}>
-            <label className="block text-sm font-medium mb-1">From Date</label>
+            <label className="block text-sm font-medium mb-1">{t("fromDate")}</label>
             <DatePicker
               selected={fromDate}
               onChange={(date) => setFromDate(date)}
@@ -45,7 +46,7 @@ function EnterpriseOrderFilterModal({ handleClose }) {
             />
           </div>
           <div className={Styles.enterpriseOrderdatepickerCard}>
-            <label className="block text-sm font-medium mb-1">To Date</label>
+            <label className="block text-sm font-medium mb-1">{t("toDate")}</label>
             <DatePicker
               selected={toDate}
               onChange={(date) => setToDate(date)}
@@ -61,7 +62,7 @@ function EnterpriseOrderFilterModal({ handleClose }) {
           className={Styles.enterpriseOrderFilterApplyBtn}
           onClick={handleApply}
         >
-          Apply
+          {t("apply")}
         </button>
       </Modal.Footer>
     </Modal>

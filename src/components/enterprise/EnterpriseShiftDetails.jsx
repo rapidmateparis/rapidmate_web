@@ -3,6 +3,7 @@ import Styles from "../../assets/css/home.module.css";
 import SlotCss from "../../assets/css/shiftDetail.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowLeft,
   faDownload,
   faGear,
   faLocationDot,
@@ -31,13 +32,14 @@ const EnterpriseShiftDetails = () => {
   const navigate = useNavigate();
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
   const location = useLocation();
-  const { order, branches } = location.state || {}; // Adding fallback in case location.state is undefined or null.
+  const { order, branches,tabId } = location.state || {}; // Adding fallback in case location.state is undefined or null.
   const [orders, setOrders] = useState({});
   const [viewType, setViewType] = useState("table");
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  
 
   const getBranch = (branchId) => {
     let result = branches?.filter((branch) => branch.id == branchId);
@@ -72,7 +74,7 @@ const EnterpriseShiftDetails = () => {
   useEffect(() => {
     // If location.state is null or undefined, navigate back
     if (!location.state) {
-      navigate(-1); // Go back to the previous page
+      navigate("/enteprise/orders",{state:{tabId:tabId}}); // Go back to the previous page
     } else {
       orderDetail();
     }
@@ -82,12 +84,15 @@ const EnterpriseShiftDetails = () => {
     navigate("/enterprise/deliveryboy-shift-details", {
       state: {
         slot: slots,
-        vehicle_type_id:orders?.vehicle_type_id,
-        orderNumber:orders?.order_number,
-        branchId:orders?.branch_id,
-        branchAddress:getBranch(orders?.branch_id) || " "
+        vehicle_type_id: orders?.vehicle_type_id,
+        orderNumber: orders?.order_number,
+        branchId: orders?.branch_id,
+        branchAddress: getBranch(orders?.branch_id) || " ",
       },
     });
+  };
+  const goBack = () => {
+    navigate("/enterprise/orders",{state:{tabId:tabId}}); // Navigate back to the previous page
   };
   return (
     <>
@@ -98,9 +103,16 @@ const EnterpriseShiftDetails = () => {
             <div className="col-md-12">
               <div>
                 <div className={Styles.enterpriseShiftDetailsHeaderCard}>
-                  <p className={Styles.pickupHistoryHeaderTitle}>
-                    Shift Details
-                  </p>
+                  
+                  <div className={`${Styles.pickupHistoryHeaderTitle} d-flex `}>
+                    <div  onClick={goBack} style={{cursor:"pointer"}}>
+                      <FontAwesomeIcon
+                        className={Styles.pickupHistoryBackspaceButton}
+                        icon={faArrowLeft}
+                      />
+                    </div>
+                    Shift Details 
+                  </div>
                   <Link>
                     <FontAwesomeIcon
                       className={Styles.enterpriseShiftDetailGearIcon}
@@ -138,8 +150,12 @@ const EnterpriseShiftDetails = () => {
                       alt="calender-icon"
                     />
                     <p className={Styles.enterpriseShiftDetailStarteddatetime}>
-                      Started {formatDate(orders?.shift_from_date).date} To{" "}
-                      {formatDate(orders?.shift_tp_date).date}
+                      Started {moment(formatDate(orders.shift_from_date).date).format(
+                                  "DD-MM-YYYY"
+                                )} To{" "}
+                      {moment(formatDate(orders.shift_tp_date).date).format(
+                                  "DD-MM-YYYY"
+                                )}
                     </p>
                   </div>
                   <div
@@ -150,16 +166,14 @@ const EnterpriseShiftDetails = () => {
                     >
                       Total duration:{" "}
                       <b>
-                        {orders?.total_hours
-                          ? orders?.total_hours?.toFixed(2)
-                          : 0}{" "}
+                      {order?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)}{" "}
                         hours
                       </b>
                     </p>
                     <p
                       className={Styles.enterpriseShiftDetailShiftDurationText}
                     >
-                      Total deliveries: <b>{orders?.slots?.length || 0}</b>
+                      Total days: <b>{orders?.slots?.length || 0}</b>
                     </p>
                   </div>
                   <p className={Styles.enterpriseShiftDetailVehiclenameType}>
@@ -248,7 +262,7 @@ const EnterpriseShiftDetails = () => {
                             <th>Day</th>
                             <th>From</th>
                             <th>To</th>
-                            <th>Total Hours</th>
+                            <th>Hours</th>
                             <th>Delivery Boy</th>
                             <th>Status</th>
                             <th>Next Status</th>
@@ -294,14 +308,18 @@ const EnterpriseShiftDetails = () => {
                                           Styles.enterpriseShiftDetailDriverName
                                         }
                                       >
-                                        {slot?.first_name+ " "+slot?.last_name}
+                                        {slot?.first_name +
+                                          " " +
+                                          slot?.last_name}
                                       </h4>
                                       <p
                                         className={
                                           Styles.enterpriseShiftDetailDrivertruckDetails
                                         }
                                       >
-                                        {getVehicleType(orders?.vehicle_type_id)}
+                                        {getVehicleType(
+                                          orders?.vehicle_type_id
+                                        )}
                                       </p>
                                     </div>
                                   </div>
