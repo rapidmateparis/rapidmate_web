@@ -454,7 +454,7 @@ const SetNewSchedule = () => {
 
             <div className="col-md-9">
               <div className={`row ${Styles.manageRow}`}>
-                <div className="col-md-8">
+                <div className="col-md-7">
                   <div className={Styles.previewPageColGapping}>
                     <div className={Styles.enterprisePlanningCalenderMain}>
                       <CalenderEvent
@@ -484,7 +484,7 @@ const SetNewSchedule = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-5">
                   <div
                     className={Styles.enterpriseCreateShiftAvailabilityMainCard}
                   >
@@ -615,6 +615,7 @@ const SetNewSchedule = () => {
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
+                                  justifyContent: "space-between",
                                 }}
                               >
                                 <Form.Control

@@ -492,7 +492,8 @@ function CommonDashboard() {
                 {/* Calender Start Here  */}
                 <EnterpriseHomeCalender setCurrentDate={setCurrentDate} />
                 {/* Calender End Here  */}
-                <div className={Styles.enterprisesHomeEnterpriesNameCard}>
+                
+                {/* <div className={Styles.enterprisesHomeEnterpriesNameCard}>
                   <div className={Styles.enterpriseHomeResturntCard}>
                     <FontAwesomeIcon
                       className={Styles.enterpriseHomeResturentCircle}
@@ -531,7 +532,7 @@ function CommonDashboard() {
                   <p className={Styles.enerpriseHomeResturentText}>
                     Packers & Movers
                   </p>
-                </div>
+                </div> */}
 
                 <div>
                   {enterprisePlans?.length >= 5 && (
