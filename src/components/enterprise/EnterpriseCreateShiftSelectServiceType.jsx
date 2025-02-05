@@ -116,7 +116,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
         <div>
           <div className={`row ${Styles.manageRow}`}>
             <div className="col-md-4">
-              <SideComponent />
+              <SideComponent icon="yes" />
             </div>
 
             <div className="col-md-8">

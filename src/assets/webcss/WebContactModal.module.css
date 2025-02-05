@@ -101,6 +101,7 @@
 
 .HomeContactModalBodyModal {
   padding: 0px !important;
+  z-index: 9999;
 }
 
 .HomeContactModalCloseModalBtn {
@@ -138,4 +139,21 @@
   align-items: center;
   gap: 30px;
   margin-top: 20px;
+}
+
+/* Mobile Responsive Start Here  */
+
+@media (max-width: 768px) {
+  .homeContactModalDetailsCard {
+    padding: 20px 20px 20px 20px;
+    border-radius: 0px;
+  }
+
+  .homeContactModalNumberMainCard{
+    margin-top: 20px;
+  }
+
+  .homeContactModalBannerCard{
+    display: none;
+  }
 }
