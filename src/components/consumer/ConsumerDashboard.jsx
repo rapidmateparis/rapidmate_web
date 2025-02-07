@@ -300,7 +300,7 @@ function ConsumerDashboard() {
                 }}
               />
             )}
-            {currentLocation && (
+            {!pickupLocation && currentLocation && (
               <Marker
                 position={currentLocation}
                 icon={{

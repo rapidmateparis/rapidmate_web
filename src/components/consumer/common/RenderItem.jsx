@@ -12,7 +12,7 @@ import { formatDate, titleFormat } from "../../../utils/Constants";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-function RenderItem({ status = "", locationList = [], orderList = [] }) {
+function RenderItem({ status = "", locationList = [], orderList = [] ,tabId}) {
   const user = useSelector((state) => state.auth.user);
   const {t}=useTranslation()
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ function RenderItem({ status = "", locationList = [], orderList = [] }) {
           order_number,
         },
         user,
+        tabId,
       },
     });
   };

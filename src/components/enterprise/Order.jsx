@@ -8,7 +8,7 @@ import {
   faLocationDot,
   faLocationCrosshairs,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getLocations, searchOrderApi } from "../../data_manager/dataManage";
 import CommonHeader from "../../common/CommonHeader";
@@ -17,10 +17,11 @@ import { ToastContainer } from "react-toastify";
 import NoDataImage from "../../assets/images/NoOrder.png";
 import Package from "../../assets/images/Package.png";
 import Calender from "../../assets/images/Calender-withBg.png";
-import { buildAddress, titleFormat } from "../../utils/Constants";
+import { buildAddress, formatDate, localToUTC, titleFormat } from "../../utils/Constants";
 import moment from "moment";
 import EnterpriseOrderFilterModal from "./common/EnterpriseOrderFilterModal";
 import { useTranslation } from "react-i18next";
+import { Spinner } from "react-bootstrap";
 
 const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
   const getLocationAddress = (locationId) => {
@@ -42,6 +43,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
     navigation("/enterprise/order-detail", {
       state: {
         order: order_number,
+        tabId:1
       },
     });
   };
@@ -172,6 +174,8 @@ const MultipleTimeOrder = memo(
       navigation("/enterprise/order-detail", {
         state: {
           order: order_number,
+          tabId:2,
+
         },
       });
     };
@@ -307,6 +311,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
       state: {
         order: orders,
         branches: branches,
+        tabId:3,
       },
     });
   };
@@ -331,25 +336,17 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
                         alt="icon"
                       />
                       <h4 className={Styles.pickupHistoryDeliveredText}>
-                        {item.slots[0] &&
-                          moment(item.slots[0].from_time, "HH:mm:ss").format(
-                            "hh A"
-                          )}
-                        {" to "}
-                        {item.slots[0] &&
-                          moment(item.slots[0].to_time, "HH:mm:ss").format(
-                            "hh A"
-                          )}
+                        {moment(formatDate(item.shift_from_date).date).format("DD-MM-YYYY")}
+                        {" To "}
+                        {moment(formatDate(item.shift_tp_date).date).format("DD-MM-YYYY")}
+
                       </h4>
                     </div>
                     <p className={Styles.shiftOrderhoursText}>
                       {" "}
                       <b>
                         {" "}
-                        {item.slots[0] &&
-                          moment(item.slots[0].to_time, "HH:mm:ss").diff(
-                            moment(item.slots[0].from_time, "HH:mm:ss")
-                          ) / 3600000}{" "}
+                        {item?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)}{" "}
                         hours shift
                       </b>
                     </p>
@@ -375,7 +372,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
                     </p>
                     <div>
                       <p className={Styles.oneTimePendingText}>
-                        Pending approval
+                        {item?.order_status}
                       </p>
                     </div>
                   </div>
@@ -407,126 +404,223 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
   );
 });
 
-const PastOrder = memo(({ orders, locations, vehicles, navigation }) => {
-  const getLocationAddress = (locationId) => {
-    let result = locations?.filter((location) => location.id == locationId);
-    return buildAddress(
-      result[0]?.address,
-      result[0]?.city,
-      result[0]?.state,
-      result[0]?.country,
-      result[0]?.postal_code
-    );
-  };
+const PastOrder = memo(
+  ({ orders, locations, vehicles, navigation, branches }) => {
+    const getLocationAddress = (locationId) => {
+      let result = locations?.filter((location) => location.id == locationId);
+      return buildAddress(
+        result[0]?.address,
+        result[0]?.city,
+        result[0]?.state,
+        result[0]?.country,
+        result[0]?.postal_code
+      );
+    };
 
-  const getVehicleType = (vehicleId) => {
-    let result = vehicles?.filter((vehicle) => vehicle.id == vehicleId);
-    return result[0]?.vehicle_type;
-  };
-  const detailHandler = (order_number) => {
-    navigation("/enterprise/order-detail", {
-      state: {
-        order: order_number,
-      },
-    });
-  };
-  return (
-    <section id="content4">
-      <div className="row">
-        <div className="col-md-12">
-          {orders.length > 0 ? (
-            orders.map((item, index) => (
-              <div key={index}>
-                <div className={Styles.pickuphistoryMainCard}>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    onClick={() => detailHandler(item.order_number)}
-                  >
-                    <div className={Styles.pickupHistoryPackageCard}>
-                      <img
-                        className={Styles.pickupHistoryPackageIcon}
-                        src={Package}
-                        alt="icon"
-                      />
-                      <h4 className={Styles.pickupHistoryDeliveredText}>
-                        {item?.consumer_order_title}{" "}
-                        {item?.is_show_datetime_in_title == 1
-                          ? item?.order_status === "ORDER_PLACED"
-                            ? titleFormat(
-                                item?.schedule_date_time || item?.order_date
-                              )
-                            : titleFormat(item?.updated_on)
-                          : ""}
-                      </h4>
+    const getBranchAddress = (branchId) => {
+      let result = branches?.filter((branch) => branch.branch_id == branchId);
+      if (result?.length > 0) {
+        return buildAddress(
+          result[0]?.address,
+          result[0]?.city,
+          result[0]?.state,
+          result[0]?.country,
+          result[0]?.postal_code
+        );
+      }
+      return null;
+    };
+
+    const getVehicleType = (vehicleId) => {
+      let result = vehicles?.filter((vehicle) => vehicle.id == vehicleId);
+      return result[0]?.vehicle_type;
+    };
+    const detailHandler = (order_number, deliveryTypeId,order) => {
+      if (deliveryTypeId == 3) {
+        navigation("/enterprise/shift-details", {
+          state: {
+            order,
+            branches: branches,
+            tabId:4
+          },
+        });
+      } else {
+        navigation("/enterprise/order-detail", {
+          state: {
+            order: order_number,
+            tabId:4,
+          },
+        });
+      }
+    };
+   
+    return (
+      <section id="content4">
+        <div className="row">
+          <div className="col-md-12">
+            {orders.length > 0 ? (
+              orders.map((item, index) => (
+                <div key={index}>
+                  {item?.delivery_type_id == 3 ? (
+                    <div className={Styles.pickuphistoryMainCard}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          detailHandler(
+                            item.order_number,
+                            item?.delivery_type_id,item
+                          )
+                        }
+                      >
+                        <div className={Styles.shiftOrderHeaderMainCard}>
+                          <div className={Styles.pickupHistoryPackageCard}>
+                            <img
+                              className={Styles.pickupHistoryPackageIcon}
+                              src={Calender}
+                              alt="icon"
+                            />
+                            <h4 className={Styles.pickupHistoryDeliveredText}>
+                              {moment(formatDate(item.shift_from_date).date).format("DD-MM-YYYY")}
+                              {" To "}
+                              {moment(formatDate(item.shift_tp_date).date).format("DD-MM-YYYY")}
+                            </h4>
+                          </div>
+                          <p className={Styles.shiftOrderhoursText}>
+                            {" "}
+                            <b>
+                              {" "}
+                              {item?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)} {" "}
+                              hours shift
+                            </b>
+                          </p>
+                        </div>
+
+                        <div>
+                          <div className={Styles.pickupHistoryFromLocaCard}>
+                            <FontAwesomeIcon
+                              className={Styles.pickupHistoryLocIcon}
+                              icon={faLocationDot}
+                            />
+                            <p className={Styles.pickupHistoryFromLoc}>
+                              <b>{getBranchAddress(item.branch_id)}</b>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={Styles.pickupHistoryBorderBottomShow} />
+
+                      <div className={Styles.oneTimeVehicleCard}>
+                        <p className={Styles.onleTimeVehicleNameText}>
+                          {getVehicleType(item.vehicle_type_id)}
+                        </p>
+                        <div>
+                          <p className={Styles.oneTimePendingText}>
+                            {item?.order_status}
+                          </p>
+                        </div>
+                      </div>
                     </div>
+                  ) : (
+                    <div className={Styles.pickuphistoryMainCard}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          detailHandler(
+                            item.order_number,
+                            item?.delivery_type_id,
+                            item
+                          )
+                        }
+                      >
+                        <div className={Styles.pickupHistoryPackageCard}>
+                          <img
+                            className={Styles.pickupHistoryPackageIcon}
+                            src={Package}
+                            alt="icon"
+                          />
+                          <h4 className={Styles.pickupHistoryDeliveredText}>
+                            {item?.consumer_order_title}{" "}
+                            {item?.is_show_datetime_in_title == 1
+                              ? item?.order_status === "ORDER_PLACED"
+                                ? titleFormat(
+                                    item?.schedule_date_time || item?.order_date
+                                  )
+                                : titleFormat(item?.updated_on)
+                              : ""}
+                          </h4>
+                        </div>
 
-                    <div className={Styles.pickupHistoryLocationCard}>
-                      <div className={Styles.pickupHistoryFromLocaCard}>
-                        <FontAwesomeIcon
-                          className={Styles.pickupHistoryLocIcon}
-                          icon={faLocationDot}
-                        />
-                        <p className={Styles.pickupHistoryFromLoc}>
-                          {" "}
-                          From:{" "}
-                          <b>{getLocationAddress(item.pickup_location)}</b>
+                        <div className={Styles.pickupHistoryLocationCard}>
+                          <div className={Styles.pickupHistoryFromLocaCard}>
+                            <FontAwesomeIcon
+                              className={Styles.pickupHistoryLocIcon}
+                              icon={faLocationDot}
+                            />
+                            <p className={Styles.pickupHistoryFromLoc}>
+                              {" "}
+                              From:{" "}
+                              <b>{getLocationAddress(item.pickup_location)}</b>
+                            </p>
+                          </div>
+
+                          <div className={Styles.pickupHistoryShowOff} />
+
+                          <div className={Styles.pickupHistoryFromLocaCard}>
+                            <FontAwesomeIcon
+                              className={Styles.pickupHistoryLocIcon}
+                              icon={faLocationCrosshairs}
+                            />
+                            <p className={Styles.pickupHistoryFromLoc}>
+                              To:{" "}
+                              <b>{getLocationAddress(item.dropoff_location)}</b>
+                            </p>
+                          </div>
+                        </div>
+                        <p className={Styles.pickupHistoryPastVehicleText}>
+                          {getVehicleType(item.vehicle_type_id)}
                         </p>
                       </div>
 
-                      <div className={Styles.pickupHistoryShowOff} />
+                      <div className={Styles.pickupHistoryBorderBottomShow} />
 
-                      <div className={Styles.pickupHistoryFromLocaCard}>
-                        <FontAwesomeIcon
-                          className={Styles.pickupHistoryLocIcon}
-                          icon={faLocationCrosshairs}
-                        />
-                        <p className={Styles.pickupHistoryFromLoc}>
-                          To: <b>{getLocationAddress(item.dropoff_location)}</b>
+                      <div className={Styles.pickupHistoryOrderMoneyCard}>
+                        <p className={Styles.pickupHistoryOrderId}>
+                          Order ID: <span>{item.order_number}</span>
                         </p>
+                        <h4 className={Styles.pickupHistoryMoneyText}>
+                          €{item.amount ? item.amount.toFixed(2) : "0.00"}
+                        </h4>
                       </div>
                     </div>
-                    <p className={Styles.pickupHistoryPastVehicleText}>
-                      {getVehicleType(item.vehicle_type_id)}
-                    </p>
-                  </div>
-
-                  <div className={Styles.pickupHistoryBorderBottomShow} />
-
-                  <div className={Styles.pickupHistoryOrderMoneyCard}>
-                    <p className={Styles.pickupHistoryOrderId}>
-                      Order ID: <span>{item.order_number}</span>
-                    </p>
-                    <h4 className={Styles.pickupHistoryMoneyText}>
-                      €{item.amount ? item.amount.toFixed(2) : "0.00"}
-                    </h4>
-                  </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className={Styles.pickupHistoryNoDataMainCard}>
+                <div className={Styles.pickupHistoryNoDataCard}>
+                  <img
+                    className={Styles.pickupHistoryNodataImage}
+                    src={NoDataImage}
+                    alt="No-Data"
+                  />
+                </div>
+                <div>
+                  <h4 className={Styles.pickupHistoryNoDatatext}>
+                    No orders to show
+                  </h4>
+                  <p className={Styles.pickupHistoryNodataSubText}>
+                    If there is any active order, it will be shown here..
+                  </p>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className={Styles.pickupHistoryNoDataMainCard}>
-              <div className={Styles.pickupHistoryNoDataCard}>
-                <img
-                  className={Styles.pickupHistoryNodataImage}
-                  src={NoDataImage}
-                  alt="No-Data"
-                />
-              </div>
-              <div>
-                <h4 className={Styles.pickupHistoryNoDatatext}>
-                  No orders to show
-                </h4>
-                <p className={Styles.pickupHistoryNodataSubText}>
-                  If there is any active order, it will be shown here..
-                </p>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-});
+      </section>
+    );
+  }
+);
 
 const Order = () => {
   const user = useSelector((state) => state.auth.user);
@@ -543,7 +637,8 @@ const Order = () => {
   const [paramList, setParamList] = useState({ tab_id: 1 });
   const [enterpriseOrderList, setEnterpriseOrderList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
+   const location = useLocation();
+    const {tabId } = location.state || {};
   const handleOpenModal = () => {
     setShowModal(true);
   };
@@ -582,8 +677,21 @@ const Order = () => {
   };
 
   const handleInputChange = (event) => {
+    const value = event.target.value;
     setSearchTerm(event.target.value);
+    if (value.trim().length === 0) {
+      const params={
+        order_number:value,
+        tab_id:paramList?.tab_id,
+      }
+      searchFunction(params)
+      return
+    }
+    searchFunction({tab_id:paramList?.tab_id})
+
   };
+
+  
 
   const handleTabChange = (event) => {
     const newTab = event.target.id;
@@ -632,6 +740,22 @@ const Order = () => {
   useEffect(() => {
     searchFunction(paramList);
   }, [selectedTab]);
+  useEffect(()=>{
+    if(location.state){
+      setParamList({tab_id:tabId})
+      setSelectedTab("tab"+tabId)
+    }
+  },[location.state])
+
+  const onFilterSelected = date => {
+    let params = {
+      tab_id:paramList?.tab_id,
+      from_date: moment(localToUTC(date.fromDate)).format('YYYY-MM-DD'),
+      to_date: moment(localToUTC(date.toDate)).format('YYYY-MM-DD'),
+    };
+    searchFunction(params);
+    setShowModal(false);
+  };
   return (
     <>
       {/* Header Start Here  */}
@@ -663,7 +787,7 @@ const Order = () => {
                       <input
                         className={Styles.pickupHistorySearchInput}
                         type="text"
-                        placeholder="Search your deliveries"
+                        placeholder={t("search_your_deliveries")}
                         value={searchTerm}
                         onChange={handleInputChange}
                       />
@@ -741,6 +865,9 @@ const Order = () => {
                       </label>
                     </li>
                   </ul>
+                  {loading ?<div className="text-center mt-5">
+                    <Spinner />
+                  </div> :
                   <div className="content">
                     {selectedTab === "tab1" && (
                       <OneTime
@@ -772,14 +899,16 @@ const Order = () => {
                         locations={locationList}
                         vehicles={vehicleType}
                         navigation={navigation}
+                        branches={branches}
                       />
                     )}
                     {showModal && (
                       <EnterpriseOrderFilterModal
                         handleClose={handleCloseModal} // Pass the close handler
+                        onFilterSelected={onFilterSelected}
                       />
                     )}
-                  </div>
+                  </div>}
                 </div>
               </div>
             </div>

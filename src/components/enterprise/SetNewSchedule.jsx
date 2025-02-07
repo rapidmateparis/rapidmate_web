@@ -340,7 +340,7 @@ const SetNewSchedule = () => {
       return;
     }
     const startDate = moment(new Date(events[0].start)).format("YYYY-MM-DD");
-    const endDate = moment(new Date(events[0].start)).format("YYYY-MM-DD");
+    const endDate = moment(new Date(events[0].end)).format("YYYY-MM-DD");
     let requestParams = {
       enterprise_ext_id: user?.userDetails.ext_id,
       branch_id: branch?.id,
@@ -413,7 +413,7 @@ const SetNewSchedule = () => {
                         Total hours: <span>{totalHour}</span>
                       </h4>
                       <h4>
-                        Estimated cost: <span>€ {totalAmount}</span>
+                        Estimated cost: <span>€ {totalAmount?.toFixed(2)}</span>
                       </h4>
                     </div>
                   </div>
@@ -454,7 +454,7 @@ const SetNewSchedule = () => {
 
             <div className="col-md-9">
               <div className={`row ${Styles.manageRow}`}>
-                <div className="col-md-8">
+                <div className="col-md-7">
                   <div className={Styles.previewPageColGapping}>
                     <div className={Styles.enterprisePlanningCalenderMain}>
                       <CalenderEvent
@@ -484,7 +484,7 @@ const SetNewSchedule = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-5">
                   <div
                     className={Styles.enterpriseCreateShiftAvailabilityMainCard}
                   >
@@ -615,6 +615,7 @@ const SetNewSchedule = () => {
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
+                                  justifyContent: "space-between",
                                 }}
                               >
                                 <Form.Control

@@ -28,7 +28,7 @@ import DeliveryDetailsMap from "../../common/DeliveryDetailsMap";
 import { showErrorToast } from "../../utils/Toastify";
 import localforage from "localforage";
 
-const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
+const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
   const [destinationAddress, setDestinationAddress] = useState({});
@@ -38,7 +38,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
   const [sourceAddress, setSourceAddress] = useState({});
   const [vehicle, setVehicle] = useState({});
   const goBack = () => {
-    navigate(-1); // Navigate back to the previous page
+    navigate("/enterprise/orders",{state:{tabId:tabId}}); // Navigate back to the previous page
   };
   useEffect(() => {
     orderDetail();
@@ -192,12 +192,12 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
             <div className={Styles.max75}>
               <div className={Styles.pickupDeliveryDetailsHead}>
                 <div className={Styles.pickupDeliveryDetailsHeaderCard}>
-                  <Link to="#" onClick={goBack}>
+                  <div onClick={goBack} style={{cursor:"pointer"}}>
                     <FontAwesomeIcon
                       className={Styles.pickupHistoryBackspaceButton}
                       icon={faArrowLeft}
                     />
-                  </Link>
+                  </div>
                   <h4 className={Styles.pickupHistoryHeaderTitle}>
                     Delivery Details
                   </h4>
@@ -450,7 +450,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate }) => {
     </section>
   );
 };
-const ConsumerOrder = ({ user, order, navigate }) => {
+const ConsumerOrder = ({ user, order, navigate,tabId }) => {
   const orderNumber = order?.order_number;
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
@@ -462,7 +462,7 @@ const ConsumerOrder = ({ user, order, navigate }) => {
   const [sourceAddress, setSourceAddress] = useState({});
 
   const goBack = () => {
-    navigate(-1); // Navigate back to the previous page
+    navigate("/consumer/orders",{state:{tabId:tabId}}); // Navigate back to the previous page
   };
   useEffect(() => {
     orderDetail();
@@ -617,12 +617,12 @@ const ConsumerOrder = ({ user, order, navigate }) => {
             <div>
               <div className={Styles.pickupDeliveryDetailsHead}>
                 <div className={Styles.pickupDeliveryDetailsHeaderCard}>
-                  <Link to="#" onClick={goBack}>
+                  <div onClick={goBack} style={{cursor:"pointer"}}>
                     <FontAwesomeIcon
                       className={Styles.pickupHistoryBackspaceButton}
                       icon={faArrowLeft}
                     />
-                  </Link>
+                  </div>
                   <h4 className={Styles.pickupHistoryHeaderTitle}>
                     Delivery Details
                   </h4>
@@ -877,7 +877,7 @@ const ConsumerOrder = ({ user, order, navigate }) => {
 };
 function OrderDetail() {
   const location = useLocation();
-  const { order } = location.state || {};
+  const { order,tabId } = location.state || {};
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
@@ -885,10 +885,10 @@ function OrderDetail() {
     <>
       <CommonHeader userData={user} />
       {user?.userDetails.role == "CONSUMER" && (
-        <ConsumerOrder user={user} order={order} navigate={navigate} />
+        <ConsumerOrder user={user} order={order} navigate={navigate} tabId={tabId}/>
       )}
       {user?.userDetails.role == "ENTERPRISE" && (
-        <EnterpriseOrder user={user} orderNumber={order} navigate={navigate} />
+        <EnterpriseOrder user={user} orderNumber={order} navigate={navigate} tabId={tabId}/>
       )}
     </>
   );
