@@ -111,7 +111,7 @@ function CommonDashboard() {
     setLoading(true);
     const days = branch.map((day) => day.month);
     const hours = branch.map((day) => day.count);
-   
+
     const data = {
       labels: days,
       datasets: [
@@ -124,7 +124,9 @@ function CommonDashboard() {
         },
       ],
     };
-    const sum = hours.flat().reduce((total, num) => total + parseInt(num, 10), 0);
+    const sum = hours
+      .flat()
+      .reduce((total, num) => total + parseInt(num, 10), 0);
     setBookingHour(sum);
     setChartData(data);
     // setBookingHour(branch?.bookinghr);
@@ -133,11 +135,11 @@ function CommonDashboard() {
   };
 
   const dropdownData2 = [
-    { label: "All",value: "all" },
-    { label: "Today",value: "today" },
-    { label: "This week",value: "week" },
-    { label: "This month",value: "month" },
-    { label: "This year",value: "year" },
+    { label: "All", value: "all" },
+    { label: "Today", value: "today" },
+    { label: "This week", value: "week" },
+    { label: "This month", value: "month" },
+    { label: "This year", value: "year" },
   ];
 
   const getEnterprisePlans = (dateString) => {
@@ -169,8 +171,12 @@ function CommonDashboard() {
       (successResponse) => {
         setLoading(false);
         if (successResponse[0]?._response) {
-          if (successResponse[0]?._response?.branchOverviewData && successResponse[0]?._response?.branchOverviewData.length > 0){
-            const branchList = successResponse[0]?._response?.branchOverviewData;
+          if (
+            successResponse[0]?._response?.branchOverviewData &&
+            successResponse[0]?._response?.branchOverviewData.length > 0
+          ) {
+            const branchList =
+              successResponse[0]?._response?.branchOverviewData;
             dispatch(setBranches(branchList));
             dispatch(setBookings(successResponse[0]?._response?.overviewData));
             displayChartData(successResponse[0]?._response?.weekData);
@@ -264,7 +270,6 @@ function CommonDashboard() {
                         <h4
                           className={Styles.enterprisesHomeActiveBookingCount}
                         >
-                        
                           {bookings &&
                             (bookings?.active_order < 10 &&
                             bookings?.active_order > 0
@@ -291,7 +296,6 @@ function CommonDashboard() {
                         <h4
                           className={Styles.enterprisesHomeActiveBookingCount}
                         >
-                          
                           {bookings &&
                             (bookings?.schedule_order < 10 &&
                             bookings?.schedule_order > 0
@@ -320,8 +324,10 @@ function CommonDashboard() {
                         All bookings
                       </p>
                       <div className={Styles.enterpriseBookingCountCard}>
-                        <h4 className={Styles.enterprisesHomeActiveBookingCount}>
-                        {bookings &&
+                        <h4
+                          className={Styles.enterprisesHomeActiveBookingCount}
+                        >
+                          {bookings &&
                             (bookings?.total_order < 10 &&
                             bookings?.total_order > 0
                               ? "0" + bookings?.total_order
@@ -349,7 +355,7 @@ function CommonDashboard() {
                           styles={customSelectStyles}
                           defaultValue={branchList ? branchList[0] : ""}
                           onChange={handleChange}
-                          className="me-5"
+                          className={Styles.enterpriseBranchSelect}
                         />
 
                         <Select
@@ -357,6 +363,7 @@ function CommonDashboard() {
                           styles={customSelectStyles}
                           defaultValue={dropdownData2 ? dropdownData2[0] : ""}
                           onChange={handleDayChange}
+                          className={Styles.enterpriseBranchSelect}
                         />
                       </div>
                     </div>
@@ -416,24 +423,26 @@ function CommonDashboard() {
                     key={index}
                     className={Styles.enterpriseHomeCompanyLocCard}
                   >
-                    <img
-                      className={Styles.enterpriseHomeHomeIcon}
-                      src={Home}
-                      alt="home-icon"
-                    />
-                    <div>
-                      <h4 className={Styles.enterpriseHomeCompanyName}>
-                        {company.branch_name}
-                      </h4>
-                      <div className={Styles.enterpriseHomeAddressCard}>
-                        <FontAwesomeIcon
-                          className={Styles.enterpriseHomeLocDotIcon}
-                          icon={faLocationDot}
-                        />
-                        <p className={Styles.enterpriseHomeCompanyAddress}>
-                          {company.address} {company?.city} {company?.state}{" "}
-                          {company?.postal_code} {company?.country}
-                        </p>
+                    <div className={Styles.enterpriseCompanyLogoNameCard}>
+                      <img
+                        className={Styles.enterpriseHomeHomeIcon}
+                        src={Home}
+                        alt="home-icon"
+                      />
+                      <div>
+                        <h4 className={Styles.enterpriseHomeCompanyName}>
+                          {company.branch_name}
+                        </h4>
+                        <div className={Styles.enterpriseHomeAddressCard}>
+                          <FontAwesomeIcon
+                            className={Styles.enterpriseHomeLocDotIcon}
+                            icon={faLocationDot}
+                          />
+                          <p className={Styles.enterpriseHomeCompanyAddress}>
+                            {company.address} {company?.city} {company?.state}{" "}
+                            {company?.postal_code} {company?.country}
+                          </p>
+                        </div>
                       </div>
                     </div>
 
@@ -468,7 +477,7 @@ function CommonDashboard() {
               </div>
             </div>
             <div className="col-md-4">
-              <div className="col-md-12 mb-5">
+              <div className="col-md-12">
                 <div className={Styles.enterprisePlannigHeadCard}>
                   <h4 className={Styles.enterprisePlanningTitle}>Planning</h4>
                   <div className={Styles.enterprisePlannigFilterScheduleCard}>
@@ -568,9 +577,12 @@ const customSelectStyles = {
   control: (styles) => ({
     ...styles,
     backgroundColor: "#fff",
-    width: "190px",
+    width: "100%",
     // height: "-50px",
     fontSize: "13px",
+    "@media (min-width: 768px)": {
+      width: "190px", // Adjust for larger screens
+    },
   }),
   option: (styles, { isFocused, isSelected }) => ({
     ...styles,

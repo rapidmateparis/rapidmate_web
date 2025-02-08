@@ -47,26 +47,26 @@ const schema = yup.object().shape({
     .required("Confirm password is required")
     .oneOf([yup.ref("password")], "Passwords must match"),
   phoneNumber: yup
-  .string()
-  .required("Phone number is required")
-  .matches(/^\d+$/, "Phone number should contain only digits")
-  .test("length", "Phone number length is invalid", function (value) {
-    const { pcountry } = this.parent; // Assuming country is selected in the form
-    const phoneLengthByCountry = {
-      in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-      fr: { min: 11, max: 11 },
-      ru: { min: 11, max: 11 }, 
-      us: { min: 10, max: 10 },
-      nz: { min: 12, max: 12 }, 
-      // Add other countries and their phone number lengths here
-    };
-    const countryCode = pcountry ? pcountry : null;
-    if (countryCode && phoneLengthByCountry[countryCode]) {
-      const { min, max } = phoneLengthByCountry[countryCode];
-      return value.length >= min && value.length <= max;
-    }
-    return true; // If no country is selected, do not apply length validation
-  }),
+    .string()
+    .required("Phone number is required")
+    .matches(/^\d+$/, "Phone number should contain only digits")
+    .test("length", "Phone number length is invalid", function (value) {
+      const { pcountry } = this.parent; // Assuming country is selected in the form
+      const phoneLengthByCountry = {
+        in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+        fr: { min: 11, max: 11 },
+        ru: { min: 11, max: 11 },
+        us: { min: 10, max: 10 },
+        nz: { min: 12, max: 12 },
+        // Add other countries and their phone number lengths here
+      };
+      const countryCode = pcountry ? pcountry : null;
+      if (countryCode && phoneLengthByCountry[countryCode]) {
+        const { min, max } = phoneLengthByCountry[countryCode];
+        return value.length >= min && value.length <= max;
+      }
+      return true; // If no country is selected, do not apply length validation
+    }),
   country: yup
     .object({
       value: yup.string().required("Country is required"),
@@ -119,7 +119,8 @@ const DeliveryboySignup = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },setValue,
+    formState: { errors },
+    setValue,
   } = useForm({ resolver: yupResolver(schema) });
   const onSubmit = (data) => {
     setHitButton(true);
@@ -714,15 +715,17 @@ const DeliveryboySignup = () => {
                     </div>
                   </div>
                   <div>
-                    <Link
-                      to="#"
-                      className={Styles.pickupSignupContinueBtn}
-                      type="button"
-                      onClick={handleSubmit(onSubmit)}
-                      disabled={hitButton}
-                    >
-                      {hitButton ? "Loading ..." : "Continue"}
-                    </Link>
+                    <div className={Styles.signupContinueBtnCenter}>
+                      <Link
+                        to="#"
+                        className={Styles.pickupSignupContinueBtn}
+                        type="button"
+                        onClick={handleSubmit(onSubmit)}
+                        disabled={hitButton}
+                      >
+                        {hitButton ? "Loading ..." : "Continue"}
+                      </Link>
+                    </div>
                     <p className={Styles.pickupSignupAcLoginText}>
                       Already have an account?{" "}
                       <Link to="/login" className={Styles.loginTextSignup}>

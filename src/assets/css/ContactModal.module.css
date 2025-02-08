@@ -162,3 +162,27 @@ a {
 .homeContactModalFormMainCardForm {
   padding: 15px 10px;
 }
+
+@media screen and (max-width: 768px) {
+  .mainSupportSecCard{
+    margin: 20px 15px;
+  }
+
+  .homeContactModalDetailsCard{
+    padding: 20px;
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .homeContactModalTitleText {
+    font-size: 25px;
+  }
+
+  .homeContactModalDiscriptionText {
+    font-size: 14px;
+  }
+
+  .homeContactModalNumberMainCard {
+    margin-top: 20px;
+  }
+  
+}

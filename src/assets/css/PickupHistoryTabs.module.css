@@ -82,9 +82,6 @@ a {
 }
 
 @media (max-width: 600px) {
-  .tabs ul {
-    flex-direction: column;
-  }
 
   .tabs ul li label {
     border-radius: 0;

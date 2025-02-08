@@ -32,7 +32,7 @@ const libraries = ["places"];
 
 function ConsumerDashboard() {
   const navigate = useNavigate();
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
@@ -57,6 +57,7 @@ function ConsumerDashboard() {
   const [date, setDate] = useState("");
   const [isSchedule, setIsSchedule] = useState(false);
   const [map, setMap] = useState(null);
+  const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? "350px" : "100vh");
 
   useEffect(() => {
     setLoading(true);
@@ -96,6 +97,15 @@ function ConsumerDashboard() {
         }
       );
     }
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMapHeight(window.innerWidth < 768 ? "350px" : "100vh");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -193,7 +203,7 @@ function ConsumerDashboard() {
 
   return (
     <section className={Styles.requestPickupSec}>
-      <div className={`row ${Styles.manageRow}`}>
+      <div className={Styles.dashboardMainRowCard}>
         <div className="col-md-3">
           <div className={Styles.requestPickupMaincard}>
             <p className={Styles.pickupRequestText}>{t("requestPickup")}</p>
@@ -218,22 +228,13 @@ function ConsumerDashboard() {
             />
           </div>
 
-          <div
-            style={{
-              position: "fixed",
-              bottom: "0",
-              left: "0",
-              width: "25%",
-              boxShadow: "0 -2px 5px rgba(0,0,0,0.1)",
-              zIndex: "1000",
-            }}
-          >
+          <div className={Styles.dashboardMainContinueBtn}>
             <button
               onClick={handleContinue}
               className={Styles.goToOrderDetails}
             >
               <p className={Styles.pickuphomeContinueBt}>
-              {t("continueToOrderDetails")}
+                {t("continueToOrderDetails")}
               </p>
               <FontAwesomeIcon
                 className="pickupHome-rightArrow-icon"
@@ -273,7 +274,7 @@ function ConsumerDashboard() {
           <GoogleMap
             center={center}
             zoom={14}
-            mapContainerStyle={{ width: "100%", height: "100vh" }}
+            mapContainerStyle={{ width: "100%", height: mapHeight }}
             options={{
               zoomControl: false,
               streetViewControl: false,
@@ -312,11 +313,14 @@ function ConsumerDashboard() {
             {directionsResponse && (
               <DirectionsRenderer
                 directions={directionsResponse}
-                options={{  polylineOptions: {
-                  strokeColor: "#FF0058", // Blue color
-                  strokeOpacity: 0.9,    // 90% opacity
-                  strokeWeight: 3,       // 5px thick line
-                },suppressMarkers: true }}
+                options={{
+                  polylineOptions: {
+                    strokeColor: "#FF0058", // Blue color
+                    strokeOpacity: 0.9, // 90% opacity
+                    strokeWeight: 3, // 5px thick line
+                  },
+                  suppressMarkers: true,
+                }}
               />
             )}
           </GoogleMap>

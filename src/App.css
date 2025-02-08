@@ -105,12 +105,10 @@ a {
 }
 
 @media (max-width: 600px) {
-  .tabs ul {
-    flex-direction: column;
-  }
 
   .tabs ul li label {
     border-radius: 0;
+    font-size: 12px;
   }
 
   .tabs ul li label:first-of-type {
@@ -231,4 +229,10 @@ a {
 
 #promotional-email-switch:focus {
   box-shadow: 0 0 5px rgba(255, 64, 129, 0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .pickupNotification-modalMain .modal-dialog {
+    margin-right: 10px !important;
+  }
 }

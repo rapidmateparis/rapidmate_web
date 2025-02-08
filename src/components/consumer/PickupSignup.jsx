@@ -49,9 +49,9 @@ const schema = yup.object().shape({
       const phoneLengthByCountry = {
         in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
         fr: { min: 11, max: 11 },
-        ru: { min: 11, max: 11 }, 
+        ru: { min: 11, max: 11 },
         us: { min: 10, max: 10 },
-        nz: { min: 12, max: 12 }, 
+        nz: { min: 12, max: 12 },
         // Add other countries and their phone number lengths here
       };
       const countryCode = pcountry ? pcountry : null;
@@ -148,8 +148,8 @@ const PickupSignup = () => {
           if (successResponse[0]._response) {
             if (successResponse[0]._response.name == "NotAuthorizedException") {
               showErrorToast(successResponse[0]._response.name);
-              setErmessage(false)
-              setFailedError(false)
+              setErmessage(false);
+              setFailedError(false);
               setHitButton(false);
             } else {
               setHitButton(false);
@@ -173,14 +173,13 @@ const PickupSignup = () => {
         } else {
           err = errorResponse[0]._errors.message;
         }
-        showErrorToast(err)
-        setErmessage(false)
-        setFailedError(false)
+        showErrorToast(err);
+        setErmessage(false);
+        setFailedError(false);
         setHitButton(false);
       }
     );
   };
-
 
   return (
     <>
@@ -210,7 +209,8 @@ const PickupSignup = () => {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <div className="d-flex align-items-center"
+                        <div
+                          className="d-flex align-items-center"
                           style={{ position: "relative", width: "100%" }}
                         >
                           <FontAwesomeIcon
@@ -246,7 +246,8 @@ const PickupSignup = () => {
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <div className="d-flex align-items-center"
+                        <div
+                          className="d-flex align-items-center"
                           style={{ position: "relative", width: "100%" }}
                         >
                           <FontAwesomeIcon
@@ -543,15 +544,17 @@ const PickupSignup = () => {
                       </div>
                     )}
 
-                    <Link
-                      to="#"
-                      className={`mt-5 ${Styles.pickupSignupContinueBtn}`}
-                      type="button"
-                      onClick={handleSubmit(onSubmit)}
-                      disabled={hitButton}
-                    >
-                      {hitButton ? "Loading ..." : t("continue")}
-                    </Link>
+                    <div className={Styles.signupContinueBtnCenter}>
+                      <Link
+                        to="#"
+                        className={`mt-5 ${Styles.pickupSignupContinueBtn}`}
+                        type="button"
+                        onClick={handleSubmit(onSubmit)}
+                        disabled={hitButton}
+                      >
+                        {hitButton ? "Loading ..." : t("continue")}
+                      </Link>
+                    </div>
                     <p className={Styles.pickupSignupAcLoginText}>
                       {t("already_have_an_account")}{" "}
                       <Link to="/login" className={Styles.loginTextSignup}>

@@ -8,10 +8,6 @@ import {
 import { MAPS_API_KEY } from "../../utils/Constants";
 
 const libraries = ["places"];
-const mapContainerStyle = {
-  width: "100%",
-  height: "90.5vh",
-};
 
 const MapComponent = ({ locations, setDistances, center, setDistance, setDuration }) => {
   const { isLoaded } = useLoadScript({
@@ -22,6 +18,16 @@ const MapComponent = ({ locations, setDistances, center, setDistance, setDuratio
   const [directions, setDirections] = useState(null);
   const [markers, setMarkers] = useState([]);
   const geocoderCache = useRef({});
+  const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? "350px" : "100vh");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMapHeight(window.innerWidth < 768 ? "350px" : "100vh");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Geocode locations and create markers with caching
   const createMarkers = useCallback(
@@ -142,7 +148,7 @@ const MapComponent = ({ locations, setDistances, center, setDistance, setDuratio
 
   return (
     <GoogleMap
-      mapContainerStyle={mapContainerStyle}
+    mapContainerStyle={{ width: "100%", height: mapHeight }}
       zoom={10}
       center={center}
       options={{
