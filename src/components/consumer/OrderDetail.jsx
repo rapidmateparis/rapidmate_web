@@ -27,8 +27,9 @@ import { useSelector } from "react-redux";
 import DeliveryDetailsMap from "../../common/DeliveryDetailsMap";
 import { showErrorToast } from "../../utils/Toastify";
 import localforage from "localforage";
+import { useTranslation } from "react-i18next";
 
-const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
+const EnterpriseOrder = ({ user, orderNumber, navigate,tabId,t }) => {
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
   const [destinationAddress, setDestinationAddress] = useState({});
@@ -199,7 +200,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     />
                   </div>
                   <h4 className={Styles.pickupHistoryHeaderTitle}>
-                    Delivery Details
+                    {t("delivery_details")}
                   </h4>
                 </div>
                 <Link
@@ -257,7 +258,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Pickup information
+                    {t("pickup_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.company_name : ""}
@@ -280,7 +281,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Drop off information
+                    {t("dropoff_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.drop_company_name : ""}
@@ -305,14 +306,14 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Package Informatiom
+                        {t("package_information")}
                       </p>
                     </div>
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order Id:
+                        {t("order_id")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {orders?.order_number ? orders?.order_number : ""}
@@ -320,7 +321,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Vehicle:
+                        {t("vehicle")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {vehicleType?.vehicle_type
@@ -331,7 +332,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     {orders?.otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Pickup OTP:
+                          {t("pickup_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.otp}
@@ -341,7 +342,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     {orders?.delivered_otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Delivered OTP:
+                          {t("delivered_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.delivered_otp}
@@ -362,7 +363,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                     </div>
                     <h4 className={Styles.pickupDeliveryDetailOrderPriceText}>
@@ -371,11 +372,11 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      Travelled {orders?.distance} km
+                      {t("travelled")} {orders?.distance} {t("km")}
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -386,7 +387,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Waiting
+                        {t("waiting")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €0.00
@@ -394,7 +395,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Platform fee
+                        {t("platform_fee")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -405,7 +406,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Amount charged
+                        {t("amount_charged")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €{orders.amount ? orders.amount.toFixed(2) : "0.00"}
@@ -418,7 +419,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                         alt="mastercard"
                       />
                       <p className={Styles.pickupDeliveryDetailMasterCardtext}>
-                        Paid with mastercard
+                        {t("paid_with_mastercard")}
                       </p>
                     </div>
                   </div>
@@ -433,7 +434,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     alt="invoice"
                   />
                   <p className={Styles.pickupDeliveryDetailDownloadInvoiceText}>
-                    Download invoice
+                    {t("download_invoice")}
                   </p>
                 </div>
                 <button
@@ -450,7 +451,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
     </section>
   );
 };
-const ConsumerOrder = ({ user, order, navigate,tabId }) => {
+const ConsumerOrder = ({ user, order, navigate,tabId,t}) => {
   const orderNumber = order?.order_number;
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
@@ -624,7 +625,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     />
                   </div>
                   <h4 className={Styles.pickupHistoryHeaderTitle}>
-                    Delivery Details
+                   {t("delivery_details")}
                   </h4>
                 </div>
                 <Link
@@ -682,7 +683,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Pickup information
+                    {t("pickup_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.company_name : ""}
@@ -705,7 +706,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Drop off information
+                    {t("dropoff_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.drop_company_name : ""}
@@ -730,14 +731,14 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Package Informatiom
+                        {t("package_information")}
                       </p>
                     </div>
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order Id:
+                        {t("order_id")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {orders?.order_number ? orders?.order_number : ""}
@@ -745,7 +746,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Vehicle:
+                        {t("vehicle")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {vehicleType?.vehicle_type
@@ -756,7 +757,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     {orders?.otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Pickup OTP:
+                          {t("pickup_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.otp}
@@ -766,7 +767,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     {orders?.delivered_otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Delivered OTP:
+                          {t("delivered_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.delivered_otp}
@@ -787,7 +788,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                     </div>
                     <h4 className={Styles.pickupDeliveryDetailOrderPriceText}>
@@ -796,11 +797,11 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      Travelled {orders?.distance} km
+                      {t("travelled")} {orders?.distance} {t("km")}
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -811,7 +812,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Waiting
+                        {t("waiting")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €0.00
@@ -819,7 +820,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Platform fee
+                        {t("platform_fee")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -830,7 +831,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Amount charged
+                        {t("amount_charged")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €{orders.amount ? orders.amount.toFixed(2) : "0.00"}
@@ -843,7 +844,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                         alt="mastercard"
                       />
                       <p className={Styles.pickupDeliveryDetailMasterCardtext}>
-                        Paid with mastercard
+                        {t("paid_with_mastercard")}
                       </p>
                     </div>
                   </div>
@@ -858,7 +859,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     alt="invoice"
                   />
                   <p className={Styles.pickupDeliveryDetailDownloadInvoiceText}>
-                    Download invoice
+                    {t("download_invoice")}
                   </p>
                 </div>
                 <button
@@ -880,15 +881,15 @@ function OrderDetail() {
   const { order,tabId } = location.state || {};
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
-
+  const {t}=useTranslation()
   return (
     <>
       <CommonHeader userData={user} />
       {user?.userDetails.role == "CONSUMER" && (
-        <ConsumerOrder user={user} order={order} navigate={navigate} tabId={tabId}/>
+        <ConsumerOrder user={user} order={order} navigate={navigate} tabId={tabId} t={t}/>
       )}
       {user?.userDetails.role == "ENTERPRISE" && (
-        <EnterpriseOrder user={user} orderNumber={order} navigate={navigate} tabId={tabId}/>
+        <EnterpriseOrder user={user} orderNumber={order} navigate={navigate} tabId={tabId} t={t}/>
       )}
     </>
   );

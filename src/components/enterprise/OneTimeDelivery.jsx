@@ -25,6 +25,7 @@ import OneLocation from "./common/OneLocation";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
 
+const libraries = ["places"];
 
 function OneTimeDelivery() {
   const navigate = useNavigate();
@@ -121,7 +122,6 @@ function OneTimeDelivery() {
     };
     getDistancePrice();
   }, [duration]);
-  const libraries = ["places"];
   
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: MAPS_API_KEY,

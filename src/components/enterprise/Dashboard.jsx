@@ -53,9 +53,11 @@ import moment from "moment";
 import OrderCardBox from "./common/OrderCardBox";
 import { Link, useNavigate } from "react-router-dom";
 import Spinners from "../../common/Loader";
+import { useTranslation } from "react-i18next";
 function CommonDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
   const { bookings, branches } = useSelector((state) => state.enterprise);
@@ -238,7 +240,7 @@ function CommonDashboard() {
             <div className="col-md-8">
               <div>
                 <p className={Styles.enterprisesHomeUserWelcomeText}>
-                  Welcome{" "}
+                  {t("welcome")}{" "}
                   <b>
                     {user?.userDetails?.first_name +
                       " " +
@@ -263,7 +265,7 @@ function CommonDashboard() {
                       </button>
 
                       <p className={Styles.enterpriseHomeActiveBookingText}>
-                        Active bookings
+                        {t("active_bookings")}
                       </p>
                       <div className={Styles.enterpriseBookingCountCard}>
                         <h4
@@ -290,7 +292,7 @@ function CommonDashboard() {
                         <FontAwesomeIcon icon={faCircleInfo} />
                       </button>
                       <p className={Styles.enterpriseHomeActiveBookingText}>
-                        Shift bookings
+                        {t("shift_bookings")}
                       </p>
                       <div className={Styles.enterpriseBookingCountCard}>
                         <h4
@@ -322,7 +324,7 @@ function CommonDashboard() {
                         <FontAwesomeIcon icon={faCircleInfo} />
                       </button>
                       <p className={Styles.enterpriseHomeActiveBookingText}>
-                        All bookings
+                        {t("all_bookings")}
                       </p>
                       <div className={Styles.enterpriseBookingCountCard}>
                         <h4 className={Styles.enterprisesHomeActiveBookingCount}>
@@ -373,7 +375,7 @@ function CommonDashboard() {
                           icon={faCircle}
                         />
                         <p className={Styles.enterpriseHomeHoursBookedText}>
-                          Hours booked
+                          {t("hours_booked")}
                         </p>
                       </div>
                       <h2
@@ -387,7 +389,7 @@ function CommonDashboard() {
                           icon={faCircle}
                         />
                         <p className={Styles.enterpriseHomeHoursBookedText}>
-                          Hours used
+                          {t("hours_used")}
                         </p>
                       </div>
                       <h2 className={Styles.enterpriseHomeTotalSpendHoursText}>
@@ -404,14 +406,14 @@ function CommonDashboard() {
                 </div>
                 <div className="d-flex justify-content-between">
                   <p className={Styles.enterpriseCompanyLocationsText}>
-                    Company locations
+                    {t("company_locations")}
                   </p>
                   <p className={`${Styles.enterpriseCompanyLocationsText}`}>
                     <Link
                       to="/enterprise/all-company-location"
                       className={Styles.textColor}
                     >
-                      See All
+                      {t("see_all")}
                     </Link>
                   </p>
                 </div>
@@ -445,7 +447,7 @@ function CommonDashboard() {
                     <div className={Styles.enterpriseHomeLocSpentCard}>
                       <div className={Styles.enterpriseHomeHrsBookedCard}>
                         <p className={Styles.enterpriseHomeLocHsbooked}>
-                          Active booking
+                          {t("active_bookings")}
                         </p>
                         <h4>
                           {company?.active_order ? company?.active_order : 0}
@@ -454,7 +456,7 @@ function CommonDashboard() {
 
                       <div className={Styles.enterpriseHomeHrsBookedCard}>
                         <p className={Styles.enterpriseHomeLocHsbooked}>
-                          Scheduled booking
+                          {t("shift_bookings")}
                         </p>
                         <h4>
                           {company?.schedule_order ? company.schedule_order : 0}
@@ -463,7 +465,7 @@ function CommonDashboard() {
 
                       <div className={Styles.enterpriseHomeHrsBookedCard}>
                         <p className={Styles.enterpriseHomeLocHsbooked}>
-                          All booking
+                          {t("all_bookings")}
                         </p>
                         <h4>{company?.total ? company?.total : 0}</h4>
                       </div>
@@ -475,7 +477,7 @@ function CommonDashboard() {
             <div className="col-md-4">
               <div className="col-md-12 mb-5">
                 <div className={Styles.enterprisePlannigHeadCard}>
-                  <h4 className={Styles.enterprisePlanningTitle}>Planning</h4>
+                  <h4 className={Styles.enterprisePlanningTitle}>{t("planning")}</h4>
                   <div className={Styles.enterprisePlannigFilterScheduleCard}>
                     {/* <button className={Styles.enterprisePlanningFilterBtn}>
                     <FontAwesomeIcon icon={faFilter} />
@@ -488,7 +490,7 @@ function CommonDashboard() {
                         className={Styles.enterprisePlanningPlusIcon}
                         icon={faPlus}
                       />
-                      New schedule
+                      {t("new_schedule")}
                     </Link>
                   </div>
                 </div>
@@ -497,53 +499,14 @@ function CommonDashboard() {
                 {/* Calender Start Here  */}
                 <EnterpriseHomeCalender setCurrentDate={setCurrentDate} />
                 {/* Calender End Here  */}
-                <div className={Styles.enterprisesHomeEnterpriesNameCard}>
-                  <div className={Styles.enterpriseHomeResturntCard}>
-                    <FontAwesomeIcon
-                      className={Styles.enterpriseHomeResturentCircle}
-                      icon={faCircle}
-                    />
-                    <p className={Styles.enerpriseHomeResturentText}>
-                      Restaurant
-                    </p>
-                  </div>
-
-                  <div className={Styles.enterpriseHomeResturntCard}>
-                    <FontAwesomeIcon
-                      className={Styles.enterpriseHomeSupermarketsCircle}
-                      icon={faCircle}
-                    />
-                    <p className={Styles.enerpriseHomeResturentText}>
-                      Supermarkets
-                    </p>
-                  </div>
-
-                  <div className={Styles.enterpriseHomeResturntCard}>
-                    <FontAwesomeIcon
-                      className={Styles.enterpriseHomeEcommerceCircle}
-                      icon={faCircle}
-                    />
-                    <p className={Styles.enerpriseHomeResturentText}>
-                      E-Commerce
-                    </p>
-                  </div>
-                </div>
-                <div className={Styles.enterpriseHomeResturntCard}>
-                  <FontAwesomeIcon
-                    className={Styles.enterpriseHomeMoversCircle}
-                    icon={faCircle}
-                  />
-                  <p className={Styles.enerpriseHomeResturentText}>
-                    Packers & Movers
-                  </p>
-                </div>
+                
 
                 <div>
                   {enterprisePlans?.length >= 5 && (
                     <div className="container">
                       <p className="text-end">
                         <button className="border-0 text-primary p-1">
-                          All
+                          {t("all")}
                         </button>
                       </p>
                     </div>

@@ -6,6 +6,8 @@ import {
   Marker,
 } from "@react-google-maps/api";
 import { MAPS_API_KEY } from "../../utils/Constants";
+import DropoffMarker from "../../assets/images/dropoff-marker.png";
+import PickupMarker from "../../assets/images/pickup-marker.png";
 
 const libraries = ["places"];
 const mapContainerStyle = {
@@ -13,7 +15,13 @@ const mapContainerStyle = {
   height: "90.5vh",
 };
 
-const MapComponent = ({ locations, setDistances, center, setDistance, setDuration }) => {
+const MapComponent = ({
+  locations,
+  setDistances,
+  center,
+  setDistance,
+  setDuration,
+}) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: MAPS_API_KEY,
     libraries,
@@ -22,12 +30,14 @@ const MapComponent = ({ locations, setDistances, center, setDistance, setDuratio
   const [directions, setDirections] = useState(null);
   const [markers, setMarkers] = useState([]);
   const geocoderCache = useRef({});
+  const lastLocationsRef = useRef([]);
 
   // Geocode locations and create markers with caching
   const createMarkers = useCallback(
     async (locations) => {
-      const geocoder = new google.maps.Geocoder();
+      if (locations.length === markers.length) return; // Prevent redundant API calls
 
+      const geocoder = new google.maps.Geocoder();
       const newMarkers = await Promise.all(
         locations.map((location) => {
           if (geocoderCache.current[location]) {
@@ -53,57 +63,58 @@ const MapComponent = ({ locations, setDistances, center, setDistance, setDuratio
 
       setMarkers(newMarkers.filter(Boolean)); // Remove invalid markers
     },
-    [geocoderCache]
+    [markers]
   );
 
-  // Calculate route with memoization to prevent redundant API hits
-  const calculateRoute = useCallback(
-    async (locations) => {
-      if (locations.length < 2) return;
+  // Calculate route only when locations change
+  const calculateRoute = useCallback(async (locations) => {
+    if (locations.length < 2) return;
+    if (JSON.stringify(lastLocationsRef.current) === JSON.stringify(locations))
+      return; // Prevent duplicate requests
 
-      const directionsService = new google.maps.DirectionsService();
-      const waypoints = locations.slice(1, -1).map((loc) => ({ location: loc }));
+    lastLocationsRef.current = locations; // Update ref to track last requested locations
+    console.log("Calculating route...");
 
-      try {
-        const results = await directionsService.route({
-          origin: locations[0],
-          destination: locations[locations.length - 1],
-          waypoints,
-          travelMode: google.maps.TravelMode.DRIVING,
-        });
+    const directionsService = new google.maps.DirectionsService();
+    const waypoints = locations.slice(1, -1).map((loc) => ({ location: loc }));
 
-        setDirections(results);
+    try {
+      const results = await directionsService.route({
+        origin: locations[0],
+        destination: locations[locations.length - 1],
+        waypoints,
+        travelMode: google.maps.TravelMode.DRIVING,
+      });
 
-        // Calculate distances and durations
-        const distancesArray = results.routes[0].legs.map((leg) => ({
-          start: leg.start_address,
-          end: leg.end_address,
-          distance: leg.distance.text,
-          duration: leg.duration.text,
-        }));
-        setDistances(distancesArray);
+      setDirections(results);
 
-        // Calculate total distance
-        const totalDistance = results.routes[0].legs.reduce((sum, leg) => {
-          return sum + parseFloat(leg.distance.text.replace(" km", ""));
-        }, 0);
+      // Calculate distances and durations
+      const distancesArray = results.routes[0].legs.map((leg) => ({
+        start: leg.start_address,
+        end: leg.end_address,
+        distance: leg.distance.text,
+        duration: leg.duration.text,
+      }));
+      setDistances(distancesArray);
 
-        setDistance(totalDistance.toFixed(2));
+      // Calculate total distance
+      const totalDistance = results.routes[0].legs.reduce((sum, leg) => {
+        return sum + parseFloat(leg.distance.text.replace(" km", ""));
+      }, 0);
+      setDistance(totalDistance.toFixed(2));
 
-        // Calculate total duration
-        const totalDurationMinutes = results.routes[0].legs.reduce(
-          (sum, leg) => sum + parseDurationToMinutes(leg.duration.text),
-          0
-        );
-        setDuration(formatDuration(totalDurationMinutes));
-      } catch (error) {
-        console.error("Error calculating route:", error);
-      }
-    },
-    [setDistances, setDistance, setDuration]
-  );
+      // Calculate total duration
+      const totalDurationMinutes = results.routes[0].legs.reduce(
+        (sum, leg) => sum + parseDurationToMinutes(leg.duration.text),
+        0
+      );
+      setDuration(formatDuration(totalDurationMinutes));
+    } catch (error) {
+      console.error("Error calculating route:", error);
+    }
+  }, []);
 
-  // Helper function to parse duration text into minutes
+  // Parse duration text into minutes
   const parseDurationToMinutes = (durationText) => {
     const timeParts = durationText.match(/(\d+)\s*(hour|minute|mins|min)/gi);
     let totalMinutes = 0;
@@ -120,17 +131,15 @@ const MapComponent = ({ locations, setDistances, center, setDistance, setDuratio
     return totalMinutes;
   };
 
-  // Format total duration into a human-readable format
+  // Format total duration into a readable format
   const formatDuration = (totalMinutes) => {
-    if (totalMinutes < 60) {
-      return `${totalMinutes} min`;
-    }
+    if (totalMinutes < 60) return `${totalMinutes} min`;
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    return minutes === 0 ? `${hours} hours` : `${hours} hours ${minutes} min`;
+    return minutes === 0 ? `${hours} hours` : `${hours} hours ${minutes} mins`;
   };
 
-  // Only execute when `locations` changes
+  // Only execute when `locations` change
   useEffect(() => {
     if (locations.length > 0) {
       createMarkers(locations);
@@ -152,10 +161,42 @@ const MapComponent = ({ locations, setDistances, center, setDistance, setDuratio
         fullscreenControl: false,
       }}
     >
-      {markers.map((marker, index) => (
-        <Marker key={index} position={marker.position} title={marker.title} />
-      ))}
-      {directions && <DirectionsRenderer directions={directions} />}
+      {markers.map((marker, index) =>
+        index == 0 ? (
+          <Marker
+            key={index}
+            position={marker.position}
+            title={marker.title}
+            icon={{
+              url: PickupMarker,
+              scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+            }}
+          />
+        ) : (
+          <Marker
+            key={index}
+            position={marker.position}
+            title={marker.title}
+            icon={{
+              url: DropoffMarker,
+              scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+            }}
+          />
+        )
+      )}
+      {directions && (
+        <DirectionsRenderer
+          directions={directions}
+          options={{
+            polylineOptions: {
+              strokeColor: "#FF0058", // Blue color
+              strokeOpacity: 0.9, // 90% opacity
+              strokeWeight: 3, // 5px thick line
+            },
+            suppressMarkers: true, // Use your custom markers
+          }}
+        />
+      )}
     </GoogleMap>
   );
 };

@@ -4,11 +4,13 @@ import Payment from "../assets/images/Payment-Successful-Icon.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CommonHeader from "./CommonHeader";
+import { useTranslation } from "react-i18next";
 
 const PaymentSuccessful = () => {
   const user = useSelector((state) => state.auth.user);
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
+  const {t}=useTranslation()
   const location = useLocation();
   const navigate = useNavigate();
   const {orderNumber,date,isSchedule} = location.state || {};
@@ -51,11 +53,10 @@ const PaymentSuccessful = () => {
                   </div>
                   <div>
                     <h4 className={Styles.deliveryboyThankyouSignupText}>
-                      Payment Successfull!
+                      {t("payment_successful")}
                     </h4>
                     <p className={Styles.deliveryboyThankyouSignupDiscription}>
-                      Your payment was successfull, let’s look for a delivery boy
-                      now...
+                     {t("payment_successful_message")}
                     </p>
                   </div>
                 </div>

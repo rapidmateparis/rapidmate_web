@@ -22,12 +22,20 @@ import { API, buildAddress, formatPhoneNumber } from "../utils/Constants";
 import { getViewOrderDetail } from "../data_manager/dataManage";
 import Spinners from "./Loader";
 import Payment from "../assets/images/Payment-Successful-Icon.png";
+import { useTranslation } from "react-i18next";
+const oneTimeOrder = () =>{
+
+}
+const multipleTimeOrder = () =>{
+
+}
 
 function LiveTracking() {
   const navigate = useNavigate();
   const [timeLeft30, setTimeLeft30] = useState(30 * 60); // 30 minutes in seconds
   const [timeLeft15, setTimeLeft15] = useState(15 * 60); // 15 minutes in seconds
   const [showModal, setShowModal] = useState(false);
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const commonData = useSelector((state) => state.commonData.commonData);
   const location = useLocation();
@@ -50,7 +58,6 @@ function LiveTracking() {
   const [copiedField, setCopiedField] = useState(null);
   useEffect(() => {
     if (deliveryBoy?.phone) {
-     
       setDriverPhone(deliveryBoy.phone);
     }
     const orderDetail = async () => {
@@ -231,14 +238,14 @@ function LiveTracking() {
                     </div>
                     <div>
                       <h4 className={Styles.deliveryboyThankyouSignupText}>
-                        Order has been completed!
+                        {t("order_completed")}
                       </h4>
                       <Link
                         className={`${Styles.addPickupDetailsCancelBTn} m-5`}
                         style={{ color: "#000" }}
                         to={`/${baseUrl}/orders`}
                       >
-                        Go order Lists
+                        {t("go_order_lists")}
                       </Link>
                     </div>
                   </div>
@@ -258,7 +265,6 @@ function LiveTracking() {
   }
 
   const phoneNumber = formatPhoneNumber(driverPhone || order?.delivery_boy_mobile);
-  console.log("calling...")
   setTimeout(() => {
     window.location.href = `tel:${phoneNumber}`; // Ensure it's executed inside a direct click event
   }, 0);
@@ -286,9 +292,9 @@ function LiveTracking() {
                     className={Styles.pickupOrderTrackingLocCrosshairsIcon}
                     icon={faLocationCrosshairs}
                   />
-                  <p className={Styles.pickupOrderTrackingAddressText}>
+                  {/* <p className={Styles.pickupOrderTrackingAddressText}>
                     {getLocationAddress(order?.dropoff_location_id)}
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
@@ -300,7 +306,7 @@ function LiveTracking() {
                   <div>
                     <div className={Styles.pickupOrderTrackingOrderIdCard}>
                       <p className={Styles.pickupOrderTrackingOrderId}>
-                        Order ID: <b>{order?.order_number}</b>
+                        {t("order_id")}: <b>{order?.order_number}</b>
                       </p>
                       <FontAwesomeIcon
                         className={Styles.pickupOrderTrackingCopyIcon}
@@ -313,7 +319,7 @@ function LiveTracking() {
                     <div className={Styles.pickupOrderOtpCard}>
                       <div className={Styles.pickupOrderTrackingOrderIdCard}>
                         <p className={Styles.pickupOrderTrackingOrderId}>
-                          Pickup OTP: <b>{order?.otp}</b>
+                          {t("pickup_otp")}: <b>{order?.otp}</b>
                         </p>
                         <FontAwesomeIcon
                           className={Styles.pickupOrderTrackingCopyIcon}
@@ -324,7 +330,7 @@ function LiveTracking() {
                       {order?.delivered_otp && (
                         <div className={Styles.pickupOrderTrackingOrderIdCard}>
                           <p className={Styles.pickupOrderTrackingOrderId}>
-                            Delivered OTP: <b>{order?.delivered_otp}</b>
+                            {t("delivered_otp")}: <b>{order?.delivered_otp}</b>
                           </p>
                           <FontAwesomeIcon
                             className={Styles.pickupOrderTrackingCopyIcon}
@@ -433,10 +439,10 @@ function LiveTracking() {
           </div>
           <div className="col-md-9">
             <div>
-              <PickupHomeMap
+              {/* <PickupHomeMap
                 latitude={getOrigin(order?.pickup_location_id)}
                 longitude={getOrigin(order?.dropoff_location_id)}
-              />
+              /> */}
             </div>
           </div>
         </div>

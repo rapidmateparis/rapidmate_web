@@ -9,6 +9,8 @@ import { authenticateUser, signUpVerifyApi } from "../data_manager/dataManage";
 import { loginStart, loginSuccess } from "../redux/authSlice";
 import { getLookup } from "../utils/UseFetch";
 import { commonDataList } from "../redux/commonDataSlice";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const SingupVerify = () => {
   const userRole = useSelector((state) => state.auth.role);
@@ -27,6 +29,7 @@ const SingupVerify = () => {
   const handleOtpSubmit = () => {
     const hasEmptyValues = otp.some((value) => value === "");
     const allValuesEmpty = otp.every((value) => value === "");
+    const {t}=useTranslation()
     if (allValuesEmpty) {
       setErrors("Please enter OTP.");
     } else if (hasEmptyValues) {
@@ -160,10 +163,9 @@ const SingupVerify = () => {
   return (
     <PageContainer>
       <MainContent>
-        <Title>OTP Verification</Title>
+        <Title>{t("otp_verification")}</Title>
         <Subtitle>
-          We have sent a 6 digit code to your email address please confirm the
-          code below
+          {t("otp_sent_message")}
         </Subtitle>
         <OTPContainer>
           {otp.map((digit, index) => (
@@ -189,7 +191,7 @@ const SingupVerify = () => {
           </button> */}
         </ResendCodeContainer>
         <SubmitButton disabled={false} onClick={handleOtpSubmit} type="button">
-          {loading ? "Loading..." : "Submit"}
+          {loading ? t("loading") : t("submit")}
         </SubmitButton>
 
         {error && <p className={Styles.errorColor}>{error}</p>}

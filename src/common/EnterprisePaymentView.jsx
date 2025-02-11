@@ -37,6 +37,8 @@ import {
   addLocation,
   BASE_URL,
   buildAddress,
+  convertDurationToMinutes,
+  getFileName,
   getLocation,
   localToUTC,
   uploadImage,
@@ -44,6 +46,7 @@ import {
 import PickupAddPaymentMethodsModal from "../components/consumer/account/PickupAddPaymentMethodsModal";
 import moment from "moment";
 import localforage from "localforage";
+import { useTranslation } from "react-i18next";
 
 const stripePromise = loadStripe(
   "pk_test_51PgiLhLF5J4TIxENPZOMh8xWRpEsBxheEx01qB576p0vUZ9R0iTbzBFz0QvnVaoCZUwJu39xkym38z6nfNmEgUMX00SSmS6l7e"
@@ -55,14 +58,14 @@ const PaymentPage = ({
   setTotalAmount,
   paymentAmount,
   setPaymentAmount,
+  t
 }) => {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const navigate = useNavigate();
-
   const { order, orderCustomerDetails } = location.state || {};
 
- 
+  // console.log("orderCustomerDetails",orderCustomerDetails)
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -78,6 +81,7 @@ const PaymentPage = ({
   const [paymentCard, setPaymentCard] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isPayLater,setIsPayLater]=useState(0)
+  const [branches,setBranches]=useState(null)
   const openAddModal = () => {
     setShowAddModal(true);
   };
@@ -91,13 +95,15 @@ const PaymentPage = ({
 
   const getOrderAddress = (serviceTypeId, order) => {
     if (serviceTypeId == 2) {
-      return buildAddress(
-        order?.selectedBranch.address,
-        order?.selectedBranch.city,
-        order?.selectedBranch.state,
-        order?.selectedBranch.country,
-        order?.selectedBranch.postal_code
-      );
+       const location=order?.pickupLoc
+       const result = getLocation(location, location.lat, location.lng);
+          return buildAddress(
+            result.address,
+            result.city,
+            result.state,
+            result.country,
+            result.postal_code
+          );
     } else {
       return (
         order?.addPickupLocation?.address +
@@ -112,8 +118,11 @@ const PaymentPage = ({
       );
     }
   };
-  const getDropoffLocation = (location) => {
+  const getDropoffLocation = (location,isShow) => {
     const result = getLocation(location, location.lat, location.lng);
+    if(isShow){
+      return result
+    }
     return buildAddress(
       result.address,
       result.city,
@@ -122,37 +131,89 @@ const PaymentPage = ({
       result.postal_code
     );
   };
-
+  const formatDropoffLocations = async (dropoffLoc) => {
+    return await Promise.all(
+      dropoffLoc.map(async (dropoff, index) => ({
+        branch_id: order?.selectedBranch?.id, // Assigning a unique branch_id
+        total_hours: convertDurationToMinutes(order?.distances?.[index]?.duration || order?.duration), 
+        distance: order?.distances?.[index]?.distance.replace(" km", "") || order?.distance,
+        to_latitude: dropoff.lat, 
+        to_longitude: dropoff.lng, 
+        amount: order?.selectedVehiclePrice,
+        dropoff_location: await addLocation(getDropoffLocation(dropoff, true)),
+        delivery_date: moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD hh:mm"),
+        drop_first_name: getFileName(orderCustomerDetails, "dname", index),
+        drop_last_name: getFileName(orderCustomerDetails, "dlastname", index),
+        drop_mobile: getFileName(orderCustomerDetails, "dphoneNumber", index),
+        drop_notes: getFileName(orderCustomerDetails, "dropoffnote", index),
+        drop_email: getFileName(orderCustomerDetails, "demail", index),
+        drop_company_name: getFileName(orderCustomerDetails, "dcompany", index),
+        destinationDescription: getDropoffLocation(dropoff, false),
+      }))
+    );
+  };
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (order?.deliveryType.id == 2) {
-      showErrorToast(
-        "Multiple deliveries not available service for this moment."
-      );
+      const pickupLocationParam = getDropoffLocation(order?.pickupLoc,true);
+      
+
+      console.log("orderCustomerDetail",getFileName(orderCustomerDetails,"file",0)[0])
+      // console.log("branch", await formatDropoffLocations(order?.dropoffLoc))
+      // showErrorToast(
+      //   "Multiple deliveries not available service for this moment."
+      // );
       return;
     }
     setLoading(true);
     if (!stripe || !elements) return;
-
+    
+    
     try {
-      const pickupLocationParam = order?.addPickupLocation;
-      const dropoffLocationParam = order?.addDestinationLocation;
-      const pickupLocatiId = await addLocation(pickupLocationParam);
-      const dropoffLocatiId = await addLocation(dropoffLocationParam);
-      if (pickupLocatiId == "false") {
-        showErrorToast("Something went wrong.");
-        return true;
+        let pickupLocationParam ="";
+        let dropoffLocationParam = "";
+        let pickupLocatiId = "false";
+        let dropoffLocatiId = "false";
+      if (order?.deliveryType.id == 2) {
+        pickupLocationParam = getDropoffLocation(order?.pickupLoc,true);
+        dropoffLocationParam = order?.addDestinationLocation;
+        pickupLocatiId = await addLocation(pickupLocationParam);
+        
+        if (pickupLocatiId == "false") {
+          showErrorToast("Something went wrong.");
+          return true;
+        }
+        const getBranchesList= await formatDropoffLocations(order?.dropoffLoc)
+        setBranches(getBranchesList)
+        setSourceLocationId(pickupLocatiId);
+        const passportFormData = new FormData();
+        passportFormData.append("file", getFileName(orderCustomerDetails,"file",0)[0]);
+        const passportResponse = await uploadImage(passportFormData);
+        setPackageImageId(passportResponse);
+      }else{
+        pickupLocationParam = order?.addPickupLocation;
+        dropoffLocationParam = order?.addDestinationLocation;
+        pickupLocatiId = await addLocation(pickupLocationParam);
+        dropoffLocatiId = await addLocation(dropoffLocationParam);
+
+        if (pickupLocatiId == "false") {
+          showErrorToast("Something went wrong.");
+          return true;
+        }
+        if (dropoffLocatiId == "false") {
+          showErrorToast("Something went wrong.");
+          return true;
+        }
+        setSourceLocationId(pickupLocatiId);
+        setDestinationLocationId(dropoffLocatiId);
+        const passportFormData = new FormData();
+        passportFormData.append("file", orderCustomerDetails?.file[0]);
+        const passportResponse = await uploadImage(passportFormData);
+        setPackageImageId(passportResponse);
       }
-      if (dropoffLocatiId == "false") {
-        showErrorToast("Something went wrong.");
-        return true;
-      }
-      setSourceLocationId(pickupLocatiId);
-      setDestinationLocationId(dropoffLocatiId);
-      const passportFormData = new FormData();
-      passportFormData.append("file", orderCustomerDetails?.file[0]);
-      const passportResponse = await uploadImage(passportFormData);
-      setPackageImageId(passportResponse);
+      
+      
     } catch (error) {
       showErrorToast(
         error.message || "Something went wrong. Please try again."
@@ -166,24 +227,48 @@ const PaymentPage = ({
    setLoading(true);
    setIsPayLater(1)
     try {
-      const pickupLocationParam = order?.addPickupLocation;
-      const dropoffLocationParam = order?.addDestinationLocation;
-      const pickupLocatiId = await addLocation(pickupLocationParam);
-      const dropoffLocatiId = await addLocation(dropoffLocationParam);
-      if (pickupLocatiId == "false") {
-        showErrorToast("Something went wrong.");
-        return true;
+      
+      let pickupLocationParam ="";
+      let dropoffLocationParam = "";
+      let pickupLocatiId = "false";
+      let dropoffLocatiId = "false";
+      if (order?.deliveryType.id == 2) {
+        pickupLocationParam = getDropoffLocation(order?.pickupLoc,true);
+        dropoffLocationParam = order?.addDestinationLocation;
+        pickupLocatiId = await addLocation(pickupLocationParam);
+        
+        if (pickupLocatiId == "false") {
+          showErrorToast("Something went wrong.");
+          return true;
+        }
+        const getBranchesList= await formatDropoffLocations(order?.dropoffLoc)
+        setBranches(getBranchesList)
+        setSourceLocationId(pickupLocatiId);
+        const passportFormData = new FormData();
+        passportFormData.append("file", getFileName(orderCustomerDetails,"file",0)[0]);
+        const passportResponse = await uploadImage(passportFormData);
+        setPackageImageId(passportResponse);
+      }else{
+        pickupLocationParam = order?.addPickupLocation;
+        dropoffLocationParam = order?.addDestinationLocation;
+        pickupLocatiId = await addLocation(pickupLocationParam);
+        dropoffLocatiId = await addLocation(dropoffLocationParam);
+
+        if (pickupLocatiId == "false") {
+          showErrorToast("Something went wrong.");
+          return true;
+        }
+        if (dropoffLocatiId == "false") {
+          showErrorToast("Something went wrong.");
+          return true;
+        }
+        setSourceLocationId(pickupLocatiId);
+        setDestinationLocationId(dropoffLocatiId);
+        const passportFormData = new FormData();
+        passportFormData.append("file", orderCustomerDetails?.file[0]);
+        const passportResponse = await uploadImage(passportFormData);
+        setPackageImageId(passportResponse);
       }
-      if (dropoffLocatiId == "false") {
-        showErrorToast("Something went wrong.");
-        return true;
-      }
-      setSourceLocationId(pickupLocatiId);
-      setDestinationLocationId(dropoffLocatiId);
-      const passportFormData = new FormData();
-      passportFormData.append("file", orderCustomerDetails?.file[0]);
-      const passportResponse = await uploadImage(passportFormData);
-      setPackageImageId(passportResponse);
     } catch (error) {
       showErrorToast(
         error.message || "Something went wrong. Please try again."
@@ -197,11 +282,11 @@ const PaymentPage = ({
     const callPlaceOrder = async () => {
       await placePickUpOrder();
     };
-    if (sourceLocationId && destinationLocationId && packageImageId) {
+    if (sourceLocationId && packageImageId) {
       callPlaceOrder();
     }
     // callPlaceOrder()
-  }, [sourceLocationId, destinationLocationId, packageImageId]);
+  }, [sourceLocationId, packageImageId]);
   const placePickUpOrder = async () => {
     if (!user?.userDetails) {
       showErrorToast("Consumer extended ID missing");
@@ -212,7 +297,8 @@ const PaymentPage = ({
     const floatDistance = distance
       ? parseFloat(distance.replace(" km", ""))
       : 0;
-    const isInstantDate = orderCustomerDetails?.isSchedule;
+    const isInstantDate =order?.deliveryType.id===2 ? order?.isSchedule : orderCustomerDetails?.isSchedule ;
+    const isMultiple=order?.deliveryType.id
     let requestParams = {
       enterprise_ext_id: user.userDetails.ext_id,
       branch_id: order?.selectedBranch?.id,
@@ -234,7 +320,7 @@ const PaymentPage = ({
       repeat_until: localToUTC(orderCustomerDetails?.until),
       repeat_day: orderCustomerDetails?.days || "",
       package_photo: packageImageId,
-      package_id: orderCustomerDetails?.packageId,
+      package_id: isMultiple===2 ? getFileName(orderCustomerDetails,"packageId",0) :orderCustomerDetails?.packageId,
       distance: floatDistance,
       total_amount: parseFloat(paymentAmount),
       pickup_notes: orderCustomerDetails?.pickupnote,
@@ -248,10 +334,7 @@ const PaymentPage = ({
     };
 
     if (orderCustomerDetails?.isSchedule == false) {
-      requestParams.schedule_date_time =
-        moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD") +
-        " " +
-        orderCustomerDetails?.pickupTime;
+      requestParams.schedule_date_time =moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD") +" " +orderCustomerDetails?.pickupTime;
     }
 
     if (promoCodeResponse) {
@@ -262,6 +345,10 @@ const PaymentPage = ({
     if(isPayLater){
       requestParams.is_pay_later=isPayLater;
     }
+    if(isMultiple===2){
+      requestParams.branches=branches;
+    }
+    
     // console.log(requestParams)
     try {
       setLoading(true);
@@ -462,9 +549,9 @@ const PaymentPage = ({
                   <Link className={Styles.addPickupDetailsBackArrow} href="#">
                     <FontAwesomeIcon icon={faArrowLeft} />
                   </Link>
-                  <h2 className={Styles.addPickupDetailsText}>Payment</h2>
+                  <h2 className={Styles.addPickupDetailsText}>{t("payment")}</h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    Please select a payment method
+                  {t("select_payment_method")}
                   </p>
                 </div>
 
@@ -480,13 +567,13 @@ const PaymentPage = ({
                       </div>
 
                       <p className={Styles.paymentOrderSummaryText}>
-                        Order Summary
+                      {t("order_summary")}
                       </p>
 
                       <div>
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Pickup
+                          {t("pickup")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {getOrderAddress(order?.deliveryType?.id, order)
@@ -499,15 +586,15 @@ const PaymentPage = ({
                           </p>
                         </div>
                         {order?.deliveryType?.id === 2 ? (
-                          order?.dropoffLocation?.map((location, index) => (
+                          order?.dropoffLoc?.map((location, index) => (
                             <div className={Styles.paymentInvoiceDetailsText}>
                               <p className={Styles.paymentAddressDetailText}>
-                                Drop-off
+                               {t("dropoff")} {index+1}
                               </p>
                               <p className={Styles.paymentMainDetailsText}>
-                                {getDropoffLocation(location)?.length <= 27
-                                  ? getDropoffLocation(location)
-                                  : `${getDropoffLocation(location).substring(
+                                {getDropoffLocation(location,false)?.length <= 27
+                                  ? getDropoffLocation(location,false)
+                                  : `${getDropoffLocation(location,false).substring(
                                       0,
                                       27
                                     )}...`}
@@ -517,7 +604,7 @@ const PaymentPage = ({
                         ) : (
                           <div className={Styles.paymentInvoiceDetailsText}>
                             <p className={Styles.paymentAddressDetailText}>
-                              Drop-off
+                            {t("dropoff")}
                             </p>
                             <p className={Styles.paymentMainDetailsText}>
                               {dropOffLocation?.length <= 27
@@ -529,7 +616,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Vehicle type
+                            {t("vehicle_type")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {order?.selectedVehicleDetails?.vehicle_type}
@@ -538,7 +625,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Distance
+                            {t("distance")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {order?.distance}
@@ -547,7 +634,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Time
+                            {t("time")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {order?.duration}
@@ -556,7 +643,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Estimated cost
+                          {t("estimated_cost")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -565,7 +652,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Tax 20%
+                            {t("tax")} 20%
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -574,7 +661,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Discount
+                            {t("discount")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -583,7 +670,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Total amount
+                            {t("total_amount")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -625,7 +712,7 @@ const PaymentPage = ({
                         )}
                       </div>
                       <p className={Styles.paymentDebitCreditCardsText}>
-                        Credit & Debit Cards
+                      {t("credit_debit_cards")}
                       </p>
 
                       {paymentCard &&
@@ -670,7 +757,7 @@ const PaymentPage = ({
                           icon={faCircleInfo}
                         />
                         <p className={Styles.paymentCreditCardOfferText}>
-                          20% off on city bank credit card!
+                          20% {t("city_bank_offer")}
                         </p>
                       </div>
                     </div>
@@ -685,7 +772,7 @@ const PaymentPage = ({
                         disabled={!stripe || loading}
                         className={`${Styles.addPickupDetailsNextBtn} m-2`}
                       >
-                        {loading ? "Processing..." : "Pay Now"}
+                        {loading ? t("processing") : t("pay_now")}
                       </button>
                     </form>
                     {user?.userDetails?.is_pay_later==1 && <div
@@ -694,7 +781,7 @@ const PaymentPage = ({
                         className={`${Styles.addPickupDetailsNextBtn} m-2`}
                         style={{cursor:"pointer"}}
                       >
-                        {loading ? "Processing..." : "Pay Later"}
+                        {loading ? t("processing") : t("pay_later")}
                       </div>}
                      
                     {message && <p>{showSuccessToast(message)}</p>}
@@ -702,7 +789,7 @@ const PaymentPage = ({
                   </div>
                   <div className={`${Styles.addPickupDetailsBtnCard} mt-3`}>
                     <button className={Styles.addPickupDetailsCancelBTn}>
-                      Cancel
+                      {t("cancel")}
                     </button>
                   </div>
                 </div>
@@ -721,7 +808,8 @@ const PaymentPage = ({
 
 function EnterprisePaymentView() {
   const user = useSelector((state) => state.auth.user);
-
+  const {t}=useTranslation()
+  
   const [clientSecret, setClientSecret] = useState("");
   const { order } = useLocation().state || {};
   const [totalAmount, setTotalAmount] = useState(0);
@@ -799,12 +887,13 @@ function EnterprisePaymentView() {
             setTotalAmount={setTotalAmount}
             paymentAmount={paymentAmount}
             setPaymentAmount={setPaymentAmount}
+            t={t}
           />
         </Elements>
       ) : (
         <>
           <CommonHeader userData={user} />
-          <p>Loading...</p>
+          <p>{t("loading")}</p>
         </>
       )}
       <ToastContainer />

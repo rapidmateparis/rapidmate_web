@@ -5,10 +5,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CommonHeader from "./CommonHeader";
 import { localToUTC } from "../utils/Constants";
+import { useTranslation } from "react-i18next";
 
 const ScheduleSuccess = () => {
   const user = useSelector((state) => state.auth.user);
   const userRole = useSelector((state) => state.auth.role);
+  const {t}=useTranslation()
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,17 +49,17 @@ const ScheduleSuccess = () => {
                   </div>
                   <div>
                     <h4 className={Styles.deliveryboyThankyouSignupText}>
-                      Schedule Order Successful!
+                      {t("schedule_order_successful")}
                     </h4>
                     <p className={Styles.deliveryboyThankyouSignupDiscription}>
-                      {`Delivery boy will be allocated on ${localToUTC(
+                      {`${t("delivery_boy_allocated_on")} ${localToUTC(
                         date
                       )} ...`}
                     </p>
                   </div>
                   <div className="d-flex justify-content-center"> 
                     <button className={Styles.addPickupDetailsCancelBTn} onClick={handleGoHome}>
-                      Go home
+                      {t("go_home")}
                     </button>
                   </div>
                 </div>

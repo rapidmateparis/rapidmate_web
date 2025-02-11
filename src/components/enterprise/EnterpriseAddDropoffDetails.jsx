@@ -31,12 +31,12 @@ import WeekDaysSelect from "./common/WeekDaysSelect";
 import DaysSelect from "./common/DaysSelect";
 import TextInput from "../../common/TextInput";
 import { localToUTC } from "../../utils/Constants";
+import { getDynamicDropoffSchema } from "../../utils/Validation";
 const EnterpriseAdd = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const { order } = location.state || {};
-  console.log(order);
   const [selectCheckOption, setSelectedCheckOption] = useState("custom");
   const [repeatOrder, setRepeatOrder] = useState(false);
   const [instance, setInstance] = useState(false);
@@ -63,107 +63,7 @@ const EnterpriseAdd = () => {
     setSelectedOption(option);
   };
 
-  const FILE_SIZE = 5 * 1024 * 1024; // 2MB
-  const SUPPORTED_FORMATS = ["image/jpeg", "image/png", "application/pdf"];
-  const schema = yup.object().shape({
-    company: yup.string().required("Company name is required"),
-    packageId: yup
-      .string()
-      .required("Package id is required")
-      .min(3, "Package id must be at least 3 characters long"),
-    pickupnote: yup.string(),
-    email: yup
-      .string()
-      .required("Email is required")
-      .email("Please enter a valid email"),
-    phoneNumber: yup
-      .string()
-      .required("Phone number is required")
-      .matches(/^\d+$/, "Phone number should contain only digits")
-      .test("length", "Phone number length is invalid", function (value) {
-        const { country } = this.parent; // Assuming country is selected in the form
-        const phoneLengthByCountry = {
-          in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-          fr: { min: 11, max: 11 },
-          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
-          // Add other countries and their phone number lengths here
-        };
-        const countryCode = country ? country : null;
-        if (countryCode && phoneLengthByCountry[countryCode]) {
-          const { min, max } = phoneLengthByCountry[countryCode];
-          return value.length >= min && value.length <= max;
-        }
-        return true; // If no country is selected, do not apply length validation
-      }),
-    file: yup
-      .mixed()
-      .required("A file is required")
-      .test("fileSize", "File size is too large", (value) => {
-        return value && value[0] && value[0].size <= FILE_SIZE;
-      })
-      .test("fileType", "Unsupported file type", (value) => {
-        return value && value[0] && SUPPORTED_FORMATS.includes(value[0].type);
-      }),
-    dropoffnote: yup.string(),
-    dcompany: yup.string(),
-    dname: yup
-      .string()
-      .required("Name is required")
-      .min(3, "Name must be at least 3 characters long"),
-    dlastname: yup
-      .string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters long"),
-    demail: yup
-      .string()
-      .required("Email is required")
-      .email("Please enter a valid email"),
-    dphoneNumber: yup
-      .string()
-      .required("Phone number is required")
-      .matches(/^\d+$/, "Phone number should contain only digits")
-      .test("length", "Phone number length is invalid", function (value) {
-        const { dcountry } = this.parent; // Assuming country is selected in the form
-        const phoneLengthByCountry = {
-          in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-          fr: { min: 11, max: 11 },
-          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
-          // Add other countries and their phone number lengths here
-        };
-        const countryCode = dcountry ? dcountry : null;
-        if (countryCode && phoneLengthByCountry[countryCode]) {
-          const { min, max } = phoneLengthByCountry[countryCode];
-          return value.length >= min && value.length <= max;
-        }
-        return true; // If no country is selected, do not apply length validation
-      }),
-    pickupDate: yup.date().nullable(),
-    pickupTime: yup
-      .string()
-      .matches(/^([0-9]{2}):([0-9]{2})$/, "Please enter a valid time (HH:MM)"),
-    repeatOrder: yup.boolean().default(false),
-    selectedOption: yup.string(),
-    days: yup.string().when("selectedOption", {
-      is: (value) => ["Weekly", "Monthly"].includes(value),
-      then: yup.number().required("Day is required."),
-    }),
-    repeatEvery: yup
-      .string() // Treat it as a string because `<select>` returns a string
-      .nullable(),
-    until: yup.date().typeError("Invalid date format"),
-
-    selectedDays: yup.object().shape({
-      Monday: yup.boolean(),
-      Tuesday: yup.boolean(),
-      Wednesday: yup.boolean(),
-      Thursday: yup.boolean(),
-      Friday: yup.boolean(),
-      Saturday: yup.boolean(),
-      Sunday: yup.boolean(),
-    }),
-    onDay: yup.string().nullable(),
-    onThe: yup.string().nullable(),
-  });
+  
   const handleCheckboxChange = (event) => {
     const seletedValue = event.target.value;
     setSelectedCheckOption(seletedValue);
@@ -173,20 +73,21 @@ const EnterpriseAdd = () => {
   const defaultEmail = user?.userDetails?.email || "";
   const defaultCompany = user?.userDetails?.company_name || "";
   const defaultPhone = user?.userDetails?.phone.replace("+", "") || "";
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState({});
   const [time, setTime] = useState("10:00");
   const [untilDate, setUntilDate] = useState(
     moment(new Date()).format("YYYY-MM-DD")
   );
+  const dropoffCount = order?.dropoffLoc?.length || 0;
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
     setValue,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(getDynamicDropoffSchema(dropoffCount)),
     defaultValues: {
-      selectCheckOption: "",
       isSchedule: false,
       repeatEvery: 1,
       pickupDate: new Date(),
@@ -194,35 +95,44 @@ const EnterpriseAdd = () => {
     },
   });
 
-  const handleImageChange = (e) => {
+  console.log("order",order)
+  const handleImageChange = (e,index) => {
     const file = e.target.files[0];
     if (file) {
-      setImagePreview(URL.createObjectURL(file)); // Set image preview URL
-      setValue("file", [file]); // Pass the file array to the form
+      const previewURL = URL.createObjectURL(file);
+
+      // Update state to store the preview for the corresponding index
+      setImagePreview((prev) => ({
+        ...prev,
+        [index]: previewURL,
+      }));
+
+      // Set form value dynamically
+      setValue(`file-${index}`, [file]);
     }
   };
   const onSubmit = (data) => {
     setValue("imageView", imagePreview);
-    setValue("selectedOption", selectedOption);
-    let dropoffDetail = "";
-    if (selectCheckOption == "" || selectCheckOption == undefined) {
-      showErrorToast("Select dropoff location detail.");
-      return;
-    }
-    if (selectCheckOption == "custom") {
-      dropoffDetail = {
-        phone: data?.dphoneNumber,
-        email: data?.demail,
-        company: data?.dcompany,
-        dropoff_note: data?.dropoff_note,
-      };
-      setValue("dropoffdetail", true);
-    } else {
-      setValue("dropoffdetail", false);
-    }
+    // setValue("selectedOption", selectedOption);
+    // let dropoffDetail = "";
+    // if (selectCheckOption == "" || selectCheckOption == undefined) {
+    //   showErrorToast("Select dropoff location detail.");
+    //   return;
+    // }
+    // if (selectCheckOption == "custom") {
+    //   dropoffDetail = {
+    //     phone: data?.dphoneNumber,
+    //     email: data?.demail,
+    //     company: data?.dcompany,
+    //     dropoff_note: data?.dropoff_note,
+    //   };
+    //   setValue("dropoffdetail", true);
+    // } else {
+    //   setValue("dropoffdetail", false);
+    // }
 
-    console.log("data", data);
-
+    
+  // console.log("data",data)
     navigate("/enterprise/order-preview", {
       state: {
         order: order,
@@ -352,7 +262,7 @@ const EnterpriseAdd = () => {
                           <PhoneInput
                             country={"fr"}
                             value={value}
-                            onlyCountries={["fr", "in", "ru"]}
+                            onlyCountries={["fr", "in", "ru","us","nz"]}
                             countryCodeEditable={false}
                             isValid={(value, country) => {
                               setValue("country", country.iso2);
@@ -389,132 +299,6 @@ const EnterpriseAdd = () => {
                     </div>
                   </div>
                 </div>
-
-                <p className={Styles.pickupPersonalDetails}>Package details</p>
-
-                <div className={`row ${Styles.manageRow}`}>
-                  <div className="col-md-12">
-                    <label
-                      htmlFor="file"
-                      className={Styles.addPickupDetailFormLabels}
-                    >
-                      Package photo <span className={Styles.textColor}>*</span>
-                    </label>
-
-                    {imagePreview ? (
-                      // Show only the package preview if an image has been uploaded
-                      <div style={{ position: "relative" }} className="mt-2">
-                        <p>Image Preview:</p>
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          style={{
-                            width: "auto",
-                            height: "150px",
-                            objectFit: "contain",
-                          }}
-                        />
-                        <button
-                          type="button"
-                          className={Styles.removeImageButton}
-                          onClick={() => {
-                            setImagePreview(null); // Clear the image preview
-                            resetField("file"); // Reset the file input field in react-hook-form
-                          }}
-                          style={{
-                            backgroundColor: "#f44336",
-                            color: "white",
-                            border: "none",
-                            // padding: "5px 5px",
-                            cursor: "pointer",
-                            position: "absolute",
-                            height: "24px",
-                            width: "24px",
-                            marginLeft: "-16px",
-                            borderRadius: "50%",
-                          }}
-                        >
-                          x
-                        </button>
-                      </div>
-                    ) : (
-                      // Show the upload UI when no image has been uploaded
-                      <div className={Styles.addPickupUploadPhoto}>
-                        <FontAwesomeIcon icon={faPaperclip} />
-                        <p className={Styles.addPickupDragText}>
-                          Drag or click to attach a photo
-                        </p>
-                        <Controller
-                          name="file"
-                          control={control}
-                          defaultValue=""
-                          render={({ field: { onChange, ref } }) => (
-                            <input
-                              ref={ref} // Ensure correct ref assignment
-                              type="file"
-                              className={Styles.addPickupFileInput}
-                              style={{ width: "100%", padding: "5px" }}
-                              onChange={(e) => {
-                                // Pass the selected files to the react-hook-form
-                                onChange(e.target.files);
-                                handleImageChange(e);
-                              }}
-                            />
-                          )}
-                        />
-                      </div>
-                    )}
-
-                    {errors.file && (
-                      <p
-                        style={{
-                          color: "red",
-                          fontSize: "13px",
-                          textAlign: "center",
-                        }}
-                      >
-                        {errors.file.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="col-md-6">
-                    <div className={Styles.addPickupDetailsInputs}>
-                      <label
-                        htmlFor="packageId"
-                        className={Styles.addPickupDetailFormLabels}
-                      >
-                        Package ID <span className={Styles.textColor}>*</span>
-                      </label>
-
-                      <TextInput
-                        control={control}
-                        name="packageId"
-                        placeholder="Package Id ..."
-                        error={errors.packageId}
-                        defaultValue=""
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className={Styles.addPickupDetailsInputs}>
-                      <label
-                        htmlFor="pickupnote"
-                        className={Styles.addPickupDetailFormLabels}
-                      >
-                        Pickup notes
-                      </label>
-                      <TextInput
-                        control={control}
-                        name="pickupnote"
-                        placeholder="type here ..."
-                        error={errors.pickupnote}
-                        defaultValue=""
-                      />
-                    </div>
-                  </div>
-                </div>
-
                 <div className={`row ${Styles.manageRow}`}>
                   <div className="col-md-12">
                     <div
@@ -1021,6 +805,7 @@ const EnterpriseAdd = () => {
                   )}
                 </div>
 
+             
                
                 {order?.dropoffLoc &&
                   order?.dropoffLoc.map((dropoff, index) => (
@@ -1029,14 +814,146 @@ const EnterpriseAdd = () => {
                       
                     >
                          <div>
-                  <h2 className={Styles.addPickupDetailsText}>
-                    Dropoff information {index + 1}
-                  </h2>
-                  <p className={Styles.addPickupDetailsSubtext}>
-                    You have entered drop-off details
-                  </p>
-                </div>
-                      {selectCheckOption === "custom" && (
+                          <h2 className={Styles.addPickupDetailsText}>
+                            Dropoff information {index + 1}
+                          </h2>
+                          <p className={Styles.addPickupDetailsSubtext}>
+                            You have entered drop-off details
+                          </p>
+                        </div>
+                        <p className={Styles.pickupPersonalDetails}>Package details</p>
+
+                        <div className={`row ${Styles.manageRow}`}>
+                          <div className="col-md-12">
+                            <label
+                              htmlFor="file"
+                              className={Styles.addPickupDetailFormLabels}
+                            >
+                              Package photo <span className={Styles.textColor}>*</span>
+                            </label>
+
+                            { imagePreview[index] ? (
+                              // Show only the package preview if an image has been uploaded
+                              <div style={{ position: "relative" }} className="mt-2">
+                                <p>Image Preview:</p>
+                                <img
+                                  src={imagePreview[index]}
+                                  alt="Preview"
+                                  style={{
+                                    width: "auto",
+                                    height: "150px",
+                                    objectFit: "contain",
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  className={Styles.removeImageButton}
+                                  onClick={() => {
+                                    setImagePreview((prev) => ({
+                                      ...prev,
+                                      [index]: null, // Clear the preview
+                                    }));
+                                    resetField(`file-${index}`);
+                                  }}
+                                  style={{
+                                    backgroundColor: "#f44336",
+                                    color: "white",
+                                    border: "none",
+                                    // padding: "5px 5px",
+                                    cursor: "pointer",
+                                    position: "absolute",
+                                    height: "24px",
+                                    width: "24px",
+                                    marginLeft: "-16px",
+                                    borderRadius: "50%",
+                                  }}
+                                >
+                                  x
+                                </button>
+                              </div>
+                            ) : (
+                              // Show the upload UI when no image has been uploaded
+                              <div className={Styles.addPickupUploadPhoto}>
+                                <FontAwesomeIcon icon={faPaperclip} />
+                                <p className={Styles.addPickupDragText}>
+                                  Drag or click to attach a photo
+                                </p>
+                                <Controller
+                                  name={`file-${index}`}
+                                  control={control}
+                                  defaultValue=""
+                                  render={({ field: { onChange, ref } }) => (
+                                    <input
+                                      ref={ref} // Ensure correct ref assignment
+                                      type="file"
+                                      className={Styles.addPickupFileInput}
+                                      style={{ width: "100%", padding: "5px" }}
+                                      onChange={(e) => {
+                                        // Pass the selected files to the react-hook-form
+                                        onChange(e.target.files);
+                                        handleImageChange(e,index);
+                                      }}
+                                    />
+                                  )}
+                                />
+                              </div>
+                            )}
+
+                            {errors.file && (
+                              <p
+                                style={{
+                                  color: "red",
+                                  fontSize: "13px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {errors.file.message}
+                              </p>
+                            )}
+                            {errors[`file-${index}`] && <p style={{
+                                  color: "red",
+                                  fontSize: "13px",
+                                  textAlign: "center",
+                                }}>{errors[`file-${index}`].message}</p>}
+                          </div>
+
+                          <div className="col-md-6">
+                            <div className={Styles.addPickupDetailsInputs}>
+                              <label
+                                htmlFor={`packageId-${index}`}
+                                className={Styles.addPickupDetailFormLabels}
+                              >
+                                Package ID <span className={Styles.textColor}>*</span>
+                              </label>
+
+                              <TextInput
+                                control={control}
+                                name={`packageId-${index}`}
+                                placeholder="Package Id ..."
+                                error={errors[`packageId-${index}`]}
+                                defaultValue=""
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className={Styles.addPickupDetailsInputs}>
+                              <label
+                                htmlFor={`pickupnote-${index}`}
+                                className={Styles.addPickupDetailFormLabels}
+                              >
+                                Pickup notes
+                              </label>
+                              <TextInput
+                                control={control}
+                                name={`pickupnote-${index}`}
+                                placeholder="type here ..."
+                                error={errors[`pickupnote-${index}`]}
+                                defaultValue=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        
                         <div className={`row ${Styles.manageRow}`}>
                           {/* First Name */}
                           <div className="col-md-6">
@@ -1145,7 +1062,7 @@ const EnterpriseAdd = () => {
                                   <PhoneInput
                                     country="fr"
                                     value={value}
-                                    onlyCountries={["fr", "in", "ru"]}
+                                    onlyCountries={["fr", "in", "ru","us","nz"]}
                                     countryCodeEditable={false}
                                     onChange={onChange}
                                     inputStyle={{
@@ -1200,7 +1117,7 @@ const EnterpriseAdd = () => {
                             </div>
                           </div>
                         </div>
-                      )}
+                       
                     </div>
                   ))}
 

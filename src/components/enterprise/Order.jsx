@@ -23,7 +23,7 @@ import EnterpriseOrderFilterModal from "./common/EnterpriseOrderFilterModal";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "react-bootstrap";
 
-const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
+const OneTime = memo(({ orders, locations, vehicles, navigation,t }) => {
   const getLocationAddress = (locationId) => {
     let result = locations?.filter((location) => location.id == locationId);
     return buildAddress(
@@ -85,7 +85,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
                         />
                         <p className={Styles.pickupHistoryFromLoc}>
                           {" "}
-                          From:{" "}
+                          {t("from")}:{" "}
                           <b>{getLocationAddress(item.pickup_location)}</b>
                         </p>
                       </div>
@@ -98,7 +98,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
                           icon={faLocationCrosshairs}
                         />
                         <p className={Styles.pickupHistoryFromLoc}>
-                          To: <b>{getLocationAddress(item.dropoff_location)}</b>
+                          {t("to")}: <b>{getLocationAddress(item.dropoff_location)}</b>
                         </p>
                       </div>
                     </div>
@@ -117,7 +117,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
 
                   <div className={Styles.pickupHistoryOrderMoneyCard}>
                     <p className={Styles.pickupHistoryOrderId}>
-                      Order ID: <span>{item.order_number}</span>
+                      {t("order_id")}: <span>{item.order_number}</span>
                     </p>
                     <h4 className={Styles.pickupHistoryMoneyText}>
                       €{item.amount ? item.amount.toFixed(2) : "0.00"}
@@ -136,12 +136,12 @@ const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
                 />
               </div>
               <div>
-                <h4 className={Styles.pickupHistoryNoDatatext}>
-                  No orders to show
-                </h4>
-                <p className={Styles.pickupHistoryNodataSubText}>
-                  If there is any active order, it will be shown here..
-                </p>
+              <h4 className={Styles.pickupHistoryNoDatatext}>
+                    {t("no_orders_to_show")}
+                  </h4>
+                  <p className={Styles.pickupHistoryNodataSubText}>
+                    {t("active_order_message")}
+                  </p>
               </div>
             </div>
           )}
@@ -152,7 +152,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation }) => {
 });
 
 const MultipleTimeOrder = memo(
-  ({ orders, locations, vehicles, navigation }) => {
+  ({ orders, locations, vehicles, navigation,t }) => {
     const [searchText, setSearchText] = useState("");
     const [index, setIndex] = useState(0);
     const getLocationAddress = (locationId) => {
@@ -219,7 +219,7 @@ const MultipleTimeOrder = memo(
                           />
                           <p className={Styles.pickupHistoryFromLoc}>
                             {" "}
-                            From:{" "}
+                            {t("from")}:{" "}
                             <b>{getLocationAddress(item.pickup_location)}</b>
                           </p>
                         </div>
@@ -232,7 +232,7 @@ const MultipleTimeOrder = memo(
                             icon={faLocationCrosshairs}
                           />
                           <p className={Styles.pickupHistoryFromLoc}>
-                            To:{" "}
+                            {t("to")}:{" "}
                             <b>{getLocationAddress(item.dropoff_location)}</b>
                           </p>
                         </div>
@@ -251,7 +251,7 @@ const MultipleTimeOrder = memo(
 
                     <div className={Styles.pickupHistoryOrderMoneyCard}>
                       <p className={Styles.pickupHistoryOrderId}>
-                        Order ID: <span>{item.order_number}</span>
+                        {t("order_id")}: <span>{item.order_number}</span>
                       </p>
                       <h4 className={Styles.pickupHistoryMoneyText}>
                         €{item.amount ? item.amount.toFixed(2) : "0.00"}
@@ -270,11 +270,11 @@ const MultipleTimeOrder = memo(
                   />
                 </div>
                 <div>
-                  <h4 className={Styles.pickupHistoryNoDatatext}>
-                    No orders to show
+                <h4 className={Styles.pickupHistoryNoDatatext}>
+                    {t("no_orders_to_show")}
                   </h4>
                   <p className={Styles.pickupHistoryNodataSubText}>
-                    If there is any active order, it will be shown here..
+                    {t("active_order_message")}
                   </p>
                 </div>
               </div>
@@ -286,7 +286,7 @@ const MultipleTimeOrder = memo(
   }
 );
 
-const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
+const ShiftOrder = memo(({ orders, branches, vehicles, navigation,t }) => {
   const getBranchAddress = (branchId) => {
     let result = branches?.filter((branch) => branch.branch_id == branchId);
     if (result?.length > 0) {
@@ -337,7 +337,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
                       />
                       <h4 className={Styles.pickupHistoryDeliveredText}>
                         {moment(formatDate(item.shift_from_date).date).format("DD-MM-YYYY")}
-                        {" To "}
+                        {t("to")}
                         {moment(formatDate(item.shift_tp_date).date).format("DD-MM-YYYY")}
 
                       </h4>
@@ -347,7 +347,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
                       <b>
                         {" "}
                         {item?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)}{" "}
-                        hours shift
+                        {t("hours_shift")}
                       </b>
                     </p>
                   </div>
@@ -389,12 +389,12 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
                 />
               </div>
               <div>
-                <h4 className={Styles.pickupHistoryNoDatatext}>
-                  No orders to show
-                </h4>
-                <p className={Styles.pickupHistoryNodataSubText}>
-                  If there is any active order, it will be shown here..
-                </p>
+                  <h4 className={Styles.pickupHistoryNoDatatext}>
+                    {t("no_orders_to_show")}
+                  </h4>
+                  <p className={Styles.pickupHistoryNodataSubText}>
+                    {t("active_order_message")}
+                  </p>
               </div>
             </div>
           )}
@@ -405,7 +405,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation }) => {
 });
 
 const PastOrder = memo(
-  ({ orders, locations, vehicles, navigation, branches }) => {
+  ({ orders, locations, vehicles, navigation, branches,t }) => {
     const getLocationAddress = (locationId) => {
       let result = locations?.filter((location) => location.id == locationId);
       return buildAddress(
@@ -490,7 +490,7 @@ const PastOrder = memo(
                             <b>
                               {" "}
                               {item?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)} {" "}
-                              hours shift
+                              {t("hours_shift")}
                             </b>
                           </p>
                         </div>
@@ -559,7 +559,7 @@ const PastOrder = memo(
                             />
                             <p className={Styles.pickupHistoryFromLoc}>
                               {" "}
-                              From:{" "}
+                              {t("from")}:{" "}
                               <b>{getLocationAddress(item.pickup_location)}</b>
                             </p>
                           </div>
@@ -572,7 +572,7 @@ const PastOrder = memo(
                               icon={faLocationCrosshairs}
                             />
                             <p className={Styles.pickupHistoryFromLoc}>
-                              To:{" "}
+                              {t("to")}:{" "}
                               <b>{getLocationAddress(item.dropoff_location)}</b>
                             </p>
                           </div>
@@ -586,7 +586,7 @@ const PastOrder = memo(
 
                       <div className={Styles.pickupHistoryOrderMoneyCard}>
                         <p className={Styles.pickupHistoryOrderId}>
-                          Order ID: <span>{item.order_number}</span>
+                          {t("order_id")}: <span>{item.order_number}</span>
                         </p>
                         <h4 className={Styles.pickupHistoryMoneyText}>
                           €{item.amount ? item.amount.toFixed(2) : "0.00"}
@@ -607,10 +607,10 @@ const PastOrder = memo(
                 </div>
                 <div>
                   <h4 className={Styles.pickupHistoryNoDatatext}>
-                    No orders to show
+                    {t("no_orders_to_show")}
                   </h4>
                   <p className={Styles.pickupHistoryNodataSubText}>
-                    If there is any active order, it will be shown here..
+                    {t("active_order_message")}
                   </p>
                 </div>
               </div>
@@ -875,6 +875,7 @@ const Order = () => {
                         locations={locationList}
                         vehicles={vehicleType}
                         navigation={navigation}
+                        t={t}
                       />
                     )}
                     {selectedTab === "tab2" && (
@@ -883,6 +884,7 @@ const Order = () => {
                         locations={locationList}
                         vehicles={vehicleType}
                         navigation={navigation}
+                        t={t}
                       />
                     )}
                     {selectedTab === "tab3" && (
@@ -891,6 +893,7 @@ const Order = () => {
                         branches={branches}
                         vehicles={vehicleType}
                         navigation={navigation}
+                        t={t}
                       />
                     )}
                     {selectedTab === "tab4" && (
@@ -900,6 +903,7 @@ const Order = () => {
                         vehicles={vehicleType}
                         navigation={navigation}
                         branches={branches}
+                        t={t}
                       />
                     )}
                     {showModal && (

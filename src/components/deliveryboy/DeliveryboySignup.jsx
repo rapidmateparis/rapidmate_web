@@ -256,11 +256,10 @@ const DeliveryboySignup = () => {
                 <div className={Styles.chooseMainCard}>
                   <div className={Styles.chooseProfileCard}>
                     <h2 className={Styles.chooseProfileHeading}>
-                      Delivery Boy signup
+                      {t("delivery_boy_signup")}
                     </h2>
                     <p className={Styles.chooseProfileSubheading}>
-                      Let’s create your profile so you can have complete
-                      experience of the app.
+                    {t("create_profile_app_experience")}
                     </p>
                   </div>
                 </div>
@@ -289,7 +288,7 @@ const DeliveryboySignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="First name"
+                                placeholder={t("first_name")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -329,7 +328,7 @@ const DeliveryboySignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Last name"
+                                placeholder={t("last_name")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -369,7 +368,7 @@ const DeliveryboySignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Email"
+                                placeholder={t("email")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -409,7 +408,7 @@ const DeliveryboySignup = () => {
                               <input
                                 {...field}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Password..."
+                                placeholder={t("password")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -458,7 +457,7 @@ const DeliveryboySignup = () => {
                               <input
                                 {...field}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Confirm your password"
+                                placeholder={t("confirm_password")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -547,7 +546,7 @@ const DeliveryboySignup = () => {
                                 field.onChange(option);
                                 handleCountryChange(option);
                               }}
-                              placeholder="Select your country"
+                              placeholder={t("select_country")}
                               styles={customSelectStyles}
                             />
                           )}
@@ -572,7 +571,7 @@ const DeliveryboySignup = () => {
                             <Select
                               {...field}
                               options={stateList}
-                              placeholder="Select your Ain"
+                              placeholder={t("select_state")}
                               onChange={(option) => {
                                 field.onChange(option);
                                 handleStateChange(option);
@@ -603,7 +602,7 @@ const DeliveryboySignup = () => {
                             <Select
                               {...field}
                               options={cityList}
-                              placeholder="Select your ambérieu-e..."
+                              placeholder={t("select_city")}
                               styles={customSelectStyles}
                               isDisabled={!selectedState}
                               isSearchable={true}
@@ -643,7 +642,7 @@ const DeliveryboySignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Siret no..."
+                                placeholder={t("siret_no")}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
                             )}
@@ -687,16 +686,13 @@ const DeliveryboySignup = () => {
                                   }
                                 />
                                 <div>
-                                  We collect this data for the purposes of
-                                  processing your application to become a
-                                  courier. By clicking this box, you acknowledge
-                                  that you have read and understood the{" "}
-                                  <Link
+                                 {t("checkbox_collect_data_text")}{" "}
+                                  {/* <Link
                                     className={Styles.deliverySignupPolicyCheck}
                                     to="#"
                                   >
                                     Privacy Policy
-                                  </Link>
+                                  </Link> */}
                                 </div>
                               </label>
                             )}
@@ -721,22 +717,22 @@ const DeliveryboySignup = () => {
                       onClick={handleSubmit(onSubmit)}
                       disabled={hitButton}
                     >
-                      {hitButton ? "Loading ..." : "Continue"}
+                      {hitButton ? "Loading ..." : t("continue")}
                     </Link>
                     <p className={Styles.pickupSignupAcLoginText}>
-                      Already have an account?{" "}
+                    {t("already_have_an_account")}{" "}
                       <Link to="/login" className={Styles.loginTextSignup}>
-                        Login
+                        {t("login")}
                       </Link>
                     </p>
                     <p className={Styles.pickupSignupAcLoginText}>
-                      By signing up you agree to{" "}
+                    {t("agree_terms")}{" "}
                       <Link className={Styles.loginTextSignup} to="#">
-                        Privacy policy
+                       {t("privacy_policy")}
                       </Link>{" "}
                       &{" "}
                       <Link className={Styles.loginTextSignup} to="#">
-                        Terms
+                      {t("terms_of_service")}
                       </Link>{" "}
                       of RapidMate{" "}
                     </p>

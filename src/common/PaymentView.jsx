@@ -35,6 +35,7 @@ import { showErrorToast, showSuccessToast } from "../utils/Toastify";
 import { addLocation, BASE_URL, localToUTC, uploadImage } from "../utils/Constants";
 import PickupAddPaymentMethodsModal from "../components/consumer/account/PickupAddPaymentMethodsModal";
 import localforage from "localforage";
+import { useTranslation } from "react-i18next";
 
 const stripePromise = loadStripe(
   "pk_test_51PgiLhLF5J4TIxENPZOMh8xWRpEsBxheEx01qB576p0vUZ9R0iTbzBFz0QvnVaoCZUwJu39xkym38z6nfNmEgUMX00SSmS6l7e"
@@ -50,7 +51,7 @@ const PaymentPage = ({
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const {t}=useTranslation()
   const { order, orderCustomerDetails, dropoffDetail } = location.state || {};
   const stripe = useStripe();
   const elements = useElements();
@@ -340,9 +341,9 @@ const PaymentPage = ({
                   <Link className={Styles.addPickupDetailsBackArrow} href="#">
                     <FontAwesomeIcon icon={faArrowLeft} />
                   </Link>
-                  <h2 className={Styles.addPickupDetailsText}>Payment</h2>
+                  <h2 className={Styles.addPickupDetailsText}>{t("payment")}</h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    Please select a payment method
+                    {t("select_payment_method")}
                   </p>
                 </div>
 
@@ -358,13 +359,13 @@ const PaymentPage = ({
                       </div>
 
                       <p className={Styles.paymentOrderSummaryText}>
-                        Order Summary
+                        {t("order_summary")}
                       </p>
 
                       <div>
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Pickup
+                            {t("pickup")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {pickupLocation?.length <= 27
@@ -375,7 +376,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Drop-off
+                            {t("dropoff")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {dropOffLocation?.length <= 27
@@ -386,7 +387,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Vehicle type
+                            {t("vehicle_type")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {order?.selectedVehicleDetails?.vehicle_type}
@@ -395,7 +396,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Distance
+                            {t("distance")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {order?.distance}
@@ -404,7 +405,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentInvoiceDetailsText}>
                           <p className={Styles.paymentAddressDetailText}>
-                            Time
+                            {t("time")}
                           </p>
                           <p className={Styles.paymentMainDetailsText}>
                             {order?.duration}
@@ -413,7 +414,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                          Estimated cost
+                          {t("estimated_cost")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -422,7 +423,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Tax 20%
+                            {t("tax")} 20%
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -431,7 +432,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Discount
+                            {t("discount")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -440,7 +441,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            Total amount
+                            {t("total_amount")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
@@ -482,7 +483,7 @@ const PaymentPage = ({
                         )}
                       </div>
                       <p className={Styles.paymentDebitCreditCardsText}>
-                        Credit & Debit Cards
+                        {t("credit_debit_cards")}
                       </p>
 
                       <div className={Styles.paymentAllCardsDataShow}>
@@ -520,7 +521,7 @@ const PaymentPage = ({
                             >
                               
                               <p className={`${Styles.paymentAddCardText} p-2`}>
-                              <FontAwesomeIcon icon={faCirclePlus} /> Add New Card
+                              <FontAwesomeIcon icon={faCirclePlus} /> {t("add_new_card")}
                               </p>
                             </div>
                             
@@ -534,7 +535,7 @@ const PaymentPage = ({
                           icon={faCircleInfo}
                         />
                         <p className={Styles.paymentCreditCardOfferText}>
-                          20% off on city bank credit card!
+                          20% {t("city_bank_offer")}
                         </p>
                       </div>
                     </div>
@@ -548,7 +549,7 @@ const PaymentPage = ({
                         disabled={!stripe || loading}
                         className={`${Styles.addPickupDetailsNextBtn} m-2`}
                       >
-                        {loading ? "Processing..." : "Pay Now"}
+                        {loading ? t("processing") : t("pay_now")}
                       </button>
                     </form>
                     {message && <p>{showSuccessToast(message)}</p>}
@@ -557,7 +558,7 @@ const PaymentPage = ({
 
                 <div className={Styles.addPickupDetailsBtnCard}>
                   <button className={Styles.addPickupDetailsCancelBTn} onClick={()=>navigate('/consumer/dashboard')}>
-                    Cancel
+                    {t("cancel")}
                   </button>
                 </div>
               </div>
