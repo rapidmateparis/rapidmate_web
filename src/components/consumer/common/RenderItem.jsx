@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import CustomPagination from "../../../common/CommonPagenation";
 
-function RenderItem({ status = "", locationList = [], orderList = [] }) {
+function RenderItem({ status = "", locationList = [], orderList = [] ,tabId}) {
   const user = useSelector((state) => state.auth.user);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -22,7 +22,13 @@ function RenderItem({ status = "", locationList = [], orderList = [] }) {
 
   const detailHandler = (order_number) => {
     navigate("/consumer/order-detail", {
-      state: { order: { order_number }, user },
+      state: {
+        order: {
+          order_number,
+        },
+        user,
+        tabId,
+      },
     });
   };
 

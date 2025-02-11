@@ -231,6 +231,11 @@ function CommonDashboard() {
     e.preventDefault();
     navigate("/enterprise/orders");
   };
+  const handleShift = (e) =>{
+    e.preventDefault()
+    navigate("/enterprise/orders",{state:{tabId:3}})
+  }
+
   return (
     <>
       <section className={Styles.enterpriseHomeSec}>
@@ -258,7 +263,7 @@ function CommonDashboard() {
                 </p>
                 <div className="row">
                   <div className="col-md-4">
-                    <div className={Styles.enterpriseHomeActiveBookingCard}>
+                    <div className={Styles.enterpriseHomeActiveBookingCard} onClick={navigateHandler} style={{cursor:"pointer"}}>
                       <button className={Styles.enterpriseHomeInfoButton}>
                         <FontAwesomeIcon icon={faCircleInfo} />
                       </button>
@@ -285,12 +290,12 @@ function CommonDashboard() {
                     </div>
                   </div>
                   <div className="col-md-4">
-                    <div className={Styles.enterpriseHomeActiveBookingCard}>
+                    <div className={Styles.enterpriseHomeActiveBookingCard} onClick={handleShift} style={{cursor:"pointer"}}>
                       <button className={Styles.enterpriseHomeInfoButton}>
                         <FontAwesomeIcon icon={faCircleInfo} />
                       </button>
                       <p className={Styles.enterpriseHomeActiveBookingText}>
-                        Scheduled bookings
+                        Shift bookings
                       </p>
                       <div className={Styles.enterpriseBookingCountCard}>
                         <h4

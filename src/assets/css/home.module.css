@@ -4688,7 +4688,7 @@ a {
   display: flex;
   align-items: center;
   margin: 10px 0px;
-  gap: 30px;
+  justify-content: space-between;
 }
 
 .enterpriseCreateShiftAvailabilityDeleteBtn {

@@ -6,7 +6,7 @@ import {
   faMagnifyingGlass,
   faFilter,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "../../common/CommonHeader";
 import RenderItem from "./common/RenderItem";
 import { getConsumerViewOrdersListBySearch, getLocations } from "../../data_manager/dataManage";
@@ -25,6 +25,9 @@ const PastOrder = () => {
   const [pastOrderList, setPastOrderList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [loading, setLoading] = useState([]);
+  const location = useLocation();
+  const {tabId } = location.state || {};
+  const [tabValue,setTabValue]=useState(1)
   const goBack = () => {
     navigate(-1);
   };
@@ -85,6 +88,12 @@ const PastOrder = () => {
   };
 
   const handleTabChange = (event) => {
+    const tabId=event.target.id
+    if(tabId=="tab1"){
+      setTabValue(1)
+    }else{
+      setTabValue(2)
+    }
     setSelectedTab(event.target.id); 
   };
 
@@ -115,6 +124,15 @@ const PastOrder = () => {
       },
     );
   };
+
+  useEffect(()=>{
+    if(location.state){
+      if(tabId){
+        setTabValue(tabId)
+        setSelectedTab("tab"+tabId)
+      }
+    }
+  },[location.state])
   
   return (
     <>
@@ -129,12 +147,12 @@ const PastOrder = () => {
               <div>
                 <div className={Styles.pickupHistoryHeaderCard}>
                   <div className={Styles.pickupHistoryTitleHeaderCard}>
-                    <Link to="#" onClick={goBack}>
+                    <div onClick={goBack} style={{cursor:"pointer"}}>
                       <FontAwesomeIcon
                         className={Styles.pickupHistoryBackspaceButton}
                         icon={faArrowLeft}
                       />
-                    </Link>
+                    </div>
                     <h4 className={Styles.pickupHistoryHeaderTitle}>{t("order_history")}</h4>
                   </div>
                   <div className={Styles.pickupHistorySearchFillterCard}>
@@ -186,10 +204,10 @@ const PastOrder = () => {
                   </ul>
                   <div className="content">
                     {/* Ongoing Start Here  */}
-                    <RenderItem status="current" locationList={locationList} orderList={orderList} />
+                    <RenderItem status="current" locationList={locationList} orderList={orderList} tabId={tabValue} />
 
                     {/* Past Orders Start Here  */}
-                    <RenderItem status="past" locationList={locationList} orderList={pastOrderList} />
+                    <RenderItem status="past" locationList={locationList} orderList={pastOrderList} tabId={tabValue} />
                   </div>
                   <div className="d-flex justify-content-end item-center">
                     
