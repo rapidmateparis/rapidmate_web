@@ -38,7 +38,7 @@ const EnterpriseSignup = () => {
   const [hitButton, setHitButton] = useState(false);
   const [failedError, setFailedError] = useState(false);
   const [masterCountryList, setMasterCountryList] = useState(null);
-  
+
   const [masterStateList, setMasterStateList] = useState(null);
   const [masterCityList, setMasterCityList] = useState(null);
   const [countryList, setCountryList] = useState([]);
@@ -367,7 +367,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.name && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.name}</p>}
+                        {errors.name && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -403,7 +410,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.email && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.email}</p>}
+                        {errors.email && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -426,8 +440,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.password && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.password}</p>}
-
+                        {errors.password && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.password}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -452,7 +472,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.confirmPassword && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.confirmPassword}</p>}
+                        {errors.confirmPassword && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.confirmPassword}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -475,8 +502,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.number && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.number}</p>}
-
+                        {errors.number && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.number}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -487,11 +520,13 @@ const EnterpriseSignup = () => {
                             options={countryList}
                             placeholder="Select a country"
                             isSearchable
-                            className={!!errors.dropdownCountryValue ? 'is-invalid' : ''}
+                            className={
+                              !!errors.dropdownCountryValue ? "is-invalid" : ""
+                            }
                           />
                           <Form.Control.Feedback type="invalid">
-                              {errors.dropdownCountryValue}
-                            </Form.Control.Feedback>
+                            {errors.dropdownCountryValue}
+                          </Form.Control.Feedback>
                         </Form.Group>
                       </div>
 
@@ -510,8 +545,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.companyName && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.companyName}</p>}
-
+                        {errors.companyName && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.companyName}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -522,11 +563,13 @@ const EnterpriseSignup = () => {
                             placeholder="Industry"
                             isSearchable={true}
                             onChange={handleIndustryChange}
-                            className={!!errors.dropdownIndustryValue ? 'is-invalid' : ''}
+                            className={
+                              !!errors.dropdownIndustryValue ? "is-invalid" : ""
+                            }
                           />
                           <Form.Control.Feedback type="invalid">
-                              {errors.dropdownIndustryValue}
-                            </Form.Control.Feedback>
+                            {errors.dropdownIndustryValue}
+                          </Form.Control.Feedback>
                         </Form.Group>
                       </div>
 
@@ -545,8 +588,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.deliveries && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.deliveries}</p>}
-
+                        {errors.deliveries && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.deliveries}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-6">
@@ -560,14 +609,14 @@ const EnterpriseSignup = () => {
                             placeholder="Ain"
                             isSearchable={true}
                             onChange={handleStateChange}
-                            className={!!errors.dropdownStateValue ? 'is-invalid' : ''}
-
+                            className={
+                              !!errors.dropdownStateValue ? "is-invalid" : ""
+                            }
                           />
                           <Form.Control.Feedback type="invalid">
-                              {errors.dropdownStateValue}
-                            </Form.Control.Feedback>
+                            {errors.dropdownStateValue}
+                          </Form.Control.Feedback>
                         </Form.Group>
-                        
                       </div>
 
                       <div className="col-md-6">
@@ -581,13 +630,14 @@ const EnterpriseSignup = () => {
                             placeholder="ambérieu-e..."
                             isSearchable={true}
                             onChange={handleCityChange}
-                            className={!!errors.dropdownCityValue ? 'is-invalid' : ''}
+                            className={
+                              !!errors.dropdownCityValue ? "is-invalid" : ""
+                            }
                           />
                           <Form.Control.Feedback type="invalid">
-                              {errors.dropdownCityValue}
-                            </Form.Control.Feedback>
+                            {errors.dropdownCityValue}
+                          </Form.Control.Feedback>
                         </Form.Group>
-
                       </div>
 
                       <div className="col-md-12">
@@ -608,7 +658,14 @@ const EnterpriseSignup = () => {
                             />
                           </div>
                         </Form.Group>
-                        {errors.siret && <p className="text-danger lh-1" style={{fontSize:"0.820em"}}>{errors.siret}</p>}
+                        {errors.siret && (
+                          <p
+                            className="text-danger lh-1"
+                            style={{ fontSize: "0.820em" }}
+                          >
+                            {errors.siret}
+                          </p>
+                        )}
                       </div>
 
                       <div className="col-md-12">
@@ -687,16 +744,18 @@ const EnterpriseSignup = () => {
                         <p className={Styles.termsCheck}>{ermessage}</p>
                       </div>
                     )}
-                    <Link
-                      to="#"
-                      className={Styles.pickupSignupContinueBtn}
-                      style={{ marginBottom: "15px" }}
-                      type="button"
-                      onClick={submitHandler}
-                      disabled={hitButton}
-                    >
-                      {hitButton ? "Loading ..." : t("continue")}
-                    </Link>
+                    <div className={Styles.signupContinueBtnCenter}>
+                      <Link
+                        to="#"
+                        className={Styles.pickupSignupContinueBtn}
+                        style={{ marginBottom: "15px" }}
+                        type="button"
+                        onClick={submitHandler}
+                        disabled={hitButton}
+                      >
+                        {hitButton ? "Loading ..." : t("continue")}
+                      </Link>
+                    </div>
                   </Form>
 
                   <div>

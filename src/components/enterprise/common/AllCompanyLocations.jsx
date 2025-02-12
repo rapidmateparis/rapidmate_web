@@ -88,23 +88,27 @@ function AllCompanyLocations() {
                         key={index}
                         className={Styles.enterpriseHomeCompanyLocCard}
                       >
-                        <img
-                          className={Styles.enterpriseHomeHomeIcon}
-                          src={Home}
-                          alt="home-icon"
-                        />
-                        <div>
-                          <h4 className={Styles.enterpriseHomeCompanyName}>
-                            {company.branch_name}
-                          </h4>
-                          <div className={Styles.enterpriseHomeAddressCard}>
-                            <FontAwesomeIcon
-                              className={Styles.enterpriseHomeLocDotIcon}
-                              icon={faLocationDot}
-                            />
-                            <p className={Styles.enterpriseHomeCompanyAddress}>
-                              {makeAddress(company)}
-                            </p>
+                        <div className={Styles.enterpriseCompanyLogoNameCard}>
+                          <img
+                            className={Styles.enterpriseHomeHomeIcon}
+                            src={Home}
+                            alt="home-icon"
+                          />
+                          <div>
+                            <h4 className={Styles.enterpriseHomeCompanyName}>
+                              {company.branch_name}
+                            </h4>
+                            <div className={Styles.enterpriseHomeAddressCard}>
+                              <FontAwesomeIcon
+                                className={Styles.enterpriseHomeLocDotIcon}
+                                icon={faLocationDot}
+                              />
+                              <p
+                                className={Styles.enterpriseHomeCompanyAddress}
+                              >
+                                {makeAddress(company)}
+                              </p>
+                            </div>
                           </div>
                         </div>
 

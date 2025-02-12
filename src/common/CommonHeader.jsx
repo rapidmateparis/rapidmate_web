@@ -29,10 +29,9 @@ import { useTranslation } from "react-i18next";
 import i18n from "../i18n/i18n";
 import HeaderLanguageSwitcher from "./HeaderlanguageOptions";
 
-
 const CommonHeader = memo(({ userData }) => {
   const location = useLocation();
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   const currentPath = location.pathname;
   const isDashboard = ["/dashboard", "/schedules"].some((route) =>
     currentPath.includes(route)
@@ -43,7 +42,7 @@ const CommonHeader = memo(({ userData }) => {
   const [supportModal, setSupportModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [lang, setLang] = useState(i18n.language); 
+  const [lang, setLang] = useState(i18n.language);
   const switchLanguage = (newLang) => {
     i18n.changeLanguage(newLang); // Update i18n language
     setLang(newLang); // Update the language in state
@@ -109,71 +108,73 @@ const CommonHeader = memo(({ userData }) => {
               </li>
             ))}
 
-          <div className={Styles.loginNavList}>
-            {userDetails?.role !== "DELIVERY_BOY" && (
-              <>
-                {userDetails?.role == "ENTERPRISE" && isDashboard == false && (
-                  <li>
-                    <Link
-                      to="/enterprise/schedules"
-                      className={Styles.pickupHomeSettingsBtn}
-                    >
-                      <FontAwesomeIcon icon={faPlus} /> {t("new_schedule")}
-                    </Link>
-                  </li>
-                )}
-              </>
-            )}
-            <li>
-              <button
-                onClick={openSupportModal}
-                className={Styles.pickupHomeSettingsBtn}
-              >
-                {t("message")}
-              </button>
-            </li>
-            {isNotification == false && (
+          <li>
+            <div className={Styles.loginNavList}>
+              {userDetails?.role !== "DELIVERY_BOY" && (
+                <>
+                  {userDetails?.role == "ENTERPRISE" &&
+                    isDashboard == false && (
+                      <li>
+                        <Link
+                          to="/enterprise/schedules"
+                          className={Styles.pickupHomeSettingsBtn}
+                        >
+                          <FontAwesomeIcon icon={faPlus} /> {t("new_schedule")}
+                        </Link>
+                      </li>
+                    )}
+                </>
+              )}
               <li>
                 <button
-                  onClick={openModal}
+                  onClick={openSupportModal}
                   className={Styles.pickupHomeSettingsBtn}
                 >
-                  <FontAwesomeIcon icon={faBell} />
+                  {t("message")}
                 </button>
               </li>
-            )}
-            <li>
-            <HeaderLanguageSwitcher lang={lang} switcher={switchLanguage} />
-            </li>
-            <li>
-              <Dropdown>
-                <Dropdown.Toggle
-                  className={Styles.pickupHeaderProfileActionBtn}
-                  id="dropdown-basic"
-                >
-                  <img
-                    className={Styles.pickupHeaderProfileImg}
-                    src={
-                      API.viewImageUrl +
-                      userDetails?.profile_pic?.replace(/\.png$/, "")
-                    }
-                    alt="Profile"
-                  />
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    as={Link}
-                    to={`/${baseUrl}/setting`}
-                    className={Styles.pickupHeaderAccountTextsActions}
+              {isNotification == false && (
+                <li>
+                  <button
+                    onClick={openModal}
+                    className={Styles.pickupHomeSettingsBtn}
                   >
-                    <FontAwesomeIcon
-                      className={Styles.pickupHeaderAccountsIcons}
-                      icon={faUser}
-                    />{" "}
-                    {t("accounts")}
-                  </Dropdown.Item>
-                  {/* <Dropdown.Item
+                    <FontAwesomeIcon icon={faBell} />
+                  </button>
+                </li>
+              )}
+              <li>
+                <HeaderLanguageSwitcher lang={lang} switcher={switchLanguage} />
+              </li>
+              <li>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    className={Styles.pickupHeaderProfileActionBtn}
+                    id="dropdown-basic"
+                  >
+                    <img
+                      className={Styles.pickupHeaderProfileImg}
+                      src={
+                        API.viewImageUrl +
+                        userDetails?.profile_pic?.replace(/\.png$/, "")
+                      }
+                      alt="Profile"
+                    />
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      as={Link}
+                      to={`/${baseUrl}/setting`}
+                      className={Styles.pickupHeaderAccountTextsActions}
+                    >
+                      <FontAwesomeIcon
+                        className={Styles.pickupHeaderAccountsIcons}
+                        icon={faUser}
+                      />{" "}
+                      {t("accounts")}
+                    </Dropdown.Item>
+                    {/* <Dropdown.Item
                     className={Styles.pickupHeaderAccountTextsActions}
                   >
                     <FontAwesomeIcon
@@ -182,23 +183,21 @@ const CommonHeader = memo(({ userData }) => {
                     />{" "}
                     Settings
                   </Dropdown.Item> */}
-                  <Dropdown.Item
-                    className={Styles.pickupHeaderAccountTextsActions}
-                    onClick={handleLogout}
-                  >
-                    <FontAwesomeIcon
-                      className={Styles.pickupHeaderAccountsIcons}
-                      icon={faRightToBracket}
-                    />{" "}
-                    {t("sign_out")}
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-               
-              </Dropdown>
-            </li>
-
-            
-          </div>
+                    <Dropdown.Item
+                      className={Styles.pickupHeaderAccountTextsActions}
+                      onClick={handleLogout}
+                    >
+                      <FontAwesomeIcon
+                        className={Styles.pickupHeaderAccountsIcons}
+                        icon={faRightToBracket}
+                      />{" "}
+                      {t("sign_out")}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
+            </div>
+          </li>
         </ul>
       </nav>
       <EnterpriseNotificationModal

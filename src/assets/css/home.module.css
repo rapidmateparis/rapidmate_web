@@ -1327,7 +1327,7 @@ a {
   overflow-x: hidden;
 }
 
-.shiftRequestNewDeliveryCard{
+.shiftRequestNewDeliveryCard {
   padding: 20px 17px;
 }
 
@@ -1524,7 +1524,7 @@ a {
   font-weight: 500;
 }
 
-.enterpriseHomeMainSec{
+.enterpriseHomeMainSec {
   margin: 0px 50px;
 }
 
@@ -3538,7 +3538,7 @@ a {
 
 .enterprisesHomeActiveBookingCount {
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 700;
   margin: 0px;
 }
 
@@ -3604,6 +3604,8 @@ a {
 .enterpriseHomeLocationSelectCard {
   display: flex;
   align-items: center;
+  gap: 20px;
+  margin-top: 10px;
 }
 
 .enterpriseHomeHoursCircleIcon {
@@ -3721,6 +3723,7 @@ a {
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   margin-left: 20px;
+  margin-top: 45px;
 }
 
 .enterpriseHomeResturentCircle {
@@ -4043,7 +4046,7 @@ a {
 }
 
 .enterpriseNewScheduleImg {
-  width: 304px;
+  width: auto;
   height: 203px;
   margin-top: 65%;
 }
@@ -4080,7 +4083,7 @@ a {
   background: #717172;
 }
 
-.pickuporderTrackingMainScroll{
+.pickuporderTrackingMainScroll {
   height: 91vh;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -4930,16 +4933,16 @@ a {
   margin: 0px;
 }
 
-.enterpriseShiftRequestNewDeliveryVehicleImg{
+.enterpriseShiftRequestNewDeliveryVehicleImg {
   margin-left: auto;
 }
 
-.enterpriseShiftRequestNewDeliveryVehicleImg img{
+.enterpriseShiftRequestNewDeliveryVehicleImg img {
   height: 50px;
   width: auto;
 }
 
-.enterpriseShiftAssignDeliveryBtn{
+.enterpriseShiftAssignDeliveryBtn {
   color: var(--white-color);
   background-color: var(--secondary-color);
   padding: 7px 15px;
@@ -4947,7 +4950,7 @@ a {
   font-size: 14px;
 }
 
-.enterpriseShiftAssignDeliveryBtnCard{
+.enterpriseShiftAssignDeliveryBtnCard {
   margin-left: auto;
 }
 
@@ -6102,7 +6105,7 @@ a {
   border-color: yellow !important;
 }
 
-.enterpriseHomeCompanyLocMainCard{
+.enterpriseHomeCompanyLocMainCard {
   height: 91vh;
   padding: 0px 20px;
   overflow-y: scroll;
@@ -6129,20 +6132,370 @@ a {
   background: #717172;
 }
 
-.driverAnimation svg{
+.driverAnimation svg {
   height: 700px !important;
   margin-top: -150px;
 }
 
-.lookingDriverMainTitlesCard{
+.lookingDriverMainTitlesCard {
   text-align: center;
   margin-top: -150px;
 }
 
-.enterpriseSelectServicePrices{
+.enterpriseSelectServicePrices {
   color: var(--secondary-color);
   font-weight: 700;
   margin-bottom: 0px;
   font-size: 13px;
   margin-left: 5px;
+}
+
+.dashboardMainRowCard {
+  display: flex;
+}
+
+.dashboardMainContinueBtn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 25%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+}
+
+.enterpriseCompanyLogoNameCard {
+  display: flex;
+}
+
+.enterpriseScheduleShiftMainCard {
+  display: flex;
+}
+
+.commonPagenationMainCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0px 10px;
+  gap: 10px;
+}
+
+.commonPagenationMainCard span,
+.commonPagenationMainCard button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.commonPagenationMainCard span:hover,
+.commonPagenationMainCard button:hover {
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+}
+
+.commonPagenationMainCard .activePage {
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: bold;
+}
+
+/* Responsive Css Start Here  */
+
+@media (max-width: 768px) {
+  .loginMain {
+    padding: 20px;
+  }
+
+  .loginCard {
+    margin: 20px 0px;
+  }
+
+  .welcomeLogin {
+    font-size: 25px;
+  }
+
+  .loginInfo {
+    font-size: 14px;
+  }
+
+  .registerCard {
+    margin-top: 40px;
+  }
+
+  .chooseMainCard {
+    padding-right: 0px;
+  }
+
+  .chooseProfileCard {
+    margin: 20px 0px;
+  }
+
+  .categoryCards {
+    height: 90px;
+  }
+
+  .profileChooseBannerCard {
+    padding: 0px;
+    display: none;
+  }
+
+  .pickupSignupFormMainCard {
+    padding-right: 0px;
+  }
+
+  .chooseProfileHeading {
+    font-size: 20px;
+  }
+
+  .pickupSignupAcLoginText {
+    text-align: center;
+  }
+
+  .signupContinueBtnCenter {
+    text-align: center;
+  }
+
+  .CoustomWidth {
+    width: 50% !important;
+  }
+
+  .homePickupVehicleCardMain {
+    padding: 10px;
+    height: auto;
+  }
+
+  .dashboardMainRowCard {
+    flex-direction: column-reverse;
+  }
+
+  .dashboardMainContinueBtn {
+    position: unset;
+    width: 100%;
+  }
+
+  .max75 {
+    max-width: 100% !important;
+  }
+
+  .pickupHistorySearchCard {
+    width: 100%;
+  }
+
+  .pickupAccountSidebarNav {
+    margin-bottom: 15px;
+  }
+
+  .paymentMethodWalletCard {
+    height: 210px;
+  }
+
+  .updateProfileImg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pickupAccountHeaderUserName {
+    font-size: 18px;
+  }
+
+  .pickupAccountUserProfile {
+    width: 65px;
+    height: 65px;
+  }
+
+  .enterprisesHomeUserWelcomeText {
+    font-size: 18px;
+  }
+
+  .enterpriseHomeMainSec {
+    margin: 0px 20px;
+  }
+
+  .enterpriseHomeActiveBookingCard {
+    margin-bottom: 15px;
+  }
+
+  .enterpriseHomeActiveBookingText {
+    margin-bottom: 15px;
+  }
+
+  .enterpriseHomeCheckIcon {
+    height: 50px;
+    width: 50px;
+  }
+
+  .enterprisesHomeActiveBookingCount {
+    font-size: 30px;
+  }
+
+  .enterpriseHomeWithoutGraphCard {
+    flex-direction: column;
+  }
+
+  .enterpriseHomeLocationSelectCard {
+    align-items: unset;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0px;
+  }
+
+  .enterpriseHomeTotalHourseCard {
+    justify-content: space-between;
+  }
+
+  .enterpriseHomeHomeIcon {
+    height: 36px;
+    width: 46px;
+  }
+
+  .enterpriseHomeCompanyLocCard {
+    flex-direction: column;
+  }
+
+  .enterpriseHomeAddressCard {
+    align-items: flex-start;
+  }
+
+  .enterpriseHomeLocSpentCard {
+    margin-top: 10px;
+  }
+
+  .enterpriseHomeCalenderMainCard {
+    margin-top: 15px;
+    margin-left: 0px;
+  }
+
+  .enterpriseNewScheduleTitleCard {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .enterpriseNewScheduleText {
+    font-size: 25px;
+  }
+
+  .enterpriseNewScheduleImg {
+    margin-top: 20px;
+    height: 150px;
+  }
+
+  .enterpriseNewScheduletypeMainCard {
+    padding: 20px;
+    height: auto;
+  }
+
+  .enterpriseNewScheduleMainLinkCards {
+    margin-top: 20px;
+  }
+
+  .enterpriseOneTimePackageImg {
+    height: 100px;
+    margin-top: 20px;
+  }
+
+  .enterpriseselectServicesOptionCardMain {
+    align-items: unset;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .enterpriseSelectServiceNextBtnCard {
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .enterpriseScheduleShiftMainCard {
+    flex-direction: column;
+  }
+
+  .enterpriseCreateShiftAvailabilitySlotsMainCard {
+    margin-bottom: 15px;
+  }
+
+  .previewPageColGapping {
+    margin: 10px 10px;
+  }
+
+  .pickupHistoryHeaderCard {
+    flex-direction: column;
+    align-items: unset;
+    gap: 10px;
+  }
+
+  .pickupHistoryNoDataCard {
+    margin: 50px 0px 15px;
+  }
+
+  .pickupHistoryNoDataMainCard {
+    height: auto;
+  }
+
+  .pickupHistoryBorderBottomShow {
+    margin: 8px 0px;
+  }
+
+  .enterpriseShiftDetailCompanyDetailCard {
+    align-items: unset;
+    flex-direction: column;
+  }
+
+  .enterpriseShiftDetailHomeIconCard {
+    margin-bottom: 10px;
+  }
+
+  .enterpriseShiftDetailAddresCard {
+    align-items: flex-start;
+  }
+
+  .enterpriseShiftDetailShiftDurationCard {
+    align-items: normal;
+    flex-direction: column;
+  }
+
+  .enterpriseShiftDetailShiftDurationText {
+    margin: 0px;
+  }
+
+  .deliveryboyProfileTypeMainCard{
+    margin-bottom: 15px;
+  }
+
+  .addpickupDetailSidecardMain{
+    display: none;
+  }
+  
+  .pickupAddpickupDetailsMaincard{
+     padding: 20px;
+     height: auto;
+  }
+
+  .pickupOrderPreviewMainCard{
+    padding: 20px;
+    height: auto;
+  }
+  
+  .addPickupDetailsBtnCard{
+    margin: 20px 0px;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .addPickupDetailsCancelBTn{
+    padding: 10px 40px;
+  }
+
+  .addPickupDetailsNextBtn{
+    padding: 10px 30px;
+  }
+
+  .PickupOrderEuroTextBig{
+    font-size: 25px;
+  }
+  
+  .enterpriseSelectServicePickupDate{
+    margin-right: 10px;
+  }
+
+  .addPickupDetailsInputs{
+    margin-right: 10px;
+  }
 }

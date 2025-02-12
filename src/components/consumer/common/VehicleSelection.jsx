@@ -30,7 +30,7 @@ const VehicleSelection = ({
         </div>
         <div className="row">
           {vehicleTypeList.map((vehicle, index) => (
-            <div key={index} className="col-md-4">
+            <div key={index} className={`col-md-4 ${Styles.CoustomWidth}`}>
               <div
                 className={`${Styles.homePickupVehiclesCard} ${
                   selectedVehicle === vehicle.vehicle_type

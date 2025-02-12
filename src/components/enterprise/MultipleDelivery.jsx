@@ -34,11 +34,11 @@ function MultipleDelivery() {
 
   const user = useSelector((state) => state.auth.user);
   const [center, setCenter] = useState(null);
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [pickupLocation, setPickupLocation] = useState("");
-  const [pickupLoc,setPickupLoc]=useState("")
+  const [pickupLoc, setPickupLoc] = useState("");
   const [dropoffLocations, setDropoffLocations] = useState([""]);
   const [dropoffLoc, setDropoffLoc] = useState([""]);
   const [distances, setDistances] = useState([]);
@@ -51,23 +51,23 @@ function MultipleDelivery() {
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
 
-  const handlePickupChange = (location,locationDetails) => {
+  const handlePickupChange = (location, locationDetails) => {
     setPickupLocation(location);
-    setPickupLoc(locationDetails)
+    setPickupLoc(locationDetails);
   };
 
-  const handleDropoffChange = (index, location,locationDetails) => {
+  const handleDropoffChange = (index, location, locationDetails) => {
     setDropoffLocations((prev) => {
       const updatedLocations = [...prev];
       updatedLocations[index] = location;
       return updatedLocations;
     });
-   
+
     setDropoffLoc((prev) => {
       const updatedDropoff = [...prev];
       updatedDropoff[index] = locationDetails;
       return updatedDropoff;
-    })
+    });
   };
 
   const addDropoffRow = () => {
@@ -148,54 +148,49 @@ function MultipleDelivery() {
       );
     };
     if (distance) {
-      setSelectedVehicle(null)
-      setSelectedVehiclePrice(null)
-      setSelectedVehicleDetails(null)
-      getDistancePrice()
+      setSelectedVehicle(null);
+      setSelectedVehiclePrice(null);
+      setSelectedVehicleDetails(null);
+      getDistancePrice();
 
-      console.log("pickup location",dropoffLocations)
-      console.log("dropoff location",dropoffLoc)
+      console.log("pickup location", dropoffLocations);
+      console.log("dropoff location", dropoffLoc);
     }
   }, [distance]);
 
-   const handleContinue = () => {
-      if (
-        !pickupLoc ||
-        !dropoffLoc ||
-        !selectedVehicle
-      ) {
-        showErrorToast("Please fill all fields.");
-        return;
-      }
+  const handleContinue = () => {
+    if (!pickupLoc || !dropoffLoc || !selectedVehicle) {
+      showErrorToast("Please fill all fields.");
+      return;
+    }
 
-      if(date==""){
-        showErrorToast("Plz select pickup time.")
-        return 
-      }
+    if (date == "") {
+      showErrorToast("Plz select pickup time.");
+      return;
+    }
 
-  
-      const payload = {
-        pickupLoc,
-        dropoffLoc,
-        selectedVehicle,
-        distance,
-        duration,
-        selectedVehicleDetails,
-        selectedVehiclePrice,
-        deliveryType,
-        selectedBranch,
-      };
-  
-      navigate("/enterprise/add-dropoff-details", {
-        state: { order: payload },
-      });
+    const payload = {
+      pickupLoc,
+      dropoffLoc,
+      selectedVehicle,
+      distance,
+      duration,
+      selectedVehicleDetails,
+      selectedVehiclePrice,
+      deliveryType,
+      selectedBranch,
     };
-  
+
+    navigate("/enterprise/add-dropoff-details", {
+      state: { order: payload },
+    });
+  };
+
   return (
     <>
       <CommonHeader userData={user} />
       <section className={Styles.requestPickupSec}>
-        <div className={`row ${Styles.manageRow}`}>
+        <div className={Styles.dashboardMainRowCard}>
           <div className="col-md-3">
             <div className={Styles.requestPickupMaincard}>
               <p className={Styles.pickupRequestText}>{t("requestPickup")}</p>
@@ -216,8 +211,8 @@ function MultipleDelivery() {
                     className={Styles.pickupAddresAutocompleteCard}
                   >
                     <LocationInput
-                      onLocationChange={(location,locationDetails) =>
-                        handleDropoffChange(index, location,locationDetails)
+                      onLocationChange={(location, locationDetails) =>
+                        handleDropoffChange(index, location, locationDetails)
                       }
                       title={t("enter_dropoff_location")}
                       icon="faLocationCrosshairs"
@@ -253,19 +248,13 @@ function MultipleDelivery() {
               />
             </div>
 
-            <div
-              style={{
-                position: "fixed",
-                bottom: "0",
-                left: "0",
-                width: "25%",
-                boxShadow: "0 -2px 5px rgba(0,0,0,0.1)",
-                zIndex: "1000",
-              }}
-            >
-              <button onClick={handleContinue} className={Styles.goToOrderDetails}>
+            <div className={Styles.dashboardMainContinueBtn}>
+              <button
+                onClick={handleContinue}
+                className={Styles.goToOrderDetails}
+              >
                 <p className={Styles.pickuphomeContinueBt}>
-                 {t("continueToOrderDetails")}
+                  {t("continueToOrderDetails")}
                 </p>
                 <FontAwesomeIcon
                   className="pickupHome-rightArrow-icon"
