@@ -66,9 +66,11 @@ function LiveTracking() {
         (successResponse) => {
           setLoading(false);
           if (successResponse[0]._success) {
+            console.log("order status", successResponse[0]._response.order?.order_status )
             if (
-              successResponse[0]._response.order?.order_status == "COMPLETED"
+              successResponse[0]._response.order?.order_status =="COMPLETED"
             ) {
+              
               setMarkAsCompleted(true);
               setOrder(successResponse[0]._response.order);
               setDeliveryBoy(successResponse[0]._response.deliveryBoy);
@@ -108,12 +110,28 @@ function LiveTracking() {
         if (successResponse[0]._success) {
           let data = successResponse[0]._response.order;
           let orderLines = successResponse[0]._response.orderLines;
-          if (orderLines && orderLines.length > 0) {
-            setMultipleOrderLocation(orderLines);
+          if (
+            successResponse[0]._response.order?.order_status =="COMPLETED"
+          ) {
+            setMarkAsCompleted(true);
+            if (orderLines && orderLines.length > 0) {
+              setMultipleOrderLocation(orderLines);
+            }
+            setOrder(data);
+            setDeliveryBoy(successResponse[0]._response.deliveryBoy);
+            setVehicle(successResponse[0]._response.vehicle);
+
+          }else{
+            setMarkAsCompleted(false);
+            if (orderLines && orderLines.length > 0) {
+              setMultipleOrderLocation(orderLines);
+            }
+            setOrder(data);
+            setDeliveryBoy(successResponse[0]._response.deliveryBoy);
+            setVehicle(successResponse[0]._response.vehicle);
+              
           }
-          setOrder(data);
-          setDeliveryBoy(successResponse[0]._response.deliveryBoy);
-          setVehicle(successResponse[0]._response.vehicle);
+          
         }
       },
       (errorResponse) => {
