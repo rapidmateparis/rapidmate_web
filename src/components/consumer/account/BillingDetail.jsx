@@ -179,7 +179,7 @@ const BillingDetail = () => {
       <div className={`row ${Styles.manageRow}`}>
         <div className="col-md-12">
           <div
-            className={`${Styles.addPickupDetailsBtnCard} d-flex justify-content-end`}
+            className={`${Styles.addPickupDetailsBtnCard} d-flex justify-content-center`}
           >
             <button
               type="submit"

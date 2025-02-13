@@ -401,7 +401,206 @@ const SetNewSchedule = () => {
       <CommonHeader userData={user} />
       <section className={Styles.enterprisePreviewPageSec}>
         <div>
-          <div className={`row ${Styles.manageRow}`}>
+          <div className={Styles.enterpriseScheduleShiftMainCard}>
+            <div className="col-md-4">
+              <div className={Styles.enterpriseCreateShiftAvailabilityMainCard}>
+                <div className={Styles.enterpriseCreateShiftAvailabilityHeader}>
+                  <div>
+                    {/* <p
+                          className={
+                            Styles.enterpriseCreateShiftAvailabilityText
+                          }
+                        >
+                          Set availability of
+                        </p> */}
+                    <h4
+                      className={Styles.enterpriseCreateShiftAvailabilityDate}
+                    >
+                      Planning
+                    </h4>
+                  </div>
+                  <button className={Styles.enterprisePlannigDateCloseIcon}>
+                    <FontAwesomeIcon icon={faX} />
+                  </button>
+                </div>
+                <div
+                  className={
+                    Styles.enterpriseCreateShiftAvailabilitySlotsMainCard
+                  }
+                >
+                  <div
+                    className={
+                      Styles.enterpriseCreateShiftAvailabilityAddrowCard
+                    }
+                  >
+                    <div>
+                      <p className={Styles.createShiftAvailabilityText}>
+                        Start Date
+                      </p>
+                      <div
+                        className={
+                          Styles.enterpriseCreateShiftAvailabilityFromCard
+                        }
+                      >
+                        <input
+                          type="date"
+                          placeholder="Start"
+                          value={newEvent.start}
+                          onChange={(e) =>
+                            setNewEvent({
+                              ...newEvent,
+                              start: e.target.value,
+                            })
+                          }
+                          className={
+                            Styles.enterpriseCreateShiftAvailabilityFromInput
+                          }
+                          style={{ marginRight: "10px" }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <p className={Styles.createShiftAvailabilityText}>
+                        End Date
+                      </p>
+                      <div
+                        className={
+                          Styles.enterpriseCreateShiftAvailabilityFromCard
+                        }
+                      >
+                        <input
+                          type="date"
+                          placeholder="End"
+                          value={newEvent.end}
+                          onChange={(e) => handleGenerateRows(e)}
+                          style={{ marginRight: "10px" }}
+                          className={
+                            Styles.enterpriseCreateShiftAvailabilityFromInput
+                          }
+                        />
+                      </div>
+                    </div>
+                    {/* <button className={Styles.enterpriseCreateShiftAvailabilityPasteSlot}>
+                                    Paste time slots
+                                    </button>
+                                    <button className={Styles.enterpriseCreateShiftAvailabilityCopySlot}>
+                                    Copy time slots
+                                    </button> */}
+                  </div>
+                  <div
+                    className={Styles.enterpriseSelectServiceRepeatOrderCard}
+                  >
+                    <p
+                      className={Styles.enterpriseSelectServiceRepeatOrderText}
+                    >
+                      Apply same slots to all days
+                    </p>
+                    <Form>
+                      <Form.Check
+                        type="switch"
+                        id="repeat-switch"
+                        checked={repeatOrder}
+                        onChange={(e) => handleRepeatOrder(e.target.checked)}
+                        className={repeatOrder ? "repeat-switch" : ""}
+                      />
+                    </Form>
+                  </div>
+                  <div>
+                    {rows.map((row) => (
+                      <div className="mb-2" key={row.date}>
+                        <h4
+                          className={
+                            Styles.enterpriseCreateShiftAvailabilityText
+                          }
+                        >
+                          {moment(row.date).format("dddd, MMMM D, YYYY")}
+                        </h4>
+                        {row.slots.map((slot, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Form.Control
+                              type="time"
+                              value={slot.from}
+                              onChange={(e) =>
+                                handleSlotChange(
+                                  row.date,
+                                  index,
+                                  "from",
+                                  e.target.value
+                                )
+                              }
+                              style={{
+                                width: "150px",
+                                marginRight: "10px",
+                              }}
+                            />
+                            <Form.Control
+                              type="time"
+                              value={slot.to}
+                              onChange={(e) =>
+                                handleSlotChange(
+                                  row.date,
+                                  index,
+                                  "to",
+                                  e.target.value
+                                )
+                              }
+                              style={{
+                                width: "150px",
+                                marginRight: "10px",
+                              }}
+                            />
+                            {index !== row.slots.length - 1 && (
+                              <button
+                                className={
+                                  Styles.enterpriseCreateShiftAvailabilityDeleteBtn
+                                }
+                                onClick={() =>
+                                  handleDeleteSlot(row.date, index)
+                                }
+                                style={{ marginRight: "10px" }}
+                              >
+                                <FontAwesomeIcon icon={faTrash} />
+                              </button>
+                            )}
+                            {index === row.slots.length - 1 && (
+                              <button
+                                className={
+                                  Styles.enterpriseCreateShiftAvailabilityPlusBtn
+                                }
+                                onClick={() => handleAddSlot(row.date)}
+                                disabled={repeatOrder}
+                              >
+                                <FontAwesomeIcon icon={faPlus} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+
+                    {rows.length > 0 && (
+                      <div className="d-flex justify-content-end w-100 mt-2">
+                        <button
+                          onClick={handleAddEvent}
+                          className={
+                            Styles.enterpriseCreateShiftSetavailabilitySaveBtn
+                          }
+                        >
+                          Preview
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="col-md-3">
               <div className={Styles.previewPageColGapping}>
                 <h4 className={Styles.previewPageTitle}>Preview</h4>
@@ -484,7 +683,7 @@ const SetNewSchedule = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-5">
+                 <div className="col-md-5">
                   <div
                     className={Styles.enterpriseCreateShiftAvailabilityMainCard}
                   >

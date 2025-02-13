@@ -10,10 +10,6 @@ import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
 
 const libraries = ["places"];
-const mapContainerStyle = {
-  width: "100%",
-  height: "90.5vh",
-};
 
 const MapComponent = ({
   locations,
@@ -30,7 +26,20 @@ const MapComponent = ({
   const [directions, setDirections] = useState(null);
   const [markers, setMarkers] = useState([]);
   const geocoderCache = useRef({});
+
   const lastLocationsRef = useRef([]);
+
+  const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? "350px" : "100vh");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMapHeight(window.innerWidth < 768 ? "350px" : "100vh");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
 
   // Geocode locations and create markers with caching
   const createMarkers = useCallback(
@@ -151,7 +160,7 @@ const MapComponent = ({
 
   return (
     <GoogleMap
-      mapContainerStyle={mapContainerStyle}
+    mapContainerStyle={{ width: "100%", height: mapHeight }}
       zoom={10}
       center={center}
       options={{

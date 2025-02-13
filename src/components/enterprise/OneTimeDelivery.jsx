@@ -25,6 +25,7 @@ import OneLocation from "./common/OneLocation";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
 
+
 const libraries = ["places"];
 
 function OneTimeDelivery() {
@@ -57,9 +58,21 @@ function OneTimeDelivery() {
   const [time, setTime] = useState("");
   const [map, setMap] = useState(null);
   const [selectedServiceType, setSelectedServiceType] = useState("");
+  const [mapHeight, setMapHeight] = useState(
+    window.innerWidth < 768 ? "350px" : "100vh"
+  );
   const { enterpriseServiceType } = useSelector(
     (state) => state.commonData.commonData
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMapHeight(window.innerWidth < 768 ? "350px" : "100vh");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -122,7 +135,9 @@ function OneTimeDelivery() {
     };
     getDistancePrice();
   }, [duration]);
-  
+
+
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: MAPS_API_KEY,
     libraries,
@@ -204,7 +219,7 @@ function OneTimeDelivery() {
     <>
       <CommonHeader userData={user} />
       <section className={Styles.requestPickupSec}>
-        <div className={`row ${Styles.manageRow}`}>
+        <div className={Styles.dashboardMainRowCard}>
           <div className="col-md-3">
             <div className={Styles.requestPickupMaincard}>
               <p className={Styles.pickupRequestText}>Request a Pick up!</p>
@@ -230,16 +245,7 @@ function OneTimeDelivery() {
               />
             </div>
 
-            <div
-              style={{
-                position: "fixed",
-                bottom: "0",
-                left: "0",
-                width: "25%",
-                boxShadow: "0 -2px 5px rgba(0,0,0,0.1)",
-                zIndex: "1000",
-              }}
-            >
+            <div className={Styles.dashboardMainContinueBtn}>
               <button
                 onClick={handleContinue}
                 className={Styles.goToOrderDetails}
@@ -285,7 +291,7 @@ function OneTimeDelivery() {
             <GoogleMap
               center={center}
               zoom={14}
-              mapContainerStyle={{ width: "100%", height: "90.5vh" }}
+              mapContainerStyle={{ width: "100%", height: mapHeight }}
               options={{
                 zoomControl: false,
                 streetViewControl: false,
@@ -327,10 +333,10 @@ function OneTimeDelivery() {
                   options={{
                     polylineOptions: {
                       strokeColor: "#FF0058", // Blue color
-                      strokeOpacity: 0.9,    // 90% opacity
-                      strokeWeight: 3,       // 5px thick line
+                      strokeOpacity: 0.9, // 90% opacity
+                      strokeWeight: 3, // 5px thick line
                     },
-                    suppressMarkers: true,   // Use your custom markers
+                    suppressMarkers: true, // Use your custom markers
                   }}
                 />
               )}
