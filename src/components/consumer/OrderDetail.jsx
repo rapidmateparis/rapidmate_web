@@ -68,7 +68,6 @@ const EnterpriseOrder = ({
       (successResponse) => {
         setLoading(false);
         if (successResponse[0]._success) {
-          console.log("orser", successResponse[0]._response);
           let orderLines = successResponse[0]._response.orderLines;
           if (orderLines && orderLines.length > 0) {
             setMultipleOrderLocation(orderLines);
@@ -243,7 +242,7 @@ const EnterpriseOrder = ({
                     />
                     <div>
                       <p className={Styles.pickupDeliveryDetailDropInfo}>
-                        {t("dropoff_information")}
+                        {t("dropoff_information")} {index + 1}
                       </p>
                       <h4 className={Styles.pickupDeliverDetailCompanyName}>
                         {branch?.drop_company_name}
@@ -359,7 +358,7 @@ const EnterpriseOrder = ({
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      {t("travelled")} {orders?.distance} {t("km")}
+                      {t("travelled")} {orders?.distance?.toFixed(2)} {t("km")}
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
@@ -784,7 +783,7 @@ const ConsumerOrder = ({ user, order, navigate, tabId, t }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      {t("travelled")} {orders?.distance} {t("km")}
+                      {t("travelled")} {orders?.distance?.toFixed(2)} {t("km")}
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>

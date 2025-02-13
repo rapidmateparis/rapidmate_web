@@ -14,6 +14,7 @@ import SidebarImg from "../../../assets/images/Pickup-Order-preview-Banner.png";
 import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import getImage from "../../consumer/common/GetImage";
 import { getFileName } from "../../../utils/Constants";
+import { useTranslation } from "react-i18next";
 
 const OrderViewComponents = ({
   navigate,
@@ -24,6 +25,7 @@ const OrderViewComponents = ({
   isAddressAdd,
   isMultiple,
 }) => {
+  const {t}=useTranslation()
   const [imageView, setImageView] = useState(null);
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -55,10 +57,9 @@ const OrderViewComponents = ({
             <div className="col-md-8">
               <div className={Styles.pickupOrderPreviewMainCard}>
                 <div>
-                  <h2 className={Styles.addPickupDetailsText}>Order preview</h2>
+                  <h2 className={Styles.addPickupDetailsText}>{t("order_preview")}</h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    Let’s review your order details. if it looks ok please
-                    proceed to payment
+                    {t("review_order_details")}
                   </p>
                 </div>
 
@@ -108,7 +109,7 @@ const OrderViewComponents = ({
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Vehicle details
+                    {t("vehicle_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -132,7 +133,7 @@ const OrderViewComponents = ({
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Pickup details
+                    {t("pickup_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -192,7 +193,7 @@ const OrderViewComponents = ({
                       <p
                         className={Styles.pickupOrderPreviewVehicleDetailsText}
                       >
-                        Dropoff details {index + 1}
+                       {t("dropoff_details")} {index + 1}
                       </p>
                       <div
                         className={Styles.pickupOrderPreviewVehicleDetailsCard}
@@ -263,7 +264,7 @@ const OrderViewComponents = ({
                 ) : (
                   <div className={Styles.pickupOrderPreviewVehicleCard}>
                     <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                      Dropoff details
+                      {t("dropoff_details")}
                     </p>
                     <div
                       className={Styles.pickupOrderPreviewVehicleDetailsCard}
@@ -323,7 +324,7 @@ const OrderViewComponents = ({
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Estimated cost
+                    {t("estimated_cost")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -359,7 +360,7 @@ const OrderViewComponents = ({
                     <Form.Check
                       type="checkbox"
                       id={`default-checkbox`}
-                      label={"Save these addresses for later"}
+                      label={t("save_addresses")}
                       defaultChecked={isAddressAdd}
                       className={`${Styles.saveAddresslaterCheckBox}`}
                     />
@@ -372,7 +373,7 @@ const OrderViewComponents = ({
                     onClick={() => navigate(-1)}
                     style={{ color: "#000", cursor: "pointer" }}
                   >
-                    Back
+                    {t("back")}
                   </Link>
 
                   <div
@@ -380,7 +381,7 @@ const OrderViewComponents = ({
                     className={Styles.addPickupDetailsNextBtn}
                     style={{ cursor: "pointer" }}
                   >
-                    Proceed to payment
+                    {t("proceed_to_payment")}
                   </div>
                 </div>
               </div>

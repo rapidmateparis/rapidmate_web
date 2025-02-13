@@ -160,11 +160,10 @@ const SelectBranch = () => {
                         </div>
                         <div>
                           <h4 className={Styles.pickupHistoryNoDatatext}>
-                            No company location to show
+                           {t("no_company_location")}
                           </h4>
                           <p className={Styles.pickupHistoryNodataSubText}>
-                            If there is any company location, it will be shown
-                            here..
+                            {t("company_location_info")}
                           </p>
                           <div className="text-center">
                           <Link

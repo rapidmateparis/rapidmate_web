@@ -13,7 +13,7 @@ export const PORT = {
   uat: "3000",
   prod: "3008",
 };
-export const MAPS_API_KEY ="AIzaSyD2HroBo6MwnvdXqF6v";
+export const MAPS_API_KEY ="AIzaSyD2HroBo6Mwnvd";
 export const BASE_URL = "https://api.rapidmate.fr/api/";
 
 
@@ -91,7 +91,10 @@ export const API = {
   notificationCount:BASE_URL + 'notification/count/',
   downloadInvoice: BASE_URL + 'admin/invoice/view/',
   deliveryBoyBillingAddressUpdate:BASE_URL + 'deliveryboy/billing/address/update/',
-  deliveryBoyBillingAddressGet: BASE_URL + 'deliveryboy/billing/address/get/'
+  deliveryBoyBillingAddressGet: BASE_URL + 'deliveryboy/billing/address/get/',
+  vechicleTaxList: BASE_URL + 'vehicletypes/tax/list',
+  changeCreateShiftStatus:BASE_URL + 'order/update/shift/status',
+  deliveryBoyOrderSlots:BASE_URL + 'order/deliveryboy/myslots/'
 };
 
 export const formatDate = (dateString) => {

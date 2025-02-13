@@ -32,8 +32,10 @@ import DaysSelect from "./common/DaysSelect";
 import TextInput from "../../common/TextInput";
 import { localToUTC } from "../../utils/Constants";
 import { getDynamicDropoffSchema } from "../../utils/Validation";
+import { useTranslation } from "react-i18next";
 const EnterpriseAdd = () => {
   const location = useLocation();
+  const {t}=useTranslation()
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const { order } = location.state || {};
@@ -199,14 +201,13 @@ const EnterpriseAdd = () => {
               <div className={Styles.pickupAddpickupDetailsMaincard}>
                 <div>
                   <h2 className={Styles.addPickupDetailsText}>
-                    Add pickup details
+                    {t("add_pickup_details")}
                   </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    You have entered pickup and drop-off addresses, time of
-                    pickup, and vehicle type
+                    {t("pickup_dropoff_entered")}
                   </p>
                   <p className={Styles.pickupPersonalDetails}>
-                    Personal details
+                    {t("personal_details")}
                   </p>
                 </div>
 
@@ -217,12 +218,12 @@ const EnterpriseAdd = () => {
                         htmlFor="company"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Company : <span className={Styles.textColor}>*</span>
+                        {t("company")} : <span className={Styles.textColor}>*</span>
                       </label>
                       <TextInput
                         control={control}
                         name="company"
-                        placeholder="Company"
+                        placeholder={t("company")}
                         error={errors.company}
                         defaultValue={""}
                       />
@@ -234,12 +235,12 @@ const EnterpriseAdd = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Email: <span className={Styles.textColor}>*</span>
+                        {t("email")}: <span className={Styles.textColor}>*</span>
                       </label>
                       <TextInput
                         control={control}
                         name="email"
-                        placeholder="Email"
+                        placeholder={t("email")}
                         error={errors.email}
                         defaultValue={""}
                       />
@@ -251,7 +252,7 @@ const EnterpriseAdd = () => {
                         htmlFor="phoneNumber"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Phone Number:{" "}
+                        {t("phone_number")}:{" "}
                         <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
@@ -309,7 +310,7 @@ const EnterpriseAdd = () => {
                           Styles.enterpriseSelectServiceRepeatOrderText
                         }
                       >
-                        Is instant Date
+                        {t("is_instant_date")}
                       </p>
 
                       <Form.Check
@@ -330,7 +331,7 @@ const EnterpriseAdd = () => {
                             htmlFor="pickupDate"
                             className={Styles.enterpriseSelectServicePickupDate}
                           >
-                            Pickup Date:{" "}
+                            {t("pickup_date")}{" "}
                           </label>
                           <Controller
                             name="pickupDate"
@@ -360,7 +361,7 @@ const EnterpriseAdd = () => {
                             htmlFor="pickupTime"
                             className={Styles.addPickupDetailFormLabels}
                           >
-                            Pickup Time:
+                            {t("pickup_time")}:
                           </label>
 
                           <input
@@ -386,7 +387,7 @@ const EnterpriseAdd = () => {
                       </div>
                     </>
                   ) : (
-                    <div>Pickup date: {localToUTC()}</div>
+                    <div>{t("pickup_date")}: {localToUTC()}</div>
                   )}
                 </div>
                 <div
@@ -815,13 +816,13 @@ const EnterpriseAdd = () => {
                     >
                          <div>
                           <h2 className={Styles.addPickupDetailsText}>
-                            Dropoff information {index + 1}
+                            {t("dropoff_information")} {index + 1}
                           </h2>
                           <p className={Styles.addPickupDetailsSubtext}>
-                            You have entered drop-off details
+                            {t("dropoff_details_entered")}
                           </p>
                         </div>
-                        <p className={Styles.pickupPersonalDetails}>Package details</p>
+                        <p className={Styles.pickupPersonalDetails}>{t("package_details")}</p>
 
                         <div className={`row ${Styles.manageRow}`}>
                           <div className="col-md-12">
@@ -829,13 +830,13 @@ const EnterpriseAdd = () => {
                               htmlFor="file"
                               className={Styles.addPickupDetailFormLabels}
                             >
-                              Package photo <span className={Styles.textColor}>*</span>
+                              {t("package_photo")} <span className={Styles.textColor}>*</span>
                             </label>
 
                             { imagePreview[index] ? (
                               // Show only the package preview if an image has been uploaded
                               <div style={{ position: "relative" }} className="mt-2">
-                                <p>Image Preview:</p>
+                                <p>{t("image_preview")}:</p>
                                 <img
                                   src={imagePreview[index]}
                                   alt="Preview"
@@ -876,7 +877,7 @@ const EnterpriseAdd = () => {
                               <div className={Styles.addPickupUploadPhoto}>
                                 <FontAwesomeIcon icon={faPaperclip} />
                                 <p className={Styles.addPickupDragText}>
-                                  Drag or click to attach a photo
+                                  {t("attach_photo")}
                                 </p>
                                 <Controller
                                   name={`file-${index}`}
@@ -923,13 +924,13 @@ const EnterpriseAdd = () => {
                                 htmlFor={`packageId-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Package ID <span className={Styles.textColor}>*</span>
+                                {t("package_id")} <span className={Styles.textColor}>*</span>
                               </label>
 
                               <TextInput
                                 control={control}
                                 name={`packageId-${index}`}
-                                placeholder="Package Id ..."
+                                placeholder={t("package_id")}
                                 error={errors[`packageId-${index}`]}
                                 defaultValue=""
                               />
@@ -941,12 +942,12 @@ const EnterpriseAdd = () => {
                                 htmlFor={`pickupnote-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Pickup notes
+                                {t("pickup_notes")}
                               </label>
                               <TextInput
                                 control={control}
                                 name={`pickupnote-${index}`}
-                                placeholder="type here ..."
+                                placeholder={t("type_here")}
                                 error={errors[`pickupnote-${index}`]}
                                 defaultValue=""
                               />
@@ -964,13 +965,13 @@ const EnterpriseAdd = () => {
                                 htmlFor={`dname-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                First name:{" "}
+                                {t("first_name")}:{" "}
                                 <span className={Styles.textColor}>*</span>
                               </label>
                               <TextInput
                                 control={control}
                                 name={`dname-${index}`}
-                                placeholder="First name"
+                                placeholder={t("first_name")}
                                 error={errors[`dname-${index}`]}
                                 defaultValue=""
                               />
@@ -986,7 +987,7 @@ const EnterpriseAdd = () => {
                                 htmlFor={`dlastname-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Last name:{" "}
+                                {t("last_name")}:{" "}
                                 <span className={Styles.textColor}>*</span>
                               </label>
                               <TextInput
@@ -1008,12 +1009,12 @@ const EnterpriseAdd = () => {
                                 htmlFor={`dcompany-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Company:
+                                {t("company")}:
                               </label>
                               <TextInput
                                 control={control}
                                 name={`dcompany-${index}`}
-                                placeholder="Company name"
+                                placeholder={t("company")}
                                 error={errors[`dcompany-${index}`]}
                                 defaultValue=""
                               />
@@ -1029,13 +1030,13 @@ const EnterpriseAdd = () => {
                                 htmlFor={`demail-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Email:{" "}
+                                {t("email")}:{" "}
                                 <span className={Styles.textColor}>*</span>
                               </label>
                               <TextInput
                                 control={control}
                                 name={`demail-${index}`}
-                                placeholder="Email"
+                                placeholder={t("email")}
                                 error={errors[`demail-${index}`]}
                                 defaultValue=""
                               />
@@ -1051,7 +1052,7 @@ const EnterpriseAdd = () => {
                                 htmlFor={`dphoneNumber-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Phone Number:{" "}
+                                {t("phone_number")}:{" "}
                                 <span className={Styles.textColor}>*</span>
                               </label>
                               <Controller
@@ -1105,12 +1106,12 @@ const EnterpriseAdd = () => {
                                 htmlFor={`dropoffnote-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                Dropoff notes:
+                                {t("dropoff_notes")}:
                               </label>
                               <TextInput
                                 control={control}
                                 name={`dropoffnote-${index}`}
-                                placeholder="Type here ..."
+                                placeholder={t("type_here")}
                                 error={errors[`dropoffnote-${index}`]}
                                 defaultValue=""
                               />
@@ -1129,14 +1130,14 @@ const EnterpriseAdd = () => {
                         style={{ color: "#000" }}
                         to="/consumer/dashboard"
                       >
-                        Back
+                        {t("back")}
                       </Link>
                       <button
                         type="submit"
                         onClick={handleSubmit(onSubmit)}
                         className={Styles.addPickupDetailsNextBtn}
                       >
-                        Next
+                        {t("next")}
                       </button>
                     </div>
                   </div>

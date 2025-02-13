@@ -24,6 +24,7 @@ import { showErrorToast } from "../../utils/Toastify";
 import OneLocation from "./common/OneLocation";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
+import { useTranslation } from "react-i18next";
 
 
 const libraries = ["places"];
@@ -31,6 +32,7 @@ const libraries = ["places"];
 function OneTimeDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
+  const {t}=useTranslation()
   const { deliveryType, selectedBranch } = location.state;
   const user = useSelector((state) => state.auth.user);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -222,11 +224,12 @@ function OneTimeDelivery() {
         <div className={Styles.dashboardMainRowCard}>
           <div className="col-md-3">
             <div className={Styles.requestPickupMaincard}>
-              <p className={Styles.pickupRequestText}>Request a Pick up!</p>
+              <p className={Styles.pickupRequestText}>{t("requestPickup")}</p>
               <OneLocation
                 setPickupLocation={setPickupLocation}
                 setDropoffLocation={setDropoffLocation}
                 calculateRoute={calculateRoute}
+                t={t}
               />
 
               <ServiceTypeSelection
@@ -242,6 +245,7 @@ function OneTimeDelivery() {
                 selectedServiceType={selectedServiceType}
                 setSelectedServiceType={setSelectedServiceType}
                 enterpriseServiceType={enterpriseServiceType}
+                t={t}
               />
             </div>
 
@@ -251,7 +255,7 @@ function OneTimeDelivery() {
                 className={Styles.goToOrderDetails}
               >
                 <p className={Styles.pickuphomeContinueBt}>
-                  Continue to order details
+                {t("continueToOrderDetails")}
                 </p>
                 <FontAwesomeIcon
                   className="pickupHome-rightArrow-icon"

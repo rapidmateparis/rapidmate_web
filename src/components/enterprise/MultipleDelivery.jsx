@@ -62,6 +62,135 @@ function MultipleDelivery() {
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
+  const [selectedServiceType, setSelectedServiceType] = useState("");
+  const { enterpriseServiceType } = useSelector((state) => state.commonData.commonData);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: MAPS_API_KEY,
+    libraries,
+  });
+
+  const [directions, setDirections] = useState(null);
+  const [markers, setMarkers] = useState([]);
+  const geocoderCache = useRef({});
+  const lastLocationsRef = useRef([]);
+
+   // Geocode locations and create markers with caching
+   const createMarkers = useCallback(
+    async (locations) => {
+      if (locations.length === markers.length) return; // Prevent redundant API calls
+
+      const geocoder = new google.maps.Geocoder();
+      const newMarkers = await Promise.all(
+        locations.map((location) => {
+          if (geocoderCache.current[location]) {
+            return Promise.resolve(geocoderCache.current[location]);
+          }
+
+          return new Promise((resolve) => {
+            geocoder.geocode({ address: location }, (results, status) => {
+              if (status === "OK" && results[0]) {
+                const markerData = {
+                  position: results[0].geometry.location,
+                  title: location,
+                };
+                geocoderCache.current[location] = markerData;
+                resolve(markerData);
+              } else {
+                resolve(null);
+              }
+            });
+          });
+        })
+      );
+
+      setMarkers(newMarkers.filter(Boolean)); // Remove invalid markers
+    },
+    [markers]
+  );
+
+  // Calculate route only when locations change
+  const calculateRoute = useCallback(async (locations) => {
+    if (locations.length < 2) return;
+    if (JSON.stringify(lastLocationsRef.current) === JSON.stringify(locations))
+      return; // Prevent duplicate requests
+
+    lastLocationsRef.current = locations; // Update ref to track last requested locations
+    console.log("Calculating route...");
+
+    const directionsService = new google.maps.DirectionsService();
+    const waypoints = locations.slice(1, -1).map((loc) => ({ location: loc }));
+
+    try {
+      const results = await directionsService.route({
+        origin: locations[0],
+        destination: locations[locations.length - 1],
+        waypoints,
+        travelMode: google.maps.TravelMode.DRIVING,
+      });
+
+      setDirections(results);
+
+      // Calculate distances and durations
+      const distancesArray = results.routes[0].legs.map((leg) => ({
+        start: leg.start_address,
+        end: leg.end_address,
+        distance: leg.distance.text,
+        duration: leg.duration.text,
+      }));
+      setDistances(distancesArray);
+
+      // Calculate total distance
+      const totalDistance = results.routes[0].legs.reduce((sum, leg) => {
+        return sum + parseFloat(leg.distance.text.replace(" km", ""));
+      }, 0);
+      setDistance(totalDistance.toFixed(2));
+
+      // Calculate total duration
+      const totalDurationMinutes = results.routes[0].legs.reduce(
+        (sum, leg) => sum + parseDurationToMinutes(leg.duration.text),
+        0
+      );
+      setDuration(formatDuration(totalDurationMinutes));
+    } catch (error) {
+      console.error("Error calculating route:", error);
+    }
+  }, []);
+
+  // Parse duration text into minutes
+  const parseDurationToMinutes = (durationText) => {
+    const timeParts = durationText.match(/(\d+)\s*(hour|minute|mins|min)/gi);
+    let totalMinutes = 0;
+
+    if (timeParts) {
+      timeParts.forEach((part) => {
+        if (part.includes("hour")) {
+          totalMinutes += parseInt(part) * 60;
+        } else {
+          totalMinutes += parseInt(part);
+        }
+      });
+    }
+    return totalMinutes;
+  };
+
+  // Format total duration into a readable format
+  const formatDuration = (totalMinutes) => {
+    if (totalMinutes < 60) return `${totalMinutes} min`;
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return minutes === 0 ? `${hours} hours` : `${hours} hours ${minutes} mins`;
+  };
+
+  const combinedLocations = [pickupLocation, ...dropoffLocations].filter(
+    Boolean
+  );
+  // Only execute when `locations` change
+  useEffect(() => {
+    if (combinedLocations.length > 0) {
+      createMarkers(combinedLocations);
+      calculateRoute(combinedLocations);
+    }
+  }, [combinedLocations, createMarkers, calculateRoute]);
 
   const handlePickupChange = (location, locationDetails) => {
     setPickupLocation(location);
@@ -169,15 +298,12 @@ function MultipleDelivery() {
   }, [distance]);
 
   const handleContinue = () => {
-    if (!pickupLoc || !dropoffLoc || !selectedVehicle) {
+    if (!pickupLoc || !dropoffLoc || !selectedVehicle || !selectedServiceType) {
       showErrorToast("Please fill all fields.");
       return;
     }
 
-    if (date == "") {
-      showErrorToast("Plz select pickup time.");
-      return;
-    }
+   
 
     const payload = {
       pickupLoc,
@@ -189,13 +315,15 @@ function MultipleDelivery() {
       selectedVehiclePrice,
       deliveryType,
       selectedBranch,
+      distances,
+      selectedServiceType,
     };
 
     navigate("/enterprise/add-dropoff-details", {
       state: { order: payload },
     });
   };
-
+  if (!isLoaded) return <div>Loading map...</div>;
   return (
     <>
       <CommonHeader userData={user} />
@@ -257,6 +385,7 @@ function MultipleDelivery() {
                 selectedServiceType={selectedServiceType}
                 setSelectedServiceType={setSelectedServiceType}
                 enterpriseServiceType={enterpriseServiceType}
+                t={t}
               />
              
             </div>

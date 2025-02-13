@@ -58,7 +58,9 @@ const PaymentPage = ({
   setTotalAmount,
   paymentAmount,
   setPaymentAmount,
-  t
+  t,
+  getTaxAmount,
+  vechicleTax
 }) => {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
@@ -525,7 +527,7 @@ const PaymentPage = ({
     order?.addDestinationLocation?.country,
     order?.addDestinationLocation?.postal_code
   );
-
+  
   return (
     <>
       <CommonHeader userData={user} />
@@ -635,27 +637,27 @@ const PaymentPage = ({
                           {t("estimated_cost")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
-                            € {paymentAmount || 0.0}
+                            € {totalAmount || 0.0}
                           </p>
                         </div>
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            {t("tax")} 20%
+                            {t("tax")} {vechicleTax}%
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
-                            € {paymentAmount || 0.0}
+                            € {getTaxAmount() || 0.0}
                           </p>
                         </div>
 
-                        <div className={Styles.paymentTotalAmountCard}>
+                        {/* <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
                             {t("discount")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount || 0.0}
                           </p>
-                        </div>
+                        </div> */}
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
@@ -803,21 +805,34 @@ function EnterprisePaymentView() {
   const { order } = useLocation().state || {};
   const [totalAmount, setTotalAmount] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
-  const navigate = useNavigate();
+  const [vechicleTax, setVechicleTax] = useState(20);
 
+  const navigate = useNavigate();
+  const getTaxAmount = () => {
+    const amount =
+      typeof order.selectedVehiclePrice === "number"
+      ? order.selectedVehiclePrice.toFixed(2)
+      : parseFloat(order.selectedVehiclePrice).toFixed(2);
+    const taxAmount = (parseFloat(amount) * parseFloat(vechicleTax)) / 100;
+    return taxAmount ? taxAmount.toFixed(2) : 0;
+  };
   useEffect(() => {
     if (order?.selectedVehiclePrice) {
       const calculatedTotalAmount =
         typeof order.selectedVehiclePrice === "number"
           ? order.selectedVehiclePrice.toFixed(2)
           : parseFloat(order.selectedVehiclePrice).toFixed(2);
-
-      setTotalAmount(calculatedTotalAmount);
-      setPaymentAmount(calculatedTotalAmount);
+          const taxAmount = (parseFloat(calculatedTotalAmount) * parseFloat(vechicleTax)) / 100;
+          const total_Amount = parseFloat(calculatedTotalAmount) + taxAmount;
+          if(total_Amount){
+            setTotalAmount(total_Amount);
+            setPaymentAmount(total_Amount);
+          }
+      
     }
     setTimeout(() => {
       if (!order) {
-        navigate("/consumer/dashboard");
+        navigate("/enterprise/dashboard");
       }
     }, 2000);
   }, [order]);
@@ -877,6 +892,8 @@ function EnterprisePaymentView() {
             paymentAmount={paymentAmount}
             setPaymentAmount={setPaymentAmount}
             t={t}
+            getTaxAmount={getTaxAmount}
+            vechicleTax={vechicleTax}
           />
         </Elements>
       ) : (
