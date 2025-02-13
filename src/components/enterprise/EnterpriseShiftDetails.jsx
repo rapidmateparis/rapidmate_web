@@ -26,8 +26,10 @@ import {
 import { buildAddress, formatDate } from "../../utils/Constants";
 import moment from "moment";
 import DeliveryboyAssignedModal from "./common/DeliveryboyAssignedModal";
+import { useTranslation } from "react-i18next";
 
 const EnterpriseShiftDetails = () => {
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
