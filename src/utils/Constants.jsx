@@ -13,7 +13,7 @@ export const PORT = {
   uat: "3000",
   prod: "3008",
 };
-export const MAPS_API_KEY ="AIzaSyD2HroBo6MwnvdXqF6vziO0yaI";
+export const MAPS_API_KEY ="AIzaSyD2HroBo6MwnvdXqF6v";
 export const BASE_URL = "https://api.rapidmate.fr/api/";
 
 

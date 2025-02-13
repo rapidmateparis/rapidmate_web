@@ -221,6 +221,14 @@
   "payment_successful_message": "Your payment was successful, let’s look for a delivery boy now...",
   "create_new_schedule": "Let’s create a new schedule for one time or for multiple hours.",
   "select_schedule_type": "Select the type of schedule",
+  "driver_assigned": "A driver is assigned to you",
+  "pickup_in_progress": "Pickup in Progress",
+  "order_picked_up": "Your order has been picked up for delivery",
+  "order_arriving_soon": "Order arriving soon!!",
+  "select_company_location": "Select company location",
+  "one_time_delivery": "One time delivery",
+  "multiple_deliveries": "Multiple deliveries",
+  "create_shift": "Create shift",
 
 
   "StartAnotherSection": "----------------- Website Pages Start Here ----------------------------",

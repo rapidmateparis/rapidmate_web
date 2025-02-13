@@ -221,6 +221,14 @@
   "payment_successful_message": "Votre paiement a été effectué avec succès, recherchons maintenant un livreur...",
   "create_new_schedule": "Créons un nouveau planning pour une seule fois ou pour plusieurs heures.",
   "select_schedule_type": "Sélectionnez le type de planning",
+  "driver_assigned": "Un chauffeur vous a été attribué",
+  "pickup_in_progress": "Ramassage en cours",
+  "order_picked_up": "Votre commande a été ramassée pour la livraison",
+  "order_arriving_soon": "Commande en approche !!",
+  "select_company_location": "Sélectionnez l'emplacement de l'entreprise",
+  "one_time_delivery": "Livraison unique",
+  "multiple_deliveries": "Livraisons multiples",
+  "create_shift": "Créer un shift",
 
 
 

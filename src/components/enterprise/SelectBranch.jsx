@@ -11,10 +11,12 @@ import { buildAddress } from "../../utils/Constants";
 import { getEnterpriseBranch } from "../../data_manager/dataManage";
 import { showErrorToast } from "../../utils/Toastify";
 import NoDataImage from "../../assets/images/NoOrder.png";
+import { useTranslation } from "react-i18next";
 
 const SelectBranch = () => {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
+  const {t}=useTranslation()
   const serviceType = location.state.servicetype;
   const navigate = useNavigate();
   const [enterpriseBranch, setEnterpriseBranches] = useState(null);
@@ -91,7 +93,7 @@ const SelectBranch = () => {
               <div className={Styles.enterpriseNewScheduleTitleCard}>
                 <div>
                   <h4 className={Styles.enterpriseNewScheduleText}>
-                    {serviceType?.delivery_type}
+                    {t(serviceType?.delivery_type?.toLowerCase().replace(/\s+/g, '_'))}
                   </h4>
                 </div>
                 <div>
@@ -107,7 +109,7 @@ const SelectBranch = () => {
             <div className="col-md-8">
               <div className={Styles.enterpriseNewScheduletypeMainCard}>
                 {enterpriseBranch && enterpriseBranch.length > 0 &&  <h4 className={Styles.enterpriseNewScheduleSelectType}>
-                  Select company location
+                  {t("select_company_location")}
                 </h4>}
                
                 <div className={Styles.enterpriseOneTimeCompanyLocMainCard}>
@@ -169,7 +171,7 @@ const SelectBranch = () => {
                           to="/enterprise/setting/manage-company-location"
                             className={`${Styles.addPickupDetailsNextBtn}`}
                           >
-                            Add
+                            {t("add")}
                           </Link>
                           </div>
                          

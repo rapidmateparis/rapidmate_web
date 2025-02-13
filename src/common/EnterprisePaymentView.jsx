@@ -155,17 +155,6 @@ const PaymentPage = ({
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (order?.deliveryType.id == 2) {
-      const pickupLocationParam = getDropoffLocation(order?.pickupLoc,true);
-      
-
-      console.log("orderCustomerDetail",getFileName(orderCustomerDetails,"file",0)[0])
-      // console.log("branch", await formatDropoffLocations(order?.dropoffLoc))
-      // showErrorToast(
-      //   "Multiple deliveries not available service for this moment."
-      // );
-      return;
-    }
     setLoading(true);
     if (!stripe || !elements) return;
     

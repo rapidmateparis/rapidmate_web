@@ -905,7 +905,6 @@ export const getViewEnterpriseOrderDetail = (
   successCallback,
   errorCallback,
 ) => {
-  console.log('url', API.viewEnterpriseOrderDetail + param);
   axiosCall(
     API.viewEnterpriseOrderDetail + param,
     HTTPMethod.GET,

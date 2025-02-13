@@ -17,13 +17,18 @@ import { ToastContainer } from "react-toastify";
 import NoDataImage from "../../assets/images/NoOrder.png";
 import Package from "../../assets/images/Package.png";
 import Calender from "../../assets/images/Calender-withBg.png";
-import { buildAddress, formatDate, localToUTC, titleFormat } from "../../utils/Constants";
+import {
+  buildAddress,
+  formatDate,
+  localToUTC,
+  titleFormat,
+} from "../../utils/Constants";
 import moment from "moment";
 import EnterpriseOrderFilterModal from "./common/EnterpriseOrderFilterModal";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "react-bootstrap";
 
-const OneTime = memo(({ orders, locations, vehicles, navigation,t }) => {
+const OneTime = memo(({ orders, locations, vehicles, navigation, t }) => {
   const getLocationAddress = (locationId) => {
     let result = locations?.filter((location) => location.id == locationId);
     return buildAddress(
@@ -43,7 +48,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation,t }) => {
     navigation("/enterprise/order-detail", {
       state: {
         order: order_number,
-        tabId:1
+        tabId: 1,
       },
     });
   };
@@ -98,7 +103,8 @@ const OneTime = memo(({ orders, locations, vehicles, navigation,t }) => {
                           icon={faLocationCrosshairs}
                         />
                         <p className={Styles.pickupHistoryFromLoc}>
-                          {t("to")}: <b>{getLocationAddress(item.dropoff_location)}</b>
+                          {t("to")}:{" "}
+                          <b>{getLocationAddress(item.dropoff_location)}</b>
                         </p>
                       </div>
                     </div>
@@ -136,12 +142,12 @@ const OneTime = memo(({ orders, locations, vehicles, navigation,t }) => {
                 />
               </div>
               <div>
-              <h4 className={Styles.pickupHistoryNoDatatext}>
-                    {t("no_orders_to_show")}
-                  </h4>
-                  <p className={Styles.pickupHistoryNodataSubText}>
-                    {t("active_order_message")}
-                  </p>
+                <h4 className={Styles.pickupHistoryNoDatatext}>
+                  {t("no_orders_to_show")}
+                </h4>
+                <p className={Styles.pickupHistoryNodataSubText}>
+                  {t("active_order_message")}
+                </p>
               </div>
             </div>
           )}
@@ -152,7 +158,7 @@ const OneTime = memo(({ orders, locations, vehicles, navigation,t }) => {
 });
 
 const MultipleTimeOrder = memo(
-  ({ orders, locations, vehicles, navigation,t }) => {
+  ({ orders, locations, vehicles, navigation, t }) => {
     const [searchText, setSearchText] = useState("");
     const [index, setIndex] = useState(0);
     const getLocationAddress = (locationId) => {
@@ -174,8 +180,7 @@ const MultipleTimeOrder = memo(
       navigation("/enterprise/order-detail", {
         state: {
           order: order_number,
-          tabId:2,
-
+          tabId: 2,
         },
       });
     };
@@ -224,18 +229,31 @@ const MultipleTimeOrder = memo(
                           </p>
                         </div>
 
-                        <div
-                          className={Styles.pickupHistoryMultipleLocationCard}
-                        >
-                          <FontAwesomeIcon
-                            className={Styles.pickupHistoryLocIcon}
-                            icon={faLocationCrosshairs}
-                          />
-                          <p className={Styles.pickupHistoryFromLoc}>
-                            {t("to")}:{" "}
-                            <b>{getLocationAddress(item.dropoff_location)}</b>
-                          </p>
-                        </div>
+                        {item?.locations &&
+                          item?.locations?.length > 0 &&
+                          item.locations?.map((location, index) => (
+                            <div
+                              className={
+                                Styles.pickupHistoryMultipleLocationCard
+                              }
+                            >
+                              <FontAwesomeIcon
+                                className={Styles.pickupHistoryLocIcon}
+                                icon={faLocationCrosshairs}
+                              />
+                              <p
+                                className={Styles.pickupHistoryFromLoc}
+                                key={index}
+                              >
+                                {t("to")}:{" "}
+                                <b>
+                                  {getLocationAddress(
+                                    location.dropoff_location
+                                  )}
+                                </b>
+                              </p>
+                            </div>
+                          ))}
                       </div>
                       <div className={Styles.oneTimeVehicleCard}>
                         <p className={Styles.onleTimeVehicleNameText}>
@@ -270,7 +288,7 @@ const MultipleTimeOrder = memo(
                   />
                 </div>
                 <div>
-                <h4 className={Styles.pickupHistoryNoDatatext}>
+                  <h4 className={Styles.pickupHistoryNoDatatext}>
                     {t("no_orders_to_show")}
                   </h4>
                   <p className={Styles.pickupHistoryNodataSubText}>
@@ -286,7 +304,7 @@ const MultipleTimeOrder = memo(
   }
 );
 
-const ShiftOrder = memo(({ orders, branches, vehicles, navigation,t }) => {
+const ShiftOrder = memo(({ orders, branches, vehicles, navigation, t }) => {
   const getBranchAddress = (branchId) => {
     let result = branches?.filter((branch) => branch.branch_id == branchId);
     if (result?.length > 0) {
@@ -311,7 +329,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation,t }) => {
       state: {
         order: orders,
         branches: branches,
-        tabId:3,
+        tabId: 3,
       },
     });
   };
@@ -336,17 +354,25 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation,t }) => {
                         alt="icon"
                       />
                       <h4 className={Styles.pickupHistoryDeliveredText}>
-                        {moment(formatDate(item.shift_from_date).date).format("DD-MM-YYYY")}
+                        {moment(formatDate(item.shift_from_date).date).format(
+                          "DD-MM-YYYY"
+                        )}
                         {t("to")}
-                        {moment(formatDate(item.shift_tp_date).date).format("DD-MM-YYYY")}
-
+                        {moment(formatDate(item.shift_tp_date).date).format(
+                          "DD-MM-YYYY"
+                        )}
                       </h4>
                     </div>
                     <p className={Styles.shiftOrderhoursText}>
                       {" "}
                       <b>
                         {" "}
-                        {item?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)}{" "}
+                        {item?.slots
+                          ?.reduce(
+                            (sum, slot) => sum + (slot.total_hours || 0),
+                            0
+                          )
+                          .toFixed(2)}{" "}
                         {t("hours_shift")}
                       </b>
                     </p>
@@ -389,12 +415,12 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation,t }) => {
                 />
               </div>
               <div>
-                  <h4 className={Styles.pickupHistoryNoDatatext}>
-                    {t("no_orders_to_show")}
-                  </h4>
-                  <p className={Styles.pickupHistoryNodataSubText}>
-                    {t("active_order_message")}
-                  </p>
+                <h4 className={Styles.pickupHistoryNoDatatext}>
+                  {t("no_orders_to_show")}
+                </h4>
+                <p className={Styles.pickupHistoryNodataSubText}>
+                  {t("active_order_message")}
+                </p>
               </div>
             </div>
           )}
@@ -405,7 +431,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation,t }) => {
 });
 
 const PastOrder = memo(
-  ({ orders, locations, vehicles, navigation, branches,t }) => {
+  ({ orders, locations, vehicles, navigation, branches, t }) => {
     const getLocationAddress = (locationId) => {
       let result = locations?.filter((location) => location.id == locationId);
       return buildAddress(
@@ -435,25 +461,25 @@ const PastOrder = memo(
       let result = vehicles?.filter((vehicle) => vehicle.id == vehicleId);
       return result[0]?.vehicle_type;
     };
-    const detailHandler = (order_number, deliveryTypeId,order) => {
+    const detailHandler = (order_number, deliveryTypeId, order) => {
       if (deliveryTypeId == 3) {
         navigation("/enterprise/shift-details", {
           state: {
             order,
             branches: branches,
-            tabId:4
+            tabId: 4,
           },
         });
       } else {
         navigation("/enterprise/order-detail", {
           state: {
             order: order_number,
-            tabId:4,
+            tabId: 4,
           },
         });
       }
     };
-   
+
     return (
       <section id="content4">
         <div className="row">
@@ -468,7 +494,8 @@ const PastOrder = memo(
                         onClick={() =>
                           detailHandler(
                             item.order_number,
-                            item?.delivery_type_id,item
+                            item?.delivery_type_id,
+                            item
                           )
                         }
                       >
@@ -480,16 +507,25 @@ const PastOrder = memo(
                               alt="icon"
                             />
                             <h4 className={Styles.pickupHistoryDeliveredText}>
-                              {moment(formatDate(item.shift_from_date).date).format("DD-MM-YYYY")}
+                              {moment(
+                                formatDate(item.shift_from_date).date
+                              ).format("DD-MM-YYYY")}
                               {" To "}
-                              {moment(formatDate(item.shift_tp_date).date).format("DD-MM-YYYY")}
+                              {moment(
+                                formatDate(item.shift_tp_date).date
+                              ).format("DD-MM-YYYY")}
                             </h4>
                           </div>
                           <p className={Styles.shiftOrderhoursText}>
                             {" "}
                             <b>
                               {" "}
-                              {item?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)} {" "}
+                              {item?.slots
+                                ?.reduce(
+                                  (sum, slot) => sum + (slot.total_hours || 0),
+                                  0
+                                )
+                                .toFixed(2)}{" "}
                               {t("hours_shift")}
                             </b>
                           </p>
@@ -566,7 +602,34 @@ const PastOrder = memo(
 
                           <div className={Styles.pickupHistoryShowOff} />
 
-                          <div className={Styles.pickupHistoryFromLocaCard}>
+                          {item?.delivery_type_id ===2 ? (
+                            item?.locations &&
+                              item?.locations?.length > 0 &&
+                              item.locations?.map((location, index) => (
+                                <div
+                                  className={
+                                    Styles.pickupHistoryMultipleLocationCard
+                                  }
+                                >
+                                  <FontAwesomeIcon
+                                    className={Styles.pickupHistoryLocIcon}
+                                    icon={faLocationCrosshairs}
+                                  />
+                                  <p
+                                    className={Styles.pickupHistoryFromLoc}
+                                    key={index}
+                                  >
+                                    {t("to")}:{" "}
+                                    <b>
+                                      {getLocationAddress(
+                                        location.dropoff_location
+                                      )}
+                                    </b>
+                                  </p>
+                                </div>
+                              ))
+                          ) : (
+                            <div className={Styles.pickupHistoryFromLocaCard}>
                             <FontAwesomeIcon
                               className={Styles.pickupHistoryLocIcon}
                               icon={faLocationCrosshairs}
@@ -576,6 +639,8 @@ const PastOrder = memo(
                               <b>{getLocationAddress(item.dropoff_location)}</b>
                             </p>
                           </div>
+                          ) }
+                          
                         </div>
                         <p className={Styles.pickupHistoryPastVehicleText}>
                           {getVehicleType(item.vehicle_type_id)}
@@ -637,8 +702,8 @@ const Order = () => {
   const [paramList, setParamList] = useState({ tab_id: 1 });
   const [enterpriseOrderList, setEnterpriseOrderList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-   const location = useLocation();
-    const {tabId } = location.state || {};
+  const location = useLocation();
+  const { tabId } = location.state || {};
   const handleOpenModal = () => {
     setShowModal(true);
   };
@@ -680,18 +745,15 @@ const Order = () => {
     const value = event.target.value;
     setSearchTerm(event.target.value);
     if (value.trim().length === 0) {
-      const params={
-        order_number:value,
-        tab_id:paramList?.tab_id,
-      }
-      searchFunction(params)
-      return
+      const params = {
+        order_number: value,
+        tab_id: paramList?.tab_id,
+      };
+      searchFunction(params);
+      return;
     }
-    searchFunction({tab_id:paramList?.tab_id})
-
+    searchFunction({ tab_id: paramList?.tab_id });
   };
-
-  
 
   const handleTabChange = (event) => {
     const newTab = event.target.id;
@@ -740,18 +802,18 @@ const Order = () => {
   useEffect(() => {
     searchFunction(paramList);
   }, [selectedTab]);
-  useEffect(()=>{
-    if(location.state){
-      setParamList({tab_id:tabId})
-      setSelectedTab("tab"+tabId)
+  useEffect(() => {
+    if (location.state) {
+      setParamList({ tab_id: tabId });
+      setSelectedTab("tab" + tabId);
     }
-  },[location.state])
+  }, [location.state]);
 
-  const onFilterSelected = date => {
+  const onFilterSelected = (date) => {
     let params = {
-      tab_id:paramList?.tab_id,
-      from_date: moment(localToUTC(date.fromDate)).format('YYYY-MM-DD'),
-      to_date: moment(localToUTC(date.toDate)).format('YYYY-MM-DD'),
+      tab_id: paramList?.tab_id,
+      from_date: moment(localToUTC(date.fromDate)).format("YYYY-MM-DD"),
+      to_date: moment(localToUTC(date.toDate)).format("YYYY-MM-DD"),
     };
     searchFunction(params);
     setShowModal(false);
@@ -865,54 +927,57 @@ const Order = () => {
                       </label>
                     </li>
                   </ul>
-                  {loading ?<div className="text-center mt-5">
-                    <Spinner />
-                  </div> :
-                  <div className="content">
-                    {selectedTab === "tab1" && (
-                      <OneTime
-                        orders={enterpriseOrderList}
-                        locations={locationList}
-                        vehicles={vehicleType}
-                        navigation={navigation}
-                        t={t}
-                      />
-                    )}
-                    {selectedTab === "tab2" && (
-                      <MultipleTimeOrder
-                        orders={enterpriseOrderList}
-                        locations={locationList}
-                        vehicles={vehicleType}
-                        navigation={navigation}
-                        t={t}
-                      />
-                    )}
-                    {selectedTab === "tab3" && (
-                      <ShiftOrder
-                        orders={enterpriseOrderList}
-                        branches={branches}
-                        vehicles={vehicleType}
-                        navigation={navigation}
-                        t={t}
-                      />
-                    )}
-                    {selectedTab === "tab4" && (
-                      <PastOrder
-                        orders={enterpriseOrderList}
-                        locations={locationList}
-                        vehicles={vehicleType}
-                        navigation={navigation}
-                        branches={branches}
-                        t={t}
-                      />
-                    )}
-                    {showModal && (
-                      <EnterpriseOrderFilterModal
-                        handleClose={handleCloseModal} // Pass the close handler
-                        onFilterSelected={onFilterSelected}
-                      />
-                    )}
-                  </div>}
+                  {loading ? (
+                    <div className="text-center mt-5">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <div className="content">
+                      {selectedTab === "tab1" && (
+                        <OneTime
+                          orders={enterpriseOrderList}
+                          locations={locationList}
+                          vehicles={vehicleType}
+                          navigation={navigation}
+                          t={t}
+                        />
+                      )}
+                      {selectedTab === "tab2" && (
+                        <MultipleTimeOrder
+                          orders={enterpriseOrderList}
+                          locations={locationList}
+                          vehicles={vehicleType}
+                          navigation={navigation}
+                          t={t}
+                        />
+                      )}
+                      {selectedTab === "tab3" && (
+                        <ShiftOrder
+                          orders={enterpriseOrderList}
+                          branches={branches}
+                          vehicles={vehicleType}
+                          navigation={navigation}
+                          t={t}
+                        />
+                      )}
+                      {selectedTab === "tab4" && (
+                        <PastOrder
+                          orders={enterpriseOrderList}
+                          locations={locationList}
+                          vehicles={vehicleType}
+                          navigation={navigation}
+                          branches={branches}
+                          t={t}
+                        />
+                      )}
+                      {showModal && (
+                        <EnterpriseOrderFilterModal
+                          handleClose={handleCloseModal} // Pass the close handler
+                          onFilterSelected={onFilterSelected}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

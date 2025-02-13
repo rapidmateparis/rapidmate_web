@@ -117,7 +117,6 @@ function MultipleDelivery() {
       return; // Prevent duplicate requests
 
     lastLocationsRef.current = locations; // Update ref to track last requested locations
-    console.log("Calculating route...");
 
     const directionsService = new google.maps.DirectionsService();
     const waypoints = locations.slice(1, -1).map((loc) => ({ location: loc }));
@@ -294,9 +293,6 @@ function MultipleDelivery() {
       setSelectedVehiclePrice(null)
       setSelectedVehicleDetails(null)
       getDistancePrice()
-
-      console.log("pickup location",dropoffLocations)
-      console.log("dropoff location",dropoffLoc)
     }
   }, [distance]);
 
