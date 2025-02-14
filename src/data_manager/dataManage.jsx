@@ -905,7 +905,6 @@ export const getViewEnterpriseOrderDetail = (
   successCallback,
   errorCallback,
 ) => {
-  console.log('url', API.viewEnterpriseOrderDetail + param);
   axiosCall(
     API.viewEnterpriseOrderDetail + param,
     HTTPMethod.GET,
@@ -1277,6 +1276,21 @@ export const getDeliveryBoyBillingDetails = (params, successCallback, errorCallb
   console.log('URL ',API.deliveryBoyBillingAddressGet+params)
   axiosCall(
     API.deliveryBoyBillingAddressGet+params,
+    HTTPMethod.GET,
+    {},
+    response => {
+      successCallback(response);
+    },
+    errorResponse => {
+      errorCallback(errorResponse);
+    },
+  );
+};
+
+export const getTaxDetails = (params,successCallback, errorCallback) => {
+  console.log('URL ',API.vechicleTaxList)
+  axiosCall(
+    API.vechicleTaxList,
     HTTPMethod.GET,
     {},
     response => {

@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import localforage from "localforage";
 import { logout } from "../redux/authSlice";
+import { useTranslation } from "react-i18next";
 const ThankPage = ({baseUrl}) => {
+  const {t}=useTranslation()
     const role=useSelector((state)=>state.auth.role)
   const dispatch = useDispatch();
 
@@ -38,11 +40,10 @@ const ThankPage = ({baseUrl}) => {
                   </div>
                   <div>
                     <h4 className={Styles.deliveryboyThankyouSignupText}>
-                      Profile in review.
+                      {t("profile_in_review")}
                     </h4>
                     <p className={Styles.deliveryboyThankyouSignupDiscription}>
-                      We are reviewing your request and we will update you about
-                      it shortly.
+                      {t("reviewing_request")}
                     </p>
 
                     <div className={Styles.deliveryboyThankyouSignupBtnCard}>
@@ -51,7 +52,7 @@ const ThankPage = ({baseUrl}) => {
                         className={Styles.pickupSignupContinueBtn}
                         type="button"
                       >
-                        Ok
+                        {t("ok")}
                       </Link>
                     </div>
                   </div>

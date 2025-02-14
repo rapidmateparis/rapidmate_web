@@ -26,8 +26,10 @@ import {
 import { buildAddress, formatDate } from "../../utils/Constants";
 import moment from "moment";
 import DeliveryboyAssignedModal from "./common/DeliveryboyAssignedModal";
+import { useTranslation } from "react-i18next";
 
 const EnterpriseShiftDetails = () => {
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
@@ -111,7 +113,7 @@ const EnterpriseShiftDetails = () => {
                         icon={faArrowLeft}
                       />
                     </div>
-                    Shift Details 
+                    {t("shift_details")} 
                   </div>
                   <Link>
                     <FontAwesomeIcon
@@ -150,7 +152,7 @@ const EnterpriseShiftDetails = () => {
                       alt="calender-icon"
                     />
                     <p className={Styles.enterpriseShiftDetailStarteddatetime}>
-                      Started {moment(formatDate(orders.shift_from_date).date).format(
+                      {t("started")} {moment(formatDate(orders.shift_from_date).date).format(
                                   "DD-MM-YYYY"
                                 )} To{" "}
                       {moment(formatDate(orders.shift_tp_date).date).format(
@@ -164,16 +166,16 @@ const EnterpriseShiftDetails = () => {
                     <p
                       className={Styles.enterpriseShiftDetailShiftDurationText}
                     >
-                      Total duration:{" "}
+                      {t("total_duration")} :{" "}
                       <b>
                       {order?.slots?.reduce((sum, slot) => sum + (slot.total_hours || 0), 0).toFixed(2)}{" "}
-                        hours
+                        {t("hours")}
                       </b>
                     </p>
                     <p
                       className={Styles.enterpriseShiftDetailShiftDurationText}
                     >
-                      Total days: <b>{orders?.slots?.length || 0}</b>
+                      {t("total_days")}: <b>{orders?.slots?.length || 0}</b>
                     </p>
                   </div>
                   <p className={Styles.enterpriseShiftDetailVehiclenameType}>
@@ -219,17 +221,17 @@ const EnterpriseShiftDetails = () => {
                           </div>
                           <div className={SlotCss.slotBody}>
                             <p>
-                              <strong>Time:</strong> {slot.from_time} -{" "}
+                              <strong>{t("times")}:</strong> {slot.from_time} -{" "}
                               {slot.to_time}
                             </p>
                             <p>
-                              <strong>Total Hours:</strong>{" "}
+                              <strong>{t("total_hours")}:</strong>{" "}
                               {slot.total_hours
                                 ? `${slot.total_hours} hrs`
                                 : "N/A"}
                             </p>
                             <p>
-                              <strong>Order Status:</strong>{" "}
+                              <strong>{t("order_status")}:</strong>{" "}
                               <span
                                 className={
                                   slot.order_status === "ORDER_PLACED"
@@ -245,7 +247,7 @@ const EnterpriseShiftDetails = () => {
                               </span>
                             </p>
                             <p>
-                              <strong>Next Action:</strong>{" "}
+                              <strong>{t("next_action")}:</strong>{" "}
                               {slot.next_action_status}
                             </p>
                           </div>
@@ -258,15 +260,15 @@ const EnterpriseShiftDetails = () => {
                         <thead className="table-success">
                           <tr>
                             <th>#</th>
-                            <th>Date</th>
-                            <th>Day</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Hours</th>
-                            <th>Delivery Boy</th>
-                            <th>Status</th>
-                            <th>Next Status</th>
-                            <th>Actions</th>
+                            <th>{t("date")}</th>
+                            <th>{t("day")}</th>
+                            <th>{t("fromDate")}</th>
+                            <th>{t("toDate")}</th>
+                            <th>{t("hours")}</th>
+                            <th>{t("delivery_boy")}</th>
+                            <th>{t("status")}</th>
+                            <th>{t("next_status")}</th>
+                            <th>{t("Actions")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -324,7 +326,7 @@ const EnterpriseShiftDetails = () => {
                                     </div>
                                   </div>
                                 ) : (
-                                  "Not Assign"
+                                  t("not_assign")
                                 )}
                               </td>
                               <td>
@@ -351,13 +353,13 @@ const EnterpriseShiftDetails = () => {
                                     variant="outline-primary"
                                     className={SlotCss.customAssignButton}
                                   >
-                                    Assign Deliveries
+                                    {t("assign_deliveries")}
                                   </Button>
                                 ) : (
                                   <span
                                     className={"badge bg-warning text-dark"}
                                   >
-                                    Waiting for deliveryboy
+                                    {t("waiting_for_deliveryboy")}
                                   </span>
                                 )}
                               </td>

@@ -5,10 +5,12 @@ import CommonHeader from "../../common/CommonHeader";
 import { useSelector } from "react-redux";
 import SideComponent from "./common/SideComponent";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const EnterpriseScheduleApproved = memo(() => {
   const navigate =useNavigate()
   const user = useSelector((state) => state.auth.user);
+  const {t}=useTranslation()
   return (
     <>
       <CommonHeader userData={user} />
@@ -28,11 +30,10 @@ const EnterpriseScheduleApproved = memo(() => {
                   />
                 </div>
                 <h4 className={Styles.enterpriseCreateShiftRequestSubmitText}>
-                  Schedule request submitted
+                  {t("schedule_request_submitted")}
                 </h4>
                 <p className={Styles.enterpriseCreateShiftRequestSubmitDiscription}>
-                  We are reviewing your request and we will notify you soon via
-                  email or phone call
+                  {t("schedule_review_message")}
                 </p>
               </div>
               <div className={`${Styles.enterpriseSelectServiceNextBtnCard} m-5`}>
@@ -42,7 +43,7 @@ const EnterpriseScheduleApproved = memo(() => {
                   className={Styles.enterpriseSelectServiceNextBtn}
                   style={{ cursor: "pointer" }}
                 >
-                  ok
+                  {t("ok")}
                 </div>
               </div>
             </div>

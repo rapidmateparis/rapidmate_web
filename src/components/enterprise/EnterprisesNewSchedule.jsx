@@ -9,6 +9,7 @@ import OneTime from "../../assets/images/One-TimePackage.png";
 import Calender from "../../assets/images/Calender-withBg.png";
 import CalenderClock from "../../assets/images/Calender-Clock.png";
 import CommonHeader from "../../common/CommonHeader";
+import { useTranslation } from "react-i18next";
 
 function EnterprisesNewSchedule() {
   const user = useSelector((state) => state.auth.user);
@@ -16,6 +17,7 @@ function EnterprisesNewSchedule() {
     (state) => state.commonData.commonData
   );
   const navigate = useNavigate();
+  const {t}=useTranslation()
 
   // Memoized function for getting icons
   const getIcon = useMemo(
@@ -51,10 +53,10 @@ function EnterprisesNewSchedule() {
               <div className={Styles.enterpriseNewScheduleTitleCard}>
                 <div>
                   <h4 className={Styles.enterpriseNewScheduleText}>
-                    New Schedule
+                    {t("new_schedule")}
                   </h4>
                   <p className={Styles.enterpriseNewScheduleDiscription}>
-                    Let’s create a new schedule for one time or for multiple hours.
+                    {t("create_new_schedule")}
                   </p>
                 </div>
                 <div>
@@ -71,7 +73,7 @@ function EnterprisesNewSchedule() {
             <div className="col-md-8">
               <div className={Styles.enterpriseNewScheduletypeMainCard}>
                 <h4 className={Styles.enterpriseNewScheduleSelectType}>
-                  Select the type of schedule
+                  {t("select_schedule_type")}
                 </h4>
                 <div className={Styles.enterpriseNewScheduleMainLinkCards}>
                   {enterpriseDeliveryType?.map((servicetype, key) => (

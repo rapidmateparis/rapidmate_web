@@ -13,7 +13,7 @@ export const PORT = {
   uat: "3000",
   prod: "3008",
 };
-export const MAPS_API_KEY ="AIzaSyC_pj9pk_9fMHL0JDsgstUXlc67nqB97zw";
+export const MAPS_API_KEY ="AIzaSyD2HroBo6Mwnvd";
 export const BASE_URL = "https://api.rapidmate.fr/api/";
 
 
@@ -91,7 +91,10 @@ export const API = {
   notificationCount:BASE_URL + 'notification/count/',
   downloadInvoice: BASE_URL + 'admin/invoice/view/',
   deliveryBoyBillingAddressUpdate:BASE_URL + 'deliveryboy/billing/address/update/',
-  deliveryBoyBillingAddressGet: BASE_URL + 'deliveryboy/billing/address/get/'
+  deliveryBoyBillingAddressGet: BASE_URL + 'deliveryboy/billing/address/get/',
+  vechicleTaxList: BASE_URL + 'vehicletypes/tax/list',
+  changeCreateShiftStatus:BASE_URL + 'order/update/shift/status',
+  deliveryBoyOrderSlots:BASE_URL + 'order/deliveryboy/myslots/'
 };
 
 export const formatDate = (dateString) => {
@@ -214,3 +217,18 @@ export const DATE_FORMAT ={
 export const formatPhoneNumber = (phoneNumber) => {
   return phoneNumber.replace(/^\+(\d+)\+/, "+");
 };
+
+export const getFileName = (data,fieldName,index) =>{
+  const nameVal=fieldName+"-"+index;
+  return data[nameVal] || " ";
+}
+
+export const convertDurationToMinutes = (duration)=>{
+  const hoursMatch = duration.match(/(\d+)\s*hours?/);
+  const minutesMatch = duration.match(/(\d+)\s*mins?/);
+
+  const hours = hoursMatch ? parseInt(hoursMatch[1], 10) * 60 : 0;
+  const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+
+  return hours + minutes;
+}

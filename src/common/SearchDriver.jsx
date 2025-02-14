@@ -12,10 +12,12 @@ import {
   getLocations,
 } from "../data_manager/dataManage";
 import Lottie from "lottie-react";
+import { useTranslation } from "react-i18next";
 
 const SearchDriver = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const {t}=useTranslation()
   const timeoutRef = useRef(null); // Timeout reference for cleanup
   const [retryCount, setRetryCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -109,7 +111,7 @@ const SearchDriver = () => {
                   className={Styles.driverCancelModalBtn}
                   onClick={openModal}
                 >
-                  Cancel request
+                  {t("cancel_request")}
                 </button>
               </div>
               <div className={Styles.driverBackgroundMiddleCard}>
@@ -121,7 +123,7 @@ const SearchDriver = () => {
                   />
                   <div className={Styles.lookingDriverMainTitlesCard}>
                     <h1 className={Styles.lookingDriverText}>
-                      Looking for driver
+                      {t("looking_for_driver")}
                     </h1>
                     <p className={Styles.lookingDriverSubText}>
                       {searchMessage}

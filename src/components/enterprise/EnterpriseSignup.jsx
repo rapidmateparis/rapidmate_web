@@ -296,11 +296,10 @@ const EnterpriseSignup = () => {
                 <div className={Styles.chooseMainCard}>
                   <div className={Styles.chooseProfileCard}>
                     <h2 className={Styles.chooseProfileHeading}>
-                      Enterprise signup
+                      {t("enterprise_signup")}
                     </h2>
                     <p className={Styles.chooseProfileSubheading}>
-                      Let’s create your profile so you can request continuous
-                      scheduled deliveries
+                      {t("create_profile")}
                     </p>
                   </div>
                 </div>
@@ -329,7 +328,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="First name"
+                                placeholder={t("first_name")}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
                             )}
@@ -368,7 +367,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Last name"
+                                placeholder={t("last_name")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -407,7 +406,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Email"
+                                placeholder={t("email")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -446,7 +445,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Password..."
+                                placeholder={t("password")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -494,7 +493,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Confirm your password"
+                                placeholder={t("confirm_password")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -583,7 +582,7 @@ const EnterpriseSignup = () => {
                                 field.onChange(option);
                                 handleCountryChange(option);
                               }}
-                              placeholder="Select your country"
+                              placeholder={t("select_country")}
                               styles={customSelectStyles}
                             />
                           )}
@@ -620,7 +619,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Company"
+                                placeholder={t("company")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -647,7 +646,7 @@ const EnterpriseSignup = () => {
                             <Select
                               {...field}
                               options={industryList}
-                              placeholder="Select your industry"
+                              placeholder={t("select_industry")}
                               styles={customSelectStyles}
                               isSearchable={true}
                             />
@@ -685,7 +684,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Deliveries per month / Hours per month"
+                                placeholder={t("deliveries_per_month")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -712,7 +711,7 @@ const EnterpriseSignup = () => {
                             <Select
                               {...field}
                               options={stateList}
-                              placeholder="Select your Ain"
+                              placeholder={t("select_state")}
                               onChange={(option) => {
                                 field.onChange(option);
                                 handleStateChange(option);
@@ -743,7 +742,7 @@ const EnterpriseSignup = () => {
                             <Select
                               {...field}
                               options={cityList}
-                              placeholder="Select your ambérieu-e..."
+                              placeholder={t("select_city")}
                               styles={customSelectStyles}
                               isDisabled={!selectedState}
                               isSearchable={true}
@@ -782,7 +781,7 @@ const EnterpriseSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Siret no..."
+                                placeholder={t("siret_no")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -814,7 +813,7 @@ const EnterpriseSignup = () => {
                                 {...field}
                                 type="text"
                                 row={2}
-                                placeholder="Describe your projects here"
+                                placeholder={t("describe_projects")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -857,10 +856,7 @@ const EnterpriseSignup = () => {
                                     Styles.deliveryBoySignupCheckboxCard
                                   }
                                 />
-                                We collect this data for the purposes of
-                                processing your application to become a courier.
-                                By clicking this box, you acknowledge that you
-                                have read and understood the
+                                {t("checkbox_collect_data_text")}
                               </label>
                             )}
                           />
@@ -893,7 +889,7 @@ const EnterpriseSignup = () => {
                   </Link>
                   <div>
                     <p className={Styles.pickupSignupAcLoginText}>
-                      Already have an account?{" "}
+                      {t("already_account_text")}{" "}
                       <Link to="/login" className={Styles.loginTextSignup}>
                         {t("login")}
                       </Link>

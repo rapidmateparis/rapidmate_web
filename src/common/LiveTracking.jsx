@@ -19,16 +19,22 @@ import PickupHomeMap from "./PickupHomeMap";
 import { ToastContainer } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../utils/Toastify";
 import { API, buildAddress, formatPhoneNumber } from "../utils/Constants";
-import { getViewOrderDetail } from "../data_manager/dataManage";
+import {
+  getViewEnterpriseOrderDetail,
+  getViewOrderDetail,
+} from "../data_manager/dataManage";
 import Spinners from "./Loader";
 import Payment from "../assets/images/Payment-Successful-Icon.png";
+import { useTranslation } from "react-i18next";
 
 function LiveTracking() {
   const navigate = useNavigate();
   const [timeLeft30, setTimeLeft30] = useState(30 * 60); // 30 minutes in seconds
   const [timeLeft15, setTimeLeft15] = useState(15 * 60); // 15 minutes in seconds
   const [showModal, setShowModal] = useState(false);
+  const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
+
   const commonData = useSelector((state) => state.commonData.commonData);
   const location = useLocation();
   const { driverDetails, locationList, orderNumber } = location.state || {};
@@ -39,6 +45,7 @@ function LiveTracking() {
   const [driverPhone, setDriverPhone] = useState(null);
   const [loading, setLoading] = useState(false);
   const userRole = useSelector((state) => state.auth.role);
+  const [multipleOrderLocation, setMultipleOrderLocation] = useState([]);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const [markAsComplepleted, setMarkAsCompleted] = useState(false);
   const [orderNum, setOrderNum] = useState(
@@ -50,7 +57,6 @@ function LiveTracking() {
   const [copiedField, setCopiedField] = useState(null);
   useEffect(() => {
     if (deliveryBoy?.phone) {
-     
       setDriverPhone(deliveryBoy.phone);
     }
     const orderDetail = async () => {
@@ -60,12 +66,13 @@ function LiveTracking() {
         (successResponse) => {
           setLoading(false);
           if (successResponse[0]._success) {
+            console.log("order status", successResponse[0]._response.order?.order_status )
             if (
-              successResponse[0]._response.order?.order_status == "COMPLETED"
+              successResponse[0]._response.order?.order_status =="COMPLETED"
             ) {
+              
               setMarkAsCompleted(true);
               setOrder(successResponse[0]._response.order);
-              console.log("deliveryboy",successResponse[0]._response.deliveryBoy)
               setDeliveryBoy(successResponse[0]._response.deliveryBoy);
               if (successResponse[0]._response.vehicle) {
                 setVehicle(successResponse[0]._response.vehicle);
@@ -86,9 +93,53 @@ function LiveTracking() {
       );
     };
     if (orderNum) {
-      orderDetail();
+      if (user?.userDetails.role == "ENTERPRISE") {
+        enterpriseOrderDetail();
+      } else {
+        orderDetail();
+      }
     }
   }, [orderNum]);
+
+  const enterpriseOrderDetail = () => {
+    setLoading(true);
+    getViewEnterpriseOrderDetail(
+      orderNum,
+      (successResponse) => {
+        setLoading(false);
+        if (successResponse[0]._success) {
+          let data = successResponse[0]._response.order;
+          let orderLines = successResponse[0]._response.orderLines;
+          if (
+            successResponse[0]._response.order?.order_status =="COMPLETED"
+          ) {
+            setMarkAsCompleted(true);
+            if (orderLines && orderLines.length > 0) {
+              setMultipleOrderLocation(orderLines);
+            }
+            setOrder(data);
+            setDeliveryBoy(successResponse[0]._response.deliveryBoy);
+            setVehicle(successResponse[0]._response.vehicle);
+
+          }else{
+            setMarkAsCompleted(false);
+            if (orderLines && orderLines.length > 0) {
+              setMultipleOrderLocation(orderLines);
+            }
+            setOrder(data);
+            setDeliveryBoy(successResponse[0]._response.deliveryBoy);
+            setVehicle(successResponse[0]._response.vehicle);
+              
+          }
+          
+        }
+      },
+      (errorResponse) => {
+        setLoading(false);
+        console.log("orderDetail==>errorResponse", errorResponse[0]);
+      }
+    );
+  };
 
   const openModal = () => {
     setShowModal(true);
@@ -162,7 +213,6 @@ function LiveTracking() {
   //   };
   // }, []);
 
-
   const ProgressStep = ({ stepNumber, stepText, isActive, isCompleted }) => {
     return (
       <div
@@ -181,7 +231,7 @@ function LiveTracking() {
       case "ON_THE_WAY_PICKUP":
         return 2;
       case "REACHED":
-          return 2;
+        return 2;
       case "OTP_VERIFIED":
         return 3;
       case "ON_THE_WAY_DROP_OFF":
@@ -192,7 +242,7 @@ function LiveTracking() {
         return 1;
     }
   };
- 
+
   // Ensure `getStep` is used consistently to initialize and update the step.
   const [currentStep, setCurrentStep] = useState(() => getStep(order));
 
@@ -202,15 +252,15 @@ function LiveTracking() {
   }, [order]);
 
   const steps = [
-    "A driver is assigned to you",
-    "Pickup in Progress",
-    "Your order has been picked up for delivery",
-    "Order arriving soon!!",
+    t("driver_assigned"),
+    t("pickup_in_progress"),
+    t("order_picked_up"),
+    t("order_arriving_soon"),
   ];
   if (order == null) {
     return <Spinners />;
   }
-
+  
 
   if (markAsComplepleted) {
     return (
@@ -231,14 +281,14 @@ function LiveTracking() {
                     </div>
                     <div>
                       <h4 className={Styles.deliveryboyThankyouSignupText}>
-                        Order has been completed!
+                        {t("order_completed")}
                       </h4>
                       <Link
                         className={`${Styles.addPickupDetailsCancelBTn} m-5`}
                         style={{ color: "#000" }}
                         to={`/${baseUrl}/orders`}
                       >
-                        Go order Lists
+                        {t("go_order_lists")}
                       </Link>
                     </div>
                   </div>
@@ -252,17 +302,18 @@ function LiveTracking() {
   }
 
   const actionToCall = () => {
-  if (!driverPhone && !order?.delivery_boy_mobile) {
-    showErrorToast("Phone number not available");
-    return;
-  }
+    if (!driverPhone && !order?.delivery_boy_mobile) {
+      showErrorToast("Phone number not available");
+      return;
+    }
 
-  const phoneNumber = formatPhoneNumber(driverPhone || order?.delivery_boy_mobile);
-  console.log("calling...")
-  setTimeout(() => {
-    window.location.href = `tel:${phoneNumber}`; // Ensure it's executed inside a direct click event
-  }, 0);
-};
+    const phoneNumber = formatPhoneNumber(
+      driverPhone || order?.delivery_boy_mobile
+    );
+    setTimeout(() => {
+      window.location.href = `tel:${phoneNumber}`; // Ensure it's executed inside a direct click event
+    }, 0);
+  };
   return (
     <>
       <CommonHeader userData={user} />
@@ -277,19 +328,55 @@ function LiveTracking() {
                     icon={faLocationDot}
                   />
                   <p className={Styles.pickupOrderTrackingAddressText}>
-                    {getLocationAddress(order?.pickup_location_id)}
+                    {user?.userDetails?.role == "ENTERPRISE"
+                      ? getLocationAddress(order?.pickup_location)
+                      : getLocationAddress(order?.pickup_location_id)}
                   </p>
                 </div>
                 <div className={Styles.pickuporderTrackingBorderShowOff} />
-                <div className={Styles.pickupOrderTrackingPickupAddressCard}>
+                
+                  
+                  {user?.userDetails?.role == "ENTERPRISE" &&
+                    order?.delivery_type_id === 1 && (
+                      <div className={Styles.pickupOrderTrackingPickupAddressCard}>
                   <FontAwesomeIcon
                     className={Styles.pickupOrderTrackingLocCrosshairsIcon}
                     icon={faLocationCrosshairs}
                   />
-                  <p className={Styles.pickupOrderTrackingAddressText}>
-                    {getLocationAddress(order?.dropoff_location_id)}
+                      <p className={Styles.pickupOrderTrackingAddressText}>
+                        { getLocationAddress(order?.dropoff_location)}
+                      </p>
+                      </div>
+                    )}
+                  {user?.userDetails?.role == "CONSUMER" && (
+                    <div className={Styles.pickupOrderTrackingPickupAddressCard}>
+                    <FontAwesomeIcon
+                      className={Styles.pickupOrderTrackingLocCrosshairsIcon}
+                      icon={faLocationCrosshairs}
+                    />
+
+                    <p className={Styles.pickupOrderTrackingAddressText}>
+                      {getLocationAddress(order?.dropoff_location_id)}
+                    </p>
+                    
+                    </div>
+                  )}
+                
+                {multipleOrderLocation && multipleOrderLocation?.length > 0 && multipleOrderLocation?.map((branch,index)=>(
+                  <>
+                    <div className={Styles.pickupOrderTrackingPickupAddressCard}>
+                  <FontAwesomeIcon
+                    className={Styles.pickupOrderTrackingLocCrosshairsIcon}
+                    icon={faLocationCrosshairs}
+                  />
+                    <p className={Styles.pickupOrderTrackingAddressText} key={index}>
+                    { getLocationAddress(branch?.dropoff_location)}
                   </p>
-                </div>
+                  </div>
+                  {index !== multipleOrderLocation.length - 1 && <div className={Styles.pickuporderTrackingBorderShowOff} /> }
+                 </>
+                 
+                  ))}
               </div>
 
               <div className={Styles.PickupOrderTrackingDeliveryInfoCard}>
@@ -300,7 +387,7 @@ function LiveTracking() {
                   <div>
                     <div className={Styles.pickupOrderTrackingOrderIdCard}>
                       <p className={Styles.pickupOrderTrackingOrderId}>
-                        Order ID: <b>{order?.order_number}</b>
+                        {t("order_id")}: <b>{order?.order_number}</b>
                       </p>
                       <FontAwesomeIcon
                         className={Styles.pickupOrderTrackingCopyIcon}
@@ -313,7 +400,7 @@ function LiveTracking() {
                     <div className={Styles.pickupOrderOtpCard}>
                       <div className={Styles.pickupOrderTrackingOrderIdCard}>
                         <p className={Styles.pickupOrderTrackingOrderId}>
-                          Pickup OTP: <b>{order?.otp}</b>
+                          {t("pickup_otp")}: <b>{order?.otp}</b>
                         </p>
                         <FontAwesomeIcon
                           className={Styles.pickupOrderTrackingCopyIcon}
@@ -324,7 +411,7 @@ function LiveTracking() {
                       {order?.delivered_otp && (
                         <div className={Styles.pickupOrderTrackingOrderIdCard}>
                           <p className={Styles.pickupOrderTrackingOrderId}>
-                            Delivered OTP: <b>{order?.delivered_otp}</b>
+                            {t("delivered_otp")}: <b>{order?.delivered_otp}</b>
                           </p>
                           <FontAwesomeIcon
                             className={Styles.pickupOrderTrackingCopyIcon}
@@ -433,10 +520,20 @@ function LiveTracking() {
           </div>
           <div className="col-md-9">
             <div>
-              <PickupHomeMap
-                latitude={getOrigin(order?.pickup_location_id)}
-                longitude={getOrigin(order?.dropoff_location_id)}
-              />
+              {user?.userDetails?.role == "ENTERPRISE" &&
+                order?.delivery_type_id === 1 && (
+                  <PickupHomeMap
+                    latitude={getOrigin(order?.pickup_location)}
+                    longitude={getOrigin(order?.dropoff_location)}
+                  />
+                )}
+              {user?.userDetails?.role == "CONSUMER" && (
+                <PickupHomeMap
+                  latitude={getOrigin(order?.pickup_location_id)}
+                  longitude={getOrigin(order?.dropoff_location_id)}
+                />
+              )}
+              
             </div>
           </div>
         </div>

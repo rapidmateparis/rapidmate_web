@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Styles from "../../../assets/css/home.module.css";
 import Info from "../../../assets/images/info.png";
 import getImage from "../../consumer/common/GetImage";
 import { showErrorToast } from "../../../utils/Toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faCircleDot } from "@fortawesome/free-regular-svg-icons";
-import { useSelector } from "react-redux";
 
 const ServiceTypeSelection = ({
   vehicleTypeList,
@@ -20,6 +19,7 @@ const ServiceTypeSelection = ({
   selectedServiceType, 
   setSelectedServiceType,
   enterpriseServiceType,
+  t
 }) => {
   
   const handleServiceTypeClick = (serviceType, vehicleMatch) => {
@@ -29,7 +29,7 @@ const ServiceTypeSelection = ({
         (v) => v.id === vehicleMatch
       );
       if (vehicle) {
-        if (dropoffLocation !== "") {
+        if (dropoffLocation!=='' && dropoffLocation[0] !=='') {
           setSelectedVehicle(vehicle.vehicle_type);
           setSelectedVehicleDetails(vehicle);
           const price = getPriceUsingVehicleType(vehicle.id);
@@ -48,7 +48,7 @@ const ServiceTypeSelection = ({
   return (
     <>
       <p className={Styles.enterpriseNewScheduleSelectType}>
-        Select service type
+        {t("select_service_type")}
       </p>
 
       {/* Delivery Boy with Scooter */}
@@ -73,10 +73,10 @@ const ServiceTypeSelection = ({
       {/* Vehicle Selection Section */}
       <div className={Styles.homePickupVehicleCardMain}>
         <div className={Styles.selectedVehiclePriceCard}>
-          <p className={Styles.pickupRequestText}>Choose the vehicle</p>
+          <p className={Styles.pickupRequestText}>{t("chooseVehicle")}</p>
           {selectedVehiclePrice && (
             <p className={Styles.selectedVehiclePriceText}>
-              <b>€ {selectedVehiclePrice}</b> {''}Excl. VAT
+              <b>€ {selectedVehiclePrice}</b> {''}{t("excl_vat")}
             </p>
           )}
         </div>

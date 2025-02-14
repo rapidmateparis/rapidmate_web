@@ -22,7 +22,9 @@ import {
   searchOrderApi,
 } from "../../data_manager/dataManage";
 import { deliveryboyRoute } from "../../utils/RoutePath";
+import { useTranslation } from "react-i18next";
 const SetNewSchedule = () => {
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -416,7 +418,7 @@ const SetNewSchedule = () => {
                     <h4
                       className={Styles.enterpriseCreateShiftAvailabilityDate}
                     >
-                      Planning
+                      {t("planning")}
                     </h4>
                   </div>
                   <button className={Styles.enterprisePlannigDateCloseIcon}>
@@ -435,7 +437,7 @@ const SetNewSchedule = () => {
                   >
                     <div>
                       <p className={Styles.createShiftAvailabilityText}>
-                        Start Date
+                        {t("start_date")}
                       </p>
                       <div
                         className={
@@ -461,7 +463,7 @@ const SetNewSchedule = () => {
                     </div>
                     <div>
                       <p className={Styles.createShiftAvailabilityText}>
-                        End Date
+                        {t("end_date")}
                       </p>
                       <div
                         className={
@@ -493,7 +495,7 @@ const SetNewSchedule = () => {
                     <p
                       className={Styles.enterpriseSelectServiceRepeatOrderText}
                     >
-                      Apply same slots to all days
+                      {t("apply_same_slots")}
                     </p>
                     <Form>
                       <Form.Check
@@ -592,7 +594,7 @@ const SetNewSchedule = () => {
                             Styles.enterpriseCreateShiftSetavailabilitySaveBtn
                           }
                         >
-                          Preview
+                          {t("preview")}
                         </button>
                       </div>
                     )}
@@ -603,16 +605,16 @@ const SetNewSchedule = () => {
 
             <div className="col-md-3">
               <div className={Styles.previewPageColGapping}>
-                <h4 className={Styles.previewPageTitle}>Preview</h4>
+                <h4 className={Styles.previewPageTitle}>{t("preview")}</h4>
                 {isPreview}
                 <div>
                   <div className={Styles.previewHeaderMainCard}>
                     <div className={Styles.totalAboutCard}>
                       <h4>
-                        Total hours: <span>{totalHour}</span>
+                        {t("total_hours")}: <span>{totalHour}</span>
                       </h4>
                       <h4>
-                        Estimated cost: <span>€ {totalAmount?.toFixed(2)}</span>
+                        {t("estimated_cost")}: <span>€ {totalAmount?.toFixed(2)}</span>
                       </h4>
                     </div>
                   </div>
@@ -636,14 +638,14 @@ const SetNewSchedule = () => {
                             Styles.enterpriseCreateShiftSetavailabilitySaveBtn
                           }
                         >
-                          Reset
+                          {t("reset")}
                         </button>
                       </div>
                     </div>
                   ) : (
                     <div className={Styles.previewbottomMainCard}>
                       <div className="mb-2 text-center">
-                        <p className={Styles.previewTimeDateText}>No data</p>
+                        <p className={Styles.previewTimeDateText}>{t("no_data")}</p>
                       </div>
                     </div>
                   )}
@@ -671,14 +673,14 @@ const SetNewSchedule = () => {
                         }
                         onClick={() => navigate("/enterprise/dashboard")}
                       >
-                        Cancel
+                        {t("cancel")}
                       </button>
                       <div
                         onClick={continueHanger}
                         className={Styles.enterpriseSelectServiceNextBtn}
                         style={{ cursor: "pointer" }}
                       >
-                        Create
+                        {t("create")}
                       </div>
                     </div>
                   </div>
@@ -703,7 +705,7 @@ const SetNewSchedule = () => {
                             Styles.enterpriseCreateShiftAvailabilityDate
                           }
                         >
-                          Planning
+                          {t("planning")}
                         </h4>
                       </div>
                       <button className={Styles.enterprisePlannigDateCloseIcon}>
@@ -722,7 +724,7 @@ const SetNewSchedule = () => {
                       >
                         <div>
                           <p className={Styles.createShiftAvailabilityText}>
-                            Start Date
+                            {t("start_date")}
                           </p>
                           <div
                             className={
@@ -748,7 +750,7 @@ const SetNewSchedule = () => {
                         </div>
                         <div>
                           <p className={Styles.createShiftAvailabilityText}>
-                            End Date
+                            {t("end_date")}
                           </p>
                           <div
                             className={
@@ -784,7 +786,7 @@ const SetNewSchedule = () => {
                             Styles.enterpriseSelectServiceRepeatOrderText
                           }
                         >
-                          Apply same slots to all days
+                          {t("apply_same_slots")}
                         </p>
                         <Form>
                           <Form.Check
@@ -886,7 +888,7 @@ const SetNewSchedule = () => {
                                 Styles.enterpriseCreateShiftSetavailabilitySaveBtn
                               }
                             >
-                              Preview
+                              {t("preview")}
                             </button>
                           </div>
                         )}

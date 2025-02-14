@@ -197,11 +197,10 @@ const PickupSignup = () => {
                 <div className={Styles.chooseMainCard}>
                   <div className={Styles.chooseProfileCard}>
                     <h2 className={Styles.chooseProfileHeading}>
-                      Pickup & Drop-off signup
+                      {t("pickup_dropoff_signup")}
                     </h2>
                     <p className={Styles.chooseProfileSubheading}>
-                      Let’s create your profile so you can have complete
-                      experience of the app
+                      {t("create_profile_app_experience")}
                     </p>
                   </div>
                 </div>
@@ -230,7 +229,7 @@ const PickupSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Name"
+                                placeholder={t("name")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -267,7 +266,7 @@ const PickupSignup = () => {
                               <input
                                 {...field}
                                 type="text"
-                                placeholder="Email"
+                                placeholder={t("email")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -304,7 +303,7 @@ const PickupSignup = () => {
                               <input
                                 {...field}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Password..."
+                                placeholder={t("password")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -353,7 +352,7 @@ const PickupSignup = () => {
                               <input
                                 {...field}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="Confirm your password"
+                                placeholder={t("confirm_password")}
                                 style={{ width: "100%", padding: "5px" }}
                                 className={`${Styles.signupInput} dynamic-border-input`}
                               />
@@ -435,7 +434,7 @@ const PickupSignup = () => {
                             <Select
                               {...field}
                               options={countryList}
-                              placeholder="Select your country"
+                              placeholder={t("select_country")}
                               styles={customSelectStyles}
                               onChange={(selectedOption) => {
                                 const countryListcode =
@@ -461,7 +460,7 @@ const PickupSignup = () => {
                   </div>
                   <div className="row">
                     <p className={Styles.pickupSingupAccountType}>
-                      Create account as:
+                      {t("create_account_as")}:
                     </p>
                     <div className="col-md-6">
                       <div
@@ -476,7 +475,7 @@ const PickupSignup = () => {
                           className={Styles.pickupSignupFieldsIcons}
                           icon={faUser}
                         />
-                        <p className={Styles.acNamesType}>Individual</p>
+                        <p className={Styles.acNamesType}>{t("individual")}</p>
                         <div
                           className={`${Styles.pickupSignupAcCircle} ${
                             selectedAccountType === "Individual"
@@ -519,7 +518,7 @@ const PickupSignup = () => {
                           className={Styles.pickupSignupFieldsIcons}
                           icon={faBuilding}
                         />
-                        <p className={Styles.acNamesType}>Company</p>
+                        <p className={Styles.acNamesType}>{t("company")}</p>
                         <div
                           className={`${Styles.pickupSignupAcCircle} ${
                             selectedAccountType === "Company"
@@ -562,13 +561,13 @@ const PickupSignup = () => {
                       </Link>
                     </p>
                     <p className={Styles.pickupSignupAcLoginText}>
-                      By signing up you agree to{" "}
+                      {t("agree_terms")}{" "}
                       <Link className={Styles.loginTextSignup} to="#">
-                        Privacy policy
+                        {t("privacy_policy")}
                       </Link>{" "}
                       &{" "}
                       <Link className={Styles.loginTextSignup} to="#">
-                        Terms
+                        {t("terms_of_service")}
                       </Link>{" "}
                       of RapidMate{" "}
                     </p>

@@ -13,8 +13,10 @@ import { ToastContainer } from "react-toastify";
 import SideComponent from "./common/SideComponent";
 import { getAllVehicleTypes } from "../../data_manager/dataManage";
 import PickupVehicleDimensionsModal from "../consumer/PickupVehicleDimensionsModal";
+import { useTranslation } from "react-i18next";
 
 const EnterpriseCreateShiftSelectServiceType = () => {
+  const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
@@ -122,7 +124,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
             <div className="col-md-8">
               <div className={Styles.enterpriseNewScheduletypeMainCard}>
                 <h4 className={Styles.enterpriseNewScheduleSelectType}>
-                  Select service type
+                  {t("select_service_type")}
                 </h4>
 
                 <div className={Styles.enterpriseselectServicesOptionCardMain}>
@@ -154,7 +156,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                 </div>
 
                 <h4 className={Styles.enterpriseNewScheduleSelectType}>
-                  Select vehicle type
+                  {t("select_vehicle_type")}
                 </h4>
                 <div className={Styles.enterpriseSelectServiceVehicleCardMain}>
                   <div className="row">
@@ -226,7 +228,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                     className={Styles.enterpriseSelectServiceNextBtn}
                     style={{ cursor: "pointer" }}
                   >
-                    Next
+                    {t("next")}
                   </div>
                 </div>
               </div>

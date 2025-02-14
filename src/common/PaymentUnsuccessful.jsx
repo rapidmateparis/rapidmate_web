@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Styles from "../assets/css/home.module.css";
 import Payment from "../assets/images/payment-unsuccessful-icon.png";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const PaymentUnsuccessful = () => {
+  const {t}=useTranslation()
   return (
     <>
       <section className={Styles.deliveryboyThankyouSec}>
@@ -21,20 +23,19 @@ const PaymentUnsuccessful = () => {
                   </div>
                   <div>
                     <h4 className={Styles.deliveryboyThankyouSignupText}>
-                      Payment unsuccessful!
+                      {t("payment_unsuccessful")}
                     </h4>
                     <p className={Styles.deliveryboyThankyouSignupDiscription}>
-                      We're sorry, but your payment couldn't be processed at
-                      this time.
+                     {t("payment_failed_message")}
                     </p>
                   </div>
                   <div className={Styles.deliveryboyThankyouSignupBtnCard}>
                     <Link
-                      to=""
+                      to="#"
                       className={Styles.pickupSignupContinueBtn}
                       type="button"
                     >
-                      Try again
+                      {t("try_again")}
                     </Link>
                   </div>
                 </div>

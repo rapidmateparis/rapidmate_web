@@ -22,13 +22,21 @@ import {
   getViewEnterpriseOrderDetail,
   getViewOrderDetail,
 } from "../../data_manager/dataManage";
-import { API } from "../../utils/Constants";
+import { API, buildAddress } from "../../utils/Constants";
 import { useSelector } from "react-redux";
 import DeliveryDetailsMap from "../../common/DeliveryDetailsMap";
 import { showErrorToast } from "../../utils/Toastify";
 import localforage from "localforage";
+import { useTranslation } from "react-i18next";
 
-const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
+const EnterpriseOrder = ({
+  user,
+  orderNumber,
+  navigate,
+  tabId,
+  t,
+  locationList,
+}) => {
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
   const [destinationAddress, setDestinationAddress] = useState({});
@@ -37,33 +45,21 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
   const [loading, setLoading] = useState(false);
   const [sourceAddress, setSourceAddress] = useState({});
   const [vehicle, setVehicle] = useState({});
+  const [multipleOrderLocation, setMultipleOrderLocation] = useState([]);
+
   const goBack = () => {
-    navigate("/enterprise/orders",{state:{tabId:tabId}}); // Navigate back to the previous page
+    navigate("/enterprise/orders", { state: { tabId: tabId } }); // Navigate back to the previous page
   };
   useEffect(() => {
     orderDetail();
   }, []);
   const goTracking = () => {
-    const getLocationsData = () => {
-      getLocations(
-        null,
-        (successResponse) => {
-          if (successResponse[0]._success) {
-            let tempOrderList = successResponse[0]._response;
-            navigate("/enterprise/order-tracking", {
-              state: {
-                orderNumber: orderNumber,
-                locationList: tempOrderList,
-              },
-            });
-          }
-        },
-        (errorResponse) => {
-          console.log(errorResponse[0]._errors.message);
-        }
-      );
-    };
-    getLocationsData();
+    navigate("/enterprise/order-tracking", {
+      state: {
+        orderNumber: orderNumber,
+        locationList: locationList,
+      },
+    });
   };
   const orderDetail = async () => {
     setLoading(true);
@@ -72,16 +68,15 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
       (successResponse) => {
         setLoading(false);
         if (successResponse[0]._success) {
+          let orderLines = successResponse[0]._response.orderLines;
+          if (orderLines && orderLines.length > 0) {
+            setMultipleOrderLocation(orderLines);
+          }
           setOrders(successResponse[0]._response.order);
           setDeliveryboy(successResponse[0]._response.deliveryBoy);
           if (successResponse[0]._response.vehicle) {
             setVehicle(successResponse[0]._response.vehicle);
           }
-          getDestinationAddress(
-            successResponse[0]._response.order.dropoff_location
-          );
-          getSourceAddress(successResponse[0]._response.order.pickup_location);
-          vehicleDetail(successResponse[0]._response.order.vehicle_type_id);
         }
       },
       (errorResponse) => {
@@ -90,54 +85,14 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
     );
   };
 
-  const getDestinationAddress = async (locationId) => {
-    setLoading(true);
-    getLocationById(
-      locationId,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]._success) {
-          setDestinationAddress(successResponse[0]._response[0]);
-        }
-      },
-      (errorResponse) => {
-        setLoading(false);
-      }
-    );
-  };
-
-  const getSourceAddress = async (locationId) => {
-    setLoading(true);
-    getLocationById(
-      locationId,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]._success) {
-          setSourceAddress(successResponse[0]._response[0]);
-        }
-      },
-      (errorResponse) => {
-        setLoading(false);
-        console.log("destination==>errorResponse", errorResponse[0]);
-        Alert.alert("Error Alert", errorResponse[0]._errors.message, [
-          { text: "OK", onPress: () => {} },
-        ]);
-      }
-    );
-  };
-  const vehicleDetail = async (vehicleTypeId) => {
-    setLoading(true);
-    getAVehicleByTypeId(
-      vehicleTypeId,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]._success) {
-          setVehicleType(successResponse[0]._response[0]);
-        }
-      },
-      (errorResponse) => {
-        setLoading(false);
-      }
+  const getLocationAddress = (locationId) => {
+    let result = locationList?.filter((location) => location.id == locationId);
+    return buildAddress(
+      result[0]?.address,
+      result[0]?.city,
+      result[0]?.state,
+      result[0]?.country,
+      result[0]?.postal_code
     );
   };
 
@@ -192,14 +147,14 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
             <div className={Styles.max75}>
               <div className={Styles.pickupDeliveryDetailsHead}>
                 <div className={Styles.pickupDeliveryDetailsHeaderCard}>
-                  <div onClick={goBack} style={{cursor:"pointer"}}>
+                  <div onClick={goBack} style={{ cursor: "pointer" }}>
                     <FontAwesomeIcon
                       className={Styles.pickupHistoryBackspaceButton}
                       icon={faArrowLeft}
                     />
                   </div>
                   <h4 className={Styles.pickupHistoryHeaderTitle}>
-                    Delivery Details
+                    {t("delivery_details")}
                   </h4>
                 </div>
                 <Link
@@ -210,16 +165,18 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                 </Link>
               </div>
               {/* Map  */}
-              <div className={Styles.pickupDeliveryDetailsMapCard}>
+              {/* <div className={Styles.pickupDeliveryDetailsMapCard}>
                 <DeliveryDetailsMap
                   addressData={{
                     sourceAddress: sourceAddress,
                     destinationAddress: destinationAddress,
                   }}
                 />
-              </div>
+              </div> */}
 
-              <div className={Styles.pickupDeliveryDetailDriverMainCard}>
+              <div
+                className={`${Styles.pickupDeliveryDetailDriverMainCard} mt-5`}
+              >
                 <div className={Styles.pickupDeliveryDetailDrivernameCard}>
                   <img
                     className={Styles.pickupDeliveryDetailDriverImg}
@@ -257,14 +214,13 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Pickup information
+                    {t("pickup_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.company_name : ""}
                   </h4>
                   <p className={Styles.pickupDeliveryDetailCompanyAddress}>
-                    {sourceAddress.address}, {sourceAddress.city},{" "}
-                    {sourceAddress.state}
+                    {getLocationAddress(orders?.pickup_location)}
                   </p>
                   <p className={Styles.pickupDeliveryDetailCompanyAddress}>
                     {orders?.pickup_notes ? orders?.pickup_notes : ""}
@@ -272,28 +228,59 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                 </div>
               </div>
 
-              <div className={Styles.pickupDeliveryDetailPackageCard}>
-                <img
-                  className={Styles.pickupDeliveryDetailPackage}
-                  src={PackageDrop}
-                  alt="package"
-                />
-                <div>
-                  <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Drop off information
-                  </p>
-                  <h4 className={Styles.pickupDeliverDetailCompanyName}>
-                    {orders?.company_name ? orders?.drop_company_name : ""}
-                  </h4>
-                  <p className={Styles.pickupDeliveryDetailCompanyAddress}>
-                    {destinationAddress.address}, {destinationAddress.city},{" "}
-                    {destinationAddress.state}
-                  </p>
-                  <p className={Styles.pickupDeliveryDetailCompanyAddress}>
-                    {orders?.drop_notes ? orders?.drop_notes : ""}
-                  </p>
+              {multipleOrderLocation &&
+                multipleOrderLocation?.length > 0 &&
+                multipleOrderLocation?.map((branch, index) => (
+                  <div
+                    className={Styles.pickupDeliveryDetailPackageCard}
+                    key={index}
+                  >
+                    <img
+                      className={Styles.pickupDeliveryDetailPackage}
+                      src={PackageDrop}
+                      alt="package"
+                    />
+                    <div>
+                      <p className={Styles.pickupDeliveryDetailDropInfo}>
+                        {t("dropoff_information")} {index + 1}
+                      </p>
+                      <h4 className={Styles.pickupDeliverDetailCompanyName}>
+                        {branch?.drop_company_name}
+                      </h4>
+
+                      <p className={Styles.pickupDeliveryDetailCompanyAddress}>
+                        {getLocationAddress(branch?.dropoff_location)}
+                      </p>
+
+                      <p className={Styles.pickupDeliveryDetailCompanyAddress}>
+                        {branch?.drop_notes ? branch?.drop_notes : ""}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              {orders?.delivery_type_id === 1 && (
+                <div className={Styles.pickupDeliveryDetailPackageCard}>
+                  <img
+                    className={Styles.pickupDeliveryDetailPackage}
+                    src={PackagePickup}
+                    alt="package"
+                  />
+                  <div>
+                    <p className={Styles.pickupDeliveryDetailDropInfo}>
+                      {t("pickup_information")}
+                    </p>
+                    <h4 className={Styles.pickupDeliverDetailCompanyName}>
+                      {orders?.company_name ? orders?.company_name : ""}
+                    </h4>
+                    <p className={Styles.pickupDeliveryDetailCompanyAddress}>
+                      {getLocationAddress(orders?.dropoff_location)}
+                    </p>
+                    <p className={Styles.pickupDeliveryDetailCompanyAddress}>
+                      {orders?.pickup_notes ? orders?.pickup_notes : ""}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className={Styles.pickupDeliveryDetailOrderfareMainCard}>
                 <div>
@@ -305,14 +292,14 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Package Informatiom
+                        {t("package_information")}
                       </p>
                     </div>
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order Id:
+                        {t("order_id")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {orders?.order_number ? orders?.order_number : ""}
@@ -320,7 +307,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Vehicle:
+                        {t("vehicle")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {vehicleType?.vehicle_type
@@ -331,7 +318,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     {orders?.otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Pickup OTP:
+                          {t("pickup_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.otp}
@@ -341,7 +328,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     {orders?.delivered_otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Delivered OTP:
+                          {t("delivered_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.delivered_otp}
@@ -362,7 +349,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                     </div>
                     <h4 className={Styles.pickupDeliveryDetailOrderPriceText}>
@@ -371,11 +358,11 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      Travelled {orders?.distance} km
+                      {t("travelled")} {orders?.distance?.toFixed(2)} {t("km")}
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -386,7 +373,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Waiting
+                        {t("waiting")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €0.00
@@ -394,7 +381,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Platform fee
+                        {t("platform_fee")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -405,7 +392,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Amount charged
+                        {t("amount_charged")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €{orders.amount ? orders.amount.toFixed(2) : "0.00"}
@@ -418,7 +405,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                         alt="mastercard"
                       />
                       <p className={Styles.pickupDeliveryDetailMasterCardtext}>
-                        Paid with mastercard
+                        {t("paid_with_mastercard")}
                       </p>
                     </div>
                   </div>
@@ -433,7 +420,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
                     alt="invoice"
                   />
                   <p className={Styles.pickupDeliveryDetailDownloadInvoiceText}>
-                    Download invoice
+                    {t("download_invoice")}
                   </p>
                 </div>
                 <button
@@ -450,7 +437,7 @@ const EnterpriseOrder = ({ user, orderNumber, navigate,tabId }) => {
     </section>
   );
 };
-const ConsumerOrder = ({ user, order, navigate,tabId }) => {
+const ConsumerOrder = ({ user, order, navigate, tabId, t }) => {
   const orderNumber = order?.order_number;
   const [orders, setOrders] = useState({});
   const [deliveryboy, setDeliveryboy] = useState({});
@@ -462,7 +449,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
   const [sourceAddress, setSourceAddress] = useState({});
 
   const goBack = () => {
-    navigate("/consumer/orders",{state:{tabId:tabId}}); // Navigate back to the previous page
+    navigate("/consumer/orders", { state: { tabId: tabId } }); // Navigate back to the previous page
   };
   useEffect(() => {
     orderDetail();
@@ -617,14 +604,14 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
             <div>
               <div className={Styles.pickupDeliveryDetailsHead}>
                 <div className={Styles.pickupDeliveryDetailsHeaderCard}>
-                  <div onClick={goBack} style={{cursor:"pointer"}}>
+                  <div onClick={goBack} style={{ cursor: "pointer" }}>
                     <FontAwesomeIcon
                       className={Styles.pickupHistoryBackspaceButton}
                       icon={faArrowLeft}
                     />
                   </div>
                   <h4 className={Styles.pickupHistoryHeaderTitle}>
-                    Delivery Details
+                    {t("delivery_details")}
                   </h4>
                 </div>
                 <Link
@@ -682,7 +669,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Pickup information
+                    {t("pickup_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.company_name : ""}
@@ -705,7 +692,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                 />
                 <div>
                   <p className={Styles.pickupDeliveryDetailDropInfo}>
-                    Drop off information
+                    {t("dropoff_information")}
                   </p>
                   <h4 className={Styles.pickupDeliverDetailCompanyName}>
                     {orders?.company_name ? orders?.drop_company_name : ""}
@@ -730,14 +717,14 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Package Informatiom
+                        {t("package_information")}
                       </p>
                     </div>
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order Id:
+                        {t("order_id")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {orders?.order_number ? orders?.order_number : ""}
@@ -745,7 +732,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Vehicle:
+                        {t("vehicle")}:
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         {vehicleType?.vehicle_type
@@ -756,7 +743,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     {orders?.otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Pickup OTP:
+                          {t("pickup_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.otp}
@@ -766,7 +753,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     {orders?.delivered_otp && (
                       <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                         <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                          Delivered OTP:
+                          {t("delivered_otp")}:
                         </p>
                         <p className={Styles.pickupDeliveryDetailPricesText}>
                           {orders?.delivered_otp}
@@ -787,7 +774,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                         alt="icon"
                       />
                       <p className={Styles.pickupDeliveryDetailOrderfareText}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                     </div>
                     <h4 className={Styles.pickupDeliveryDetailOrderPriceText}>
@@ -796,11 +783,11 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                   </div>
                   <div className={Styles.pickupDeliveryDetailPickuppriceCard}>
                     <p className={Styles.pickupDeliveryDetailTraveledDistance}>
-                      Travelled {orders?.distance} km
+                      {t("travelled")} {orders?.distance?.toFixed(2)} {t("km")}
                     </p>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Order fare
+                        {t("order_fare")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -811,7 +798,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Waiting
+                        {t("waiting")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €0.00
@@ -819,7 +806,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Platform fee
+                        {t("platform_fee")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €
@@ -830,7 +817,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     </div>
                     <div className={Styles.pickupDeliveryDetailsAllPriceCard}>
                       <p className={Styles.pickupDeliveryDetailOrderfaretext}>
-                        Amount charged
+                        {t("amount_charged")}
                       </p>
                       <p className={Styles.pickupDeliveryDetailPricesText}>
                         €{orders.amount ? orders.amount.toFixed(2) : "0.00"}
@@ -843,7 +830,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                         alt="mastercard"
                       />
                       <p className={Styles.pickupDeliveryDetailMasterCardtext}>
-                        Paid with mastercard
+                        {t("paid_with_mastercard")}
                       </p>
                     </div>
                   </div>
@@ -858,7 +845,7 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
                     alt="invoice"
                   />
                   <p className={Styles.pickupDeliveryDetailDownloadInvoiceText}>
-                    Download invoice
+                    {t("download_invoice")}
                   </p>
                 </div>
                 <button
@@ -877,18 +864,51 @@ const ConsumerOrder = ({ user, order, navigate,tabId }) => {
 };
 function OrderDetail() {
   const location = useLocation();
-  const { order,tabId } = location.state || {};
+  const { order, tabId } = location.state || {};
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
-
+  const [locationList, setLocationList] = useState([]);
+  const { t } = useTranslation();
+  useEffect(() => {
+    const getLocationsData = () => {
+      getLocations(
+        null,
+        (successResponse) => {
+          if (successResponse[0]._success) {
+            let tempLocationList = successResponse[0]._response;
+            setLocationList(tempLocationList);
+          }
+        },
+        (errorResponse) => {
+          console.log(errorResponse[0]._errors.message);
+        }
+      );
+    };
+    if (user) {
+      getLocationsData();
+    }
+  }, []);
   return (
     <>
       <CommonHeader userData={user} />
       {user?.userDetails.role == "CONSUMER" && (
-        <ConsumerOrder user={user} order={order} navigate={navigate} tabId={tabId}/>
+        <ConsumerOrder
+          user={user}
+          order={order}
+          navigate={navigate}
+          tabId={tabId}
+          t={t}
+        />
       )}
       {user?.userDetails.role == "ENTERPRISE" && (
-        <EnterpriseOrder user={user} orderNumber={order} navigate={navigate} tabId={tabId}/>
+        <EnterpriseOrder
+          user={user}
+          orderNumber={order}
+          navigate={navigate}
+          tabId={tabId}
+          t={t}
+          locationList={locationList}
+        />
       )}
     </>
   );

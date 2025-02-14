@@ -13,6 +13,7 @@ const OneLocation = ({
   setPickupLocation,
   setDropoffLocation,
   calculateRoute,
+  t,
 }) => {
   const originRef = useRef();
   const destinationRef = useRef();
@@ -94,7 +95,7 @@ const OneLocation = ({
               <input
                 className={Styles.homeMapPlaceSearch}
                 type="text"
-                placeholder="Enter pickup location"
+                placeholder={t("enter_pickup_location")}
                 ref={originRef}
               />
             </Autocomplete>
@@ -125,7 +126,7 @@ const OneLocation = ({
               <input
                 className={Styles.homeMapPlaceSearch}
                 type="text"
-                placeholder="Enter drop-off location"
+                placeholder={t("enter_dropoff_location")}
                 ref={destinationRef}
               />
             </Autocomplete>
@@ -142,7 +143,7 @@ const OneLocation = ({
           onClick={handleUseCurrentLocation}
           style={{ cursor: "pointer" }}
         >
-          Use Current Location
+          {t("use_current_location")}
         </p>
       </div>
     </>
