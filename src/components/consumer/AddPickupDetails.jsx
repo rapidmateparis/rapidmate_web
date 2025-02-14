@@ -58,6 +58,7 @@ const AddPickupDetails = () => {
     pickupnote: yup.string(),
     email: yup
       .string()
+      .required("Email is required")
       .email("Please enter a valid email"),
     phoneNumber: yup
     .string()
@@ -99,6 +100,7 @@ const AddPickupDetails = () => {
       .string(),
     demail: yup
       .string()
+      .required("Email is required")
       .email("Please enter a valid email"),
     dphoneNumber: yup
        .string()
@@ -349,7 +351,7 @@ const AddPickupDetails = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("email")}:
+                        {t("email")}: <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
                         name="email"
@@ -685,7 +687,7 @@ const AddPickupDetails = () => {
                           htmlFor="demail"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          {t("email")}: 
+                          {t("email")}: <span className={Styles.textColor}>*</span>
                         </label>
                         <Controller
                           name="demail"

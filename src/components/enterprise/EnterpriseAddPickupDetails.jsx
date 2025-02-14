@@ -74,6 +74,7 @@ const EnterpriseAddPickupDetails = () => {
     pickupnote: yup.string(),
     email: yup
       .string()
+      .required("Email is required")
       .email("Please enter a valid email"),
     phoneNumber: yup
       .string()
@@ -115,6 +116,7 @@ const EnterpriseAddPickupDetails = () => {
       .string(),
     demail: yup
       .string()
+      .required("Email is required")
       .email("Please enter a valid email"),
     dphoneNumber: yup
       .string()
@@ -321,7 +323,7 @@ const EnterpriseAddPickupDetails = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("email")}:
+                        {t("email")}: <span className={Styles.textColor}>*</span>
                       </label>
                       <TextInput
                         control={control}
@@ -1095,7 +1097,7 @@ const EnterpriseAddPickupDetails = () => {
                           htmlFor="demail"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          {t("email")}:
+                          {t("email")}: <span className={Styles.textColor}>*</span>
                         </label>
                         <TextInput
                           control={control}

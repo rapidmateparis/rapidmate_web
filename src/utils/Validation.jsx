@@ -13,7 +13,7 @@ export const getDynamicDropoffSchema = (dropoffCount) => {
   let dropoffSchemas = {};
   dropoffSchemas[`company`]=yup.string().required("Company name is required");
   dropoffSchemas["pickupnote"]= yup.string();
-  dropoffSchemas["email"]= yup.string().email("Please enter a valid email");
+  dropoffSchemas["email"]= yup.string().required("Email is required").email("Please enter a valid email");
   dropoffSchemas["phoneNumber"]= yup
         .string()
         .required("Phone number is required")
@@ -63,7 +63,7 @@ export const getDynamicDropoffSchema = (dropoffCount) => {
     dropoffSchemas[`dname-${i}`] =yup.string().required("Name is required").min(3, "Name must be at least 3 characters long");
     dropoffSchemas[`dlastname-${i}`] =yup.string();
     dropoffSchemas[`dcompany-${i}`] = yup.string().notRequired();
-    dropoffSchemas[`demail-${i}`] = yup.string().email("Please enter a valid email");
+    dropoffSchemas[`demail-${i}`] = yup.string().required("Email is required").email("Please enter a valid email");
     dropoffSchemas[`dphoneNumber-${i}`] = yup.string().required("Phone number is required").matches(/^\d+$/, "Phone number should contain only digits").test("length", "Phone number length is invalid", function (value) {
       const { dcountry } = this.parent; 
       const countryCode = dcountry ? dcountry : null;

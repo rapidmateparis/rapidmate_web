@@ -235,7 +235,7 @@ const EnterpriseAdd = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("email")}:
+                        {t("email")}: <span className={Styles.textColor}>*</span>
                       </label>
                       <TextInput
                         control={control}
@@ -1029,7 +1029,7 @@ const EnterpriseAdd = () => {
                                 htmlFor={`demail-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                {t("email")}:{" "}
+                                {t("email")}: {" "} <span className={Styles.textColor}>*</span>
                               </label>
                               <TextInput
                                 control={control}
