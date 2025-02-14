@@ -82,7 +82,7 @@ function RenderItem({ status = "", locationList = [], orderList = [] ,tabId}) {
                   </div>
                 </div>
               ))}
-             <CustomPagination totalPages={20} initialPage={1} onPageChange={(page) => console.log("Current Page:", page)} />
+             {/* <CustomPagination totalPages={20} initialPage={1} onPageChange={(page) => console.log("Current Page:", page)} /> */}
             </>
           ) : (
             <div className={Styles.pickupHistoryNoDataMainCard}>

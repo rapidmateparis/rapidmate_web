@@ -9,42 +9,84 @@ import {
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "../../common/CommonHeader";
 import RenderItem from "./common/RenderItem";
-import { getConsumerViewOrdersListBySearch, getLocations } from "../../data_manager/dataManage";
+import {
+  getConsumerViewOrdersList,
+  getConsumerViewOrdersListBySearch,
+  getLocations,
+} from "../../data_manager/dataManage";
 import { getOrderList } from "../../utils/getOrderList";
 import { useSelector } from "react-redux";
 import Spinners from "../../common/Loader";
 import { useTranslation } from "react-i18next";
 
 const PastOrder = () => {
-  const user = useSelector((state)=>state.auth.user)
-  const navigate=useNavigate()
-  const {t}=useTranslation()
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTab, setSelectedTab] = useState("tab1");
   const [orderList, setOrderList] = useState([]);
   const [pastOrderList, setPastOrderList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [loading, setLoading] = useState([]);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
   const location = useLocation();
-  const {tabId } = location.state || {};
-  const [tabValue,setTabValue]=useState(1)
+  const { tabId } = location.state || {};
+  const [tabValue, setTabValue] = useState(1);
+  const [isLoad,setIsLoad]=useState(true)
   const goBack = () => {
     navigate(-1);
   };
   useEffect(() => {
     getLocationsData();
     getOrder("current");
-    getOrder("past");
   }, []);
 
   const getOrder = async (status) => {
+  
     const userExtId = user.userDetails.ext_id;
-    const orders = await getOrderList(userExtId, status);
-    if (status === "current") {
-      setOrderList(orders);
-    } else if (status === "past") {
-      setPastOrderList(orders);
-    }
+    let postParams = {
+      extentedId: userExtId,
+      status: status,
+      page: page,
+      size: size,
+    };
+    setLoading(true)
+    getConsumerViewOrdersList(
+      postParams,
+      null,
+      (successResponse) => {
+        if (successResponse[0]._success) {
+          let tempOrderList = successResponse[0]._response;
+          if(size === successResponse[0]?._response.length){
+            setIsLoad(true)
+          }else if (size > successResponse[0]._response.length) {
+            setIsLoad(false);
+          }
+          if (status === "past") {
+            setPastOrderList(tempOrderList);
+          } else {
+            setOrderList(tempOrderList);
+          }
+        } else {
+          if (status === "past") {
+            setPastOrderList([]);
+          } else {
+            setOrderList([]);
+          }
+        }
+        setLoading(false)
+      },
+      (errorResponse) => {
+        if (status === "past") {
+          setPastOrderList([]);
+        } else {
+          setOrderList([]);
+        }
+        setLoading(false)
+      }
+    );
   };
 
   const getLocationsData = () => {
@@ -73,8 +115,8 @@ const PastOrder = () => {
     setSearchTerm(value);
     if (value.trim().length === 0) {
       // If the search term is empty, fetch the original lists
-      getOrder("current");
-      getOrder("past");
+      selectedTab === "tab1" && getOrder("current");
+      selectedTab === "tab2" && getOrder("past");
       return;
     }
     setLoading(true);
@@ -88,16 +130,18 @@ const PastOrder = () => {
   };
 
   const handleTabChange = (event) => {
-    const tabId=event.target.id
-    if(tabId=="tab1"){
-      setTabValue(1)
-    }else{
-      setTabValue(2)
+    const tabId = event.target.id;
+    if (tabId == "tab1") {
+      setTabValue(1);
+      getOrder("current")
+    } else {
+      setTabValue(2);
+      getOrder("past")
     }
-    setSelectedTab(event.target.id); 
+    setSelectedTab(event.target.id);
   };
 
-  const getOrderListinSearch = (searchValue,status) => {
+  const getOrderListinSearch = (searchValue, status) => {
     let postParams = {
       extentedId: user.userDetails.ext_id,
       status,
@@ -105,55 +149,70 @@ const PastOrder = () => {
     };
     getConsumerViewOrdersListBySearch(
       postParams,
-      successResponse => {
+      (successResponse) => {
         if (successResponse[0]._success) {
           let tempOrderList = successResponse[0]._response;
-          if(status=='past'){
-            setPastOrderList(tempOrderList)
-          }else{
-            setOrderList(tempOrderList)
+          if (status == "past") {
+            setPastOrderList(tempOrderList);
+          } else {
+            setOrderList(tempOrderList);
           }
         }
       },
-      errorResponse => {
-        if(status=='past'){
-          setPastOrderList([])
-        }else{
-          setOrderList([])
+      (errorResponse) => {
+        if (status == "past") {
+          setPastOrderList([]);
+        } else {
+          setOrderList([]);
         }
-      },
+      }
     );
   };
 
-  useEffect(()=>{
-    if(location.state){
-      if(tabId){
-        setTabValue(tabId)
-        setSelectedTab("tab"+tabId)
+  useEffect(() => {
+    if (location.state) {
+      if (tabId) {
+        setTabValue(tabId);
+        setSelectedTab("tab" + tabId);
+        if(tabId==1){
+          getOrder("current")
+        }else{
+           getOrder("past")
+        }
       }
     }
-  },[location.state])
-  
+  }, [location.state]);
+
+  const loadMore = () => {
+    setSize(size+10)
+    if(selectedTab === "tab1"){
+      getOrder("current")
+    }else{
+      getOrder("past")
+    }
+  }
   return (
     <>
       {/* Header Start Here  */}
       <CommonHeader userData={user} />
       {/* Header End Here  */}
       <section className={Styles.pickupHistorySec}>
-        {loading && <Spinners /> }
+        {loading && <Spinners />}
         <div className="container">
           <div className="row">
             <div className={Styles.max75}>
               <div>
                 <div className={Styles.pickupHistoryHeaderCard}>
                   <div className={Styles.pickupHistoryTitleHeaderCard}>
-                    <div onClick={goBack} style={{cursor:"pointer"}}>
+                    <div onClick={goBack} style={{ cursor: "pointer" }}>
                       <FontAwesomeIcon
                         className={Styles.pickupHistoryBackspaceButton}
                         icon={faArrowLeft}
                       />
                     </div>
-                    <h4 className={Styles.pickupHistoryHeaderTitle}>{t("order_history")}</h4>
+                    <h4 className={Styles.pickupHistoryHeaderTitle}>
+                      {t("order_history")}
+                    </h4>
                   </div>
                   <div className={Styles.pickupHistorySearchFillterCard}>
                     <div className={Styles.pickupHistorySearchCard}>
@@ -191,12 +250,18 @@ const PastOrder = () => {
                     onChange={handleTabChange}
                   />
                   <ul>
-                    <li title="Ongoing order"  className={`${selectedTab == "tab1" ? "activetab" : ""}`}>
+                    <li
+                      title="Ongoing order"
+                      className={`${selectedTab == "tab1" ? "activetab" : ""}`}
+                    >
                       <label htmlFor="tab1" role="button" className="tab-label">
                         <span>{t("ongoing")}</span>
                       </label>
                     </li>
-                    <li title="Past order "  className={`${selectedTab == "tab2" ? "activetab" : ""}`}>
+                    <li
+                      title="Past order "
+                      className={`${selectedTab == "tab2" ? "activetab" : ""}`}
+                    >
                       <label htmlFor="tab2" role="button" className="tab-label">
                         <span>{t("past")}</span>
                       </label>
@@ -204,13 +269,25 @@ const PastOrder = () => {
                   </ul>
                   <div className="content">
                     {/* Ongoing Start Here  */}
-                    <RenderItem status="current" locationList={locationList} orderList={orderList} tabId={tabValue} />
+                    <RenderItem
+                      status="current"
+                      locationList={locationList}
+                      orderList={orderList}
+                      tabId={tabValue}
+                    />
 
                     {/* Past Orders Start Here  */}
-                    <RenderItem status="past" locationList={locationList} orderList={pastOrderList} tabId={tabValue} />
+                    <RenderItem
+                      status="past"
+                      locationList={locationList}
+                      orderList={pastOrderList}
+                      tabId={tabValue}
+                    />
                   </div>
-                  <div className="d-flex justify-content-end item-center">
-                    
+                  <div className="d-flex justify-content-center item-center">
+                    {isLoad && <button onClick={loadMore} className={Styles.addPickupDetailsCancelBTn}>
+                      Load More...
+                    </button>}
                   </div>
                 </div>
               </div>

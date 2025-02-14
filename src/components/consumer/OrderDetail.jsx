@@ -622,14 +622,14 @@ const ConsumerOrder = ({ user, order, navigate, tabId, t }) => {
                 </Link>
               </div>
               {/* Map  */}
-              <div className={Styles.pickupDeliveryDetailsMapCard}>
+              {/* <div className={Styles.pickupDeliveryDetailsMapCard}>
                 <DeliveryDetailsMap
                   addressData={{
                     sourceAddress: sourceAddress,
                     destinationAddress: destinationAddress,
                   }}
                 />
-              </div>
+              </div> */}
 
               <div className={Styles.pickupDeliveryDetailDriverMainCard}>
                 <div className={Styles.pickupDeliveryDetailDrivernameCard}>

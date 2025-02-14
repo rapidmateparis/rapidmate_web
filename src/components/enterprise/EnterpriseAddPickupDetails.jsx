@@ -70,9 +70,7 @@ const EnterpriseAddPickupDetails = () => {
   const schema = yup.object().shape({
     company: yup.string(),
     packageId: yup
-      .string()
-      .required("Package id is required")
-      .min(3, "Package id must be at least 3 characters long"),
+      .string(),
     pickupnote: yup.string(),
     email: yup
       .string()
@@ -101,7 +99,7 @@ const EnterpriseAddPickupDetails = () => {
     file: yup
       .mixed()
       .required("A file is required")
-      .test("fileSize", "File size is too large", (value) => {
+      .test("fileSize", "File size is too large , Max size 5mb.", (value) => {
         return value && value[0] && value[0].size <= FILE_SIZE;
       })
       .test("fileType", "Unsupported file type", (value) => {
@@ -114,9 +112,7 @@ const EnterpriseAddPickupDetails = () => {
       .required("Name is required")
       .min(3, "Name must be at least 3 characters long"),
     dlastname: yup
-      .string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters long"),
+      .string(),
     demail: yup
       .string()
       .email("Please enter a valid email"),
@@ -325,7 +321,7 @@ const EnterpriseAddPickupDetails = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("email")}: <span className={Styles.textColor}>*</span>
+                        {t("email")}:
                       </label>
                       <TextInput
                         control={control}
@@ -399,7 +395,7 @@ const EnterpriseAddPickupDetails = () => {
                       htmlFor="file"
                       className={Styles.addPickupDetailFormLabels}
                     >
-                      {t("package_photo")} <span className={Styles.textColor}>*</span>
+                      {t("package_photo")} <span className={Styles.textColor}>*</span> : <span className={Styles.textColor}>Max size: 5mb</span>
                     </label>
 
                     {imagePreview ? (
@@ -485,7 +481,7 @@ const EnterpriseAddPickupDetails = () => {
                         htmlFor="packageId"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("package_id")} <span className={Styles.textColor}>*</span>
+                        {t("package_id")}
                       </label>
 
                       <TextInput
@@ -1064,7 +1060,7 @@ const EnterpriseAddPickupDetails = () => {
                           htmlFor="dlastname"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          {t("last_name")}: <span className={Styles.textColor}>*</span>
+                          {t("last_name")}:
                         </label>
                         <TextInput
                           control={control}
@@ -1099,7 +1095,7 @@ const EnterpriseAddPickupDetails = () => {
                           htmlFor="demail"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          {t("email")}: <span className={Styles.textColor}>*</span>
+                          {t("email")}:
                         </label>
                         <TextInput
                           control={control}
@@ -1188,7 +1184,7 @@ const EnterpriseAddPickupDetails = () => {
                       <Link
                         className={Styles.addPickupDetailsCancelBTn}
                         style={{ color: "#000" }}
-                        to="/consumer/dashboard"
+                        to="/enterprise/dashboard"
                       >
                         {t("back")}
                       </Link>

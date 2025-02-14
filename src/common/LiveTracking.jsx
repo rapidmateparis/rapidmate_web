@@ -48,6 +48,8 @@ function LiveTracking() {
   const [multipleOrderLocation, setMultipleOrderLocation] = useState([]);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const [markAsComplepleted, setMarkAsCompleted] = useState(false);
+  const [pickupLocation,setPickupLocation]=useState(null)
+  const [dropoffLocation,setDropoffLocation]=useState([]);
   const [orderNum, setOrderNum] = useState(
     driverDetails == undefined
       ? orderNumber
@@ -66,7 +68,6 @@ function LiveTracking() {
         (successResponse) => {
           setLoading(false);
           if (successResponse[0]._success) {
-            console.log("order status", successResponse[0]._response.order?.order_status )
             if (
               successResponse[0]._response.order?.order_status =="COMPLETED"
             ) {
@@ -159,8 +160,8 @@ function LiveTracking() {
   const getOrigin = (locationId) => {
     let result = locationLists?.filter((location) => location.id == locationId);
     const params = {
-      lat: result[0].latitude,
-      lng: result[0]?.longitude,
+      lat: parseFloat(result[0].latitude),
+      lng: parseFloat(result[0]?.longitude),
     };
     return params;
   };
@@ -248,8 +249,30 @@ function LiveTracking() {
 
   // Update the current step if the `order` prop changes.
   useEffect(() => {
-    setCurrentStep(getStep(order));
-  }, [order]);
+    if (order) {
+      setCurrentStep(getStep(order));
+  
+      if (user?.userDetails.role === "CONSUMER") { 
+        setPickupLocation(getOrigin(order?.pickup_location_id));
+  
+        const dropoff = getOrigin(order?.dropoff_location_id);
+        if (dropoff) {
+          setDropoffLocation([dropoff]); // Ensure it's set as an array
+        } else {
+          setDropoffLocation([]); // Default to empty array if null
+        }
+      } else {
+        setPickupLocation(getOrigin(order?.pickup_location));
+  
+        const formattedDropoffLocations = (multipleOrderLocation || []) // Ensure it's not null
+          .map((branch) => getOrigin(branch.dropoff_location))
+          .filter((loc) => loc !== null); // Remove null values
+  
+        setDropoffLocation(formattedDropoffLocations);
+      }
+    }
+  }, [order]); // Added dependencies for better reactivity
+  
 
   const steps = [
     t("driver_assigned"),
@@ -314,6 +337,9 @@ function LiveTracking() {
       window.location.href = `tel:${phoneNumber}`; // Ensure it's executed inside a direct click event
     }, 0);
   };
+  
+
+  
   return (
     <>
       <CommonHeader userData={user} />
@@ -518,22 +544,13 @@ function LiveTracking() {
               </div>
             </div>
           </div>
+          
           <div className="col-md-9">
-            <div>
-              {user?.userDetails?.role == "ENTERPRISE" &&
-                order?.delivery_type_id === 1 && (
-                  <PickupHomeMap
-                    latitude={getOrigin(order?.pickup_location)}
-                    longitude={getOrigin(order?.dropoff_location)}
-                  />
-                )}
-              {user?.userDetails?.role == "CONSUMER" && (
-                <PickupHomeMap
-                  latitude={getOrigin(order?.pickup_location_id)}
-                  longitude={getOrigin(order?.dropoff_location_id)}
-                />
-              )}
-              
+            <div className="text-center"> 
+              <PickupHomeMap
+                pickupLocation={pickupLocation}
+                dropoffLocations={dropoffLocation}
+              />
             </div>
           </div>
         </div>

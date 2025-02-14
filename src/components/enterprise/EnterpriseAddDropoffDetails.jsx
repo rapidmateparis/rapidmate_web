@@ -235,7 +235,7 @@ const EnterpriseAdd = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("email")}: <span className={Styles.textColor}>*</span>
+                        {t("email")}:
                       </label>
                       <TextInput
                         control={control}
@@ -830,7 +830,7 @@ const EnterpriseAdd = () => {
                               htmlFor="file"
                               className={Styles.addPickupDetailFormLabels}
                             >
-                              {t("package_photo")} <span className={Styles.textColor}>*</span>
+                              {t("package_photo")} <span className={Styles.textColor}>*</span> : <span className={Styles.textColor}>Max size: 5mb</span>
                             </label>
 
                             { imagePreview[index] ? (
@@ -924,7 +924,7 @@ const EnterpriseAdd = () => {
                                 htmlFor={`packageId-${index}`}
                                 className={Styles.addPickupDetailFormLabels}
                               >
-                                {t("package_id")} <span className={Styles.textColor}>*</span>
+                                {t("package_id")}
                               </label>
 
                               <TextInput
@@ -988,7 +988,6 @@ const EnterpriseAdd = () => {
                                 className={Styles.addPickupDetailFormLabels}
                               >
                                 {t("last_name")}:{" "}
-                                <span className={Styles.textColor}>*</span>
                               </label>
                               <TextInput
                                 control={control}
@@ -1031,7 +1030,6 @@ const EnterpriseAdd = () => {
                                 className={Styles.addPickupDetailFormLabels}
                               >
                                 {t("email")}:{" "}
-                                <span className={Styles.textColor}>*</span>
                               </label>
                               <TextInput
                                 control={control}
@@ -1128,7 +1126,7 @@ const EnterpriseAdd = () => {
                       <Link
                         className={Styles.addPickupDetailsCancelBTn}
                         style={{ color: "#000" }}
-                        to="/consumer/dashboard"
+                        to="/enterprise/dashboard"
                       >
                         {t("back")}
                       </Link>

@@ -228,10 +228,7 @@ export const getConsumerViewOrdersList = (
   errorCallback,
 ) => {
   axiosCall(
-    API.viewConsumerOrderUrl +
-      postParams.extentedId +
-      '?status=' +
-      postParams.status,
+    API.viewConsumerOrderUrl + postParams.extentedId +'?status=' +postParams.status+'&page='+postParams.page+'&size='+postParams.size,
     HTTPMethod.GET,
     params,
     response => {

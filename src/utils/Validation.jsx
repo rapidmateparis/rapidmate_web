@@ -13,7 +13,7 @@ export const getDynamicDropoffSchema = (dropoffCount) => {
   let dropoffSchemas = {};
   dropoffSchemas[`company`]=yup.string().required("Company name is required");
   dropoffSchemas["pickupnote"]= yup.string();
-  dropoffSchemas["email"]= yup.string().required("Email is required").email("Please enter a valid email");
+  dropoffSchemas["email"]= yup.string().email("Please enter a valid email");
   dropoffSchemas["phoneNumber"]= yup
         .string()
         .required("Phone number is required")
@@ -52,18 +52,18 @@ export const getDynamicDropoffSchema = (dropoffCount) => {
   dropoffSchemas["onDay"]= yup.string().nullable();
   dropoffSchemas["onThe"]= yup.string().nullable();
   for (let i = 0; i < dropoffCount; i++) {
-    dropoffSchemas[`file-${i}`] = yup.mixed().required("A file is required").test("fileSize", "File size is too large", (value) => {
+    dropoffSchemas[`file-${i}`] = yup.mixed().required("A file is required").test("fileSize", "File size is too large, Max size 5mb.", (value) => {
             return value && value[0] && value[0].size <= FILE_SIZE;
           })
           .test("fileType", "Unsupported file type", (value) => {
             return value && value[0] && SUPPORTED_FORMATS.includes(value[0].type);
           });
-    dropoffSchemas[`packageId-${i}`] =  yup.string().required("Package id is required").min(3, "Package id must be at least 3 characters long");
+    dropoffSchemas[`packageId-${i}`] =  yup.string();
     dropoffSchemas[`pickupnote-${i}`] = yup.string().notRequired();
     dropoffSchemas[`dname-${i}`] =yup.string().required("Name is required").min(3, "Name must be at least 3 characters long");
-    dropoffSchemas[`dlastname-${i}`] =yup.string().required("Last name is required").min(2, "Last name must be at least 2 characters long");
+    dropoffSchemas[`dlastname-${i}`] =yup.string();
     dropoffSchemas[`dcompany-${i}`] = yup.string().notRequired();
-    dropoffSchemas[`demail-${i}`] = yup.string().required("Email is required").email("Please enter a valid email");
+    dropoffSchemas[`demail-${i}`] = yup.string().email("Please enter a valid email");
     dropoffSchemas[`dphoneNumber-${i}`] = yup.string().required("Phone number is required").matches(/^\d+$/, "Phone number should contain only digits").test("length", "Phone number length is invalid", function (value) {
       const { dcountry } = this.parent; 
       const countryCode = dcountry ? dcountry : null;
