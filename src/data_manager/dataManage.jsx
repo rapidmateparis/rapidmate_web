@@ -1298,3 +1298,18 @@ export const getTaxDetails = (params,successCallback, errorCallback) => {
     },
   );
 };
+
+
+export const getMapKey = (params,successCallback, errorCallback) => {
+  axiosCall(
+    API.getMapKey,
+    HTTPMethod.GET,
+    {},
+    response => {
+      successCallback(response);
+    },
+    errorResponse => {
+      errorCallback(errorResponse);
+    },
+  );
+};

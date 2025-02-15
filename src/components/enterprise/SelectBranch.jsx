@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../../assets/css/home.module.css";
 import { useSelector } from "react-redux";
-import { buildAddress } from "../../utils/Constants";
+import { buildAddress, getMapsApiKey } from "../../utils/Constants";
 import { getEnterpriseBranch } from "../../data_manager/dataManage";
 import { showErrorToast } from "../../utils/Toastify";
 import NoDataImage from "../../assets/images/NoOrder.png";
@@ -20,6 +20,7 @@ const SelectBranch = () => {
   const serviceType = location.state.servicetype;
   const navigate = useNavigate();
   const [enterpriseBranch, setEnterpriseBranches] = useState(null);
+  const [mapMapKey,setMapKey]=useState(null)
   const getBranchLocation = () => {
     getEnterpriseBranch(
       user.userDetails.ext_id,
@@ -62,6 +63,11 @@ const SelectBranch = () => {
   };
   useEffect(() => {
     getBranchLocation();
+    const getMapApiKey = async () => {
+      const key = await getMapsApiKey()
+      setMapKey(key)
+    }
+    getMapApiKey()
   }, [user]);
   useEffect(() => {
     if (!serviceType) {
@@ -78,7 +84,7 @@ const SelectBranch = () => {
       `/enterprise/${serviceType?.delivery_type
         ?.toLowerCase()
         .replace(/ /g, "-")}`,
-      { state: { selectedBranch: branch, deliveryType: serviceType } }
+      { state: { selectedBranch: branch, deliveryType: serviceType,mapApiKey:mapMapKey } }
     );
   };
   return (
