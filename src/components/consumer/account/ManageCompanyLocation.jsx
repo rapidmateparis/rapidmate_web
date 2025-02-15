@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import DeleteModal from "./DeleteModal";
 import { useSelector } from "react-redux";
 import { showErrorToast } from "../../../utils/Toastify";
-import { buildAddress } from "../../../utils/Constants";
+import { buildAddress, getMapsApiKey } from "../../../utils/Constants";
 import EnterpriseAddOrEditCompanyLocation from "../../enterprise/setting/EnterpriseAddOrEditCompanyLocation";
 
 function ManageCompanyLocation() {
@@ -22,6 +22,7 @@ function ManageCompanyLocation() {
   const [rowId, setRowId] = useState(null);
   const [addShow, setAddShow] = useState(false);
   const [editBranch, setEditBranch] = useState(null);
+  const [mapKey,setMapKey]=useState(null)
 
   const getBranchLocation = () => {
     setLoading(true);
@@ -72,6 +73,11 @@ function ManageCompanyLocation() {
 
   useEffect(() => {
     getBranchLocation();
+    const getMapKey=async () =>{
+      const key = await getMapsApiKey()
+      setMapKey(key)
+    }
+    getMapKey()
   }, [user]);
 
   return (
@@ -95,6 +101,7 @@ function ManageCompanyLocation() {
                 setAddShow={setAddShow}
                 getBranchLocation={getBranchLocation}
                 editBranch={editBranch}
+                mapKey={mapKey}
               />
             )}
             {!addShow &&

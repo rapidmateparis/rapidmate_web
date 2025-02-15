@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Autocomplete from "react-google-autocomplete";
-import { MAPS_API_KEY } from "../../utils/Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faLocationCrosshairs, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../../assets/css/home.module.css";
-const LocationInput = ({ onLocationChange,title ,icon}) => {
+const LocationInput = ({ onLocationChange,title ,icon,mapApiKey}) => {
   return (
    
       <>
@@ -14,7 +13,7 @@ const LocationInput = ({ onLocationChange,title ,icon}) => {
         />
         <div style={{ width: "100%" }}>
           <Autocomplete
-            apiKey={MAPS_API_KEY} // Replace with your API key
+            apiKey={mapApiKey} // Replace with your API key
             onPlaceSelected={(place) => {
               const locationDetails = {
                 address: place.formatted_address,

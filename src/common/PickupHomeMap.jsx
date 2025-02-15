@@ -5,12 +5,11 @@ import {
   Marker,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import { MAPS_API_KEY } from "../utils/Constants";
 const libraries = ["places"];
 
-function PickupHomeMap({ pickupLocation, dropoffLocations }) {
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: MAPS_API_KEY,
+function PickupHomeMap({ pickupLocation, dropoffLocations,mapApiKey }) {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: mapApiKey,
     libraries,
   });
 
@@ -48,10 +47,9 @@ function PickupHomeMap({ pickupLocation, dropoffLocations }) {
     getDirections();
   }, [isLoaded, pickupLocation, dropoffLocations]);
 
-  if (loadError) return <p>Error loading Google Maps</p>;
   if (!isLoaded) return <p>Loading...</p>;
   const pickupIcon = {
-    url: "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png", 
+    url: "/images/pickup-marker.png", 
     scaledSize: new window.google.maps.Size(40, 40),
   };
   

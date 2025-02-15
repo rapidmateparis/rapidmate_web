@@ -1,5 +1,5 @@
 import moment from "moment";
-import { getLocationId, uploadDocumentsApi } from "../data_manager/dataManage";
+import { getLocationId,uploadDocumentsApi } from "../data_manager/dataManage";
 
 export const HTTPMethod = {
   POST: "post",
@@ -13,7 +13,7 @@ export const PORT = {
   uat: "3000",
   prod: "3008",
 };
-export const MAPS_API_KEY ="AIzaSyD2HroBo6Mwnvd";
+
 export const BASE_URL = "https://api.rapidmate.fr/api/";
 
 
@@ -94,7 +94,8 @@ export const API = {
   deliveryBoyBillingAddressGet: BASE_URL + 'deliveryboy/billing/address/get/',
   vechicleTaxList: BASE_URL + 'vehicletypes/tax/list',
   changeCreateShiftStatus:BASE_URL + 'order/update/shift/status',
-  deliveryBoyOrderSlots:BASE_URL + 'order/deliveryboy/myslots/'
+  deliveryBoyOrderSlots:BASE_URL + 'order/deliveryboy/myslots/',
+  getMapKey:BASE_URL + 'authuser/map/code'
 };
 
 export const formatDate = (dateString) => {
@@ -189,6 +190,8 @@ export const addLocation = (locationParams) => {
 
 
 
+
+
 export const buildAddress = (...parts) => parts.filter(Boolean).join(",");
 
 export const localToUTC=(date=new Date(),timezone,format='YYYY-MM-DD HH:mm:ss')=>{
@@ -232,3 +235,39 @@ export const convertDurationToMinutes = (duration)=>{
 
   return hours + minutes;
 }
+
+const getMapKeyValue = async()=>{
+const { getMapKey } = await import("../data_manager/dataManage");
+
+  return new Promise((resolve, reject) => {
+  getMapKey(
+    null,
+    (successResponse) => {
+      if (successResponse[0]._success) {
+        if(successResponse[0]._response.mapKey){
+          resolve(successResponse[0]._response.mapKey)
+        }else{
+          reject("notfound")
+        }
+      }
+    },
+    (errorResponse) => {
+      let errorMessage = "";
+        reject("notfound")
+    }
+  );
+});
+}
+export const MAPS_API_KEY=""
+export const getMapsApiKey = async () => {
+  try {
+    const key = await getMapKeyValue();
+   return key;
+  } catch (error) {
+    console.log("sdfsfd",error)
+    return  "notfound"; 
+  }
+};
+
+
+

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Styles from "../../assets/css/home.module.css";
-import { buildAddress, MAPS_API_KEY } from "../../utils/Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -22,8 +21,6 @@ import { useSelector } from "react-redux";
 import { showErrorToast } from "../../utils/Toastify";
 
 import LocationInput from "./LocationInput";
-import VehicleSelection from "../consumer/common/VehicleSelection";
-import DateTimePicker from "../consumer/common/DateTimePicker";
 import { useTranslation } from "react-i18next";
 import {
   GoogleMap,
@@ -42,7 +39,7 @@ const mapContainerStyle = {
 function MultipleDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { deliveryType, selectedBranch } = location.state;
+  const { deliveryType, selectedBranch,mapApiKey } = location.state;
 
   const user = useSelector((state) => state.auth.user);
   const [center, setCenter] = useState(null);
@@ -65,7 +62,7 @@ function MultipleDelivery() {
   const [selectedServiceType, setSelectedServiceType] = useState("");
   const { enterpriseServiceType } = useSelector((state) => state.commonData.commonData);
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: MAPS_API_KEY,
+    googleMapsApiKey: mapApiKey,
     libraries,
   });
 
@@ -338,6 +335,7 @@ function MultipleDelivery() {
                     onLocationChange={handlePickupChange}
                     title={t("enter_pickup_location")}
                     icon="faLocationDot"
+                    mapApiKey={mapApiKey}
                   />
                 </div>
 
@@ -354,6 +352,7 @@ function MultipleDelivery() {
                       }
                       title={t("enter_dropoff_location")}
                       icon="faLocationCrosshairs"
+                      mapApiKey={mapApiKey}
                     />
                     {dropoffLocations.length > 1 && (
                       <FontAwesomeIcon

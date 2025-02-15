@@ -13,7 +13,7 @@ import {
   updateEnterpriseBranch,
 } from "../../../data_manager/dataManage";
 import { useSelector } from "react-redux";
-import { buildAddress, getLocation, MAPS_API_KEY } from "../../../utils/Constants";
+import { buildAddress, getLocation } from "../../../utils/Constants";
 
 const center = { lat: 28.56341236809311, lng: 77.33609181917045 };
 const libraries = ["places"];
@@ -22,6 +22,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
   setAddShow,
   getBranchLocation,
   editBranch,
+  mapKey,
 }) => {
   const user = useSelector((state) => state.auth.user);
 
@@ -40,7 +41,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
   const autocompleteRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: MAPS_API_KEY,
+    googleMapsApiKey: mapKey,
     libraries,
   });
 

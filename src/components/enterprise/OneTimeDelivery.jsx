@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Styles from "../../assets/css/home.module.css";
-import { buildAddress, getLocation, MAPS_API_KEY } from "../../utils/Constants";
+import { buildAddress, getLocation } from "../../utils/Constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,7 +19,6 @@ import CommonHeader from "../../common/CommonHeader";
 import { ToastContainer } from "react-toastify";
 import ServiceTypeSelection from "./common/ServiceTypeSelection";
 import { useSelector } from "react-redux";
-import LocationInputs from "./common/LocationInputs";
 import { showErrorToast } from "../../utils/Toastify";
 import OneLocation from "./common/OneLocation";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
@@ -33,7 +32,7 @@ function OneTimeDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
   const {t}=useTranslation()
-  const { deliveryType, selectedBranch } = location.state;
+  const { deliveryType, selectedBranch,mapApiKey } = location.state;
   const user = useSelector((state) => state.auth.user);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
@@ -141,7 +140,7 @@ function OneTimeDelivery() {
 
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: MAPS_API_KEY,
+    googleMapsApiKey: mapApiKey,
     libraries,
   });
 

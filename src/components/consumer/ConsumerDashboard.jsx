@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 
 const libraries = ["places"];
 
-function ConsumerDashboard() {
+function ConsumerDashboard({mapApiKey}) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -131,7 +131,7 @@ function ConsumerDashboard() {
   }, [duration]);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: MAPS_API_KEY,
+    googleMapsApiKey: mapApiKey,
     libraries,
   });
 

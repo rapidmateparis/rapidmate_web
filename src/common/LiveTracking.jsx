@@ -18,7 +18,7 @@ import Styles from "../assets/css/home.module.css";
 import PickupHomeMap from "./PickupHomeMap";
 import { ToastContainer } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../utils/Toastify";
-import { API, buildAddress, formatPhoneNumber } from "../utils/Constants";
+import { API, buildAddress, formatPhoneNumber, getMapsApiKey } from "../utils/Constants";
 import {
   getViewEnterpriseOrderDetail,
   getViewOrderDetail,
@@ -50,6 +50,7 @@ function LiveTracking() {
   const [markAsComplepleted, setMarkAsCompleted] = useState(false);
   const [pickupLocation,setPickupLocation]=useState(null)
   const [dropoffLocation,setDropoffLocation]=useState([]);
+  const [mapKey,setMapKey]=useState(null)
   const [orderNum, setOrderNum] = useState(
     driverDetails == undefined
       ? orderNumber
@@ -100,6 +101,11 @@ function LiveTracking() {
         orderDetail();
       }
     }
+    const getMapApiKey = async () => {
+          const key = await getMapsApiKey()
+          setMapKey(key)
+        }
+        getMapApiKey()
   }, [orderNum]);
 
   const enterpriseOrderDetail = () => {
@@ -262,13 +268,25 @@ function LiveTracking() {
           setDropoffLocation([]); // Default to empty array if null
         }
       } else {
-        setPickupLocation(getOrigin(order?.pickup_location));
+        if(order?.delivery_type_id===1){
+          setPickupLocation(getOrigin(order?.pickup_location));
   
-        const formattedDropoffLocations = (multipleOrderLocation || []) // Ensure it's not null
-          .map((branch) => getOrigin(branch.dropoff_location))
-          .filter((loc) => loc !== null); // Remove null values
+          const dropoff = getOrigin(order?.dropoff_location);
+          if (dropoff) {
+            setDropoffLocation([dropoff]); // Ensure it's set as an array
+          } else {
+            setDropoffLocation([]); // Default to empty array if null
+          }
+        }else{
+          setPickupLocation(getOrigin(order?.pickup_location));
   
-        setDropoffLocation(formattedDropoffLocations);
+          const formattedDropoffLocations = (multipleOrderLocation || []) // Ensure it's not null
+            .map((branch) => getOrigin(branch.dropoff_location))
+            .filter((loc) => loc !== null); // Remove null values
+    
+          setDropoffLocation(formattedDropoffLocations);
+        }
+        
       }
     }
   }, [order]); // Added dependencies for better reactivity
@@ -547,10 +565,11 @@ function LiveTracking() {
           
           <div className="col-md-9">
             <div className="text-center"> 
-              <PickupHomeMap
+              {mapKey !==null && <PickupHomeMap
                 pickupLocation={pickupLocation}
                 dropoffLocations={dropoffLocation}
-              />
+                mapApiKey={mapKey}
+              />}
             </div>
           </div>
         </div>

@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faMagnifyingGlass,
-  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "../../common/CommonHeader";
 import RenderItem from "./common/RenderItem";
 import {
@@ -14,7 +13,6 @@ import {
   getConsumerViewOrdersListBySearch,
   getLocations,
 } from "../../data_manager/dataManage";
-import { getOrderList } from "../../utils/getOrderList";
 import { useSelector } from "react-redux";
 import Spinners from "../../common/Loader";
 import { useTranslation } from "react-i18next";
