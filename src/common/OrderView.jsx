@@ -14,9 +14,11 @@ import SidebarImg from "../assets/images/Pickup-Order-preview-Banner.png";
 import CommonHeader from "../common/CommonHeader";
 import getImage from "../components/consumer/common/GetImage";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function OrderView() {
   const navigate = useNavigate();
+  const {t}=useTranslation()
   const location = useLocation();
   const { order, orderCustomerDetails, dropoffDetail } = location.state || {};
   const userRole = useSelector((state) => state.auth.role);
@@ -63,10 +65,9 @@ function OrderView() {
             <div className="col-md-8">
               <div className={Styles.pickupOrderPreviewMainCard}>
                 <div>
-                  <h2 className={Styles.addPickupDetailsText}>Order preview</h2>
+                  <h2 className={Styles.addPickupDetailsText}>{t("order_preview")}</h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    Let’s review your order details. if it looks ok please
-                    proceed to payment
+                    {t("review_order_details")}
                   </p>
                 </div>
 
@@ -98,7 +99,7 @@ function OrderView() {
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Vehicle details
+                  {t("vehicle_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -121,7 +122,7 @@ function OrderView() {
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Pickup details
+                  {t("pickup_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -179,7 +180,7 @@ function OrderView() {
                 </div>
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Dropoff details
+                  {t("dropoff_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -229,7 +230,7 @@ function OrderView() {
                 </div>
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                    Estimated cost
+                    {t("estimated_cost")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -270,7 +271,7 @@ function OrderView() {
                         <Form.Check
                           type={type}
                           id={`default-${type}`}
-                          label={"Save thes addresses for later"}
+                          label={t("save_addresses")}
                           checked={isAddressAdd}
                           className={`${Styles.saveAddresslaterCheckBox}`}
                           onClick={handleSaveAddress}
@@ -287,15 +288,15 @@ function OrderView() {
                     to="/consumer/pickup-details"
                     style={{ color: "#000" }}
                   >
-                    Back
+                    {t("back")}
                   </Link>
-                  <Link
-                    to="#"
+                  <div
+                    style={{cursor:"pointer"}}
                     onClick={submitHandler}
                     className={Styles.addPickupDetailsNextBtn}
                   >
-                    Proceed to payment
-                  </Link>
+                    {t("proceed_to_payment")}
+                  </div>
                 </div>
               </div>
             </div>

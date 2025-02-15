@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useJsApiLoader,
   GoogleMap,
@@ -6,101 +6,90 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { MAPS_API_KEY } from "../utils/Constants";
-import DropoffMarker from "../assets/images/dropoff-marker.png";
-import PickupMarger from "../assets/images/pickup-marker.png";
 const libraries = ["places"];
 
-const center = { lat: 28.56341236809311, lng: 77.33609181917045 };
-
-function PickupHomeMap({ latitude, longitude }) {
-  const { isLoaded } = useJsApiLoader({
+function PickupHomeMap({ pickupLocation, dropoffLocations }) {
+  const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: MAPS_API_KEY,
-    libraries:libraries,
+    libraries,
   });
 
-  const [map, setMap] = useState(null);
-  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [directions, setDirections] = useState(null);
 
-  if (!isLoaded) {
-    return <p>Loading...</p>; // Replace with a loading indicator from React Bootstrap if needed
-  }
+  useEffect(() => {
+    if (!isLoaded || !pickupLocation || dropoffLocations.length === 0) return;
 
-  async function calculateRoute(latitude, longitude) {
-    // console.log('l',latitude)
-    try {
-      if (latitude && longitude) {
-    const directionsService = new window.google.maps.DirectionsService();
+    const getDirections = async () => {
+      try {
+        const directionsService = new google.maps.DirectionsService(); // ✅ No 'window' needed
 
-        const results = await directionsService.route({
-          origin: {
-            lat: parseFloat(latitude.lat),
-            lng: parseFloat(latitude.lng),
+        directionsService.route(
+          {
+            origin: pickupLocation,
+            destination: dropoffLocations[dropoffLocations.length - 1], // Last dropoff
+            waypoints: dropoffLocations
+              .slice(0, -1)
+              .map((loc) => ({ location: loc, stopover: true })), // Intermediate stops
+            travelMode: google.maps.TravelMode.DRIVING,
           },
-          destination: {
-            lat: parseFloat(longitude.lat),
-            lng: parseFloat(longitude.lng),
-          },
-          travelMode: window.google.maps.TravelMode.DRIVING,
-        });
-        setDirectionsResponse(results);
+          (result, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+              setDirections(result);
+            } else {
+              console.error("Error fetching directions:", status);
+            }
+          }
+        );
+      } catch (error) {
+        console.error("Google Maps API Error:", error);
       }
-    } catch (error) {
-      console.error("Error calculating route:", error);
-    }
-  }
+    };
 
-  calculateRoute(latitude, longitude);
+    getDirections();
+  }, [isLoaded, pickupLocation, dropoffLocations]);
 
+  if (loadError) return <p>Error loading Google Maps</p>;
+  if (!isLoaded) return <p>Loading...</p>;
+  const pickupIcon = {
+    url: "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png", 
+    scaledSize: new window.google.maps.Size(40, 40),
+  };
+  
+  const dropoffIcon = {
+    url: "/images/dropoff-marker.png",
+    scaledSize: new window.google.maps.Size(40, 40),
+  };
   return (
     <div style={{ position: "relative", height: "92vh", width: "100%" }}>
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          height: "100%",
-          width: "100%",
+      <GoogleMap
+        center={pickupLocation}
+        zoom={15}
+        mapContainerStyle={{ width: "100%", height: "100%" }}
+        options={{
+          zoomControl: true,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
         }}
       >
-        {/* Google Map */}
-        <GoogleMap
-          center={center}
-          zoom={15}
-          mapContainerStyle={{ width: "100%", height: "100%" }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-          onLoad={(map) => setMap(map)}
-        >
-          <Marker position={{
-            lat: parseFloat(latitude.lat),
-            lng: parseFloat(latitude.lng),
-          }} icon={{
-                                  url: PickupMarger,
-                                  scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                                }} />
-          <Marker position={{
-            lat: parseFloat(longitude.lat),
-            lng: parseFloat(longitude.lng),
-          }} icon={{
-                                  url: DropoffMarker,
-                                  scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                                }} />
-          {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} options={{
+        {/* Pickup Marker */}
+        <Marker position={pickupLocation} label="P" icon={pickupIcon}/>
+
+        {/* Dropoff Markers */}
+        {dropoffLocations.map((location, index) => (
+          <Marker key={index} position={location} label={`D${index + 1}`} icon={dropoffIcon}  />
+        ))}
+
+        {/* Directions Renderer */}
+        {directions && <DirectionsRenderer directions={directions} options={{
               polylineOptions: {
                 strokeColor: "#FF0058", // Blue color
                 strokeOpacity: 0.9,    // 90% opacity
                 strokeWeight: 3,       // 5px thick line
               },
               suppressMarkers: false,   // Use your custom markers
-            }} />
-          )}
-        </GoogleMap>
-      </div>
+            }}/>}
+      </GoogleMap>
     </div>
   );
 }

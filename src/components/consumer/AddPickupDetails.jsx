@@ -21,10 +21,12 @@ import { showErrorToast } from "../../utils/Toastify";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { formatPhoneNumber } from "../../utils/Constants";
+import { useTranslation } from "react-i18next";
 
 const AddPickupDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const {t}=useTranslation();
   const user = useSelector((state) => state.auth.user);
   const { order } = location.state || {};
   const [selectedOption, setSelectedOption] = useState("Myself");
@@ -49,17 +51,14 @@ const AddPickupDetails = () => {
       .required("Name is required")
       .min(3, "Name must be at least 3 characters long"),
     lastname: yup
-      .string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters long"),
+      .string(),
     company: yup.string(),
     packageId: yup
-      .string()
-      .required("Package id is required")
-      .min(3, "Package id must be at least 3 characters long"),
+      .string(),
     pickupnote: yup.string(),
     email: yup
       .string()
+      .required("Email is required")
       .email("Please enter a valid email"),
     phoneNumber: yup
     .string()
@@ -98,11 +97,10 @@ const AddPickupDetails = () => {
       .required("Name is required")
       .min(3, "Name must be at least 3 characters long"),
     dlastname: yup
-      .string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters long"),
+      .string(),
     demail: yup
       .string()
+      .required("Email is required")
       .email("Please enter a valid email"),
     dphoneNumber: yup
        .string()
@@ -226,14 +224,13 @@ const AddPickupDetails = () => {
               <div className={Styles.pickupAddpickupDetailsMaincard}>
                 <div>
                   <h2 className={Styles.addPickupDetailsText}>
-                    Add Pickup Details
+                  {t("add_pickup_details")}
                   </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    You have entered pickup and drop-off addresses, time of
-                    pickup, and vehicle type
+                  {t("pickup_dropoff_entered")}
                   </p>
                   <p className={Styles.pickupPersonalDetails}>
-                    Personal details
+                  {t("personal_details")}
                   </p>
                 </div>
 
@@ -268,7 +265,7 @@ const AddPickupDetails = () => {
                         htmlFor="name"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        First name: <span className={Styles.textColor}>*</span>
+                       {t("first_name")}: <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
                         name="name"
@@ -277,7 +274,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder="First name"
+                            placeholder={t("first_name")}
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -297,7 +294,7 @@ const AddPickupDetails = () => {
                         htmlFor="lastname"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Last name: <span className={Styles.textColor}>*</span>
+                        {t("last_name")}:
                       </label>
                       <Controller
                         name="lastname"
@@ -306,7 +303,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder="Last name"
+                            placeholder={t("last_name")}
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -326,7 +323,7 @@ const AddPickupDetails = () => {
                         htmlFor="company"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Company :
+                        {t("company")} :
                       </label>
                       <Controller
                         name="company"
@@ -335,7 +332,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder="Company"
+                            placeholder={t("company")}
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -354,7 +351,7 @@ const AddPickupDetails = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Email: <span className={Styles.textColor}>*</span>
+                        {t("email")}: <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
                         name="email"
@@ -363,7 +360,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder="Email"
+                            placeholder={t("email")}
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -382,7 +379,7 @@ const AddPickupDetails = () => {
                         htmlFor="phoneNumber"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Phone Number:{" "}
+                        {t("phone_number")}:{" "}
                         <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
@@ -430,7 +427,7 @@ const AddPickupDetails = () => {
                   </div>
                 </div>
 
-                <p className={Styles.pickupPersonalDetails}>Package details</p>
+                <p className={Styles.pickupPersonalDetails}>{t("package_details")}</p>
 
                 <div className={`row ${Styles.manageRow}`}>
                   <div className="col-md-12">
@@ -438,13 +435,13 @@ const AddPickupDetails = () => {
                       htmlFor="file"
                       className={Styles.addPickupDetailFormLabels}
                     >
-                      Package photo <span className={Styles.textColor}>*</span> : <span className={Styles.textColor}>Max size: 5mb</span>
+                      {t("package_photo")} <span className={Styles.textColor}>*</span> : <span className={Styles.textColor}>Max size: 5mb</span>
                     </label>
 
                     {imagePreview ? (
                       // Show only the package preview if an image has been uploaded
                       <div style={{position: 'relative',}} className="mt-2">
-                        <p>Image Preview:</p>
+                        <p>{t("image_preview")}:</p>
                         <img
                           src={imagePreview}
                           alt="Preview"
@@ -482,7 +479,7 @@ const AddPickupDetails = () => {
                       <div className={Styles.addPickupUploadPhoto}>
                         <FontAwesomeIcon icon={faPaperclip} />
                         <p className={Styles.addPickupDragText}>
-                          Drag or click to attach a photo
+                        {t("attach_photo")}
                         </p>
                         <Controller
                           name="file"
@@ -524,7 +521,7 @@ const AddPickupDetails = () => {
                         htmlFor="packageId"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Package ID <span className={Styles.textColor}>*</span>
+                        {t("package_id")} 
                       </label>
                       <Controller
                         name="packageId"
@@ -534,7 +531,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder="Package Id ..."
+                            placeholder={t("package_id")} 
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -553,7 +550,7 @@ const AddPickupDetails = () => {
                         htmlFor="pickupnote"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        Pickup notes
+                        {t("pickup_notes")}
                       </label>
                       <Controller
                         name="pickupnote"
@@ -563,7 +560,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder="Type here..."
+                            placeholder={t("type_here")}
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -579,10 +576,10 @@ const AddPickupDetails = () => {
                 </div>
                 <div>
                   <h2 className={Styles.addPickupDetailsText}>
-                    Add Drop Details
+                  {t("dropoff_details")}
                   </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                    You have entered your drop details here 
+                  {t("dropoff_details_entered")}
                   </p>
                 </div>
                 <div
@@ -600,7 +597,7 @@ const AddPickupDetails = () => {
                           htmlFor="dname"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          First name:{" "}
+                          {t("first_name")}:{" "}
                           <span className={Styles.textColor}>*</span>
                         </label>
                         <Controller
@@ -611,7 +608,7 @@ const AddPickupDetails = () => {
                             <input
                               {...field}
                               type="text"
-                              placeholder="First name"
+                              placeholder={t("first_name")}
                               style={{ width: "100%", padding: "5px" }}
                               className="dynamic-border-input"
                             />
@@ -631,7 +628,7 @@ const AddPickupDetails = () => {
                           htmlFor="dlastname"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          Last name: <span className={Styles.textColor}>*</span>
+                          {t("last_name")}:
                         </label>
                         <Controller
                           name="dlastname"
@@ -641,7 +638,7 @@ const AddPickupDetails = () => {
                             <input
                               {...field}
                               type="text"
-                              placeholder="Last name"
+                              placeholder={t("last_name")}
                               style={{ width: "100%", padding: "5px" }}
                               className="dynamic-border-input"
                             />
@@ -661,7 +658,7 @@ const AddPickupDetails = () => {
                           htmlFor="dcompany"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          Company :
+                          {t("company")} :
                         </label>
                         <Controller
                           name="dcompany"
@@ -671,7 +668,7 @@ const AddPickupDetails = () => {
                             <input
                               {...field}
                               type="text"
-                              placeholder="Company"
+                              placeholder={t("company")}
                               style={{ width: "100%", padding: "5px" }}
                               className="dynamic-border-input"
                             />
@@ -690,7 +687,7 @@ const AddPickupDetails = () => {
                           htmlFor="demail"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          Email: <span className={Styles.textColor}>*</span>
+                          {t("email")}: <span className={Styles.textColor}>*</span>
                         </label>
                         <Controller
                           name="demail"
@@ -700,7 +697,7 @@ const AddPickupDetails = () => {
                             <input
                               {...field}
                               type="text"
-                              placeholder="Email"
+                              placeholder={t("email")}
                               style={{ width: "100%", padding: "5px" }}
                               className="dynamic-border-input"
                             />
@@ -719,7 +716,7 @@ const AddPickupDetails = () => {
                           htmlFor="dphoneNumber"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          Phone Number:{" "}
+                          {t("phone_number")}:{" "}
                           <span className={Styles.textColor}>*</span>
                         </label>
                         <Controller
@@ -772,7 +769,7 @@ const AddPickupDetails = () => {
                           htmlFor="dropoffnote"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          Dropoff notes
+                         {t("dropoff_notes")}
                         </label>
                         <Controller
                           name="dropoffnote"
@@ -803,17 +800,17 @@ const AddPickupDetails = () => {
                       <Link
                         className={Styles.addPickupDetailsCancelBTn}
                         style={{ color: "#000" }}
-                        to="#"
+                        to="/consumer/dashboard"
                         onClick={goBack}
                       >
-                        Back
+                        {t("back")}
                       </Link>
                       <button
                         type="submit"
                         onClick={handleSubmit(onSubmit)}
                         className={Styles.addPickupDetailsNextBtn}
                       >
-                        Next
+                        {t("next")}
                       </button>
                     </div>
                   </div>

@@ -31,9 +31,9 @@ import { showErrorToast } from "../../utils/Toastify";
 const schema = yup.object().shape({
   name: yup
     .string()
-    .required("First is required")
+    .required("First name is required")
     .min(2, "First name must be at least 2 characters long"),
-  lastname: yup.string(),
+  lastname: yup.string().required("Last name is required").min(2, "Last name must be at least 2 characters long"),
   email: yup
     .string()
     .required("Email is required")
