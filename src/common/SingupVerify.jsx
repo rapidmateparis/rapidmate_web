@@ -10,9 +10,9 @@ import { loginStart, loginSuccess } from "../redux/authSlice";
 import { getLookup } from "../utils/UseFetch";
 import { commonDataList } from "../redux/commonDataSlice";
 import { useTranslation } from "react-i18next";
-import { t } from "i18next";
 
 const SingupVerify = () => {
+  const {t}=useTranslation()
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const location = useLocation();
