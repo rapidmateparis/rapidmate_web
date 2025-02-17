@@ -29,7 +29,6 @@ const SingupVerify = () => {
   const handleOtpSubmit = () => {
     const hasEmptyValues = otp.some((value) => value === "");
     const allValuesEmpty = otp.every((value) => value === "");
-    const {t}=useTranslation()
     if (allValuesEmpty) {
       setErrors("Please enter OTP.");
     } else if (hasEmptyValues) {
