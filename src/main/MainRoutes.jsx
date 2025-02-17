@@ -82,6 +82,7 @@ import EnterpriseShiftRequestNewDelivery from "../components/enterprise/common/E
 import EnterpriseShiftAddDropDetails from "../components/enterprise/common/EnterpriseShiftAddDropDetails";
 import EnterpriseShiftOrderPreview from "../components/enterprise/common/EnterpriseShiftOrderPreview";
 import SupportPage from "../common/SupportPage";
+import Error404 from "./Error404";
 function MainRoutes() {
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
@@ -435,7 +436,7 @@ function MainRoutes() {
             </ProtectedRoute>
           }
         />
-        {/* <Route path="*" element={<Navigate to="/" />} /> */}
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>
   );
