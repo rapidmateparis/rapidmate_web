@@ -24,7 +24,7 @@ const ServiceTypeSelection = ({
   
   const handleServiceTypeClick = (serviceType, vehicleMatch) => {
     
-    if (serviceType===1) {
+   
       const vehicle = vehicleTypeList.find(
         (v) => v.id === vehicleMatch
       );
@@ -41,7 +41,7 @@ const ServiceTypeSelection = ({
       }
       
 
-    };
+   
     setSelectedServiceType(serviceType);
   }
 
@@ -90,13 +90,8 @@ const ServiceTypeSelection = ({
                     : ""
                 }`}
                 onClick={() => {
-                  if (selectedServiceType ===1) {
-                    showErrorToast(
-                      "Cannot select another vehicle with this service type."
-                    );
-                    return;
-                  }
-                  if (dropoffLocation !== "") {
+                  
+                  if (dropoffLocation !== ""  && dropoffLocation[0] !=='') {
                     setSelectedVehicle(vehicle.vehicle_type);
                     setSelectedVehicleDetails(vehicle);
                     const price = getPriceUsingVehicleType(vehicle.id);

@@ -28,6 +28,8 @@ import MessageModal from "./MessageModal";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n/i18n";
 import HeaderLanguageSwitcher from "./HeaderlanguageOptions";
+import { setBookings, setBranches } from "../redux/enterpriseSlice";
+import { commonDataList } from "../redux/commonDataSlice";
 
 const CommonHeader = memo(({ userData }) => {
   const location = useLocation();
@@ -50,7 +52,10 @@ const CommonHeader = memo(({ userData }) => {
   const { isAuthenticated, role } = useSelector((state) => state.auth);
   const baseUrl = role?.toLowerCase().replace(/_/g, "");
   const handleLogout = async () => {
-    dispatch(logout());
+     dispatch(logout());
+     dispatch(setBranches(null));
+     dispatch(setBookings(null));
+     dispatch(commonDataList(null))
     try {
       await localforage.clear();
       await persistor.purge();

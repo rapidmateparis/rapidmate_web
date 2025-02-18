@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { getLookupData } from '../data_manager/dataManage';
+import { getEnterpriseDashboardInfo, getLookupData } from '../data_manager/dataManage';
 
 // Hook to fetch user and lookup data
 export const UseFetch = () => {
@@ -38,5 +38,20 @@ export const getLookup = () => {
     );
   });
 };
+
+
+export const getDashbaordBranch= (userId) =>{
+  return new Promise((resolve, reject) => {
+    getEnterpriseDashboardInfo(
+      userId,
+      (successResponse) => {
+        resolve(successResponse[0]._response);
+      },
+      (errorResponse) => {
+        reject(errorResponse);
+      }
+    );
+  });
+}
 
 

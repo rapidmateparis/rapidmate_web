@@ -9,22 +9,26 @@ import {
 import { getEnterpriseBranch } from "../../../data_manager/dataManage";
 import { ToastContainer } from "react-toastify";
 import DeleteModal from "./DeleteModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showErrorToast } from "../../../utils/Toastify";
 import { buildAddress, getMapsApiKey } from "../../../utils/Constants";
 import EnterpriseAddOrEditCompanyLocation from "../../enterprise/setting/EnterpriseAddOrEditCompanyLocation";
+import { setBranches } from "../../../redux/enterpriseSlice";
+import { getDashbaordBranch } from "../../../utils/UseFetch";
 
 function ManageCompanyLocation() {
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [enterpriseBranch, setEnterpriseBranches] = useState(null);
   const [rowId, setRowId] = useState(null);
   const [addShow, setAddShow] = useState(false);
   const [editBranch, setEditBranch] = useState(null);
-  const [mapKey,setMapKey]=useState(null)
+  const [mapKey, setMapKey] = useState(null);
+  const [resfresh, setRefresh] = useState(false);
 
-  const getBranchLocation = () => {
+  const getBranchLocation = (forDo = false) => {
     setLoading(true);
     getEnterpriseBranch(
       user.userDetails.ext_id,
@@ -35,7 +39,11 @@ function ManageCompanyLocation() {
             ...branch,
             isSelected: false,
           }));
+
           setEnterpriseBranches(branches || []);
+          if (forDo) {
+            setRefresh(true);
+          }
         }
       },
       (errorResponse) => {
@@ -72,26 +80,55 @@ function ManageCompanyLocation() {
   };
 
   useEffect(() => {
-    getBranchLocation();
-    const getMapKey=async () =>{
-      const key = await getMapsApiKey()
-      setMapKey(key)
-    }
-    getMapKey()
+    getBranchLocation(false);
+    const getMapKey = async () => {
+      const key = await getMapsApiKey();
+      setMapKey(key);
+    };
+    getMapKey();
   }, [user]);
+
+  const getBranchForUpdate = async () => {
+    try {
+      const response = await getDashbaordBranch(user?.userDetails?.ext_id);
+      if (
+        response?.branchOverviewData &&
+        response?.branchOverviewData.length > 0
+      ) {
+        const branchList = response?.branchOverviewData;
+        dispatch(setBranches(branchList));
+      }
+    } catch (errorResponse) {
+      let err = "";
+      if (errorResponse.errors) {
+        err = errorResponse.errors.msg[0].msg;
+      } else {
+        err = errorResponse[0]._errors.message;
+      }
+      showErrorToast(err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (resfresh === true) {
+      getBranchForUpdate();
+    }
+  }, [resfresh]);
 
   return (
     <section className={Styles.addressBookMainSec}>
       <div className="row">
         <div className="col-md-12">
-          <div className={Styles.addressBookAddressCard} onClick={toggleAddHandler} style={{cursor:"pointer"}}>
+          <div
+            className={Styles.addressBookAddressCard}
+            onClick={toggleAddHandler}
+            style={{ cursor: "pointer" }}
+          >
             <p className={Styles.addressBookHeaderTitleText}>
               Manage company locations
             </p>
-            <button
-              
-              className={Styles.addressBookPlusIconBtn}
-            >
+            <button className={Styles.addressBookPlusIconBtn}>
               <FontAwesomeIcon icon={faPlus} />
             </button>
           </div>
@@ -106,10 +143,7 @@ function ManageCompanyLocation() {
             )}
             {!addShow &&
               enterpriseBranch?.map((branch, index) => (
-                <div
-                  key={index}
-                  className={Styles.addressBookAddressesCards}
-                >
+                <div key={index} className={Styles.addressBookAddressesCards}>
                   <div className={Styles.addressBookLocationDotIconCard}>
                     <FontAwesomeIcon icon={faLocationDot} />
                   </div>

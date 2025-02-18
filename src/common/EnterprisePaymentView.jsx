@@ -487,7 +487,7 @@ const PaymentPage = ({
   const createPayment = async () => {
     let requestParams = {
       order_number: orderNumber,
-      amount: paymentAmount,
+      amount: paymentAmount.toFixed(2),
     };
     addPayment(
       requestParams,
@@ -637,7 +637,7 @@ const PaymentPage = ({
                           {t("estimated_cost")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
-                            € {totalAmount || 0.0}
+                            € {totalAmount?.toFixed(2) || 0.0}
                           </p>
                         </div>
 
@@ -664,7 +664,7 @@ const PaymentPage = ({
                             {t("total_amount")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
-                            € {paymentAmount || 0.0}
+                            € {paymentAmount?.toFixed(2) || 0.0}
                           </p>
                         </div>
                       </div>
