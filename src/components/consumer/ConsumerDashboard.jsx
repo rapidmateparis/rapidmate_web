@@ -175,6 +175,8 @@ function ConsumerDashboard({mapApiKey}) {
     const payload = {
       addPickupLocation,
       addDestinationLocation,
+      pickupLocation,
+      dropoffLocation,
       date,
       isSchedule,
       selectedVehicle,
@@ -211,6 +213,7 @@ function ConsumerDashboard({mapApiKey}) {
               setPickupLocation={setPickupLocation}
               setDropoffLocation={setDropoffLocation}
               calculateRoute={calculateRoute}
+              mapApiKey={mapApiKey}
             />
 
             <DateTimePicker setDate={setDate} setIsSchedule={setIsSchedule} />

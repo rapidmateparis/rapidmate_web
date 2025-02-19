@@ -42,7 +42,7 @@ function MultipleDelivery() {
   const { deliveryType, selectedBranch,mapApiKey } = location.state;
 
   const user = useSelector((state) => state.auth.user);
-  const [center, setCenter] = useState(null);
+  const [center, setCenter] = useState({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)});
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
@@ -112,7 +112,6 @@ function MultipleDelivery() {
       return; // Prevent duplicate requests
 
     lastLocationsRef.current = locations; // Update ref to track last requested locations
-    console.log("Calculating route...");
 
     const directionsService = new google.maps.DirectionsService();
     const waypoints = locations.slice(1, -1).map((loc) => ({ location: loc }));
@@ -245,17 +244,23 @@ function MultipleDelivery() {
     };
     getAllVehiclesType();
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
-        },
-        (error) => {
-          console.error("Error getting current location:", error);
-          // Fallback to a default location if needed
-        }
-      );
+    if(!selectedBranch){
+        if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setCenter({ lat: latitude, lng: longitude });
+            
+          },
+          (error) => {
+            console.error("Error getting current location:", error);
+            // Fallback to a default location if needed
+          }
+        );
+      }
+    }
+    if(selectedBranch){
+      setCenter({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)})
     }
   }, []);
 
@@ -289,8 +294,8 @@ function MultipleDelivery() {
       setSelectedVehicleDetails(null);
       getDistancePrice();
 
-      console.log("pickup location", dropoffLocations);
-      console.log("dropoff location", dropoffLoc);
+      // console.log("pickup location", pickupLoc);
+      // console.log("dropoff location", dropoffLoc);
     }
   }, [distance]);
 
@@ -336,6 +341,7 @@ function MultipleDelivery() {
                     title={t("enter_pickup_location")}
                     icon="faLocationDot"
                     mapApiKey={mapApiKey}
+                    selectedBranch={selectedBranch}
                   />
                 </div>
 
@@ -353,6 +359,7 @@ function MultipleDelivery() {
                       title={t("enter_dropoff_location")}
                       icon="faLocationCrosshairs"
                       mapApiKey={mapApiKey}
+                      selectedBranch={selectedBranch}
                     />
                     {dropoffLocations.length > 1 && (
                       <FontAwesomeIcon
@@ -439,6 +446,13 @@ function MultipleDelivery() {
                       />
                     )
                   )}
+                  {center && markers.length===0 &&  <Marker
+                        position={center}
+                        icon={{
+                          url: PickupMarker,
+                          scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+                        }}
+                      />}
                   {directions && (
                     <DirectionsRenderer
                       directions={directions}

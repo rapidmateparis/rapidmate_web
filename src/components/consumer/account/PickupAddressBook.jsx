@@ -151,6 +151,7 @@ function PickupAddressBook() {
         handleClose={() => setShowAddModal(false)}
         role={user?.userDetails?.role}
         extId={user?.userDetails?.ext_id}
+        t={t}
       />
        <DeleteModal
         show={showDeleteModal}

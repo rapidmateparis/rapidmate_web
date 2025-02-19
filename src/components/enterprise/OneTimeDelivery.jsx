@@ -37,12 +37,10 @@ function OneTimeDelivery() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
-  const [center, setCenter] = useState({
-    lat: parseFloat(selectedBranch.latitude),
-    lng: parseFloat(selectedBranch.longitude),
-  });
+  const [center, setCenter] = useState({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)});
 
-  const [currentLocation, setCurrentLocation] = useState();
+
+  const [currentLocation, setCurrentLocation] = useState({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)});
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -104,14 +102,20 @@ function OneTimeDelivery() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setCurrentLocation({ lat: latitude, lng: longitude });
-          setCenter({ lat: latitude, lng: longitude });
+          if(!selectedBranch){
+            setCenter({ lat: latitude, lng: longitude });
+            setCurrentLocation({ lat: latitude, lng: longitude });
+          }
         },
         (error) => {
           console.error("Error getting current location:", error);
           // Fallback to a default location if needed
         }
       );
+    }
+    if(selectedBranch){
+      setCenter({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)})
+      setCurrentLocation({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)})
     }
   }, []);
 
@@ -229,6 +233,8 @@ function OneTimeDelivery() {
                 setDropoffLocation={setDropoffLocation}
                 calculateRoute={calculateRoute}
                 t={t}
+                defaultLat={center.lat}
+                defaultLng={center.lng}
               />
 
               <ServiceTypeSelection

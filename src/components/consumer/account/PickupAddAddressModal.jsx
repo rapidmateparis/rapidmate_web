@@ -35,7 +35,7 @@ const schema = yup.object().shape({
   email: yup.string(),
   comments: yup.string(),
 });
-function PickupAddAddressModal({ show, handleClose, role, extId }) {
+function PickupAddAddressModal({ show, handleClose, role, extId ,t}) {
   const [loading, setLoading] = useState(false);
   const handleSaveChanges = () => {
     // Implement save changes logic here, if needed
@@ -93,7 +93,6 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
 
       };
 
-      console.log("params => ", deliveryboyParams);
       createDeliveryBoyAddressBook(
         deliveryboyParams,
         (successResponse) => {
@@ -174,7 +173,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                 htmlFor="address"
                 className={Styles.addPickupDetailFormLabels}
               >
-                Address
+                {t("address")}
               </label>
               <div className={Styles.pickupSignupContainer}>
                 <Controller
@@ -185,7 +184,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                     <input
                       {...field}
                       type="text"
-                      placeholder="Type here..."
+                      placeholder={t("type_here")}
                       style={{ width: "100%", padding: "5px" }}
                       className={Styles.signupUserName}
                     />
@@ -205,7 +204,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                     htmlFor="firstName"
                     className={Styles.addPickupDetailFormLabels}
                   >
-                    First Name
+                    {t("first_name")}
                   </label>
 
                   <div className={Styles.pickupSignupContainer}>
@@ -237,7 +236,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                     htmlFor="lastName"
                     className={Styles.addPickupDetailFormLabels}
                   >
-                    Last Name
+                    {t("last_name")}
                   </label>
 
                   <div className={Styles.pickupSignupContainer}>
@@ -249,7 +248,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                         <input
                           {...field}
                           type={"text"}
-                          placeholder="Type here..."
+                          placeholder={t("type_here")}
                           style={{ width: "100%", padding: "5px" }}
                           className={Styles.signupUserName}
                         />
@@ -270,7 +269,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                   htmlFor="company"
                   className={Styles.addPickupDetailFormLabels}
                 >
-                  Company
+                  {t("company")}
                 </label>
                 <div className={Styles.pickupSignupContainer}>
                   <Controller
@@ -281,7 +280,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                       <input
                         {...field}
                         type="text"
-                        placeholder="Type here..."
+                        placeholder={t("type_here")}
                         style={{ width: "100%", padding: "5px" }}
                         className={Styles.signupUserName}
                       />
@@ -332,7 +331,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                   htmlFor="email"
                   className={Styles.addPickupDetailFormLabels}
                 >
-                  Email
+                  {t("email")}
                 </label>
                 <div className={Styles.pickupSignupContainer}>
                   <Controller
@@ -343,7 +342,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                       <input
                         {...field}
                         type={"text"}
-                        placeholder="Type here..."
+                        placeholder={t("type_here")}
                         style={{ width: "100%", padding: "5px" }}
                         className={Styles.signupUserName}
                       />
@@ -363,7 +362,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                   htmlFor="comments"
                   className={Styles.addPickupDetailFormLabels}
                 >
-                  Comments
+                  {t("comments")}
                 </label>
                 <div className={Styles.pickupSignupContainer}>
                   <Controller
@@ -375,7 +374,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
                         {...field}
                         type="text"
                         row={2}
-                        placeholder="Type here..."
+                        placeholder={t("type_here")}
                         style={{ width: "100%", padding: "5px" }}
                         className={Styles.signupUserName}
                       />
@@ -397,7 +396,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId }) {
               className={modalCss.pickupEditAddressSaveBtn}
               onClick={handleSubmit(onSubmit)}
             >
-              Save
+              {t("save")}
             </button>
           </div>
         </Modal.Footer>
