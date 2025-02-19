@@ -28,7 +28,9 @@ const EnterpriseAddOrEditCompanyLocation = ({
 
   const [markerPosition, setMarkerPosition] = useState(center);
   const [locationTitle, setLocationTitle] = useState("");
+  const [postcode, setPostalCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isPostal,setISPostal]=useState(false)
 
   const [locationInput, setLocationInput] = useState({
     address: "",
@@ -94,6 +96,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
       locationInput.lng
     );
 
+
     setLoading(true);
     const requestParams = {
       branch_name: locationTitle,
@@ -101,7 +104,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
       city: Location.city,
       state: Location.state,
       country: Location.country,
-      postal_code: Location.postal_code,
+      postal_code: Location.postal_code || postcode,
       latitude: Location.latitude,
       longitude: Location.longitude,
     };
@@ -112,6 +115,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
     }else{
       requestParams.enterprise_ext_id=user.userDetails.ext_id;
     }
+
 
     const saveAction = editBranch
       ? updateEnterpriseBranch
@@ -126,13 +130,16 @@ const EnterpriseAddOrEditCompanyLocation = ({
               ? "Branch location updated successfully."
               : "Branch location added successfully."
           );
-          getBranchLocation();
+          getBranchLocation(true);
           setAddShow(false);
+          setISPostal(false)
+
         }
       },
       (errorResponse) => {
         setLoading(false);
-        showErrorToast(errorResponse[0]._errors.message);
+        setISPostal(true)
+        showErrorToast("Please add postal code ");
       }
     );
   };
@@ -200,6 +207,15 @@ const EnterpriseAddOrEditCompanyLocation = ({
                   />
                 </Autocomplete>
               </div>
+              {isPostal && <div className="mb-2">
+                <input
+                  className={Styles.enterpriseNewCompanyLocationTitleinput}
+                  type="text"
+                  placeholder="Type postal code"
+                  value={postcode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                />
+              </div> }
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
                   className={Styles.enterpriseNewCompanyLocationaddressSaveBtn}

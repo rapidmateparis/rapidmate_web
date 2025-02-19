@@ -3,23 +3,30 @@ import Modal from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../assets/css/FavoriteAddressModal.module.css";
+import { getLocationDetails } from "../utils/UseFetch";
 
-function FavoriteAddressModal({ show, handleClose }) {
-  const addresses = [
-    {
-      name: "John Doe",
-      address:
-        "18 Avenue Henri et Louise de Vilmorin, 91370, Verrières-le-Buisson",
-    },
-    {
-      name: "Jane Smith",
-      address: "221B Baker Street, London, NW1 6XE, UK",
-    },
-    {
-      name: "Alice Johnson",
-      address: "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
-    },
-  ];
+function FavoriteAddressModal({ show, handleClose,addressList,loading,field,mapApiKey,setPickupLocation,originRef,setDropoffLocation,destinationRef}) {
+ 
+  const getHandlerAddress = async (address,index) =>{
+    try {
+      const location= await getLocationDetails(address,mapApiKey);
+      if(index===1){
+        setPickupLocation(location)
+        if (originRef.current) {
+          originRef.current.value = location.address;
+        }
+      }else{
+        setDropoffLocation(location)
+        if (destinationRef.current) {
+          destinationRef.current.value = location.address;
+        }
+      }
+      
+      handleClose()
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <Modal show={show} onHide={handleClose} className={Styles.modalCustom}>
@@ -34,13 +41,13 @@ function FavoriteAddressModal({ show, handleClose }) {
         </div>
       </Modal.Header>
       <Modal.Body>
-        {addresses.map((item, index) => (
-          <div key={index} className={Styles.favAddressMainCard}>
+        {addressList?.map((item, index) => (
+          <div key={index} className={Styles.favAddressMainCard} onClick={()=>getHandlerAddress(item.address,field)}>
             <div>
               <FontAwesomeIcon icon={faLocationDot} />
             </div>
             <div className={Styles.favAddressTextCard}>
-              <h4>{item.name}</h4>
+              <h4>{item.first_name}</h4>
               <p>{item.address}</p>
             </div>
           </div>

@@ -14,6 +14,8 @@ const OneLocation = ({
   setDropoffLocation,
   calculateRoute,
   t,
+  defaultLat, 
+  defaultLng
 }) => {
   const originRef = useRef();
   const destinationRef = useRef();
@@ -72,9 +74,34 @@ const OneLocation = ({
         }
       );
     } else {
-      alert("Geolocation is not supported by your browser.");
+      console.log("Geolocation is not supported by your browser.");
     }
   };
+
+  useEffect(() => {
+    if (defaultLat && defaultLng) {
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ location: { lat: defaultLat, lng: defaultLng } }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          const locationDetails = {
+            address: results[0].formatted_address,
+            displayedAddress: results[0].address_components[0]?.long_name || results[0].formatted_address,
+            lat: defaultLat,
+            lng: defaultLng,
+            components: results[0].address_components,
+          };
+
+          setPickupLocation(locationDetails);
+
+          // Set the address in the input field
+          if (originRef.current) {
+            originRef.current.value = locationDetails.address;
+          }
+        }
+      });
+    }
+  }, [defaultLat, defaultLng, setPickupLocation]);
+ 
   return (
     <>
       <div className={Styles.homePickupDropAddressCards}>

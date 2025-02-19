@@ -1,5 +1,5 @@
 // LocationInput.js
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,19 +10,31 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Styles from "../../../assets/css/home.module.css";
 import FavoriteAddressModal from "../../../common/FavoriteAddressModal";
 import { useTranslation } from "react-i18next";
+import { getConsumerAddressBookList } from "../../../data_manager/dataManage";
+import { useSelector } from "react-redux";
 
 const LocationInput = ({
   setPickupLocation,
   setDropoffLocation,
   calculateRoute,
+  mapApiKey,
 }) => {
-  const {t}=useTranslation()
+  const { t } = useTranslation();
+  const user = useSelector((state) => state.auth.user);
+
   const originRef = useRef();
   const destinationRef = useRef();
   const originAutocomplete = useRef(null);
   const destinationAutocomplete = useRef(null);
   const [showModal, setShowModal] = useState(false);
-  const handleShow = () => setShowModal(true);
+
+  const [addressList, setAddressList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [inputFiled, setInputField] = useState(null);
+  const handleShow = (field) => {
+    setShowModal(true);
+    setInputField(field);
+  };
   const handleClose = () => setShowModal(false);
 
   const handlePlaceChanged = (ref, setLocation) => {
@@ -81,6 +93,25 @@ const LocationInput = ({
     }
   };
 
+  useEffect(() => {
+    const getLocationAddress = () => {
+      getConsumerAddressBookList(
+        user?.userDetails.ext_id,
+        (successResponse) => {
+          setAddressList(successResponse[0]._response);
+          setLoading(false);
+        },
+        (errorResponse) => {
+          console.log("errorResponse", errorResponse);
+          setLoading(false);
+        }
+      );
+    };
+    if (addressList?.length === 0) {
+      getLocationAddress();
+    }
+  }, []);
+
   return (
     <>
       <div className={Styles.homePickupDropAddressCards}>
@@ -107,7 +138,7 @@ const LocationInput = ({
             </Autocomplete>
           </div>
           <FontAwesomeIcon
-            onClick={handleShow}
+            onClick={() => handleShow(1)}
             style={{ cursor: "pointer" }}
             icon={faHeart}
           />
@@ -139,7 +170,7 @@ const LocationInput = ({
             </Autocomplete>
           </div>
           <FontAwesomeIcon
-            onClick={handleShow}
+            onClick={() => handleShow(2)}
             style={{ cursor: "pointer" }}
             icon={faHeart}
           />
@@ -155,7 +186,18 @@ const LocationInput = ({
         </p>
       </div>
       {/* Modal start here  */}
-      <FavoriteAddressModal show={showModal} handleClose={handleClose} />
+      <FavoriteAddressModal
+        show={showModal}
+        handleClose={handleClose}
+        addressList={addressList}
+        loading={loading}
+        field={inputFiled}
+        mapApiKey={mapApiKey}
+        setPickupLocation={setPickupLocation}
+        originRef={originRef}
+        setDropoffLocation={setDropoffLocation}
+        destinationRef={destinationRef}
+      />
     </>
   );
 };

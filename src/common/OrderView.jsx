@@ -15,37 +15,109 @@ import CommonHeader from "../common/CommonHeader";
 import getImage from "../components/consumer/common/GetImage";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { createConsumerAddressBook } from "../data_manager/dataManage";
+import { showErrorToast } from "../utils/Toastify";
+import { ToastContainer } from "react-toastify";
+import Spinners from "./Loader";
 
 function OrderView() {
   const navigate = useNavigate();
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   const location = useLocation();
   const { order, orderCustomerDetails, dropoffDetail } = location.state || {};
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const [isAddressAdd, setIsAddressAdd] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [imageView, setImageView] = useState(
     URL.createObjectURL(orderCustomerDetails?.file[0]) || null
   );
+ 
   // console.log(order)
   const checkboxTypes = ["checkbox"];
-  const user = useSelector((state)=>state.auth.user)
+  const user = useSelector((state) => state.auth.user);
   const submitHandler = async (e) => {
     e.preventDefault();
-    
-    navigate(`/${baseUrl}/payment`, {
+
+    if (isAddressAdd) {
+      // console.log("address",order)
+      const pickupLoc = order?.pickupLocation;
+      const dropOffloc = order?.dropoffLocation;
+      if (pickupLoc) {
+        let pickupAddressLocation = {
+          consumer_ext_id: user?.userDetails.ext_id,
+          address: pickupLoc?.address,
+          first_name: orderCustomerDetails?.name,
+          last_name: orderCustomerDetails?.lastName || "",
+          company_name: orderCustomerDetails?.company || "",
+          phone: orderCustomerDetails?.phoneNumber || "",
+          email: orderCustomerDetails?.email || "",
+          comments: "",
+        };
+        createConsumerAddressBook(
+          pickupAddressLocation,
+          (successResponse) => {
+            if (successResponse[0]._success) {
+              setLoading(false);
+            }
+          },
+          (errorResponse) => {
+            setLoading(false);
+            let err = "";
+            if (errorResponse.errors) {
+              err = errorResponse.errors.msg[0].msg;
+            } else {
+              err = errorResponse[0]._errors.message;
+            }
+            showErrorToast(err);
+          }
+        );
+      }
+      if (dropOffloc) {
+        let dropoffLocation = {
+          consumer_ext_id: user?.userDetails.ext_id,
+          address: dropOffloc?.address,
+          first_name: orderCustomerDetails?.name,
+          last_name: orderCustomerDetails?.lastName || "",
+          company_name: orderCustomerDetails?.company || "",
+          phone: orderCustomerDetails?.phoneNumber || "",
+          email: orderCustomerDetails?.email || "",
+          comments: "",
+        };
+
+        createConsumerAddressBook(
+          dropoffLocation,
+          (successResponse) => {
+            if (successResponse[0]._success) {
+              setLoading(false);
+            }
+          },
+          (errorResponse) => {
+            setLoading(false);
+            let err = "";
+            if (errorResponse.errors) {
+              err = errorResponse.errors.msg[0].msg;
+            } else {
+              err = errorResponse[0]._errors.message;
+            }
+            showErrorToast(err);
+          }
+        );
+      }
+
+    }
+    {loading ? <Spinners/> : navigate(`/${baseUrl}/payment`, {
       state: {
         order,
         orderCustomerDetails,
         dropoffDetail,
         isAddressAdd,
       },
-    });
-   
+    }); }
   };
- const handleSaveAddress=(e)=>{
-  setIsAddressAdd(!isAddressAdd)
- }
+  const handleSaveAddress = (e) => {
+    setIsAddressAdd(!isAddressAdd);
+  };
 
   return (
     <>
@@ -65,7 +137,9 @@ function OrderView() {
             <div className="col-md-8">
               <div className={Styles.pickupOrderPreviewMainCard}>
                 <div>
-                  <h2 className={Styles.addPickupDetailsText}>{t("order_preview")}</h2>
+                  <h2 className={Styles.addPickupDetailsText}>
+                    {t("order_preview")}
+                  </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
                     {t("review_order_details")}
                   </p>
@@ -78,7 +152,14 @@ function OrderView() {
                       icon={faLocationDot}
                     />
                     <p className={Styles.pickuporderPreviewPickupAddressText}>
-                      {order?.addPickupLocation?.address + ","} {order?.addPickupLocation?.city + ","+order?.addPickupLocation?.state+","+order?.addPickupLocation?.country+"-"+order?.addPickupLocation?.postal_code}
+                      {order?.addPickupLocation?.address + ","}{" "}
+                      {order?.addPickupLocation?.city +
+                        "," +
+                        order?.addPickupLocation?.state +
+                        "," +
+                        order?.addPickupLocation?.country +
+                        "-" +
+                        order?.addPickupLocation?.postal_code}
                     </p>
                   </div>
 
@@ -90,16 +171,21 @@ function OrderView() {
                       icon={faLocationCrosshairs}
                     />
                     <p className={Styles.pickuporderPreviewPickupAddressText}>
-                      
-                      {order?.addDestinationLocation?.address + ","} {order?.addDestinationLocation?.city + ","+order?.addDestinationLocation?.state+","+order?.addDestinationLocation?.country+"-"+order?.addDestinationLocation?.postal_code}
-
+                      {order?.addDestinationLocation?.address + ","}{" "}
+                      {order?.addDestinationLocation?.city +
+                        "," +
+                        order?.addDestinationLocation?.state +
+                        "," +
+                        order?.addDestinationLocation?.country +
+                        "-" +
+                        order?.addDestinationLocation?.postal_code}
                     </p>
                   </div>
                 </div>
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                  {t("vehicle_details")}
+                    {t("vehicle_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -122,7 +208,7 @@ function OrderView() {
 
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                  {t("pickup_details")}
+                    {t("pickup_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -174,13 +260,14 @@ function OrderView() {
                       icon={faCommentDots}
                     />
                     <p className={Styles.pickupOrderPreviewPickupNotes}>
-                      {" "}{orderCustomerDetails?.pickupnote}
+                      {" "}
+                      {orderCustomerDetails?.pickupnote}
                     </p>
                   </div>
                 </div>
                 <div className={Styles.pickupOrderPreviewVehicleCard}>
                   <p className={Styles.pickupOrderPreviewVehicleDetailsText}>
-                  {t("dropoff_details")}
+                    {t("dropoff_details")}
                   </p>
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
@@ -224,7 +311,8 @@ function OrderView() {
                       icon={faCommentDots}
                     />
                     <p className={Styles.pickupOrderPreviewPickupNotes}>
-                      {" "}{dropoffDetail?.dropoff_note}
+                      {" "}
+                      {dropoffDetail?.dropoff_note}
                     </p>
                   </div>
                 </div>
@@ -262,24 +350,21 @@ function OrderView() {
                 </div>
 
                 <div>
-              
-                    {checkboxTypes.map((type) => (
-                      <div
-                        key={`default-${type}`}
-                        className={`mb-3 ${Styles.checkboxCard}`}
-                      >
-                        <Form.Check
-                          type={type}
-                          id={`default-${type}`}
-                          label={t("save_addresses")}
-                          checked={isAddressAdd}
-                          className={`${Styles.saveAddresslaterCheckBox}`}
-                          onClick={handleSaveAddress}
-                        />
-                        
-                      </div>
-                    ))}
-                
+                  {checkboxTypes.map((type) => (
+                    <div
+                      key={`default-${type}`}
+                      className={`mb-3 ${Styles.checkboxCard}`}
+                    >
+                      <Form.Check
+                        type={type}
+                        id={`default-${type}`}
+                        label={t("save_addresses")}
+                        checked={isAddressAdd}
+                        className={`${Styles.saveAddresslaterCheckBox}`}
+                        onClick={handleSaveAddress}
+                      />
+                    </div>
+                  ))}
                 </div>
 
                 <div className={Styles.addPickupDetailsBtnCard}>
@@ -291,7 +376,7 @@ function OrderView() {
                     {t("back")}
                   </Link>
                   <div
-                    style={{cursor:"pointer"}}
+                    style={{ cursor: "pointer" }}
                     onClick={submitHandler}
                     className={Styles.addPickupDetailsNextBtn}
                   >
@@ -302,6 +387,7 @@ function OrderView() {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </section>
     </>
   );

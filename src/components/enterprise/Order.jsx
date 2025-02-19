@@ -394,7 +394,7 @@ const ShiftOrder = memo(({ orders, branches, vehicles, navigation, t }) => {
 
                   <div className={Styles.oneTimeVehicleCard}>
                     <p className={Styles.onleTimeVehicleNameText}>
-                      {getVehicleType(item.vehicle_type_id)}
+                     {t("order_id")} : {item?.order_number} {/* {getVehicleType(item.vehicle_type_id)} */}
                     </p>
                     <div>
                       <p className={Styles.oneTimePendingText}>
@@ -548,7 +548,7 @@ const PastOrder = memo(
 
                       <div className={Styles.oneTimeVehicleCard}>
                         <p className={Styles.onleTimeVehicleNameText}>
-                          {getVehicleType(item.vehicle_type_id)}
+                          {t("order_id")} : {item?.order_number}{/* {getVehicleType(item.vehicle_type_id)} */}
                         </p>
                         <div>
                           <p className={Styles.oneTimePendingText}>

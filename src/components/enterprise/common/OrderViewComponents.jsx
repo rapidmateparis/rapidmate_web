@@ -355,7 +355,7 @@ const OrderViewComponents = ({
                   </div>
                 </div>
 
-                <div>
+                {/* <div>
                   <div className={`mb-3 ${Styles.checkboxCard}`}>
                     <Form.Check
                       type="checkbox"
@@ -365,7 +365,7 @@ const OrderViewComponents = ({
                       className={`${Styles.saveAddresslaterCheckBox}`}
                     />
                   </div>
-                </div>
+                </div> */}
 
                 <div className={Styles.addPickupDetailsBtnCard}>
                   <Link

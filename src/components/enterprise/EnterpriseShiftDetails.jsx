@@ -38,7 +38,6 @@ const EnterpriseShiftDetails = () => {
   const [orders, setOrders] = useState({});
   const [viewType, setViewType] = useState("table");
   const [showModal, setShowModal] = useState(false);
-
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   
@@ -179,7 +178,10 @@ const EnterpriseShiftDetails = () => {
                     </p>
                   </div>
                   <p className={Styles.enterpriseShiftDetailVehiclenameType}>
-                    {getVehicleType(orders?.vehicle_type_id)}
+                  {t("vehicle_type")} : {getVehicleType(orders?.vehicle_type_id)}
+                  </p>
+                  <p className={Styles.enterpriseShiftDetailVehiclenameType}>
+                  {t("order_id")} : {orders?.order_number}
                   </p>
                 </div>
                 {/* Slot Details */}

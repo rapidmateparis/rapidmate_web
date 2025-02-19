@@ -3,15 +3,20 @@ import Styles from "../assets/css/home.module.css";
 import Loader from "../assets/images/Signup-Loader.png";
 import Logo from "../assets/images/Logo-icon.png";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/authSlice";
 
 const ThankPage = ({baseUrl}) => {
     const role=useSelector((state)=>state.auth.role)
+    const dispatch = useDispatch();
     let baseU='/'
     if(baseUrl){
         if(role==='DELIVERY_BOY'){
           baseU='/'+baseUrl+'/add-vehicle'
         }else{
+          if(role==='ENTERPRISE'){
+            dispatch(logout())
+          }
           baseU='/'+baseUrl+'/dashboard'
         }
     }

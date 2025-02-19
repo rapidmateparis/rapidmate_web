@@ -5,7 +5,7 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "./CommonHeader";
 import { useSelector } from "react-redux";
@@ -62,50 +62,22 @@ function LiveTracking() {
     if (deliveryBoy?.phone) {
       setDriverPhone(deliveryBoy.phone);
     }
-    const orderDetail = async () => {
-      setLoading(true);
-      getViewOrderDetail(
-        orderNum,
-        (successResponse) => {
-          setLoading(false);
-          if (successResponse[0]._success) {
-            if (
-              successResponse[0]._response.order?.order_status =="COMPLETED"
-            ) {
-              
-              setMarkAsCompleted(true);
-              setOrder(successResponse[0]._response.order);
-              setDeliveryBoy(successResponse[0]._response.deliveryBoy);
-              if (successResponse[0]._response.vehicle) {
-                setVehicle(successResponse[0]._response.vehicle);
-              }
-            } else {
-              setMarkAsCompleted(false);
-              setOrder(successResponse[0]._response.order);
-              setDeliveryBoy(successResponse[0]._response.deliveryBoy);
-              if (successResponse[0]._response.vehicle) {
-                setVehicle(successResponse[0]._response.vehicle);
-              }
-            }
-          }
-        },
-        (errorResponse) => {
-          setLoading(false);
-        }
-      );
-    };
+   
     if (orderNum) {
       if (user?.userDetails.role == "ENTERPRISE") {
         enterpriseOrderDetail();
       } else {
         orderDetail();
       }
+      
     }
     const getMapApiKey = async () => {
           const key = await getMapsApiKey()
           setMapKey(key)
         }
-        getMapApiKey()
+        if(mapKey==null){
+          getMapApiKey()
+        }
   }, [orderNum]);
 
   const enterpriseOrderDetail = () => {
@@ -144,6 +116,38 @@ function LiveTracking() {
       (errorResponse) => {
         setLoading(false);
         console.log("orderDetail==>errorResponse", errorResponse[0]);
+      }
+    );
+  };
+  const orderDetail = async () => {
+    setLoading(true);
+    getViewOrderDetail(
+      orderNum,
+      (successResponse) => {
+        setLoading(false);
+        if (successResponse[0]._success) {
+          if (
+            successResponse[0]._response.order?.order_status =="COMPLETED"
+          ) {
+            
+            setMarkAsCompleted(true);
+            setOrder(successResponse[0]._response.order);
+            setDeliveryBoy(successResponse[0]._response.deliveryBoy);
+            if (successResponse[0]._response.vehicle) {
+              setVehicle(successResponse[0]._response.vehicle);
+            }
+          } else {
+            setMarkAsCompleted(false);
+            setOrder(successResponse[0]._response.order);
+            setDeliveryBoy(successResponse[0]._response.deliveryBoy);
+            if (successResponse[0]._response.vehicle) {
+              setVehicle(successResponse[0]._response.vehicle);
+            }
+          }
+        }
+      },
+      (errorResponse) => {
+        setLoading(false);
       }
     );
   };
@@ -241,6 +245,8 @@ function LiveTracking() {
         return 2;
       case "OTP_VERIFIED":
         return 3;
+      case "DELIVERED_OTP_VERIFIED":
+        return 4;
       case "ON_THE_WAY_DROP_OFF":
         return 4;
       case "COMPLETED":
@@ -252,43 +258,66 @@ function LiveTracking() {
 
   // Ensure `getStep` is used consistently to initialize and update the step.
   const [currentStep, setCurrentStep] = useState(() => getStep(order));
-
+  const memoizedPickupHomeMap = useMemo(() => {
+    if (!mapKey || !pickupLocation || dropoffLocation.length === 0) {
+      return null; // Return null or a fallback component if data isn't ready
+    }
+    return (
+      <PickupHomeMap
+        pickupLocation={pickupLocation}
+        dropoffLocations={dropoffLocation}
+        mapApiKey={mapKey}
+      />
+    );
+  }, [mapKey, pickupLocation, dropoffLocation]);
   // Update the current step if the `order` prop changes.
   useEffect(() => {
     if (order) {
       setCurrentStep(getStep(order));
   
       if (user?.userDetails.role === "CONSUMER") { 
-        setPickupLocation(getOrigin(order?.pickup_location_id));
-  
-        const dropoff = getOrigin(order?.dropoff_location_id);
-        if (dropoff) {
-          setDropoffLocation([dropoff]); // Ensure it's set as an array
-        } else {
-          setDropoffLocation([]); // Default to empty array if null
-        }
-      } else {
-        if(order?.delivery_type_id===1){
-          setPickupLocation(getOrigin(order?.pickup_location));
-  
-          const dropoff = getOrigin(order?.dropoff_location);
+        if(pickupLocation==null && dropoffLocation.length===0){
+          setPickupLocation(getOrigin(order?.pickup_location_id));
+          const dropoff = getOrigin(order?.dropoff_location_id);
           if (dropoff) {
             setDropoffLocation([dropoff]); // Ensure it's set as an array
           } else {
             setDropoffLocation([]); // Default to empty array if null
           }
-        }else{
-          setPickupLocation(getOrigin(order?.pickup_location));
-  
-          const formattedDropoffLocations = (multipleOrderLocation || []) // Ensure it's not null
-            .map((branch) => getOrigin(branch.dropoff_location))
-            .filter((loc) => loc !== null); // Remove null values
-    
-          setDropoffLocation(formattedDropoffLocations);
         }
         
+      } else {
+        if(pickupLocation==null && dropoffLocation.length===0){
+          if(order?.delivery_type_id===1){
+            setPickupLocation(getOrigin(order?.pickup_location));
+    
+            const dropoff = getOrigin(order?.dropoff_location);
+            if (dropoff) {
+              setDropoffLocation([dropoff]); // Ensure it's set as an array
+            } else {
+              setDropoffLocation([]); // Default to empty array if null
+            }
+          }else{
+            setPickupLocation(getOrigin(order?.pickup_location));
+    
+            const formattedDropoffLocations = (multipleOrderLocation || []) // Ensure it's not null
+              .map((branch) => getOrigin(branch.dropoff_location))
+              .filter((loc) => loc !== null); // Remove null values
+      
+            setDropoffLocation(formattedDropoffLocations);
+          }
+        }
       }
+      const getOrderFnc =
+      user?.userDetails.role === "ENTERPRISE"
+        ? enterpriseOrderDetail
+        : orderDetail;
+    const interval = setInterval(() => getOrderFnc(), 15000);
+    return () => clearInterval(interval);
     }
+
+    
+    
   }, [order]); // Added dependencies for better reactivity
   
 
@@ -301,6 +330,8 @@ function LiveTracking() {
   if (order == null) {
     return <Spinners />;
   }
+  
+
   
 
   if (markAsComplepleted) {
@@ -356,7 +387,7 @@ function LiveTracking() {
     }, 0);
   };
   
-
+  
   
   return (
     <>
@@ -564,12 +595,8 @@ function LiveTracking() {
           </div>
           
           <div className="col-md-9">
-            <div className="text-center"> 
-              {mapKey !==null && <PickupHomeMap
-                pickupLocation={pickupLocation}
-                dropoffLocations={dropoffLocation}
-                mapApiKey={mapKey}
-              />}
+            <div className="text-center">
+              {memoizedPickupHomeMap}
             </div>
           </div>
         </div>

@@ -62,10 +62,7 @@ const SetNewSchedule = () => {
       } else {
         return prevRows.map((row, index) => ({
           ...row,
-          slots:
-            index === 0
-              ? row.slots
-              : row.slots.map(() => ({ from: "", to: "" })),
+          slots:prevRows[0]?.slots || [],
         }));
       }
     });
@@ -174,15 +171,19 @@ const SetNewSchedule = () => {
   };
 
   const handleSlotChange = (date, index, field, value) => {
+    setRepeatOrder(false)
     const updatedRows = rows.map((row) => {
       if (row.date === date) {
-        const updatedSlots = [...row.slots];
-        updatedSlots[index][field] = value;
+        // Create a deep copy of slots array
+        const updatedSlots = row.slots.map((slot, i) =>
+          i === index ? { ...slot, [field]: value } : slot
+        );
         return { ...row, slots: updatedSlots };
       }
       return row;
     });
-    setRows(updatedRows);
+  
+    setRows(updatedRows); // Make sure to update state
   };
 
   const handleAddSlot = (date) => {

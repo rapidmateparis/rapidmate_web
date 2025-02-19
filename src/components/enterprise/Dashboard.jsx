@@ -54,6 +54,7 @@ import OrderCardBox from "./common/OrderCardBox";
 import { Link, useNavigate } from "react-router-dom";
 import Spinners from "../../common/Loader";
 import { useTranslation } from "react-i18next";
+import { getDashbaordBranch } from "../../utils/UseFetch";
 function CommonDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -166,29 +167,18 @@ function CommonDashboard() {
     );
   };
 
-  const getBookingList = () => {
+  const getBookingList = async () => {
     setLoading(true);
-    getEnterpriseDashboardInfo(
-      user.userDetails.ext_id,
-      (successResponse) => {
-        setLoading(false);
-        if (successResponse[0]?._response) {
-          if (
-            successResponse[0]?._response?.branchOverviewData &&
-            successResponse[0]?._response?.branchOverviewData.length > 0
-          ) {
-            const branchList =
-              successResponse[0]?._response?.branchOverviewData;
-            dispatch(setBranches(branchList));
-            dispatch(setBookings(successResponse[0]?._response?.overviewData));
-            displayChartData(successResponse[0]?._response?.weekData);
-          }
-
-          // displayChartData(successResponse[0]._response[0].dashboard.branch[0]);
-        }
-      },
-      (errorResponse) => {
-        let err = "";
+    try {
+      const response=await getDashbaordBranch(user?.userDetails?.ext_id);
+      if(response?.branchOverviewData && response?.branchOverviewData.length > 0){
+        const branchList =response?.branchOverviewData;
+        dispatch(setBranches(branchList));
+        dispatch(setBookings(response?.overviewData));
+        displayChartData(response?.weekData);
+      }
+    } catch (errorResponse) {
+      let err = "";
         if (errorResponse.errors) {
           err = errorResponse.errors.msg[0].msg;
         } else {
@@ -196,8 +186,7 @@ function CommonDashboard() {
         }
         showErrorToast(err);
         setLoading(false);
-      }
-    );
+    }
   };
 
   useEffect(() => {

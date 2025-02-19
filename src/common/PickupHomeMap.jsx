@@ -85,7 +85,7 @@ function PickupHomeMap({ pickupLocation, dropoffLocations,mapApiKey }) {
                 strokeOpacity: 0.9,    // 90% opacity
                 strokeWeight: 3,       // 5px thick line
               },
-              suppressMarkers: false,   // Use your custom markers
+              suppressMarkers: true,   // Use your custom markers
             }}/>}
       </GoogleMap>
     </div>
