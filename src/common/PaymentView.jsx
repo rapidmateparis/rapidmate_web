@@ -32,10 +32,22 @@ import {
 } from "../data_manager/dataManage";
 import { ToastContainer } from "react-toastify";
 import { showErrorToast, showSuccessToast } from "../utils/Toastify";
-import { addLocation, BASE_URL, localToUTC, uploadImage } from "../utils/Constants";
+import {
+  addLocation,
+  BASE_URL,
+  localToUTC,
+  uploadImage,
+} from "../utils/Constants";
 import PickupAddPaymentMethodsModal from "../components/consumer/account/PickupAddPaymentMethodsModal";
 import localforage from "localforage";
 import { useTranslation } from "react-i18next";
+import {
+  createPaymentCustomer,
+  createPaymentInt,
+  paymentCardList,
+  paymentCardSave,
+  payWithSaveCard,
+} from "../utils/UseFetch";
 
 const stripePromise = loadStripe(
   "pk_test_51PgiLhLF5J4TIxENPZOMh8xWRpEsBxheEx01qB576p0vUZ9R0iTbzBFz0QvnVaoCZUwJu39xkym38z6nfNmEgUMX00SSmS6l7e"
@@ -49,7 +61,9 @@ const PaymentPage = ({
   setPaymentAmount,
   t,
   getTaxAmount,
-  vechicleTax
+  vechicleTax,
+  customerId,
+  paymentMethod,
 }) => {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
@@ -67,16 +81,46 @@ const PaymentPage = ({
   const [destinationLocationId, setDestinationLocationId] = useState("");
   const [packageImageId, setPackageImageId] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
+  const [selectOptionCard, setSelectOptionCard] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
-  const [paymentCard, setPaymentCard] = useState([]);
   const openAddModal = () => {
     setShowAddModal(true);
   };
 
+  const [savedCards, setSavedCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState("");
+  const [saveForLater, setSaveForLater] = useState(false);
+  useEffect(() => {
+    if (message) {
+      showSuccessToast(message);
+    }
+  }, [message]);
   // Toggle the selected state when the div is clicked
-  const handleClick = (paymentcard) => {
-    setIsSelected(paymentcard);
+  const handleClick = (paymentId) => {
+    if (isSelected) {
+      setSelectOptionCard("");
+      setSelectedCard("");
+    } else {
+      setSelectOptionCard(paymentId);
+      setSelectedCard(paymentId);
+    }
+    setIsSelected(!isSelected);
   };
+
+  useEffect(() => {
+    const getPaymentCardList = async () => {
+      const params = {
+        method: paymentMethod,
+        customerId,
+      };
+
+      const paymentcard = await paymentCardList(params);
+      setSavedCards(paymentcard);
+    };
+    if (customerId) {
+      getPaymentCardList();
+    }
+  }, [customerId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -188,40 +232,71 @@ const PaymentPage = ({
 
   const doPayment = async () => {
     setLoading(true);
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        payment_method_data: {
-          billing_details: {
-            name:
-              user?.userDetails.first_name + " " + user?.userDetails?.last_name,
-            email: user?.userDetails.email || "",
-            address: {
-              line1: order?.addPickupLocation?.address,
-              city: order?.addPickupLocation?.city,
-              postal_code: order?.addPickupLocation?.postal_code,
-              country: order?.addPickupLocation?.country,
+    setMessage("");
+
+    if (selectedCard) {
+      // 🔹 Pay with saved card
+      const params = {
+        amount: paymentAmount.toFixed(2),
+        customerId,
+        paymentMethodId: selectedCard,
+        method: paymentMethod,
+      };
+
+      const res = await payWithSaveCard(params);
+      setMessage(
+        res?.paymentIntent?.status == "succeeded"
+          ? "Payment successful!"
+          : "Payment failed."
+      );
+
+      await createPayment();
+    } else {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          payment_method_data: {
+            billing_details: {
+              name:
+                user?.userDetails.first_name +
+                " " +
+                user?.userDetails?.last_name,
+              email: user?.userDetails.email || "",
+              address: {
+                line1: order?.addPickupLocation?.address,
+                city: order?.addPickupLocation?.city,
+                postal_code: order?.addPickupLocation?.postal_code,
+                country: order?.addPickupLocation?.country,
+              },
             },
           },
         },
-      },
-      redirect: "if_required",
-    });
+        redirect: "if_required",
+      });
 
-    if (error) {
-      showErrorToast(error.message);
+      if (error) {
+        showErrorToast(error.message);
+      }
+
+      if (paymentIntent?.status === "succeeded") {
+        setMessage("Payment successful!");
+        if (saveForLater && customerId) {
+          const params = {
+            customerId,
+            paymentMethodId: paymentIntent.payment_method,
+            method: paymentMethod,
+          };
+          const response = await paymentCardSave(params);
+          await createPayment();
+        }else{
+          await createPayment();
+        }
+      } else {
+        showErrorToast(
+          `Payment not successful. Current status: ${paymentIntent?.status}`
+        );
+      }
     }
-
-    if (paymentIntent?.status === "succeeded") {
-      setMessage("Payment successful!");
-      await createPayment();
-    } else {
-      showErrorToast(
-        `Payment not successful. Current status: ${paymentIntent?.status}`
-      );
-    }
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -229,26 +304,12 @@ const PaymentPage = ({
       doPayment();
     }
   }, [orderNumber]);
-  const getPaymentCard = () => {
-    getConsumerPaymentMethod(
-      user?.userDetails.ext_id,
-      (successResponse) => {
-        if (successResponse[0]._success) {
-         setPaymentCard(successResponse[0]._response);
-        }
-      },
-      (errorResponse) => {
-        console.log(errorResponse[0]._errors.message);
-      }
-    );
-  };
+
   useEffect(() => {
     {
       offerDiscount > 0 &&
         setPaymentAmount(calculateFinalPrice(paymentAmount, offerDiscount));
     }
-    
-    getPaymentCard();
   }, [user]);
 
   const handleApplyCoupon = () => {
@@ -295,8 +356,8 @@ const PaymentPage = ({
           navigate("/payment-successfull", {
             state: {
               orderNumber: orderNumber,
-              date:order?.date,
-              isSchedule:order?.isSchedule,
+              date: order?.date,
+              isSchedule: order?.isSchedule,
             },
           });
         }
@@ -306,6 +367,7 @@ const PaymentPage = ({
           order_number: orderNumber,
           status: "Payment Failed",
         };
+        setLoading(false);
         showErrorToast("Payment Failed.");
       }
     );
@@ -343,7 +405,9 @@ const PaymentPage = ({
                   <Link className={Styles.addPickupDetailsBackArrow} href="#">
                     <FontAwesomeIcon icon={faArrowLeft} />
                   </Link>
-                  <h2 className={Styles.addPickupDetailsText}>{t("payment")}</h2>
+                  <h2 className={Styles.addPickupDetailsText}>
+                    {t("payment")}
+                  </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
                     {t("select_payment_method")}
                   </p>
@@ -416,7 +480,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                          {t("estimated_cost")}
+                            {t("estimated_cost")}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {totalAmount.toFixed(2) || 0.0}
@@ -488,49 +552,6 @@ const PaymentPage = ({
                         {t("credit_debit_cards")}
                       </p>
 
-                      <div className={Styles.paymentAllCardsDataShow}>
-                        {paymentCard && paymentCard.length > 0 && paymentCard?.map((cardInfo, index) => (
-                          <div onClick={()=>handleClick(cardInfo)} key={index}>
-                            <div className={Styles.paymentMethodAddedCards}>
-                              <img
-                                className={Styles.paymentMethodMastercardsLogos}
-                                src={MasterCard}
-                                alt="card"
-                              />
-                              <div>
-                                <p className={Styles.paymentMethodCardName}>
-                                  {cardInfo?.card_holder_name}
-                                </p>
-                                <p className={Styles.paymentmethodUserEmail}>
-                                  {cardInfo.card_number?.replace(/\d(?=\d{4})/g, "*")}
-                                </p>
-                              </div>
-                              <button className={Styles.paymentMethodEditBtn}>
-                                <FontAwesomeIcon
-                                  icon={isSelected.id==cardInfo.id ? faCircleCheck : faCircle}
-                                />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-
-                        <div>
-                          <div className={Styles.paymentAddCardMain } >
-                            <div
-                              onClick={openAddModal}
-                              className={`${Styles.paymentAddCardBtn}`}
-                              style={{cursor:"pointer"}}
-                            >
-                              
-                              <p className={`${Styles.paymentAddCardText} p-2`}>
-                              <FontAwesomeIcon icon={faCirclePlus} /> {t("add_new_card")}
-                              </p>
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </div>
-
                       <div className={Styles.paymentsOffCreaditCardInfo}>
                         <FontAwesomeIcon
                           className={Styles.paymentsCardsInfoCircle}
@@ -544,8 +565,56 @@ const PaymentPage = ({
                   </div>
 
                   <div className="col-md-4">
+                    {savedCards.length > 0 &&
+                      savedCards?.map((cardInfo, index) => (
+                        <div
+                          onClick={() => handleClick(cardInfo.id)}
+                          key={index}
+                        >
+                          <div className={Styles.paymentMethodAddedCards}>
+                            <img
+                              className={Styles.paymentMethodMastercardsLogos}
+                              src={MasterCard}
+                              alt="card"
+                            />
+                            <div>
+                              <p className={Styles.paymentmethodUserEmail}>
+                                {cardInfo.card.last4}
+                              </p>
+                            </div>
+                            <button className={Styles.paymentMethodEditBtn}>
+                              <FontAwesomeIcon
+                                icon={
+                                  selectOptionCard == cardInfo.id
+                                    ? faCircleCheck
+                                    : faCircle
+                                }
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     <form onSubmit={handleSubmit}>
-                      <PaymentElement />
+                      {!selectedCard && (
+                        <>
+                          <PaymentElement />
+                          <label
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginTop: "10px",
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={saveForLater}
+                              onChange={() => setSaveForLater(!saveForLater)}
+                              style={{ marginRight: "8px" }}
+                            />
+                            Save for future payments
+                          </label>
+                        </>
+                      )}
                       <button
                         type="submit"
                         disabled={!stripe || loading}
@@ -554,12 +623,14 @@ const PaymentPage = ({
                         {loading ? t("processing") : t("pay_now")}
                       </button>
                     </form>
-                    {message && <p>{showSuccessToast(message)}</p>}
                   </div>
                 </div>
 
                 <div className={Styles.addPickupDetailsBtnCard}>
-                  <button className={Styles.addPickupDetailsCancelBTn} onClick={()=>navigate('/consumer/dashboard')}>
+                  <button
+                    className={Styles.addPickupDetailsCancelBTn}
+                    onClick={() => navigate("/consumer/dashboard")}
+                  >
                     {t("cancel")}
                   </button>
                 </div>
@@ -572,7 +643,7 @@ const PaymentPage = ({
       <PickupAddPaymentMethodsModal
         show={showAddModal}
         handleClose={() => setShowAddModal(false)}
-        getPaymentCard={()=>getPaymentCard()}
+        getPaymentCard={() => getPaymentCard()}
       />
       <ToastContainer />
     </>
@@ -580,7 +651,7 @@ const PaymentPage = ({
 };
 
 function PaymentView() {
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
   const [clientSecret, setClientSecret] = useState("");
   const { order } = useLocation().state || {};
@@ -588,14 +659,18 @@ function PaymentView() {
   const [paymentAmount, setPaymentAmount] = useState(0);
   const navigate = useNavigate();
   const [vechicleTax, setVechicleTax] = useState(20);
+
+  const [customerId, setCustomerId] = useState("");
+  const [tokens, setTokens] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
+
   const getTaxAmount = () => {
     const amount =
       typeof order.selectedVehiclePrice === "number"
-      ? order.selectedVehiclePrice.toFixed(2)
-      : parseFloat(order.selectedVehiclePrice).toFixed(2);
+        ? order.selectedVehiclePrice.toFixed(2)
+        : parseFloat(order.selectedVehiclePrice).toFixed(2);
     const taxAmount = (parseFloat(amount) * parseFloat(vechicleTax)) / 100;
     return taxAmount ? taxAmount.toFixed(2) : 0;
-
   };
   useEffect(() => {
     if (order?.selectedVehiclePrice) {
@@ -603,12 +678,13 @@ function PaymentView() {
         typeof order.selectedVehiclePrice === "number"
           ? order.selectedVehiclePrice.toFixed(2)
           : parseFloat(order.selectedVehiclePrice).toFixed(2);
-          const taxAmount = (parseFloat(calculatedTotalAmount) * parseFloat(vechicleTax)) / 100;
-          const total_Amount = parseFloat(calculatedTotalAmount) + taxAmount;
-          if(total_Amount){
-            setTotalAmount(total_Amount);
-            setPaymentAmount(total_Amount);
-          }
+      const taxAmount =
+        (parseFloat(calculatedTotalAmount) * parseFloat(vechicleTax)) / 100;
+      const total_Amount = parseFloat(calculatedTotalAmount) + taxAmount;
+      if (total_Amount) {
+        setTotalAmount(total_Amount);
+        setPaymentAmount(total_Amount);
+      }
     }
     setTimeout(() => {
       if (!order) {
@@ -618,28 +694,32 @@ function PaymentView() {
   }, [order]);
 
   useEffect(() => {
-    if (paymentAmount > 0) {
+    const getCustomerId = async () => {
+      const params = {
+        email: user?.userInfo.username,
+        role: user?.userDetails.role,
+        method: paymentMethod,
+      };
+      const dataRes = await createPaymentCustomer(params);
+      setCustomerId(dataRes?.customer?.id);
+    };
+    getCustomerId();
+  }, []);
+  useEffect(() => {
+    if (paymentAmount > 0 && customerId) {
       const createPaymentIntent = async () => {
-        const token = await localforage.getItem('1');
+        const token = await localforage.getItem("1");
         try {
-          const response = await fetch(
-            `${BASE_URL}payment/create-payment-intent`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json",'Authorization': token },
-              body: JSON.stringify({
-                amount: paymentAmount, // Convert to cents for Stripe
-                currency: "eur",
-              }),
-            }
-          );
-
-          const data = await response.json();
-
-          if (data.clientSecret) {
-            setClientSecret(data.clientSecret);
-          } else {
-            console.error("Failed to fetch client secret:", data);
+          const params = {
+            amount: paymentAmount,
+            currency: "eur",
+            customerId,
+            method: paymentMethod,
+          };
+          const paymentInt = await createPaymentInt(params);
+          if (paymentInt.clientSecret) {
+            setClientSecret(paymentInt.clientSecret);
+            setTokens(token);
           }
         } catch (error) {
           console.error("Error creating payment intent:", error);
@@ -648,7 +728,7 @@ function PaymentView() {
 
       createPaymentIntent();
     }
-  }, [paymentAmount]);
+  }, [customerId]);
 
   const options = {
     clientSecret,
@@ -671,6 +751,8 @@ function PaymentView() {
             t={t}
             getTaxAmount={getTaxAmount}
             vechicleTax={vechicleTax}
+            customerId={customerId}
+            paymentMethod={paymentMethod}
           />
         </Elements>
       ) : (
@@ -679,7 +761,6 @@ function PaymentView() {
           <p>Loading...</p>
         </>
       )}
-      
     </div>
   );
 }

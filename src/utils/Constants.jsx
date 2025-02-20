@@ -14,7 +14,8 @@ export const PORT = {
   prod: "3008",
 };
 
-export const BASE_URL = "https://api.rapidmate.fr/api/";
+
+export const BASE_URL = "https://api.rapidmate.fr/api";
 
 
 export const API = {
@@ -95,7 +96,9 @@ export const API = {
   vechicleTaxList: BASE_URL + 'vehicletypes/tax/list',
   changeCreateShiftStatus:BASE_URL + 'order/update/shift/status',
   deliveryBoyOrderSlots:BASE_URL + 'order/deliveryboy/myslots/',
-  getMapKey:BASE_URL + 'authuser/map/code'
+  getMapKey:BASE_URL + 'authuser/map/code',
+  stripe: BASE_URL + "payment/stripe/",
+
 };
 
 export const formatDate = (dateString) => {

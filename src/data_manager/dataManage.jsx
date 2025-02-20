@@ -1313,3 +1313,95 @@ export const getMapKey = (params,successCallback, errorCallback) => {
     },
   );
 };
+
+export const createPaymentCust = (params, successCallback, errorCallback) => {
+ const apiBase=API[params.method]
+  axiosCall(
+    apiBase+'create-customer',
+    HTTPMethod.POST,
+    params,
+    response => {
+      successCallback(response);
+    },
+    errorResponse => {
+      errorCallback(errorResponse);
+    },
+  );
+};
+
+export const createPaymentIntent = (params, successCallback, errorCallback) => {
+ const apiBase=API[params.method]
+  
+  axiosCall(
+    apiBase+'create-payment-intent',
+    HTTPMethod.POST,
+    params,
+    response => {
+      successCallback(response);
+    },
+    errorResponse => {
+      errorCallback(errorResponse);
+    },
+  );
+};
+
+export const createPaymentCard = (params, successCallback, errorCallback) => {
+  const apiBase=API[params.method]
+   
+   axiosCall(
+     apiBase+'list-cards/'+params.customerId,
+     HTTPMethod.GET,
+     null,
+     response => {
+       successCallback(response);
+     },
+     errorResponse => {
+       errorCallback(errorResponse);
+     },
+   );
+ };
+
+ export const payWithCardList=(params, successCallback, errorCallback) => {
+  const apiBase=API[params.method]
+   axiosCall(
+     apiBase+'pay',
+     HTTPMethod.POST,
+     params,
+     response => {
+       successCallback(response);
+     },
+     errorResponse => {
+       errorCallback(errorResponse);
+     },
+   );
+ };
+
+ export const saveCard=(params, successCallback, errorCallback) => {
+  const apiBase=API[params.method]
+   axiosCall(
+     apiBase+'save-card',
+     HTTPMethod.POST,
+     params,
+     response => {
+       successCallback(response);
+     },
+     errorResponse => {
+       errorCallback(errorResponse);
+     },
+   );
+ };
+
+ export const removeCard=(params, successCallback, errorCallback) => {
+  const apiBase=API[params.method]
+   axiosCall(
+     apiBase+'remove-card',
+     HTTPMethod.POST,
+     params,
+     response => {
+       successCallback(response);
+     },
+     errorResponse => {
+       errorCallback(errorResponse);
+     },
+   );
+ };

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { getEnterpriseDashboardInfo, getLookupData } from '../data_manager/dataManage';
+import {  getEnterpriseDashboardInfo, getLookupData, createPaymentIntent, createPaymentCust, createPaymentCard, payWithCardList, saveCard, removeCard } from '../data_manager/dataManage';
 
 // Hook to fetch user and lookup data
 export const UseFetch = () => {
@@ -82,6 +82,92 @@ export const getLocationDetails = (address,mapApiKey) => {
     }
   });
 };
+
+export const createPaymentCustomer = (params) => {
+   return new Promise((resolve,reject)=>{
+    createPaymentCust(
+      params,
+      (successResponse) => {
+        resolve(successResponse[0]._response);
+      },
+      (errorResponse) => {
+        reject(errorResponse);
+      }
+    );
+   })
+}
+
+export const createPaymentInt =(params) => {
+  return new Promise((resolve,reject)=>{
+    createPaymentIntent(
+     params,
+     (successResponse) => {
+       resolve(successResponse[0]._response);
+     },
+     (errorResponse) => {
+       reject(errorResponse);
+     }
+   );
+  })
+}
+
+export const paymentCardList =(params) => {
+  return new Promise((resolve,reject)=>{
+    createPaymentCard(
+     params,
+     (successResponse) => {
+       resolve(successResponse[0]._response);
+     },
+     (errorResponse) => {
+       reject(errorResponse);
+     }
+   );
+  })
+}
+
+export const payWithSaveCard = (params)=>{
+  return new Promise((resolve,reject)=>{
+    payWithCardList(
+     params,
+     (successResponse) => {
+       resolve(successResponse[0]._response);
+     },
+     (errorResponse) => {
+       reject(errorResponse);
+     }
+   );
+  })
+}
+
+export const paymentCardSave =(params)=>{
+  return new Promise((resolve,reject)=>{
+    saveCard(
+     params,
+     (successResponse) => {
+       resolve(successResponse[0]._response);
+     },
+     (errorResponse) => {
+       reject(errorResponse);
+     }
+   );
+  })
+}
+
+export const removePaymentCard =(params)=>{
+  return new Promise((resolve,reject)=>{
+    removeCard(
+     params,
+     (successResponse) => {
+       resolve(successResponse[0]._response);
+     },
+     (errorResponse) => {
+       reject(errorResponse);
+     }
+   );
+  })
+}
+
+
 
 
 
