@@ -83,7 +83,6 @@ import EnterpriseShiftAddDropDetails from "../components/enterprise/common/Enter
 import EnterpriseShiftOrderPreview from "../components/enterprise/common/EnterpriseShiftOrderPreview";
 import SupportPage from "../common/SupportPage";
 import Error404 from "./Error404";
-import Demo from "../common/Demo";
 function MainRoutes() {
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
@@ -222,14 +221,7 @@ function MainRoutes() {
             </ProtectedRoute>
           }
         />
-         <Route
-          path={`/enterprise/demo`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <Demo />
-            </ProtectedRoute>
-          }
-        />
+        
         <Route
           path={`/${baseUrl}/find-driver`}
           element={
