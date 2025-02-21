@@ -579,7 +579,7 @@ const PaymentPage = ({
                             />
                             <div>
                               <p className={Styles.paymentmethodUserEmail}>
-                                {cardInfo.card.last4}
+                              **** **** **** {cardInfo.card.last4}
                               </p>
                             </div>
                             <button className={Styles.paymentMethodEditBtn}>
