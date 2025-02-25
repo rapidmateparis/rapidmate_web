@@ -27,12 +27,16 @@ import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarger from "../../assets/images/pickup-marker.png";
 import { showErrorToast, showSuccessToast } from "../../utils/Toastify";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { setOrderDetails } from "../../redux/doOrderSlice";
 
 const libraries = ["places"];
 
 function ConsumerDashboard({mapApiKey}) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const {order} = useSelector((state) => state.orderDetails);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
@@ -54,7 +58,7 @@ function ConsumerDashboard({mapApiKey}) {
   const [dropoffLocation, setDropoffLocation] = useState("");
   const [addPickupLocation, setAddPickupLocation] = useState(null);
   const [addDestinationLocation, setAddDestinationLocation] = useState(null);
-  const [date, setDate] = useState("");
+  const [dateValue, setDate] = useState("");
   const [isSchedule, setIsSchedule] = useState(false);
   const [map, setMap] = useState(null);
   const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? "350px" : "100vh");
@@ -130,6 +134,15 @@ function ConsumerDashboard({mapApiKey}) {
     getDistancePrice();
   }, [duration]);
 
+  useEffect(()=>{
+    if(order){
+      setSelectedVehicle(order?.selectedVehicle)
+      setSelectedVehicleDetails(order?.selectedVehicleDetails)
+      setSelectedVehiclePrice(order?.selectedVehiclePrice)
+      // setPickupLocation(order?.pickupLocation)
+    }
+  },[order])
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: mapApiKey,
     libraries,
@@ -171,13 +184,13 @@ function ConsumerDashboard({mapApiKey}) {
       showErrorToast("Please fill all fields.");
       return;
     }
-
+     
     const payload = {
       addPickupLocation,
       addDestinationLocation,
       pickupLocation,
       dropoffLocation,
-      date,
+      date: dateValue instanceof Date ? dateValue.toISOString() : null,
       isSchedule,
       selectedVehicle,
       distance,
@@ -185,10 +198,12 @@ function ConsumerDashboard({mapApiKey}) {
       selectedVehicleDetails,
       selectedVehiclePrice,
     };
+    if(order?.orderCustomerDetails){
+      payload.orderCustomerDetails=order?.orderCustomerDetails
+    }
+    dispatch(setOrderDetails(payload))
 
-    navigate("/consumer/pickup-details", {
-      state: { order: payload },
-    });
+    navigate("/consumer/pickup-details");
   };
 
   const getPriceUsingVehicleType = (vehicleTypeId) => {
@@ -202,6 +217,8 @@ function ConsumerDashboard({mapApiKey}) {
     setVehicleDetail(vehicle);
     setShowModal(true);
   };
+
+  
 
   return (
     <section className={Styles.requestPickupSec}>

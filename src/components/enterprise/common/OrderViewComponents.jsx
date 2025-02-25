@@ -15,6 +15,7 @@ import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import getImage from "../../consumer/common/GetImage";
 import { getFileName } from "../../../utils/Constants";
 import { useTranslation } from "react-i18next";
+import localforage from "localforage";
 
 const OrderViewComponents = ({
   navigate,
@@ -27,6 +28,7 @@ const OrderViewComponents = ({
 }) => {
   const {t}=useTranslation()
   const [imageView, setImageView] = useState(null);
+  const [imageViews, setImageViews] = useState({});
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -39,9 +41,38 @@ const OrderViewComponents = ({
     });
   };
 
+  useEffect(()=>{
+    const getLocalData =  async () =>{
+      
+      if(!isMultiple){
+        const savefile=await localforage.getItem("uploadedFile")
+        if(savefile){
+          setImageView(URL.createObjectURL(savefile[0]))
+          
+        }
+      }else{
+       
+        order?.dropoffLoc?.map(async(v,i)=>{
+          const savedFile = await localforage.getItem("file-"+i);
+         
+          if (savedFile) {
+            const urlImg=URL.createObjectURL(savedFile[0])
+            setImageViews((prev) => ({
+              ...prev,
+              [i]: urlImg,
+            }));
+          }
+        })
+      }
+      
+    }
+    getLocalData()
+  },[])
+
   
   return (
     <>
+    
       <section className={Styles.addPickupDetailsSec}>
         <div>
           <div className={`row ${Styles.manageRow}`}>
@@ -145,7 +176,7 @@ const OrderViewComponents = ({
                       <div>
                         <img
                           className={Styles.PickupOrderPreviewTruckImage}
-                          src={URL.createObjectURL(orderCustomerDetails?.file[0])}
+                          src={imageView}
                           alt="icon"
                         />
                       </div>
@@ -210,7 +241,7 @@ const OrderViewComponents = ({
                         <div>
                         <img
                           className={Styles.PickupOrderPreviewTruckImage}
-                          src={URL.createObjectURL(getFileName(orderCustomerDetails,"file",index)[0])}
+                          src={imageViews[index]}
                           alt="icon"
                         />
                       </div>
@@ -368,13 +399,13 @@ const OrderViewComponents = ({
                 </div> */}
 
                 <div className={Styles.addPickupDetailsBtnCard}>
-                  <Link
+                  <div
                     className={Styles.addPickupDetailsCancelBTn}
                     onClick={() => navigate(-1)}
                     style={{ color: "#000", cursor: "pointer" }}
                   >
                     {t("back")}
-                  </Link>
+                  </div>
 
                   <div
                     onClick={submitHandler}

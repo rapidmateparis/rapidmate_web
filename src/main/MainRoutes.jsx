@@ -119,66 +119,22 @@ function MainRoutes() {
         <Route path="/payment-unsuccessful" element={<PaymentUnsuccessful />} />
         <Route path="/driver-not-available" element={<DriverNotAvailable />} />
         <Route path="/thanks" element={<ThankPage baseUrl={baseUrl} />} />
-        <Route
-          path="/request-pending"
-          element={<RequestPending baseUrl={baseUrl} />}
-        />
+        <Route path="/request-pending" element={<RequestPending baseUrl={baseUrl} />}/>
+
         {/* auth route */}
-        <Route
-          path={`/${baseUrl}/dashboard`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <CommonDashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path={`/${baseUrl}/dashboard`} element={<ProtectedRoute requiredRole={userRole}><CommonDashboard /></ProtectedRoute>}/>
         {/* enterprise */}
-        <Route
-          path={`/${baseUrl}/planing`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <EnterprisePlanning />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={`/${baseUrl}/schedules`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <EnterprisesNewSchedule />
-            </ProtectedRoute>
-          }
-        />
+        <Route path={`/${baseUrl}/planing`} element={<ProtectedRoute requiredRole={userRole}><EnterprisePlanning /></ProtectedRoute>}/>
+        <Route path={`/${baseUrl}/schedules`} element={<ProtectedRoute requiredRole={userRole}><EnterprisesNewSchedule /></ProtectedRoute>}/>
         <Route path={`/enterprise/select-branch`} element={<SelectBranch />} />
-        <Route
-          path={`/enterprise/one-time-delivery`}
-          element={<OneTimeDelivery />}
-        />
-        <Route
-          path={`/enterprise/multiple-deliveries`}
-          element={<MultipleDelivery />}
-        />
-        <Route
-          path={`/enterprise/create-shift`}
-          element={<EnterpriseCreateShiftSelectServiceType />}
-        />
+        <Route path={`/enterprise/one-time-delivery`} element={<OneTimeDelivery />}/>
+        <Route path={`/enterprise/multiple-deliveries`} element={<MultipleDelivery />}/>
+        <Route path={`/enterprise/create-shift`} element={<EnterpriseCreateShiftSelectServiceType />}/>
         <Route path={`/enterprise/set-schedule`} element={<SetNewSchedule />} />
-        <Route
-          path={`/enterprise/enterprises-multiple-deliveries-selectlocation`}
-          element={<EnterpriseMultipleDeliverySelectLocation />}
-        />
-        <Route
-          path={`/enterprise/enterprises-multiple-deliveries-serviceselect`}
-          element={<EnterpriseMultipleDeliveriesSelectService />}
-        />
-        <Route
-          path="/enterprise/add-pickup-details"
-          element={<EnterpriseAddPickupDetails />}
-        />
-        <Route
-          path="/enterprise/add-dropoff-details"
-          element={<EnterpriseAddDropoffDetails />}
-        />
+        <Route path={`/enterprise/enterprises-multiple-deliveries-selectlocation`} element={<EnterpriseMultipleDeliverySelectLocation />}/>
+        <Route path={`/enterprise/enterprises-multiple-deliveries-serviceselect`} element={<EnterpriseMultipleDeliveriesSelectService />}/>
+        <Route path="/enterprise/add-pickup-details" element={<EnterpriseAddPickupDetails />} />
+        <Route path="/enterprise/add-dropoff-details" element={<EnterpriseAddDropoffDetails />}/>
         <Route
           path="/enterprise/order-preview"
           element={<EnterpriseOrderPreview />}
@@ -387,56 +343,14 @@ function MainRoutes() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="delivery-profile-type"
-            element={
-              <ProtectedRoute requiredRole={userRole}>
-                <DeliveryboyProfile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="billing-address"
-            element={
-              <ProtectedRoute requiredRole={userRole}>
-                <BillingDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="manage-company-location"
-            element={
-              <ProtectedRoute requiredRole={userRole}>
-                <ManageCompanyLocation />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="delivery-profile-type" element={<ProtectedRoute requiredRole={userRole}><DeliveryboyProfile /></ProtectedRoute>}/>
+          <Route path="billing-address" element={<ProtectedRoute requiredRole={userRole}><BillingDetail /></ProtectedRoute>}/>
+          <Route path="manage-company-location" element={<ProtectedRoute requiredRole={userRole}><ManageCompanyLocation /></ProtectedRoute>}/>
         </Route>
-        <Route
-          path={`/${baseUrl}/notifications`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <NotificationLists />
-            </ProtectedRoute>
-          }
-        ></Route>
+        <Route path={`/${baseUrl}/notifications`} element={<ProtectedRoute requiredRole={userRole}><NotificationLists /></ProtectedRoute>}/>
         {/*deliveryboy*/}
-        <Route
-          path={`/${baseUrl}/add-vehicle`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <AddVehicle />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={`/${baseUrl}/add-work-type`}
-          element={
-            <ProtectedRoute requiredRole={userRole}>
-              <AddWorkType />
-            </ProtectedRoute>
-          }
-        />
+        <Route path={`/${baseUrl}/add-vehicle`} element={<ProtectedRoute requiredRole={userRole}><AddVehicle /></ProtectedRoute>}/>
+        <Route path={`/${baseUrl}/add-work-type`} element={<ProtectedRoute requiredRole={userRole}><AddWorkType /></ProtectedRoute>}/>
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>

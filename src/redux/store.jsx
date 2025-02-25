@@ -7,6 +7,7 @@ import commonDataSlice from "./commonDataSlice";
 import authSlice from './authSlice';
 import enterpriseSlice from './enterpriseSlice'
 import languageReducer from './languageSlice'
+import doOrderSlice from './doOrderSlice'
 // Persist configuration
 const persistConfig = {
   key: 'root',
@@ -17,6 +18,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   commonData: commonDataSlice,
   enterprise:enterpriseSlice,
+  orderDetails:doOrderSlice,
   auth: authSlice,
   language: languageReducer,
 });

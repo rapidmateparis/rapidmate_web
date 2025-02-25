@@ -21,7 +21,7 @@ const LocationInput = ({
 }) => {
   const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
-
+  const {order} = useSelector((state) => state.orderDetails);
   const originRef = useRef();
   const destinationRef = useRef();
   const originAutocomplete = useRef(null);
@@ -109,6 +109,12 @@ const LocationInput = ({
     };
     if (addressList?.length === 0) {
       getLocationAddress();
+    }
+    if(order){
+      originRef.current.value=order?.pickupLocation.address
+      destinationRef.current.value=order?.dropoffLocation.address
+      setPickupLocation(order?.pickupLocation);
+      setDropoffLocation(order?.dropoffLocation)
     }
   }, []);
 

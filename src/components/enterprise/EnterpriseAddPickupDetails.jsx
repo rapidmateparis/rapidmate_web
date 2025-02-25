@@ -23,7 +23,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { TimePicker } from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import RepeatEverySelect from "./common/RepeatEverySelect";
 import DatePickerField from "../../common/DatePickerField";
@@ -32,13 +32,18 @@ import DaysSelect from "./common/DaysSelect";
 import TextInput from "../../common/TextInput";
 import { localToUTC } from "../../utils/Constants";
 import { useTranslation } from "react-i18next";
+import { current } from "@reduxjs/toolkit";
+import localforage from "localforage";
+import { updateOrderDetails } from "../../redux/doOrderSlice";
 
 const EnterpriseAddPickupDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const {t}=useTranslation()
   const user = useSelector((state) => state.auth.user);
-  const { order } = location.state || {};
+  const dispatch = useDispatch();
+  // const { order } = location.state || {};
+  const { order} = useSelector((state) => state.orderDetails);
   const [selectCheckOption, setSelectedCheckOption] = useState("custom");
   const [repeatOrder, setRepeatOrder] = useState(false);
   const [instance, setInstance] = useState(false);
@@ -196,40 +201,31 @@ const EnterpriseAddPickupDetails = () => {
     },
   });
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       setImagePreview(URL.createObjectURL(file)); // Set image preview URL
       setValue("file", [file]); // Pass the file array to the form
+      await localforage.setItem("uploadedFile", [file]);
     }
   };
   const onSubmit = (data) => {
     setValue("imageView", imagePreview);
     setValue("selectedOption", selectedOption);
-    let dropoffDetail = "";
     if (selectCheckOption == "" || selectCheckOption == undefined) {
       showErrorToast("Select dropoff location detail.");
       return;
     }
-    if (selectCheckOption == "custom") {
-      dropoffDetail = {
-        phone: data?.dphoneNumber,
-        email: data?.demail,
-        company: data?.dcompany,
-        dropoff_note: data?.dropoff_note,
-      };
-      setValue("dropoffdetail", true);
-    } else {
-      setValue("dropoffdetail", false);
+
+
+    data.file={ name: data?.file[0]?.name, size: data?.file[0]?.size, type: data?.file[0]?.type }
+    const payload = {
+      ...order,
+      orderCustomerDetails: data
     }
+    dispatch(updateOrderDetails(payload))
 
-
-    navigate("/enterprise/order-preview", {
-      state: {
-        order: order,
-        orderCustomerDetails: data,
-      },
-    });
+    navigate("/enterprise/order-preview");
   };
 
   const handleRepeatOrder = (event) => {
@@ -264,6 +260,31 @@ const EnterpriseAddPickupDetails = () => {
     setSelectedTime(e.target.value);
     setValue("pickupTime", e.target.value);
   };
+
+  useEffect(()=>{
+    const getLocalData = async ()=>{
+      if(order?.orderCustomerDetails){
+        setInstance(order?.orderCustomerDetails?.isSchedule)
+        const data =order?.orderCustomerDetails
+        Object.keys(data).forEach((key) => {
+         
+          if(key !=='file'){
+            setValue(key, data[key]);
+          }
+          
+        });
+      }
+      
+      const savedFile = await localforage.getItem("uploadedFile");
+      if (savedFile) {
+        setImagePreview(URL.createObjectURL(savedFile[0]));
+        setValue("file", savedFile); 
+      }
+    }
+    if(order){
+      getLocalData()
+    }
+  },[])
   const repeatOption = [
     { label: 1, value: 1 },
     { label: 2, value: 2 },
@@ -1183,13 +1204,14 @@ const EnterpriseAddPickupDetails = () => {
                 <div className={`row ${Styles.manageRow}`}>
                   <div className="col-md-12">
                     <div className={Styles.addPickupDetailsBtnCard}>
-                      <Link
+                      <dive
                         className={Styles.addPickupDetailsCancelBTn}
-                        style={{ color: "#000" }}
-                        to="/enterprise/dashboard"
+                        style={{ color: "#000",cursor:"pointer" }}
+                        onClick={()=>navigate(-1)}
+                       
                       >
                         {t("back")}
-                      </Link>
+                      </dive>
                       <button
                         type="submit"
                         onClick={handleSubmit(onSubmit)}

@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import Styles from "../assets/css/home.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 const DateAndTimePicker = ({ onDateTimeChange }) => {
   const [showPicker, setShowPicker] = useState(false);
+  const {order} = useSelector((state) => state.orderDetails);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const {t} = useTranslation()
   // Handles the "Now" button click
   const handleNowClick = () => {
-    const now = new Date();
+    const now = order?.date ? new Date(order?.date) : new Date();
     const formattedDate = now.toISOString().split("T")[0];
     const formattedTime = now.toTimeString().split(" ")[0];
     setSelectedDate(formattedDate);
@@ -22,7 +24,7 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
   };
 
   const calendarClick = () => {
-    const now = new Date();
+    const now = order?.date ? new Date(order?.date) : new Date();;
     const formattedDate = now.toISOString().split("T")[0];
     const formattedTime = now.toTimeString().split(" ")[0];
     setSelectedDate(formattedDate);
@@ -35,6 +37,16 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
     onDateTimeChange(combinedDateTime, true);
     setShowPicker(false);
   };
+
+  useEffect(()=>{
+    if(order){
+      if(order?.isSchedule){
+        calendarClick()
+      }else{
+        handleNowClick()
+      }
+    }
+  },[])
   return (
     <div className={Styles.homepickupScheduleRequestCardMain}>
       <div className={Styles.pickupHomeScheduleselectCard}>

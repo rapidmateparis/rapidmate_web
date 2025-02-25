@@ -30,6 +30,7 @@ import i18n from "../i18n/i18n";
 import HeaderLanguageSwitcher from "./HeaderlanguageOptions";
 import { setBookings, setBranches } from "../redux/enterpriseSlice";
 import { commonDataList } from "../redux/commonDataSlice";
+import { setOrderDetails } from "../redux/doOrderSlice";
 
 const CommonHeader = memo(({ userData }) => {
   const location = useLocation();
@@ -54,14 +55,14 @@ const CommonHeader = memo(({ userData }) => {
   const handleLogout = async () => {
      dispatch(logout());
      dispatch(setBranches(null));
+     dispatch(setOrderDetails(null));
      dispatch(setBookings(null));
      dispatch(commonDataList(null))
     try {
       await localforage.clear();
       await persistor.purge();
-      console.log("LocalForage cleared");
     } catch (error) {
-      console.error("Failed to clear LocalForage:", error);
+      console.log("Failed to clear LocalForage:", error);
     }
     navigate("/");
   };

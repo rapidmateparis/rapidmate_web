@@ -23,7 +23,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { TimePicker } from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import RepeatEverySelect from "./common/RepeatEverySelect";
 import DatePickerField from "../../common/DatePickerField";
@@ -33,12 +33,15 @@ import TextInput from "../../common/TextInput";
 import { localToUTC } from "../../utils/Constants";
 import { getDynamicDropoffSchema } from "../../utils/Validation";
 import { useTranslation } from "react-i18next";
+import { updateOrderDetails } from "../../redux/doOrderSlice";
+import localforage from "localforage";
 const EnterpriseAdd = () => {
   const location = useLocation();
   const {t}=useTranslation()
+  const dispatch =useDispatch()
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-  const { order } = location.state || {};
+  const { order } = useSelector((state) => state.orderDetails);
   const [selectCheckOption, setSelectedCheckOption] = useState("custom");
   const [repeatOrder, setRepeatOrder] = useState(false);
   const [instance, setInstance] = useState(false);
@@ -97,8 +100,8 @@ const EnterpriseAdd = () => {
     },
   });
 
-  console.log("order",order)
-  const handleImageChange = (e,index) => {
+
+  const handleImageChange = async(e,index) => {
     const file = e.target.files[0];
     if (file) {
       const previewURL = URL.createObjectURL(file);
@@ -108,39 +111,25 @@ const EnterpriseAdd = () => {
         ...prev,
         [index]: previewURL,
       }));
-
+    
       // Set form value dynamically
       setValue(`file-${index}`, [file]);
+
+      await localforage.setItem(`file-${index}`, [file]);
     }
   };
   const onSubmit = (data) => {
     setValue("imageView", imagePreview);
-    // setValue("selectedOption", selectedOption);
-    // let dropoffDetail = "";
-    // if (selectCheckOption == "" || selectCheckOption == undefined) {
-    //   showErrorToast("Select dropoff location detail.");
-    //   return;
-    // }
-    // if (selectCheckOption == "custom") {
-    //   dropoffDetail = {
-    //     phone: data?.dphoneNumber,
-    //     email: data?.demail,
-    //     company: data?.dcompany,
-    //     dropoff_note: data?.dropoff_note,
-    //   };
-    //   setValue("dropoffdetail", true);
-    // } else {
-    //   setValue("dropoffdetail", false);
-    // }
-
     
+
+   
+    const payload = {
+      ...order,
+      orderCustomerDetails: data
+    }
+    dispatch(updateOrderDetails(payload))
   // console.log("data",data)
-    navigate("/enterprise/order-preview", {
-      state: {
-        order: order,
-        orderCustomerDetails: data,
-      },
-    });
+    navigate("/enterprise/order-preview");
   };
 
   const handleRepeatOrder = (event) => {
@@ -171,8 +160,34 @@ const EnterpriseAdd = () => {
       setValue("phoneNumber", "");
     }
   }, [user]);
+  useEffect(()=>{
+    const getLocalData = async ()=>{
+      if(order?.orderCustomerDetails){
+        
+        setInstance(order?.orderCustomerDetails?.isSchedule)
+        const data =order?.orderCustomerDetails
+        Object.keys(data).forEach((key) => {
+            setValue(key, data[key]);
+        });
+        order?.dropoffLoc?.map(async(v,i)=>{
+          const savedFile = await localforage.getItem("file-"+i);
+          if (savedFile) {
+            const urlImg=URL.createObjectURL(savedFile[0])
+            setImagePreview((prev) => ({
+              ...prev,
+              [i]: urlImg,
+            }));
+            setValue("file-"+i, savedFile); 
+          }
+        })
+      }
+      
+    }
+    if(order){
+      getLocalData()
+    }
+  },[])
   const handleTimeset = (e) => {
-    console.log(e.target.value);
     setSelectedTime(e.target.value);
     setValue("pickupTime", e.target.value);
   };

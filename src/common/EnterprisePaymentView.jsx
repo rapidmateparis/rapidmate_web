@@ -22,7 +22,7 @@ import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import MasterCard from "../assets/images/MasterCard-Logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CommonHeader from "./CommonHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import getImage from "../components/consumer/common/GetImage";
 import {
   addPayment,
@@ -54,6 +54,7 @@ import {
   paymentCardSave,
   payWithSaveCard,
 } from "../utils/UseFetch";
+import { setOrderDetails } from "../redux/doOrderSlice";
 
 const stripePromise = loadStripe(
   "pk_test_51PgiLhLF5J4TIxENPZOMh8xWRpEsBxheEx01qB576p0vUZ9R0iTbzBFz0QvnVaoCZUwJu39xkym38z6nfNmEgUMX00SSmS6l7e"
@@ -70,13 +71,14 @@ const PaymentPage = ({
   vechicleTax,
   customerId,
   paymentMethod,
+  order,
 }) => {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
   const navigate = useNavigate();
-  const { order, orderCustomerDetails } = location.state || {};
-
-  // console.log("orderCustomerDetails",orderCustomerDetails)
+  const dispatch=useDispatch()
+  
+  
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -183,15 +185,15 @@ const PaymentPage = ({
         to_longitude: dropoff.lng,
         amount: order?.selectedVehiclePrice,
         dropoff_location: await addLocation(getDropoffLocation(dropoff, true)),
-        delivery_date: moment(orderCustomerDetails?.pickupDate).format(
+        delivery_date: moment(order?.orderCustomerDetails?.pickupDate).format(
           "YYYY-MM-DD hh:mm"
         ),
-        drop_first_name: getFileName(orderCustomerDetails, "dname", index),
-        drop_last_name: getFileName(orderCustomerDetails, "dlastname", index),
-        drop_mobile: getFileName(orderCustomerDetails, "dphoneNumber", index),
-        drop_notes: getFileName(orderCustomerDetails, "dropoffnote", index),
-        drop_email: getFileName(orderCustomerDetails, "demail", index),
-        drop_company_name: getFileName(orderCustomerDetails, "dcompany", index),
+        drop_first_name: getFileName(order?.orderCustomerDetails, "dname", index),
+        drop_last_name: getFileName(order?.orderCustomerDetails, "dlastname", index),
+        drop_mobile: getFileName(order?.orderCustomerDetails, "dphoneNumber", index),
+        drop_notes: getFileName(order?.orderCustomerDetails, "dropoffnote", index),
+        drop_email: getFileName(order?.orderCustomerDetails, "demail", index),
+        drop_company_name: getFileName(order?.orderCustomerDetails, "dcompany", index),
         destinationDescription: getDropoffLocation(dropoff, false),
       }))
     );
@@ -220,9 +222,10 @@ const PaymentPage = ({
         setBranches(getBranchesList);
         setSourceLocationId(pickupLocatiId);
         const passportFormData = new FormData();
+        const saveFile= await localforage.getItem("file-0")
         passportFormData.append(
           "file",
-          getFileName(orderCustomerDetails, "file", 0)[0]
+          saveFile[0]
         );
         const passportResponse = await uploadImage(passportFormData);
         setPackageImageId(passportResponse);
@@ -243,7 +246,8 @@ const PaymentPage = ({
         setSourceLocationId(pickupLocatiId);
         setDestinationLocationId(dropoffLocatiId);
         const passportFormData = new FormData();
-        passportFormData.append("file", orderCustomerDetails?.file[0]);
+        const saveFile= await localforage.getItem("uploadedFile")
+        passportFormData.append("file", saveFile[0]);
         const passportResponse = await uploadImage(passportFormData);
         setPackageImageId(passportResponse);
       }
@@ -277,9 +281,10 @@ const PaymentPage = ({
         setBranches(getBranchesList);
         setSourceLocationId(pickupLocatiId);
         const passportFormData = new FormData();
+        const saveFile= await localforage.getItem("file-0")
         passportFormData.append(
           "file",
-          getFileName(orderCustomerDetails, "file", 0)[0]
+          saveFile[0]
         );
         const passportResponse = await uploadImage(passportFormData);
         setPackageImageId(passportResponse);
@@ -300,7 +305,8 @@ const PaymentPage = ({
         setSourceLocationId(pickupLocatiId);
         setDestinationLocationId(dropoffLocatiId);
         const passportFormData = new FormData();
-        passportFormData.append("file", orderCustomerDetails?.file[0]);
+        const saveFile= await localforage.getItem("uploadedFile")
+        passportFormData.append("file",saveFile[0]);
         const passportResponse = await uploadImage(passportFormData);
         setPackageImageId(passportResponse);
       }
@@ -335,7 +341,7 @@ const PaymentPage = ({
     const isInstantDate =
       order?.deliveryType.id === 2
         ? order?.isSchedule
-        : orderCustomerDetails?.isSchedule;
+        : order?.orderCustomerDetails?.isSchedule;
     const isMultiple = order?.deliveryType.id;
     let requestParams = {
       enterprise_ext_id: user.userDetails.ext_id,
@@ -343,42 +349,42 @@ const PaymentPage = ({
       delivery_type_id: order?.deliveryType?.id,
       service_type_id: order?.selectedServiceType,
       vehicle_type_id: order?.selectedVehicleDetails?.id,
-      pickup_date: localToUTC(orderCustomerDetails?.pickupDate),
+      pickup_date: localToUTC(order?.orderCustomerDetails?.pickupDate),
       order_date: isInstantDate
-        ? moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD hh:mm")
+        ? moment(order?.orderCustomerDetails?.pickupDate).format("YYYY-MM-DD hh:mm")
         : "",
       pickup_time: isInstantDate
-        ? moment(orderCustomerDetails?.pickupDate).format("hh:mm")
-        : orderCustomerDetails?.pickupTime,
+        ? moment(order?.orderCustomerDetails?.pickupDate).format("hh:mm")
+        : order?.orderCustomerDetails?.pickupTime,
       pickup_location_id: sourceLocationId,
       dropoff_location_id: destinationLocationId,
-      is_repeat_mode: orderCustomerDetails?.repeatOrder ? 1 : 0,
-      repeat_mode: orderCustomerDetails?.selectCheckOption || "",
-      repeat_every: orderCustomerDetails?.repeatEvery,
-      repeat_until: localToUTC(orderCustomerDetails?.until),
-      repeat_day: orderCustomerDetails?.days || "",
+      is_repeat_mode: order?.orderCustomerDetails?.repeatOrder ? 1 : 0,
+      repeat_mode: order?.orderCustomerDetails?.selectCheckOption || "",
+      repeat_every: order?.orderCustomerDetails?.repeatEvery,
+      repeat_until: localToUTC(order?.orderCustomerDetails?.until),
+      repeat_day: order?.orderCustomerDetails?.days || "",
       package_photo: packageImageId,
       package_id:
         isMultiple === 2
-          ? getFileName(orderCustomerDetails, "packageId", 0)
-          : orderCustomerDetails?.packageId,
+          ? getFileName(order?.orderCustomerDetails, "packageId", 0)
+          : order?.orderCustomerDetails?.packageId,
       distance: floatDistance,
       total_amount: parseFloat(paymentAmount),
-      pickup_notes: orderCustomerDetails?.pickupnote,
-      is_scheduled_order: orderCustomerDetails?.isSchedule ? 0 : 1,
-      drop_first_name: orderCustomerDetails?.dname,
-      drop_last_name: orderCustomerDetails?.dlastname,
-      drop_mobile: orderCustomerDetails?.dphoneNumber,
-      drop_notes: orderCustomerDetails?.dropoffnote,
-      drop_email: orderCustomerDetails?.demail,
-      drop_company_name: orderCustomerDetails?.dcompany,
+      pickup_notes: order?.orderCustomerDetails?.pickupnote,
+      is_scheduled_order: order?.orderCustomerDetails?.isSchedule ? 0 : 1,
+      drop_first_name: order?.orderCustomerDetails?.dname,
+      drop_last_name: order?.orderCustomerDetails?.dlastname,
+      drop_mobile: order?.orderCustomerDetails?.dphoneNumber,
+      drop_notes: order?.orderCustomerDetails?.dropoffnote,
+      drop_email: order?.orderCustomerDetails?.demail,
+      drop_company_name: order?.orderCustomerDetails?.dcompany,
     };
 
-    if (orderCustomerDetails?.isSchedule == false) {
+    if (order?.orderCustomerDetails?.isSchedule == false) {
       requestParams.schedule_date_time =
-        moment(orderCustomerDetails?.pickupDate).format("YYYY-MM-DD") +
+        moment(order?.orderCustomerDetails?.pickupDate).format("YYYY-MM-DD") +
         " " +
-        orderCustomerDetails?.pickupTime;
+        order?.orderCustomerDetails?.pickupTime;
     }
 
     if (promoCodeResponse) {
@@ -484,10 +490,9 @@ const PaymentPage = ({
           };
           const response = await paymentCardSave(params);
           await createPayment();
-        }else{
+        } else {
           await createPayment();
         }
-        
       } else {
         showErrorToast(
           `Payment not successful. Current status: ${paymentIntent?.status}`
@@ -511,8 +516,8 @@ const PaymentPage = ({
       navigate("/payment-successfull", {
         state: {
           orderNumber: orderNumber,
-          date: orderCustomerDetails?.pickupDate,
-          isSchedule: orderCustomerDetails?.isSchedule ? false : true,
+          date: order?.orderCustomerDetails?.pickupDate,
+          isSchedule: order?.orderCustomerDetails?.isSchedule ? false : true,
         },
       });
     }
@@ -569,8 +574,8 @@ const PaymentPage = ({
           navigate("/payment-successfull", {
             state: {
               orderNumber: orderNumber,
-              date: orderCustomerDetails?.pickupDate,
-              isSchedule: orderCustomerDetails?.isSchedule ? false : true,
+              date: order?.orderCustomerDetails?.pickupDate,
+              isSchedule: order?.orderCustomerDetails?.isSchedule ? false : true,
             },
           });
         }
@@ -654,7 +659,7 @@ const PaymentPage = ({
                         </div>
                         {order?.deliveryType?.id === 2 ? (
                           order?.dropoffLoc?.map((location, index) => (
-                            <div className={Styles.paymentInvoiceDetailsText}>
+                            <div className={Styles.paymentInvoiceDetailsText} key={index}>
                               <p className={Styles.paymentAddressDetailText}>
                                 {t("dropoff")} {index + 1}
                               </p>
@@ -811,7 +816,7 @@ const PaymentPage = ({
                             />
                             <div>
                               <p className={Styles.paymentmethodUserEmail}>
-                              **** **** **** {cardInfo.card.last4}
+                                **** **** **** {cardInfo.card.last4}
                               </p>
                             </div>
                             <button className={Styles.paymentMethodEditBtn}>
@@ -830,21 +835,20 @@ const PaymentPage = ({
                       {!selectedCard && (
                         <>
                           <PaymentElement />
-                          <label
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              marginTop: "10px",
-                            }}
+
+                          <div
+                            key={`default-checkbox`}
+                            className={`mb-3 ${Styles.checkboxCard}`}
                           >
-                            <input
-                              type="checkbox"
+                            <Form.Check
+                              type={"checkbox"}
+                              id={`default-checkbox`}
+                              label={t("save_for_future_payments")}
                               checked={saveForLater}
+                              className={`${Styles.saveAddresslaterCheckBox}`}
                               onChange={() => setSaveForLater(!saveForLater)}
-                              style={{ marginRight: "8px" }}
                             />
-                            Save for future payments
-                          </label>
+                          </div>
                         </>
                       )}
                       <button
@@ -869,9 +873,30 @@ const PaymentPage = ({
                     {/* </div> */}
                   </div>
                   <div className={`${Styles.addPickupDetailsBtnCard} mt-3`}>
-                    <button className={Styles.addPickupDetailsCancelBTn}>
-                      {t("cancel")}
-                    </button>
+                  <div
+                    className={Styles.addPickupDetailsCancelBTn}
+                    onClick={() => navigate(-1)}
+                    style={{ color: "#000", cursor: "pointer" }}
+                  >
+                    {t("back")}
+                  </div>
+                  <button
+                    className={Styles.addPickupDetailsCancelBTn}
+                    onClick={async() => {
+                      dispatch(setOrderDetails(null));
+                      if(order?.deliveryType?.id==2){
+                        order?.dropoffLoc?.map(async(v,i)=>{
+                          await localforage.removeItem("file-"+i);
+                        })
+                      }else{
+                        await localforage.removeItem("uploadedFile");
+                      }
+                      
+                      navigate("/enterprise/dashboard")
+                    }}
+                  >
+                    {t("cancel")}
+                  </button>
                   </div>
                 </div>
               </div>
@@ -890,9 +915,8 @@ const PaymentPage = ({
 function EnterprisePaymentView() {
   const user = useSelector((state) => state.auth.user);
   const { t } = useTranslation();
-
   const [clientSecret, setClientSecret] = useState("");
-  const { order } = useLocation().state || {};
+  const { order} = useSelector((state) => state.orderDetails);
   const [totalAmount, setTotalAmount] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [vechicleTax, setVechicleTax] = useState(20);
@@ -904,9 +928,9 @@ function EnterprisePaymentView() {
   const navigate = useNavigate();
   const getTaxAmount = () => {
     const amount =
-      typeof order.selectedVehiclePrice === "number"
-        ? order.selectedVehiclePrice.toFixed(2)
-        : parseFloat(order.selectedVehiclePrice).toFixed(2);
+      typeof order?.selectedVehiclePrice === "number"
+        ? order?.selectedVehiclePrice.toFixed(2)
+        : parseFloat(order?.selectedVehiclePrice).toFixed(2);
     const taxAmount = (parseFloat(amount) * parseFloat(vechicleTax)) / 100;
     return taxAmount ? taxAmount.toFixed(2) : 0;
   };
@@ -925,9 +949,9 @@ function EnterprisePaymentView() {
   useEffect(() => {
     if (order?.selectedVehiclePrice) {
       const calculatedTotalAmount =
-        typeof order.selectedVehiclePrice === "number"
-          ? order.selectedVehiclePrice.toFixed(2)
-          : parseFloat(order.selectedVehiclePrice).toFixed(2);
+        typeof order?.selectedVehiclePrice === "number"
+          ? order?.selectedVehiclePrice.toFixed(2)
+          : parseFloat(order?.selectedVehiclePrice).toFixed(2);
       const taxAmount =
         (parseFloat(calculatedTotalAmount) * parseFloat(vechicleTax)) / 100;
       const total_Amount = parseFloat(calculatedTotalAmount) + taxAmount;
@@ -972,6 +996,18 @@ function EnterprisePaymentView() {
     clientSecret,
     appearance: {
       theme: "stripe",
+
+      variables: {
+        colorPrimary: "#ff0058", // Change primary link color (red)
+      },
+      rules: {
+        ".textLink": {
+          color: "#ff0058", // Change the "Secure, 1-click checkout with Link" text color
+        },
+        ".textLink:hover": {
+          color: "#d40000", // Darker red on hover (optional)
+        },
+      },
     },
     defaultValues: { billingDetails: { address: { country: "FR" } } },
   };
@@ -991,6 +1027,7 @@ function EnterprisePaymentView() {
             vechicleTax={vechicleTax}
             customerId={customerId}
             paymentMethod={paymentMethod}
+            order={order}
           />
         </Elements>
       ) : (

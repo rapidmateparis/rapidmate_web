@@ -16,7 +16,7 @@ import PickupVehicleDimensionsModal from "../consumer/PickupVehicleDimensionsMod
 import CommonHeader from "../../common/CommonHeader";
 import { ToastContainer } from "react-toastify";
 import ServiceTypeSelection from "./common/ServiceTypeSelection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { showErrorToast } from "../../utils/Toastify";
 
@@ -30,6 +30,7 @@ import {
 } from "@react-google-maps/api";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
+import { setOrderDetails } from "../../redux/doOrderSlice";
 
 const libraries = ["places"];
 const mapContainerStyle = {
@@ -39,10 +40,14 @@ const mapContainerStyle = {
 function MultipleDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { deliveryType, selectedBranch,mapApiKey } = location.state;
-
+  const { deliveryType, selectedBranch, mapApiKey } = location.state;
+  const dispatch = useDispatch();
+  const { order } = useSelector((state) => state.orderDetails);
   const user = useSelector((state) => state.auth.user);
-  const [center, setCenter] = useState({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)});
+  const [center, setCenter] = useState({
+    lat: parseFloat(selectedBranch.latitude),
+    lng: parseFloat(selectedBranch.longitude),
+  });
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
@@ -60,7 +65,9 @@ function MultipleDelivery() {
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
   const [selectedServiceType, setSelectedServiceType] = useState("");
-  const { enterpriseServiceType } = useSelector((state) => state.commonData.commonData);
+  const { enterpriseServiceType } = useSelector(
+    (state) => state.commonData.commonData
+  );
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: mapApiKey,
     libraries,
@@ -71,8 +78,8 @@ function MultipleDelivery() {
   const geocoderCache = useRef({});
   const lastLocationsRef = useRef([]);
 
-   // Geocode locations and create markers with caching
-   const createMarkers = useCallback(
+  // Geocode locations and create markers with caching
+  const createMarkers = useCallback(
     async (locations) => {
       if (locations.length === markers.length) return; // Prevent redundant API calls
 
@@ -217,8 +224,6 @@ function MultipleDelivery() {
     setDropoffLoc((prev) => prev.filter((_, i) => i !== index));
   };
 
-  
-
   useEffect(() => {
     setLoading(true);
     const getAllVehiclesType = () => {
@@ -244,13 +249,12 @@ function MultipleDelivery() {
     };
     getAllVehiclesType();
 
-    if(!selectedBranch){
-        if (navigator.geolocation) {
+    if (!selectedBranch) {
+      if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
             setCenter({ lat: latitude, lng: longitude });
-            
           },
           (error) => {
             console.error("Error getting current location:", error);
@@ -259,8 +263,11 @@ function MultipleDelivery() {
         );
       }
     }
-    if(selectedBranch){
-      setCenter({lat: parseFloat(selectedBranch.latitude),lng: parseFloat(selectedBranch.longitude)})
+    if (selectedBranch) {
+      setCenter({
+        lat: parseFloat(selectedBranch.latitude),
+        lng: parseFloat(selectedBranch.longitude),
+      });
     }
   }, []);
 
@@ -298,14 +305,20 @@ function MultipleDelivery() {
       // console.log("dropoff location", dropoffLoc);
     }
   }, [distance]);
+  useEffect(() => {
+    if (order) {
+      setSelectedVehicle(order?.selectedVehicle);
+      setSelectedVehicleDetails(order?.selectedVehicleDetails);
+      setSelectedVehiclePrice(order?.selectedVehiclePrice);
+      setSelectedServiceType(order?.selectedServiceType);
+    }
+  }, [order]);
 
   const handleContinue = () => {
     if (!pickupLoc || !dropoffLoc || !selectedVehicle || !selectedServiceType) {
       showErrorToast("Please fill all fields.");
       return;
     }
-
-   
 
     const payload = {
       pickupLoc,
@@ -320,10 +333,11 @@ function MultipleDelivery() {
       distances,
       selectedServiceType,
     };
-
-    navigate("/enterprise/add-dropoff-details", {
-      state: { order: payload },
-    });
+    if (order?.orderCustomerDetails) {
+      payload.orderCustomerDetails = order?.orderCustomerDetails;
+    }
+    dispatch(setOrderDetails(payload));
+    navigate("/enterprise/add-dropoff-details");
   };
   if (!isLoaded) return <div>Loading map...</div>;
   return (
@@ -340,8 +354,8 @@ function MultipleDelivery() {
                     onLocationChange={handlePickupChange}
                     title={t("enter_pickup_location")}
                     icon="faLocationDot"
-                    mapApiKey={mapApiKey}
                     selectedBranch={selectedBranch}
+                    mapApiKey={mapApiKey}
                   />
                 </div>
 
@@ -393,7 +407,6 @@ function MultipleDelivery() {
                 enterpriseServiceType={enterpriseServiceType}
                 t={t}
               />
-             
             </div>
 
             <div className={Styles.dashboardMainContinueBtn}>
@@ -413,60 +426,62 @@ function MultipleDelivery() {
           </div>
           <div className="col-md-9">
             <GoogleMap
-                  mapContainerStyle={mapContainerStyle}
-                  zoom={10}
-                  center={center}
-                  options={{
-                    zoomControl: false,
-                    streetViewControl: false,
-                    mapTypeControl: false,
-                    fullscreenControl: false,
+              mapContainerStyle={mapContainerStyle}
+              zoom={10}
+              center={center}
+              options={{
+                zoomControl: false,
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
+              }}
+            >
+              {markers.map((marker, index) =>
+                index == 0 ? (
+                  <Marker
+                    key={index}
+                    position={marker.position}
+                    title={marker.title}
+                    icon={{
+                      url: PickupMarker,
+                      scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+                    }}
+                  />
+                ) : (
+                  <Marker
+                    key={index}
+                    position={marker.position}
+                    title={marker.title}
+                    icon={{
+                      url: DropoffMarker,
+                      scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
+                    }}
+                  />
+                )
+              )}
+              {center && markers.length === 0 && (
+                <Marker
+                  position={center}
+                  icon={{
+                    url: PickupMarker,
+                    scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
                   }}
-                >
-                  {markers.map((marker, index) =>
-                    index == 0 ? (
-                      <Marker
-                        key={index}
-                        position={marker.position}
-                        title={marker.title}
-                        icon={{
-                          url: PickupMarker,
-                          scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                        }}
-                      />
-                    ) : (
-                      <Marker
-                        key={index}
-                        position={marker.position}
-                        title={marker.title}
-                        icon={{
-                          url: DropoffMarker,
-                          scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                        }}
-                      />
-                    )
-                  )}
-                  {center && markers.length===0 &&  <Marker
-                        position={center}
-                        icon={{
-                          url: PickupMarker,
-                          scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                        }}
-                      />}
-                  {directions && (
-                    <DirectionsRenderer
-                      directions={directions}
-                      options={{
-                        polylineOptions: {
-                          strokeColor: "#FF0058", // Blue color
-                          strokeOpacity: 0.9, // 90% opacity
-                          strokeWeight: 3, // 5px thick line
-                        },
-                        suppressMarkers: true, // Use your custom markers
-                      }}
-                    />
-                  )}
-                </GoogleMap>
+                />
+              )}
+              {directions && (
+                <DirectionsRenderer
+                  directions={directions}
+                  options={{
+                    polylineOptions: {
+                      strokeColor: "#FF0058", // Blue color
+                      strokeOpacity: 0.9, // 90% opacity
+                      strokeWeight: 3, // 5px thick line
+                    },
+                    suppressMarkers: true, // Use your custom markers
+                  }}
+                />
+              )}
+            </GoogleMap>
           </div>
         </div>
 

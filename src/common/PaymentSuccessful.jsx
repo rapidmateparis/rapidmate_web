@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import Styles from "../assets/css/home.module.css";
 import Payment from "../assets/images/Payment-Successful-Icon.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CommonHeader from "./CommonHeader";
 import { useTranslation } from "react-i18next";
+import { setOrderDetails } from "../redux/doOrderSlice";
+import localforage from "localforage";
 
 const PaymentSuccessful = () => {
+  const dispatch= useDispatch()
   const user = useSelector((state) => state.auth.user);
+   const { order} = useSelector((state) => state.orderDetails);
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const {t}=useTranslation()
@@ -15,6 +19,7 @@ const PaymentSuccessful = () => {
   const navigate = useNavigate();
   const {orderNumber,date,isSchedule} = location.state || {};
   useEffect(() => {
+  
     const timer = setTimeout(() => {
       if(isSchedule){
         navigate(`/${baseUrl}/schedule-created`, {
@@ -32,6 +37,20 @@ const PaymentSuccessful = () => {
       
     }, 4000);
 
+    const resetData= async () =>{
+      if(order?.deliveryType?.id==2){
+        order?.dropoffLoc?.map(async(v,i)=>{
+          await localforage.removeItem("file-"+i);
+        })
+      }else{
+        await localforage.removeItem("uploadedFile");
+      }
+      dispatch(setOrderDetails(null));
+    }
+
+    resetData()
+
+    
     // Cleanup timer on component unmount
     return () => clearTimeout(timer);
   }, [navigate]);
