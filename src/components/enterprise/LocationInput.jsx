@@ -3,39 +3,36 @@ import { Autocomplete } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faLocationCrosshairs, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../../assets/css/home.module.css";
+import { buildAddress, getLocation } from "../../utils/Constants";
+import { getLocationDetails } from "../../utils/UseFetch";
 
-const LocationInput = ({ onLocationChange, title, icon, selectedBranch }) => {
+const LocationInput = ({ onLocationChange, title, icon, selectedBranch,mapApiKey }) => {
   const [inputValue, setInputValue] = useState(""); // State for input value
   const [isUserEditing, setIsUserEditing] = useState(false); // Track if user manually edited
   const autocompleteRef = useRef(null); // Ref for Autocomplete component
-
+  const getLoc = async (address,mapApiKey) => {
+    const location=await getLocationDetails(address,mapApiKey)
+    setInputValue(location?.address); // ✅ Set default value only if user hasn't edited
+      onLocationChange(location?.address, location);
+     
+  }
   useEffect(() => {
+    
     if (selectedBranch && icon === "faLocationDot" && !isUserEditing) {
       if (!window.google || !window.google.maps) {
         console.error("Google Maps API is not loaded yet.");
         return;
       }
-
-      const geocoder = new window.google.maps.Geocoder();
-      geocoder.geocode(
-        { location: { lat: parseFloat(selectedBranch.latitude), lng: parseFloat(selectedBranch.longitude) } },
-        (results, status) => {
-          if (status === "OK" && results[0]) {
-            const locationDetails = {
-              address: results[0].formatted_address,
-              displayedAddress: results[0].address_components[0]?.long_name || results[0].formatted_address,
-              lat: parseFloat(selectedBranch.latitude),
-              lng: parseFloat(selectedBranch.longitude),
-              components: results[0].address_components,
-            };
-
-            setInputValue(results[0].formatted_address); // ✅ Set default value only if user hasn't edited
-            onLocationChange(results[0].formatted_address, locationDetails);
-          }
-        }
-      );
+     const address = buildAddress(
+             selectedBranch?.address,
+             selectedBranch?.city,
+             selectedBranch?.state,
+             selectedBranch?.country,
+             selectedBranch?.postal_code
+           );
+           getLoc(address,mapApiKey)
     }
-  }, [selectedBranch, icon, onLocationChange, isUserEditing]);
+  }, []);
 
   // Handle place selection
   const handlePlaceSelect = () => {
@@ -50,9 +47,18 @@ const LocationInput = ({ onLocationChange, title, icon, selectedBranch }) => {
           components: place.address_components,
         };
 
-        setInputValue(place.formatted_address); // ✅ Update input when a new location is selected
+        const location = getLocation(locationDetails,locationDetails?.lat,locationDetails?.lng)
+       
+        const address = buildAddress(
+          location?.address,
+          location?.city,
+          location?.state,
+          location?.country,
+          location?.postal_code
+        );
+        getLoc(address,mapApiKey)
         setIsUserEditing(false); // Reset manual editing flag
-        onLocationChange(place.formatted_address, locationDetails);
+       
       }
     }
   };

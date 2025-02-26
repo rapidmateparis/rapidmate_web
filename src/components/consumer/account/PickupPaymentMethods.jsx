@@ -118,17 +118,14 @@ const PickupPaymentMethods = () => {
           ) : (
             <div
               className={Styles.addressBookAddressCard}
-              onClick={openAddModal}
-              style={{ cursor: "pointer" }}
             >
               <p className={Styles.addressBookHeaderTitleText}>
                 {t("payment_methods")}
               </p>
-              <button className={Styles.addressBookPlusIconBtn}>
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
+              
             </div>
           )}
+        
 
           <div>
             <div className={Styles.paymentMethodWalletCard}>

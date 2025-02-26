@@ -18,12 +18,13 @@ import PickupVehicleDimensionsModal from "../consumer/PickupVehicleDimensionsMod
 import CommonHeader from "../../common/CommonHeader";
 import { ToastContainer } from "react-toastify";
 import ServiceTypeSelection from "./common/ServiceTypeSelection";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showErrorToast } from "../../utils/Toastify";
 import OneLocation from "./common/OneLocation";
 import DropoffMarker from "../../assets/images/dropoff-marker.png";
 import PickupMarker from "../../assets/images/pickup-marker.png";
 import { useTranslation } from "react-i18next";
+import { setOrderDetails } from "../../redux/doOrderSlice";
 
 
 const libraries = ["places"];
@@ -32,6 +33,8 @@ function OneTimeDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
   const {t}=useTranslation()
+  const dispatch = useDispatch();
+  const {order} = useSelector((state) => state.orderDetails);
   const { deliveryType, selectedBranch,mapApiKey } = location.state;
   const user = useSelector((state) => state.auth.user);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -141,7 +144,14 @@ function OneTimeDelivery() {
     getDistancePrice();
   }, [duration]);
 
-
+  useEffect(()=>{
+      if(order){
+        setSelectedVehicle(order?.selectedVehicle)
+        setSelectedVehicleDetails(order?.selectedVehicleDetails)
+        setSelectedVehiclePrice(order?.selectedVehiclePrice)
+        setSelectedServiceType(order?.selectedServiceType)
+      }
+    },[order])
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: mapApiKey,
@@ -202,10 +212,11 @@ function OneTimeDelivery() {
       selectedBranch,
       deliveryType,
     };
-
-    navigate("/enterprise/add-pickup-details", {
-      state: { order: payload },
-    });
+    if(order?.orderCustomerDetails){
+      payload.orderCustomerDetails=order?.orderCustomerDetails
+    }
+    dispatch(setOrderDetails(payload))
+    navigate("/enterprise/add-pickup-details");
   };
 
   const getPriceUsingVehicleType = (vehicleTypeId) => {
@@ -235,6 +246,7 @@ function OneTimeDelivery() {
                 t={t}
                 defaultLat={center.lat}
                 defaultLng={center.lng}
+                mapApiKey={mapApiKey}
               />
 
               <ServiceTypeSelection

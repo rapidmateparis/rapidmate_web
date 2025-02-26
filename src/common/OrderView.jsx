@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Styles from "../assets/css/home.module.css";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,39 +19,34 @@ import { createConsumerAddressBook } from "../data_manager/dataManage";
 import { showErrorToast } from "../utils/Toastify";
 import { ToastContainer } from "react-toastify";
 import Spinners from "./Loader";
-
+import localforage from "localforage";
+const checkboxTypes = ["checkbox"];
 function OrderView() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
-  const { order, orderCustomerDetails, dropoffDetail } = location.state || {};
+  const { order } = useSelector((state) => state.orderDetails);
   const userRole = useSelector((state) => state.auth.role);
   const baseUrl = userRole?.toLowerCase().replace(/_/g, "");
   const [isAddressAdd, setIsAddressAdd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageView, setImageView] = useState(
-    URL.createObjectURL(orderCustomerDetails?.file[0]) || null
-  );
- 
-  // console.log(order)
-  const checkboxTypes = ["checkbox"];
+  const [imageView, setImageView] = useState(null);
   const user = useSelector((state) => state.auth.user);
   const submitHandler = async (e) => {
     e.preventDefault();
 
     if (isAddressAdd) {
-      // console.log("address",order)
       const pickupLoc = order?.pickupLocation;
       const dropOffloc = order?.dropoffLocation;
       if (pickupLoc) {
         let pickupAddressLocation = {
           consumer_ext_id: user?.userDetails.ext_id,
           address: pickupLoc?.address,
-          first_name: orderCustomerDetails?.name,
-          last_name: orderCustomerDetails?.lastName || "",
-          company_name: orderCustomerDetails?.company || "",
-          phone: orderCustomerDetails?.phoneNumber || "",
-          email: orderCustomerDetails?.email || "",
+          first_name: order?.orderCustomerDetails?.name,
+          last_name: order?.orderCustomerDetails?.lastName || "",
+          company_name: order?.orderCustomerDetails?.company || "",
+          phone: order?.orderCustomerDetails?.phoneNumber || "",
+          email: order?.orderCustomerDetails?.email || "",
           comments: "",
         };
         createConsumerAddressBook(
@@ -77,11 +72,11 @@ function OrderView() {
         let dropoffLocation = {
           consumer_ext_id: user?.userDetails.ext_id,
           address: dropOffloc?.address,
-          first_name: orderCustomerDetails?.name,
-          last_name: orderCustomerDetails?.lastName || "",
-          company_name: orderCustomerDetails?.company || "",
-          phone: orderCustomerDetails?.phoneNumber || "",
-          email: orderCustomerDetails?.email || "",
+          first_name: order?.orderCustomerDetails?.name,
+          last_name: order?.orderCustomerDetails?.lastName || "",
+          company_name: order?.orderCustomerDetails?.company || "",
+          phone: order?.orderCustomerDetails?.phoneNumber || "",
+          email: order?.orderCustomerDetails?.email || "",
           comments: "",
         };
 
@@ -106,18 +101,22 @@ function OrderView() {
       }
 
     }
-    {loading ? <Spinners/> : navigate(`/${baseUrl}/payment`, {
-      state: {
-        order,
-        orderCustomerDetails,
-        dropoffDetail,
-        isAddressAdd,
-      },
-    }); }
+    {loading ? <Spinners/> : navigate(`/${baseUrl}/payment`); }
   };
   const handleSaveAddress = (e) => {
     setIsAddressAdd(!isAddressAdd);
   };
+
+  useEffect(()=>{
+    const getLocalData =  async () =>{
+      const savefile=await localforage.getItem("uploadedFile")
+      if(savefile){
+        setImageView(URL.createObjectURL(savefile[0]))
+        
+      }
+    }
+    getLocalData()
+  },[])
 
   return (
     <>
@@ -213,12 +212,12 @@ function OrderView() {
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
                       <h5 className={Styles.pickupOrderPreviewVehicleType}>
-                        {orderCustomerDetails?.name +
+                        {order?.orderCustomerDetails?.name +
                           " " +
-                          orderCustomerDetails?.lastname}
+                          order?.orderCustomerDetails?.lastname}
                       </h5>
                       <p className={Styles.pickupOrderPreviewCompanyName}>
-                        {orderCustomerDetails?.company}
+                        {order?.orderCustomerDetails?.company}
                       </p>
                     </div>
                     <div>
@@ -239,7 +238,7 @@ function OrderView() {
                         icon={faGlobe}
                       />
                       <p className={Styles.pickupOrderAdminEmail}>
-                        {orderCustomerDetails?.email}
+                        {order?.orderCustomerDetails?.email}
                       </p>
                     </div>
 
@@ -249,7 +248,7 @@ function OrderView() {
                         icon={faPhone}
                       />
                       <p className={Styles.pickupOrderAdminEmail}>
-                        {"+" + orderCustomerDetails?.phoneNumber}
+                        {"+" + order?.orderCustomerDetails?.phoneNumber}
                       </p>
                     </div>
                   </div>
@@ -261,7 +260,7 @@ function OrderView() {
                     />
                     <p className={Styles.pickupOrderPreviewPickupNotes}>
                       {" "}
-                      {orderCustomerDetails?.pickupnote}
+                      {order?.orderCustomerDetails?.pickupnote}
                     </p>
                   </div>
                 </div>
@@ -272,12 +271,12 @@ function OrderView() {
                   <div className={Styles.pickupOrderPreviewVehicleDetailsCard}>
                     <div>
                       <h5 className={Styles.pickupOrderPreviewVehicleType}>
-                        {dropoffDetail?.first_name +
+                        {order?.orderCustomerDetails?.dname +
                           " " +
-                          dropoffDetail?.last_name}
+                          order?.orderCustomerDetails?.dlastname}
                       </h5>
                       <p className={Styles.pickupOrderPreviewCompanyName}>
-                        {dropoffDetail?.company}
+                        {order?.orderCustomerDetails?.dcompany}
                       </p>
                     </div>
                   </div>
@@ -291,7 +290,7 @@ function OrderView() {
                         icon={faGlobe}
                       />
                       <p className={Styles.pickupOrderAdminEmail}>
-                        {dropoffDetail?.email}
+                        {order?.orderCustomerDetails?.demail}
                       </p>
                     </div>
 
@@ -301,7 +300,7 @@ function OrderView() {
                         icon={faPhone}
                       />
                       <p className={Styles.pickupOrderAdminEmail}>
-                        {"+" + dropoffDetail?.phone}
+                        {"+" + order?.orderCustomerDetails?.dphoneNumber}
                       </p>
                     </div>
                   </div>
@@ -312,7 +311,7 @@ function OrderView() {
                     />
                     <p className={Styles.pickupOrderPreviewPickupNotes}>
                       {" "}
-                      {dropoffDetail?.dropoff_note}
+                      {order?.orderCustomerDetails?.dropoffnote}
                     </p>
                   </div>
                 </div>
@@ -361,20 +360,20 @@ function OrderView() {
                         label={t("save_addresses")}
                         checked={isAddressAdd}
                         className={`${Styles.saveAddresslaterCheckBox}`}
-                        onClick={handleSaveAddress}
+                        onClick={(e) => setIsAddressAdd(e.target.checked)}
                       />
                     </div>
                   ))}
                 </div>
 
                 <div className={Styles.addPickupDetailsBtnCard}>
-                  <Link
+                  <div
                     className={Styles.addPickupDetailsCancelBTn}
-                    to="/consumer/pickup-details"
-                    style={{ color: "#000" }}
+                    onClick={()=>navigate(-1)}
+                    style={{ color: "#000",cursor:"pointer"}}
                   >
                     {t("back")}
-                  </Link>
+                  </div>
                   <div
                     style={{ cursor: "pointer" }}
                     onClick={submitHandler}

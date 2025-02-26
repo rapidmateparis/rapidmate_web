@@ -19,16 +19,20 @@ import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import { showErrorToast } from "../../utils/Toastify";
 import { ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatPhoneNumber } from "../../utils/Constants";
 import { useTranslation } from "react-i18next";
+import localforage from "localforage";
+import { updateOrderDetails } from "../../redux/doOrderSlice";
 
 const AddPickupDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
-  const { order } = location.state || {};
+  const dispatch = useDispatch();
+  // const { order } = location.state || {};
+  const { order} = useSelector((state) => state.orderDetails);
   const [selectedOption, setSelectedOption] = useState("Myself");
   const [selectCheckOption, setSelectedCheckOption] = useState("custom");
   const [isFocused, setIsFocused] = useState(false);
@@ -50,37 +54,35 @@ const AddPickupDetails = () => {
       .string()
       .required("Name is required")
       .min(3, "Name must be at least 3 characters long"),
-    lastname: yup
-      .string(),
+    lastname: yup.string(),
     company: yup.string(),
-    packageId: yup
-      .string(),
+    packageId: yup.string(),
     pickupnote: yup.string(),
     email: yup
       .string()
       .required("Email is required")
       .email("Please enter a valid email"),
     phoneNumber: yup
-    .string()
-    .required("Phone number is required")
-    .matches(/^\d+$/, "Phone number should contain only digits")
-    .test("length", "Phone number length is invalid", function (value) {
-      const { pcountry } = this.parent; // Assuming country is selected in the form
-      const phoneLengthByCountry = {
-        in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
-        fr: { min: 11, max: 11 },
-        ru: { min: 11, max: 11 }, // Example for the US: 10 digits
-        us: { min: 11, max: 11 }, // Example for the US: 10 digits
-        nz: { min: 12, max: 12 }, // Example for the US: 10 digits
-        // Add other countries and their phone number lengths here
-      };
-      const countryCode = pcountry ? pcountry : null;
-      if (countryCode && phoneLengthByCountry[countryCode]) {
-        const { min, max } = phoneLengthByCountry[countryCode];
-        return value.length >= min && value.length <= max;
-      }
-      return true; // If no country is selected, do not apply length validation
-    }),
+      .string()
+      .required("Phone number is required")
+      .matches(/^\d+$/, "Phone number should contain only digits")
+      .test("length", "Phone number length is invalid", function (value) {
+        const { pcountry } = this.parent; // Assuming country is selected in the form
+        const phoneLengthByCountry = {
+          in: { min: 12, max: 12 }, // Example for France: minimum and maximum length is 10
+          fr: { min: 11, max: 11 },
+          ru: { min: 11, max: 11 }, // Example for the US: 10 digits
+          us: { min: 11, max: 11 }, // Example for the US: 10 digits
+          nz: { min: 12, max: 12 }, // Example for the US: 10 digits
+          // Add other countries and their phone number lengths here
+        };
+        const countryCode = pcountry ? pcountry : null;
+        if (countryCode && phoneLengthByCountry[countryCode]) {
+          const { min, max } = phoneLengthByCountry[countryCode];
+          return value.length >= min && value.length <= max;
+        }
+        return true; // If no country is selected, do not apply length validation
+      }),
     file: yup
       .mixed()
       .required("A file is required")
@@ -96,14 +98,13 @@ const AddPickupDetails = () => {
       .string()
       .required("Name is required")
       .min(3, "Name must be at least 3 characters long"),
-    dlastname: yup
-      .string(),
+    dlastname: yup.string(),
     demail: yup
       .string()
       .required("Email is required")
       .email("Please enter a valid email"),
     dphoneNumber: yup
-       .string()
+      .string()
       .required("Phone number is required")
       .matches(/^\d+$/, "Phone number should contain only digits")
       .test("length", "Phone number length is invalid", function (value) {
@@ -129,13 +130,13 @@ const AddPickupDetails = () => {
     setSelectedCheckOption(seletedValue);
     setValue("selectCheckOption", seletedValue);
   };
- 
+
   const defaultFirstName = user?.userDetails?.first_name || "";
   const defaultLastName = user?.userDetails?.last_name || "";
   const defaultEmail = user?.userDetails?.email || "";
+  const defaultCompanyName = user?.userDetails?.company_name || "";
   const defaultPhone = user?.userDetails?.phone?.replace("+", "") || "";
   const [imagePreview, setImagePreview] = useState(null);
-
   const {
     control,
     handleSubmit,
@@ -146,65 +147,79 @@ const AddPickupDetails = () => {
     defaultValues: { selectCheckOption: "" },
   });
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       setImagePreview(URL.createObjectURL(file)); // Set image preview URL
-      setValue("file", [file]); // Pass the file array to the form
+      setValue("file", [file]); 
+      await localforage.setItem("uploadedFile", [file]);
     }
   };
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setValue("imageView", imagePreview);
     setValue("selectedOption", selectedOption);
-    let dropoffDetail = "";
     if (selectCheckOption == "" || selectCheckOption == undefined) {
       showErrorToast("Select dropoff location detail.");
       return;
     }
-    if (selectCheckOption == "custom") {
-      dropoffDetail = {
-        first_name: data?.dname,
-        last_name: data?.dlastname,
-        phone: data?.dphoneNumber,
-        email: data?.demail,
-        company: data?.dcompany,
-        dropoff_note: data?.dropoffnote,
-      };
-      setValue("dropoffdetail", true);
-    } else {
-      setValue("dropoffdetail", false);
+    data.file={ name: data?.file[0]?.name, size: data?.file[0]?.size, type: data?.file[0]?.type }
+    const payload = {
+      ...order,
+      orderCustomerDetails: data
     }
-
-    navigate("/consumer/order-preview", {
-      state: {
-        order: order,
-        orderCustomerDetails: data,
-        dropoffDetail,
-      },
-    });
+    dispatch(updateOrderDetails(payload))
+    navigate("/consumer/order-preview");
   };
-
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
   useEffect(() => {
     if (selectedOption === "Myself") {
+      const lastName= defaultLastName ? defaultLastName : order?.orderCustomerDetails?.lastname
+      const companyName =defaultCompanyName ? defaultCompanyName : order?.orderCustomerDetails?.company
       setValue("name", defaultFirstName);
-      setValue("lastname", defaultLastName);
+      setValue("lastname", lastName);
       setValue("email", defaultEmail);
       setValue("phoneNumber", defaultPhone);
+      setValue("company",companyName)
     } else {
       setValue("name", "");
       setValue("lastname", "");
       setValue("email", "");
       setValue("phoneNumber", "");
+      setValue("company","")
+
     }
   }, [selectedOption]);
 
   const goBack = () => {
     navigate(-1);
   };
+  
+  useEffect(()=>{
+    const getLocalData = async ()=>{
+      if(order?.orderCustomerDetails){
+        const data =order?.orderCustomerDetails
+        Object.keys(data).forEach((key) => {
+         
+          if(key !=='file'){
+            setValue(key, data[key]);
+          }
+          
+        });
+      }
+      
+      const savedFile = await localforage.getItem("uploadedFile");
+      if (savedFile) {
+        setImagePreview(URL.createObjectURL(savedFile[0]));
+        setValue("file", savedFile); 
+      }
+    }
+    if(order){
+      getLocalData()
+    }
+  },[])
   return (
     <>
       {/* Header Start Here  */}
@@ -226,13 +241,13 @@ const AddPickupDetails = () => {
               <div className={Styles.pickupAddpickupDetailsMaincard}>
                 <div>
                   <h2 className={Styles.addPickupDetailsText}>
-                  {t("add_pickup_details")}
+                    {t("add_pickup_details")}
                   </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                  {t("pickup_dropoff_entered")}
+                    {t("pickup_dropoff_entered")}
                   </p>
                   <p className={Styles.pickupPersonalDetails}>
-                  {t("personal_details")}
+                    {t("personal_details")}
                   </p>
                 </div>
 
@@ -267,7 +282,8 @@ const AddPickupDetails = () => {
                         htmlFor="name"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                       {t("first_name")}: <span className={Styles.textColor}>*</span>
+                        {t("first_name")}:{" "}
+                        <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
                         name="name"
@@ -353,7 +369,8 @@ const AddPickupDetails = () => {
                         htmlFor="email"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("email")}: <span className={Styles.textColor}>*</span>
+                        {t("email")}:{" "}
+                        <span className={Styles.textColor}>*</span>
                       </label>
                       <Controller
                         name="email"
@@ -391,7 +408,7 @@ const AddPickupDetails = () => {
                           <PhoneInput
                             country={"fr"}
                             value={value}
-                            onlyCountries={["fr", "in","ru","us","nz"]}
+                            onlyCountries={["fr", "in", "ru", "us", "nz"]}
                             countryCodeEditable={false}
                             isValid={(value, country) => {
                               setValue("pcountry", country.iso2);
@@ -429,7 +446,9 @@ const AddPickupDetails = () => {
                   </div>
                 </div>
 
-                <p className={Styles.pickupPersonalDetails}>{t("package_details")}</p>
+                <p className={Styles.pickupPersonalDetails}>
+                  {t("package_details")}
+                </p>
 
                 <div className={`row ${Styles.manageRow}`}>
                   <div className="col-md-12">
@@ -437,12 +456,14 @@ const AddPickupDetails = () => {
                       htmlFor="file"
                       className={Styles.addPickupDetailFormLabels}
                     >
-                      {t("package_photo")} <span className={Styles.textColor}>*</span> : <span className={Styles.textColor}>Max size: 5mb</span>
+                      {t("package_photo")}{" "}
+                      <span className={Styles.textColor}>*</span> :{" "}
+                      <span className={Styles.textColor}>Max size: 5mb</span>
                     </label>
 
                     {imagePreview ? (
                       // Show only the package preview if an image has been uploaded
-                      <div style={{position: 'relative',}} className="mt-2">
+                      <div style={{ position: "relative" }} className="mt-2">
                         <p>{t("image_preview")}:</p>
                         <img
                           src={imagePreview}
@@ -481,7 +502,7 @@ const AddPickupDetails = () => {
                       <div className={Styles.addPickupUploadPhoto}>
                         <FontAwesomeIcon icon={faPaperclip} />
                         <p className={Styles.addPickupDragText}>
-                        {t("attach_photo")}
+                          {t("attach_photo")}
                         </p>
                         <Controller
                           name="file"
@@ -523,7 +544,7 @@ const AddPickupDetails = () => {
                         htmlFor="packageId"
                         className={Styles.addPickupDetailFormLabels}
                       >
-                        {t("package_id")} 
+                        {t("package_id")}
                       </label>
                       <Controller
                         name="packageId"
@@ -533,7 +554,7 @@ const AddPickupDetails = () => {
                           <input
                             {...field}
                             type="text"
-                            placeholder={t("package_id")} 
+                            placeholder={t("package_id")}
                             style={{ width: "100%", padding: "5px" }}
                             className="dynamic-border-input"
                           />
@@ -578,10 +599,10 @@ const AddPickupDetails = () => {
                 </div>
                 <div>
                   <h2 className={Styles.addPickupDetailsText}>
-                  {t("dropoff_details")}
+                    {t("dropoff_details")}
                   </h2>
                   <p className={Styles.addPickupDetailsSubtext}>
-                  {t("dropoff_details_entered")}
+                    {t("dropoff_details_entered")}
                   </p>
                 </div>
                 <div
@@ -689,7 +710,8 @@ const AddPickupDetails = () => {
                           htmlFor="demail"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                          {t("email")}: <span className={Styles.textColor}>*</span>
+                          {t("email")}:{" "}
+                          <span className={Styles.textColor}>*</span>
                         </label>
                         <Controller
                           name="demail"
@@ -729,7 +751,7 @@ const AddPickupDetails = () => {
                             <PhoneInput
                               country={"fr"}
                               value={value}
-                              onlyCountries={["fr", "in","ru","us","nz"]}
+                              onlyCountries={["fr", "in", "ru", "us", "nz"]}
                               isValid={(value, country) => {
                                 setValue("dcountry", country.iso2);
                               }}
@@ -771,7 +793,7 @@ const AddPickupDetails = () => {
                           htmlFor="dropoffnote"
                           className={Styles.addPickupDetailFormLabels}
                         >
-                         {t("dropoff_notes")}
+                          {t("dropoff_notes")}
                         </label>
                         <Controller
                           name="dropoffnote"

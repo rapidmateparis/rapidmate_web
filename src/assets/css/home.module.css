@@ -6101,8 +6101,8 @@ a {
 }
 
 .customSwitch input:checked {
-  background-color: yellow !important;
-  border-color: yellow !important;
+  background-color: #ffc72b !important;
+  border-color: #ffc72b !important;
 }
 
 .enterpriseHomeCompanyLocMainCard {

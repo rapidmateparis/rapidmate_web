@@ -23,7 +23,7 @@ const EnterpriseOrderPreview = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useSelector((state) => state.auth.user);
-  const { order, orderCustomerDetails } = location.state || {};
+  const { order} = useSelector((state) => state.orderDetails);
   const [imageView, setImageView] = useState(null);
 
 
@@ -80,10 +80,11 @@ const EnterpriseOrderPreview = () => {
       result.postal_code
     );
   };
+  console.log(order)
   return (
     <>
       <CommonHeader userData={user} />
-      <OrderViewComponents navigate={navigate} order={order} orderCustomerDetails={orderCustomerDetails} getOrderAddress={getOrderAddress} getDropoffLocation={getDropoffLocation} isAddressAdd={isAddressAdd}isMultiple={order?.deliveryType?.id === 2}/>
+      <OrderViewComponents navigate={navigate} order={order} orderCustomerDetails={order?.orderCustomerDetails} getOrderAddress={getOrderAddress} getDropoffLocation={getDropoffLocation} isAddressAdd={isAddressAdd}isMultiple={order?.deliveryType?.id === 2}/>
       </>
   );
 };
