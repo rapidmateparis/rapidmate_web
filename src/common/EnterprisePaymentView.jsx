@@ -973,7 +973,7 @@ function EnterprisePaymentView() {
         const token = await localforage.getItem("1");
         try {
           const params = {
-            amount: paymentAmount,
+            amount: paymentAmount.toFixed(2),
             currency: "eur",
             customerId,
             method: paymentMethod,
