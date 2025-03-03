@@ -177,6 +177,7 @@ function CommonDashboard() {
         dispatch(setBookings(response?.overviewData));
         displayChartData(response?.weekData);
       }
+      setLoading(false);
     } catch (errorResponse) {
       let err = "";
         if (errorResponse.errors) {
