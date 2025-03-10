@@ -16,7 +16,7 @@ import PickupVehicleDimensionsModal from "../consumer/PickupVehicleDimensionsMod
 import { useTranslation } from "react-i18next";
 
 const EnterpriseCreateShiftSelectServiceType = () => {
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,8 +30,8 @@ const EnterpriseCreateShiftSelectServiceType = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVehicle, setSelectedVehicle] = useState(1);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
-  const [vehicleDetail,setVehicleDetail]=useState(null)
-  const [showModal,setShowModal]=useState(false)
+  const [vehicleDetail, setVehicleDetail] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState(0);
   const handleServiceTypeClick = (serviceType) => {
     if (serviceType.id == 3 || serviceType.id == 4) {
@@ -107,8 +107,6 @@ const EnterpriseCreateShiftSelectServiceType = () => {
     setShowModal(true);
   };
 
-  
-
   return (
     <>
       {/* Header Start Here  */}
@@ -161,18 +159,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                 <div className={Styles.enterpriseSelectServiceVehicleCardMain}>
                   <div className="row">
                     {vehicleTypeList.map((vehicle, index) => (
-                      <div className="col-md-4" key={index} style={{position:"relative"}}>
-                        <p style={{position:"absolute",marginLeft:"319px",marginTop:"-10px",cursor:"pointer"}} onClick={(e) => {
-                          e.stopPropagation(); 
-                          openModal(vehicle)
-                        }}>
-                            <img
-                              className={Styles.homePickupInfo}
-                              src={Info}
-                              alt="info-Icon"
-                            />
-                        
-                          </p>
+                      <div className="col-md-4" key={index}>
                         <div
                           className={`${
                             Styles.enterpriseSelectServiceVehicleCard
@@ -188,6 +175,19 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                               : undefined
                           }
                         >
+                          <div
+                            className={Styles.infoIconMainCard}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openModal(vehicle);
+                            }}
+                          >
+                            <img
+                              className={Styles.homePickupInfo}
+                              src={Info}
+                              alt="info-Icon"
+                            />
+                          </div>
                           <FontAwesomeIcon
                             className={Styles.enterpriseSelectVehicleCircleIcon}
                             icon={
@@ -210,7 +210,7 @@ const EnterpriseCreateShiftSelectServiceType = () => {
                               €{amount}/Hrs
                             </p>
                           )}
-                          
+
                           <img
                             className={Styles.enterpriseVehilces}
                             src={getImage(vehicle)}
