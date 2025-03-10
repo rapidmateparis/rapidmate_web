@@ -80,6 +80,8 @@ function LiveTracking() {
         }
   }, [orderNum]);
 
+  console.log("first", deliveryBoy);
+
   const enterpriseOrderDetail = () => {
     setLoading(true);
     getViewEnterpriseOrderDetail(
@@ -374,16 +376,14 @@ function LiveTracking() {
   }
 
   const actionToCall = () => {
-    if (!driverPhone && !order?.delivery_boy_mobile) {
+    if (!driverPhone) {
       showErrorToast("Phone number not available");
       return;
     }
-
-    const phoneNumber = formatPhoneNumber(
-      driverPhone || order?.delivery_boy_mobile
-    );
+  
+    const phoneNumber = formatPhoneNumber(driverPhone);
     setTimeout(() => {
-      window.location.href = `tel:${phoneNumber}`; // Ensure it's executed inside a direct click event
+      window.location.href = `tel:${phoneNumber}`;
     }, 0);
   };
   
