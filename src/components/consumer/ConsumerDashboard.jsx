@@ -64,6 +64,7 @@ function ConsumerDashboard({ mapApiKey }) {
   const [mapHeight, setMapHeight] = useState(
     window.innerWidth < 768 ? "350px" : "100vh"
   );
+  const [selectedMode,setSelectedMode] = useState("Car");
 
   useEffect(() => {
     setLoading(true);
@@ -153,6 +154,7 @@ function ConsumerDashboard({ mapApiKey }) {
       setSelectedVehicleDetails(order?.selectedVehicleDetails);
       setSelectedVehiclePrice(order?.selectedVehiclePrice);
       // setPickupLocation(order?.pickupLocation)
+      setSelectedMode(order?.selectedMode)
     }
   }, [order]);
 
@@ -164,55 +166,54 @@ function ConsumerDashboard({ mapApiKey }) {
   if (!isLoaded) {
     return <div>Loading map...</div>;
   }
-
+  const multipliers = {
+    Cycle: 0.8,    // Cycle is slower (time increases)
+    Scooter: 0.6,  // Scooter is faster than a cycle
+    Car: 1.0,      // Base travel time
+    Partner: 0.7,  // Partner vehicle (slightly slower than Car)
+    Pickup: 0.75,  // Pickup is slower than a car
+    Van: 0.72,     // Van is slower than a car
+    Truck: 0.6,    // Truck is the slowest
+  };
   const calculateRoute = async () => {
-    if (pickupLocation && dropoffLocation) {
-      try {
-        // ✅ Get travel time from backend API
-        const travelTimes = await getTravelTime(
-          `${pickupLocation.lat},${pickupLocation.lng}`,
-          `${dropoffLocation.lat},${dropoffLocation.lng}`,
-          "driving"
-        );
-
-        const directionsService = new google.maps.DirectionsService();
-        const results = await directionsService.route({
-          origin: { lat: pickupLocation.lat, lng: pickupLocation.lng },
-          destination: { lat: dropoffLocation.lat, lng: dropoffLocation.lng },
-          travelMode: google.maps.TravelMode.DRIVING,
-        });
-
-        setDirectionsResponse(results);
-
-        // ✅ Extract distance & duration from the first route
-        if (travelTimes?.timeDistanceAndTime?.Car) {
-          setDuration(travelTimes?.timeDistanceAndTime.Car);
-          setDistance(travelTimes?.timeDistanceAndTime.distance);
-        } else {
-          const route = travelTimes?.direction.routes[0].legs[0];
-          setDistance(route.distance.text);
-          setDuration(route.duration.text);
-        }
-
-        setVehicleTimes(travelTimes?.timeDistanceAndTime);
-
-        // ✅ Update pickup & dropoff locations
-        const pickup = getLocation(
-          pickupLocation,
-          pickupLocation.lat,
-          pickupLocation.lng
-        );
-        setAddPickupLocation(pickup);
-
-        const dropoff = getLocation(
-          dropoffLocation,
-          dropoffLocation.lat,
-          dropoffLocation.lng
-        );
-        setAddDestinationLocation(dropoff);
-      } catch (error) {
-        console.error("❌ Error fetching directions:", error);
+    if (!pickupLocation || !dropoffLocation) return;
+  
+    try {
+      const directionsService = new google.maps.DirectionsService();
+      const results = await directionsService.route({
+        origin: { lat: pickupLocation.lat, lng: pickupLocation.lng },
+        destination: { lat: dropoffLocation.lat, lng: dropoffLocation.lng },
+        travelMode: google.maps.TravelMode.DRIVING,
+      });
+  
+      if (results?.routes?.length > 0) {
+        setDirectionsResponse(results); // Keep this as per your request
+  
+        const distanceText = results.routes[0].legs[0].distance.text; // e.g., "10 km"
+        const durationText = results.routes[0].legs[0].duration.text; // e.g., "30 mins"
+  
+        // Convert distance & duration to numbers
+        const baseDistance = parseFloat(distanceText.replace(" km", "").replace(",", ""));
+        const baseDuration = parseFloat(durationText.replace(" mins", "").replace(",", ""));
+  
+        // Precompute values for all vehicle types
+        const calculatedRoutes = Object.entries(multipliers).reduce((acc, [vehicle, multiplier]) => {
+          acc[vehicle] = {
+            distance: distanceText, // Keep distance the same for all vehicles
+            duration: (baseDuration * multiplier).toFixed(2) + " mins", // Adjust duration
+          };
+          return acc;
+        }, {});
+  
+        // Store precomputed data in state
+        setVehicleTimes(calculatedRoutes);
+  
+        // Set default values based on selectedMode
+        setDistance(calculatedRoutes[selectedMode].distance);
+        setDuration(calculatedRoutes[selectedMode].duration);
       }
+    } catch (error) {
+      console.error("Error calculating route:", error);
     }
   };
 
@@ -234,6 +235,7 @@ function ConsumerDashboard({ mapApiKey }) {
       duration,
       selectedVehicleDetails,
       selectedVehiclePrice,
+      selectedMode,
     };
     if (order?.orderCustomerDetails) {
       payload.orderCustomerDetails = order?.orderCustomerDetails;
@@ -253,6 +255,14 @@ function ConsumerDashboard({ mapApiKey }) {
   const openModal = (vehicle) => {
     setVehicleDetail(vehicle);
     setShowModal(true);
+  };
+
+  const handleVehicleChange = (mode) => {
+    setSelectedMode(mode)
+    if (vehicleTimes) {
+      setDistance(vehicleTimes[mode].distance);
+      setDuration(vehicleTimes[mode].duration);
+    }
   };
 
   return (
@@ -280,8 +290,7 @@ function ConsumerDashboard({ mapApiKey }) {
               getPriceUsingVehicleType={getPriceUsingVehicleType}
               openModal={openModal}
               dropoffLocation={dropoffLocation}
-              travelTimes={vehicleTimes}
-              setDuration={setDuration}
+              handleVehicleChange={handleVehicleChange}
             />
           </div>
 

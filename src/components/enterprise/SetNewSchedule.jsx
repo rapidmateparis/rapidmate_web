@@ -23,6 +23,8 @@ import {
 } from "../../data_manager/dataManage";
 import { deliveryboyRoute } from "../../utils/RoutePath";
 import { useTranslation } from "react-i18next";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const SetNewSchedule = () => {
   const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
@@ -48,6 +50,60 @@ const SetNewSchedule = () => {
   const [totalHour, setTotalHour] = useState(0);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
+
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  // const handleDateChange = (date) => {
+  //   setSelectedDate(date);
+  //   setNewEvent({ ...newEvent, start: date.toISOString().split("T")[0] }); // Format date as YYYY-MM-DD
+  //   setShowCalendar(false); // Close calendar after selection
+  // };
+
+  const handleStartDateChange = (date) => {
+    setSelectedStartDate(date);
+    setNewEvent({ ...newEvent, start: date.toISOString().split("T")[0] });
+    setShowStartCalendar(false); // Close calendar after selection
+  };
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
+    setShowEndCalendar(false); // Close calendar after selection
+    if (events.length > 0) {
+      showErrorToast("Create shift only one at time.");
+      return;
+    }
+    setNewEvent({ ...newEvent, end: date.toISOString().split("T")[0] });
+    const startDate = moment(newEvent.start);
+    const endDate = moment(date.toISOString().split("T")[0]);
+
+    if (
+      !startDate.isValid() ||
+      !endDate.isValid() ||
+      startDate.isAfter(endDate)
+    ) {
+      showErrorToast("Please select valid 'from' and 'to' dates.");
+      return;
+    }
+
+    const days = [];
+    let currentDate = startDate;
+
+    while (currentDate.isSameOrBefore(endDate)) {
+      days.push(currentDate.format("YYYY-MM-DD"));
+      currentDate = currentDate.add(1, "day");
+    }
+
+    const newRows = days.map((date) => ({
+      date,
+      slots: [{ from: "", to: "" }], // Default empty slot for each day
+    }));
+
+    setRows(newRows);
+    setIsPreview(false);
+  };
 
   const handleRepeatOrder = (isApplyForAllDays) => {
     setRepeatOrder(isApplyForAllDays); // Update the toggle state
@@ -398,6 +454,13 @@ const SetNewSchedule = () => {
     setSlots(null);
     setTotalHour(0);
     setTotalAmount(0);
+    setNewEvent({
+      title: "",
+      start: "",
+      end: "",
+      allDay: false,
+    })
+    setRows([])
   };
   return (
     <>
@@ -436,7 +499,8 @@ const SetNewSchedule = () => {
                       Styles.enterpriseCreateShiftAvailabilityAddrowCard
                     }
                   >
-                    <div>
+                    {/* Start Date Section */}
+                    <div style={{ position: "relative" }}>
                       <p className={Styles.createShiftAvailabilityText}>
                         {t("start_date")}
                       </p>
@@ -446,23 +510,49 @@ const SetNewSchedule = () => {
                         }
                       >
                         <input
-                          type="date"
-                          placeholder="Start"
+                          type="text"
+                          placeholder="yyyy-mm-dd"
                           value={newEvent.start}
-                          onChange={(e) =>
-                            setNewEvent({
-                              ...newEvent,
-                              start: e.target.value,
-                            })
-                          }
+                          readOnly
+                          onClick={() => {
+                            setShowStartCalendar(!showStartCalendar);
+                            setShowEndCalendar(false); // Close end date picker if open
+                          }}
                           className={
                             Styles.enterpriseCreateShiftAvailabilityFromInput
                           }
-                          style={{ marginRight: "10px" }}
+                          style={{ marginRight: "10px", cursor: "pointer" }}
                         />
                       </div>
+
+                      {/* Start Date Calendar */}
+                      {showStartCalendar && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: "50%",
+                            transform: "translate(-50%, 10px)",
+                            backgroundColor: "#ffffff",
+                            padding: "20px",
+                            borderRadius: "12px",
+                            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                            zIndex: 1000,
+                            width: "336px",
+                          }}
+                        >
+                          <DatePicker
+                            selected={selectedStartDate}
+                            onChange={handleStartDateChange}
+                            inline
+                            calendarClassName="custom-calendar"
+                          />
+                        </div>
+                      )}
                     </div>
-                    <div>
+
+                    {/* End Date Section */}
+                    <div style={{ position: "relative" }}>
                       <p className={Styles.createShiftAvailabilityText}>
                         {t("end_date")}
                       </p>
@@ -472,23 +562,46 @@ const SetNewSchedule = () => {
                         }
                       >
                         <input
-                          type="date"
-                          placeholder="End"
+                          type="text"
+                          placeholder="yyyy-mm-dd"
                           value={newEvent.end}
-                          onChange={(e) => handleGenerateRows(e)}
-                          style={{ marginRight: "10px" }}
+                          readOnly
+                          onClick={() => {
+                            setShowEndCalendar(!showEndCalendar);
+                            setShowStartCalendar(false); // Close start date picker if open
+                          }}
                           className={
                             Styles.enterpriseCreateShiftAvailabilityFromInput
                           }
+                          style={{ marginRight: "10px", cursor: "pointer" }}
                         />
                       </div>
+
+                      {/* End Date Calendar */}
+                      {showEndCalendar && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: "50%",
+                            transform: "translate(-50%, 10px)",
+                            backgroundColor: "#ffffff",
+                            padding: "20px",
+                            borderRadius: "12px",
+                            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                            zIndex: 1000,
+                            width: "336px",
+                          }}
+                        >
+                          <DatePicker
+                            selected={selectedEndDate}
+                            onChange={handleEndDateChange}
+                            inline
+                            calendarClassName="custom-calendar"
+                          />
+                        </div>
+                      )}
                     </div>
-                    {/* <button className={Styles.enterpriseCreateShiftAvailabilityPasteSlot}>
-                                    Paste time slots
-                                    </button>
-                                    <button className={Styles.enterpriseCreateShiftAvailabilityCopySlot}>
-                                    Copy time slots
-                                    </button> */}
                   </div>
                   <div
                     className={Styles.enterpriseSelectServiceRepeatOrderCard}
@@ -529,6 +642,7 @@ const SetNewSchedule = () => {
                             <Form.Control
                               type="time"
                               value={slot.from}
+                              lang="en-GB"
                               onChange={(e) =>
                                 handleSlotChange(
                                   row.date,
@@ -544,6 +658,7 @@ const SetNewSchedule = () => {
                             />
                             <Form.Control
                               type="time"
+                              lang="en-GB"
                               value={slot.to}
                               onChange={(e) =>
                                 handleSlotChange(
@@ -556,6 +671,7 @@ const SetNewSchedule = () => {
                               style={{
                                 width: "150px",
                                 marginRight: "10px",
+
                               }}
                             />
                             {index !== row.slots.length - 1 && (

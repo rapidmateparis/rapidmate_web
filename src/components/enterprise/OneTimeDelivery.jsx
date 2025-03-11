@@ -164,6 +164,7 @@ function OneTimeDelivery() {
       setSelectedVehicleDetails(order?.selectedVehicleDetails);
       setSelectedVehiclePrice(order?.selectedVehiclePrice);
       setSelectedServiceType(order?.selectedServiceType);
+      setSelectedMode(order?.selectedMode)
     }
   }, [order]);
 
@@ -265,6 +266,7 @@ function OneTimeDelivery() {
       deliveryType,
       date: dateValue instanceof Date ? dateValue.toISOString() : null,
       isSchedule,
+      selectedMode,
     };
     if (order?.orderCustomerDetails) {
       payload.orderCustomerDetails = order?.orderCustomerDetails;
