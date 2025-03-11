@@ -15,7 +15,7 @@ export const PORT = {
 };
 
 
-export const BASE_URL = "https://api.rapidmate.fr/api/";
+export const BASE_URL = "http://localhost:3009/api/";
 
 
 export const API = {
@@ -97,6 +97,7 @@ export const API = {
   changeCreateShiftStatus:BASE_URL + 'order/update/shift/status',
   deliveryBoyOrderSlots:BASE_URL + 'order/deliveryboy/myslots/',
   getMapKey:BASE_URL + 'authuser/map/code',
+  getDirections:BASE_URL + 'authuser/directions',
   stripe: BASE_URL + "payment/stripe/",
 
 };

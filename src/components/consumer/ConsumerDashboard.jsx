@@ -29,21 +29,20 @@ import { showErrorToast, showSuccessToast } from "../../utils/Toastify";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrderDetails } from "../../redux/doOrderSlice";
+import { getTravelTime } from "../../utils/UseFetch";
 
 const libraries = ["places"];
-
-function ConsumerDashboard({mapApiKey}) {
+const DEFAULT_CENTER = { lat: 48.85754309772872, lng: 2.3513877855537912 };
+function ConsumerDashboard({ mapApiKey }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const {order} = useSelector((state) => state.orderDetails);
+  const { order } = useSelector((state) => state.orderDetails);
+  const user = useSelector((state) => state.auth.user);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
-  const [center, setCenter] = useState({
-    lat: 48.85754309772872,
-    lng: 2.3513877855537912,
-  });
+  const [center, setCenter] = useState("");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -59,9 +58,12 @@ function ConsumerDashboard({mapApiKey}) {
   const [addPickupLocation, setAddPickupLocation] = useState(null);
   const [addDestinationLocation, setAddDestinationLocation] = useState(null);
   const [dateValue, setDate] = useState("");
+  const [vehicleTimes, setVehicleTimes] = useState({});
   const [isSchedule, setIsSchedule] = useState(false);
   const [map, setMap] = useState(null);
-  const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? "350px" : "100vh");
+  const [mapHeight, setMapHeight] = useState(
+    window.innerWidth < 768 ? "350px" : "100vh"
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -93,6 +95,7 @@ function ConsumerDashboard({mapApiKey}) {
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude });
+
           setCenter({ lat: latitude, lng: longitude });
         },
         (error) => {
@@ -100,8 +103,18 @@ function ConsumerDashboard({mapApiKey}) {
           // Fallback to a default location if needed
         }
       );
+    } else {
+      setCurrentLocation(DEFAULT_CENTER);
     }
   }, []);
+  useEffect(() => {
+    if (pickupLocation) {
+      setCenter({
+        lat: pickupLocation.lat,
+        lng: pickupLocation.lng,
+      });
+    }
+  }, [pickupLocation]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -134,14 +147,14 @@ function ConsumerDashboard({mapApiKey}) {
     getDistancePrice();
   }, [duration]);
 
-  useEffect(()=>{
-    if(order){
-      setSelectedVehicle(order?.selectedVehicle)
-      setSelectedVehicleDetails(order?.selectedVehicleDetails)
-      setSelectedVehiclePrice(order?.selectedVehiclePrice)
+  useEffect(() => {
+    if (order) {
+      setSelectedVehicle(order?.selectedVehicle);
+      setSelectedVehicleDetails(order?.selectedVehicleDetails);
+      setSelectedVehiclePrice(order?.selectedVehiclePrice);
       // setPickupLocation(order?.pickupLocation)
     }
-  },[order])
+  }, [order]);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: mapApiKey,
@@ -154,28 +167,52 @@ function ConsumerDashboard({mapApiKey}) {
 
   const calculateRoute = async () => {
     if (pickupLocation && dropoffLocation) {
-      const directionsService = new google.maps.DirectionsService();
-      const results = await directionsService.route({
-        origin: { lat: pickupLocation.lat, lng: pickupLocation.lng },
-        destination: { lat: dropoffLocation.lat, lng: dropoffLocation.lng },
-        travelMode: google.maps.TravelMode.DRIVING,
-      });
+      try {
+        // ✅ Get travel time from backend API
+        const travelTimes = await getTravelTime(
+          `${pickupLocation.lat},${pickupLocation.lng}`,
+          `${dropoffLocation.lat},${dropoffLocation.lng}`,
+          "driving"
+        );
 
-      setDirectionsResponse(results);
-      setDistance(results.routes[0].legs[0].distance.text);
-      setDuration(results.routes[0].legs[0].duration.text);
-      const pickup = getLocation(
-        pickupLocation,
-        pickupLocation.lat,
-        pickupLocation.lng
-      );
-      setAddPickupLocation(pickup);
-      const dropoff = getLocation(
-        dropoffLocation,
-        dropoffLocation.lat,
-        dropoffLocation.lng
-      );
-      setAddDestinationLocation(dropoff);
+        const directionsService = new google.maps.DirectionsService();
+        const results = await directionsService.route({
+          origin: { lat: pickupLocation.lat, lng: pickupLocation.lng },
+          destination: { lat: dropoffLocation.lat, lng: dropoffLocation.lng },
+          travelMode: google.maps.TravelMode.DRIVING,
+        });
+
+        setDirectionsResponse(results);
+
+        // ✅ Extract distance & duration from the first route
+        if (travelTimes?.timeDistanceAndTime?.Car) {
+          setDuration(travelTimes?.timeDistanceAndTime.Car);
+          setDistance(travelTimes?.timeDistanceAndTime.distance);
+        } else {
+          const route = travelTimes?.direction.routes[0].legs[0];
+          setDistance(route.distance.text);
+          setDuration(route.duration.text);
+        }
+
+        setVehicleTimes(travelTimes?.timeDistanceAndTime);
+
+        // ✅ Update pickup & dropoff locations
+        const pickup = getLocation(
+          pickupLocation,
+          pickupLocation.lat,
+          pickupLocation.lng
+        );
+        setAddPickupLocation(pickup);
+
+        const dropoff = getLocation(
+          dropoffLocation,
+          dropoffLocation.lat,
+          dropoffLocation.lng
+        );
+        setAddDestinationLocation(dropoff);
+      } catch (error) {
+        console.error("❌ Error fetching directions:", error);
+      }
     }
   };
 
@@ -184,7 +221,7 @@ function ConsumerDashboard({mapApiKey}) {
       showErrorToast("Please fill all fields.");
       return;
     }
-     
+
     const payload = {
       addPickupLocation,
       addDestinationLocation,
@@ -198,10 +235,10 @@ function ConsumerDashboard({mapApiKey}) {
       selectedVehicleDetails,
       selectedVehiclePrice,
     };
-    if(order?.orderCustomerDetails){
-      payload.orderCustomerDetails=order?.orderCustomerDetails
+    if (order?.orderCustomerDetails) {
+      payload.orderCustomerDetails = order?.orderCustomerDetails;
     }
-    dispatch(setOrderDetails(payload))
+    dispatch(setOrderDetails(payload));
 
     navigate("/consumer/pickup-details");
   };
@@ -217,8 +254,6 @@ function ConsumerDashboard({mapApiKey}) {
     setVehicleDetail(vehicle);
     setShowModal(true);
   };
-
-  
 
   return (
     <section className={Styles.requestPickupSec}>
@@ -245,6 +280,8 @@ function ConsumerDashboard({mapApiKey}) {
               getPriceUsingVehicleType={getPriceUsingVehicleType}
               openModal={openModal}
               dropoffLocation={dropoffLocation}
+              travelTimes={vehicleTimes}
+              setDuration={setDuration}
             />
           </div>
 
@@ -292,7 +329,7 @@ function ConsumerDashboard({mapApiKey}) {
             </div>
           )}
           <GoogleMap
-            center={center}
+            center={pickupLocation || currentLocation || DEFAULT_CENTER}
             zoom={14}
             mapContainerStyle={{ width: "100%", height: mapHeight }}
             options={{
@@ -321,6 +358,7 @@ function ConsumerDashboard({mapApiKey}) {
                 }}
               />
             )}
+
             {!pickupLocation && currentLocation && (
               <Marker
                 position={currentLocation}

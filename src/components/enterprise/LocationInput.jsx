@@ -5,32 +5,51 @@ import { faArrowRight, faLocationCrosshairs, faLocationDot } from "@fortawesome/
 import Styles from "../../assets/css/home.module.css";
 import { buildAddress, getLocation } from "../../utils/Constants";
 import { getLocationDetails } from "../../utils/UseFetch";
+import { useSelector } from "react-redux";
 
-const LocationInput = ({ onLocationChange, title, icon, selectedBranch,mapApiKey }) => {
+const LocationInput = ({ onLocationChange, title, icon, selectedBranch, mapApiKey, index, type }) => {
+  const { order } = useSelector((state) => state.orderDetails);
   const [inputValue, setInputValue] = useState(""); // State for input value
   const [isUserEditing, setIsUserEditing] = useState(false); // Track if user manually edited
   const autocompleteRef = useRef(null); // Ref for Autocomplete component
-  const getLoc = async (address,mapApiKey) => {
-    const location=await getLocationDetails(address,mapApiKey)
+
+  const getLoc = async (address, mapApiKey) => {
+    const location = await getLocationDetails(address, mapApiKey);
     setInputValue(location?.address); // ✅ Set default value only if user hasn't edited
-      onLocationChange(location?.address, location);
-     
-  }
+    onLocationChange(location?.address, location);
+  };
+
+  // ✅ Set default input value when `order` is available
   useEffect(() => {
-    
+    if (order && !isUserEditing) {
+      let address = "";
+      
+      if (type === "pickup" && order?.pickupLoc) {
+        address = order?.pickupLoc?.address;
+      } else if (type === "dropoff" && order?.dropoffLoc && order.dropoffLoc[index]) {
+        address = order.dropoffLoc[index]?.address;
+      }
+
+      if (address) {
+        getLoc(address, mapApiKey);
+      }
+    }
+  }, [order, type, index]); // ✅ Run when order updates
+
+  useEffect(() => {
     if (selectedBranch && icon === "faLocationDot" && !isUserEditing) {
       if (!window.google || !window.google.maps) {
         console.error("Google Maps API is not loaded yet.");
         return;
       }
-     const address = buildAddress(
-             selectedBranch?.address,
-             selectedBranch?.city,
-             selectedBranch?.state,
-             selectedBranch?.country,
-             selectedBranch?.postal_code
-           );
-           getLoc(address,mapApiKey)
+      const address = buildAddress(
+        selectedBranch?.address,
+        selectedBranch?.city,
+        selectedBranch?.state,
+        selectedBranch?.country,
+        selectedBranch?.postal_code
+      );
+      getLoc(address, mapApiKey);
     }
   }, []);
 
@@ -47,8 +66,7 @@ const LocationInput = ({ onLocationChange, title, icon, selectedBranch,mapApiKey
           components: place.address_components,
         };
 
-        const location = getLocation(locationDetails,locationDetails?.lat,locationDetails?.lng)
-       
+        const location = getLocation(locationDetails, locationDetails?.lat, locationDetails?.lng);
         const address = buildAddress(
           location?.address,
           location?.city,
@@ -56,9 +74,8 @@ const LocationInput = ({ onLocationChange, title, icon, selectedBranch,mapApiKey
           location?.country,
           location?.postal_code
         );
-        getLoc(address,mapApiKey)
+        getLoc(address, mapApiKey);
         setIsUserEditing(false); // Reset manual editing flag
-       
       }
     }
   };
@@ -86,7 +103,7 @@ const LocationInput = ({ onLocationChange, title, icon, selectedBranch,mapApiKey
           />
         </Autocomplete>
       </div>
-      <FontAwesomeIcon className="pickupHome-rightArrow-icon" icon={faArrowRight} />
+      {icon === "faLocationDot" && <FontAwesomeIcon className="pickupHome-rightArrow-icon" icon={faArrowRight} />}
     </>
   );
 };

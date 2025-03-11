@@ -16,7 +16,11 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
   const handleNowClick = () => {
     const now = order?.date ? new Date(order?.date) : new Date();
     const formattedDate = now.toISOString().split("T")[0];
-    const formattedTime = now.toTimeString().split(" ")[0];
+  
+    // Force 24-hour format with seconds (HH:MM:SS)
+    const formattedTime = now
+      .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" });
+  
     setSelectedDate(formattedDate);
     setSelectedTime(formattedTime);
     const combinedDateTime = new Date(`${formattedDate}T${formattedTime}`);
@@ -24,9 +28,12 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
   };
 
   const calendarClick = () => {
-    const now = order?.date ? new Date(order?.date) : new Date();;
+    const now = order?.date ? new Date(order?.date) : new Date();
     const formattedDate = now.toISOString().split("T")[0];
-    const formattedTime = now.toTimeString().split(" ")[0];
+  
+    const formattedTime = now
+      .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" });
+  
     setSelectedDate(formattedDate);
     setSelectedTime(formattedTime);
     setShowPicker(true);
@@ -134,6 +141,7 @@ const DateAndTimePicker = ({ onDateTimeChange }) => {
             </p>
             <input
               type="time"
+              step="1"
               value={selectedTime}
               onChange={(e) => setSelectedTime(e.target.value)}
               style={{

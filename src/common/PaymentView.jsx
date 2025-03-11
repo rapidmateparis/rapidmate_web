@@ -510,10 +510,10 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            {t("total_amount")}
+                            {t("total_amount")} {' '}{"(Excl. VAT)"}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
-                            € {paymentAmount.toFixed(2) || 0.0}
+                            € {paymentAmount.toFixed(2) || 0.0} 
                           </p>
                         </div>
                       </div>
@@ -679,18 +679,18 @@ function PaymentView() {
 
   const getTaxAmount = () => {
     const amount =
-      typeof order.selectedVehiclePrice === "number"
-        ? order.selectedVehiclePrice.toFixed(2)
-        : parseFloat(order.selectedVehiclePrice).toFixed(2);
+      typeof order?.selectedVehiclePrice === "number"
+        ? order?.selectedVehiclePrice.toFixed(2)
+        : parseFloat(order?.selectedVehiclePrice).toFixed(2);
     const taxAmount = (parseFloat(amount) * parseFloat(vechicleTax)) / 100;
     return taxAmount ? taxAmount.toFixed(2) : 0;
   };
   useEffect(() => {
     if (order?.selectedVehiclePrice) {
       const calculatedTotalAmount =
-        typeof order.selectedVehiclePrice === "number"
-          ? order.selectedVehiclePrice.toFixed(2)
-          : parseFloat(order.selectedVehiclePrice).toFixed(2);
+        typeof order?.selectedVehiclePrice === "number"
+          ? order?.selectedVehiclePrice.toFixed(2)
+          : parseFloat(order?.selectedVehiclePrice).toFixed(2);
       const taxAmount =
         (parseFloat(calculatedTotalAmount) * parseFloat(vechicleTax)) / 100;
       const total_Amount = parseFloat(calculatedTotalAmount) + taxAmount;

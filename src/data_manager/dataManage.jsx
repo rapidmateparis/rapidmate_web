@@ -1314,6 +1314,20 @@ export const getMapKey = (params,successCallback, errorCallback) => {
   );
 };
 
+export const getDireactionsTimes = (params,successCallback, errorCallback) => {
+  axiosCall(
+    API.getDirections+`?origin=${params.lat}&destination=${params.lng}&mode=${params.mode}`,
+    HTTPMethod.GET,
+    {},
+    response => {
+      successCallback(response);
+    },
+    errorResponse => {
+      errorCallback(errorResponse);
+    },
+  );
+};
+
 export const createPaymentCust = (params, successCallback, errorCallback) => {
  const apiBase=API[params.method]
   axiosCall(

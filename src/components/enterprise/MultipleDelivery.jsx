@@ -5,6 +5,7 @@ import {
   faArrowRight,
   faMinusCircle,
   faPlus,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -23,20 +24,16 @@ import { showErrorToast } from "../../utils/Toastify";
 import LocationInput from "./LocationInput";
 import { useTranslation } from "react-i18next";
 import {
-  GoogleMap,
   useLoadScript,
-  DirectionsRenderer,
-  Marker,
 } from "@react-google-maps/api";
-import DropoffMarker from "../../assets/images/dropoff-marker.png";
-import PickupMarker from "../../assets/images/pickup-marker.png";
+
 import { setOrderDetails } from "../../redux/doOrderSlice";
+import VehicleSelection from "../consumer/common/VehicleSelection";
+import DateTimePicker from "../consumer/common/DateTimePicker";
+import RouteTimeline from "./RouteTimeLine";
 
 const libraries = ["places"];
-const mapContainerStyle = {
-  width: "100%",
-  height: "90.5vh",
-};
+
 function MultipleDelivery() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,17 +54,19 @@ function MultipleDelivery() {
   const [dropoffLoc, setDropoffLoc] = useState([""]);
   const [distances, setDistances] = useState([]);
   const [distancePriceList, setDistancePriceList] = useState([]);
-  const [date, setDate] = useState("");
-  const [isSchedule, setIsSchedule] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
-  const [selectedServiceType, setSelectedServiceType] = useState("");
-  const { enterpriseServiceType } = useSelector(
-    (state) => state.commonData.commonData
-  );
+  const [selectedServiceType, setSelectedServiceType] = useState(1);
+  const [isSchedule, setIsSchedule] = useState(false);
+  const [dateValue, setDate] = useState("");
+  const [vehicleTimes, setVehicleTimes] = useState({});
+  const [routeData, setRouteData] = useState({});
+  const [selectedMode, setSelectedMode] = useState("Car");
+  const [timeline, setTimeline] = useState([]);
+  const [originalTimeline, setOriginalTimeline] = useState([]);
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: mapApiKey,
     libraries,
@@ -111,18 +110,27 @@ function MultipleDelivery() {
     },
     [markers]
   );
-
+  const customModes = ["Cycle", "Scooter", "Car", "Partner", "Pickup", "Van", "Truck"];
   // Calculate route only when locations change
+  const multipliers = {
+    Cycle: 0.8,    // Cycle is slower (time increases)
+    Scooter: 0.6,  // Scooter is faster than a cycle
+    Car: 1.0,      // Base travel time
+    Partner: 0.7,  // Partner vehicle (slightly slower than Car)
+    Pickup: 0.75,  // Pickup is slower than a car
+    Van: 0.72,     // Van is slower than a car
+    Truck: 0.6,    // Truck is the slowest
+  };
+  
+  // Function to calculate the route (Only when locations change)
   const calculateRoute = useCallback(async (locations) => {
     if (locations.length < 2) return;
-    if (JSON.stringify(lastLocationsRef.current) === JSON.stringify(locations))
-      return; // Prevent duplicate requests
-
-    lastLocationsRef.current = locations; // Update ref to track last requested locations
-
+    if (JSON.stringify(lastLocationsRef.current) === JSON.stringify(locations)) return;
+    lastLocationsRef.current = locations;
+  
     const directionsService = new google.maps.DirectionsService();
-    const waypoints = locations.slice(1, -1).map((loc) => ({ location: loc }));
-
+    const waypoints = locations.slice(1, -1)?.map((loc) => ({ location: loc }));
+  
     try {
       const results = await directionsService.route({
         origin: locations[0],
@@ -130,59 +138,114 @@ function MultipleDelivery() {
         waypoints,
         travelMode: google.maps.TravelMode.DRIVING,
       });
-
-      setDirections(results);
-
-      // Calculate distances and durations
-      const distancesArray = results.routes[0].legs.map((leg) => ({
-        start: leg.start_address,
-        end: leg.end_address,
-        distance: leg.distance.text,
-        duration: leg.duration.text,
-      }));
-      setDistances(distancesArray);
-
-      // Calculate total distance
-      const totalDistance = results.routes[0].legs.reduce((sum, leg) => {
-        return sum + parseFloat(leg.distance.text.replace(" km", ""));
-      }, 0);
-      setDistance(totalDistance.toFixed(2));
-
-      // Calculate total duration
-      const totalDurationMinutes = results.routes[0].legs.reduce(
-        (sum, leg) => sum + parseDurationToMinutes(leg.duration.text),
+  
+      setDirections(results); // Store the directions once
+  
+      let cumulativeMinutes = 0;
+      const startTime = new Date();
+      let timelineData = [];
+  
+      const totalDistance = results.routes[0].legs.reduce(
+        (sum, leg) => sum + parseFloat(leg.distance.text.replace(" km", "")),
         0
       );
-      setDuration(formatDuration(totalDurationMinutes));
+  
+      const distancesArray = results.routes[0].legs?.map((leg) => {
+        const originalDurationMinutes = parseDurationToMinutes(leg.duration.text);
+  
+        cumulativeMinutes += originalDurationMinutes;
+  
+        const arrivalTime = new Date(startTime.getTime() + cumulativeMinutes * 60000);
+        const formattedTime = arrivalTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  
+        const legData = {
+          start: leg.start_address,
+          end: leg.end_address,
+          distance: leg.distance.text,
+          originalDuration: originalDurationMinutes, // Store unmodified duration
+          arrivalTime: formattedTime,
+        };
+  
+        timelineData.push(legData);
+        return legData;
+      });
+  
+      setOriginalTimeline(timelineData); // Store original values first
+      setDistance(`${totalDistance.toFixed(2)} km`); // Store original total distance
+  
     } catch (error) {
       console.error("Error calculating route:", error);
     }
   }, []);
 
+  const updateTimeline = (timelineData, mode) => {
+    if (!timelineData.length) return;
+  
+    const updatedTimeline = timelineData?.map((leg) => {
+      const adjustedDurationMinutes = leg.originalDuration * multipliers[mode];
+      return {
+        ...leg,
+        duration: `${Math.round(adjustedDurationMinutes)} min`,
+      };
+    });  
+    setTimeline(updatedTimeline);
+  
+    // Update total duration based on new mode
+    const totalDurationMinutes = timelineData.reduce(
+      (sum, leg) => sum + leg.originalDuration,
+      0
+    );
+    setDuration(formatDuration(totalDurationMinutes * multipliers[mode]));
+
+    const totalDistance = timelineData.reduce(
+      (sum, leg) => sum + parseFloat(leg.distance.replace(" km", "")),
+      0
+    );
+    setDistance(`${totalDistance.toFixed(2)} km`);
+  };
+  
+  // Watch selectedMode and update durations without calling API
+  useEffect(() => {
+  
+   
+      updateTimeline(originalTimeline, selectedMode);
+ 
+  }, [selectedMode,originalTimeline]);
+  
+  
+
   // Parse duration text into minutes
   const parseDurationToMinutes = (durationText) => {
-    const timeParts = durationText.match(/(\d+)\s*(hour|minute|mins|min)/gi);
-    let totalMinutes = 0;
-
-    if (timeParts) {
-      timeParts.forEach((part) => {
-        if (part.includes("hour")) {
-          totalMinutes += parseInt(part) * 60;
-        } else {
-          totalMinutes += parseInt(part);
-        }
-      });
+    if (!durationText) return 0;
+  
+    const parts = durationText.match(/(\d+)\s*h(?:our)?(?:s)?(?:\s+(\d+)\s*min)?/i);
+    let minutes = 0;
+  
+    if (parts) {
+      minutes += parts[1] ? parseInt(parts[1]) * 60 : 0; // Convert hours to minutes
+      minutes += parts[2] ? parseInt(parts[2]) : 0; // Add minutes if available
+    } else {
+      // If only minutes are provided (e.g., "45 min")
+      const minuteOnly = durationText.match(/(\d+)\s*min/i);
+      if (minuteOnly) {
+        minutes = parseInt(minuteOnly[1]);
+      }
     }
-    return totalMinutes;
+  
+    return minutes;
   };
-
-  // Format total duration into a readable format
-  const formatDuration = (totalMinutes) => {
-    if (totalMinutes < 60) return `${totalMinutes} min`;
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return minutes === 0 ? `${hours} hours` : `${hours} hours ${minutes} mins`;
+  
+  const formatDuration = (minutes) => {
+    if (!minutes || isNaN(minutes)) return "0 min";
+  
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+  
+    if (hours > 0 && mins > 0) return `${hours}h ${mins}min`;
+    if (hours > 0) return `${hours}h`;
+    return `${mins} min`;
   };
+  
 
   const combinedLocations = [pickupLocation, ...dropoffLocations].filter(
     Boolean
@@ -282,7 +345,7 @@ function MultipleDelivery() {
     setVehicleDetail(vehicle);
     setShowModal(true);
   };
-
+   
   useEffect(() => {
     const getDistancePrice = () => {
       getDistancePriceList(
@@ -311,12 +374,17 @@ function MultipleDelivery() {
       setSelectedVehicleDetails(order?.selectedVehicleDetails);
       setSelectedVehiclePrice(order?.selectedVehiclePrice);
       setSelectedServiceType(order?.selectedServiceType);
+      setSelectedMode(order?.selectedMode)
+      setTimeline(order?.timeline)
+      setOriginalTimeline(order?.originalTimeline)
+      setSelectedVehiclePrice(order?.selectedVehiclePrice)
+      
     }
   }, [order]);
 
   const handleContinue = () => {
     if (!pickupLoc || !dropoffLoc || !selectedVehicle || !selectedServiceType) {
-      showErrorToast("Please fill all fields.");
+      showErrorToast("Please fill all fieldssdsf.");
       return;
     }
 
@@ -332,6 +400,11 @@ function MultipleDelivery() {
       selectedBranch,
       distances,
       selectedServiceType,
+      date: dateValue instanceof Date ? dateValue.toISOString() : null,
+      isSchedule,
+      timeline,
+      originalTimeline,
+      selectedMode,
     };
     if (order?.orderCustomerDetails) {
       payload.orderCustomerDetails = order?.orderCustomerDetails;
@@ -340,6 +413,10 @@ function MultipleDelivery() {
     navigate("/enterprise/add-dropoff-details");
   };
   if (!isLoaded) return <div>Loading map...</div>;
+
+  const handleVehicleChange = (mode) => {
+    setSelectedMode(mode);
+  };
   return (
     <>
       <CommonHeader userData={user} />
@@ -356,12 +433,13 @@ function MultipleDelivery() {
                     icon="faLocationDot"
                     selectedBranch={selectedBranch}
                     mapApiKey={mapApiKey}
+                    type="pickup"
                   />
                 </div>
 
                 <div className={Styles.homePickupLocationsBorderShowoff} />
 
-                {dropoffLocations.map((_, index) => (
+                {dropoffLocations?.map((_, index) => (
                   <div
                     key={index}
                     className={Styles.pickupAddresAutocompleteCard}
@@ -374,10 +452,13 @@ function MultipleDelivery() {
                       icon="faLocationCrosshairs"
                       mapApiKey={mapApiKey}
                       selectedBranch={selectedBranch}
+                      type="dropoff"
+                      index={index}
+
                     />
-                    {dropoffLocations.length > 1 && (
+                    {dropoffLocations.length > 1  && (
                       <FontAwesomeIcon
-                        icon={faMinusCircle}
+                        icon={faTrash}
                         onClick={() => removeDropoffRow(index)}
                         style={{ cursor: "pointer", color: "red" }}
                       />
@@ -391,8 +472,10 @@ function MultipleDelivery() {
                   onClick={addDropoffRow}
                 />
               </div>
-              {/* <DateTimePicker setDate={setDate} setIsSchedule={setIsSchedule} /> */}
-              <ServiceTypeSelection
+              <DateTimePicker setDate={setDate} setIsSchedule={setIsSchedule} />
+             
+
+              <VehicleSelection
                 vehicleTypeList={vehicleTypeList}
                 selectedVehicle={selectedVehicle}
                 setSelectedVehicle={setSelectedVehicle}
@@ -402,10 +485,7 @@ function MultipleDelivery() {
                 getPriceUsingVehicleType={getPriceUsingVehicleType}
                 openModal={openModal}
                 dropoffLocation={dropoffLocations}
-                selectedServiceType={selectedServiceType}
-                setSelectedServiceType={setSelectedServiceType}
-                enterpriseServiceType={enterpriseServiceType}
-                t={t}
+                handleVehicleChange={handleVehicleChange}
               />
             </div>
 
@@ -424,65 +504,9 @@ function MultipleDelivery() {
               </button>
             </div>
           </div>
-          <div className="col-md-9">
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
-              zoom={10}
-              center={center}
-              options={{
-                zoomControl: false,
-                streetViewControl: false,
-                mapTypeControl: false,
-                fullscreenControl: false,
-              }}
-            >
-              {markers.map((marker, index) =>
-                index == 0 ? (
-                  <Marker
-                    key={index}
-                    position={marker.position}
-                    title={marker.title}
-                    icon={{
-                      url: PickupMarker,
-                      scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                    }}
-                  />
-                ) : (
-                  <Marker
-                    key={index}
-                    position={marker.position}
-                    title={marker.title}
-                    icon={{
-                      url: DropoffMarker,
-                      scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                    }}
-                  />
-                )
-              )}
-              {center && markers.length === 0 && (
-                <Marker
-                  position={center}
-                  icon={{
-                    url: PickupMarker,
-                    scaledSize: new window.google.maps.Size(25, 36), // Adjust size as needed
-                  }}
-                />
-              )}
-              {directions && (
-                <DirectionsRenderer
-                  directions={directions}
-                  options={{
-                    polylineOptions: {
-                      strokeColor: "#FF0058", // Blue color
-                      strokeOpacity: 0.9, // 90% opacity
-                      strokeWeight: 3, // 5px thick line
-                    },
-                    suppressMarkers: true, // Use your custom markers
-                  }}
-                />
-              )}
-            </GoogleMap>
-          </div>
+         
+          <RouteTimeline  timeline={timeline} directions={directions} center={center} markers = {markers} distance={distance} duration={duration}/>
+        
         </div>
 
         <ToastContainer />
