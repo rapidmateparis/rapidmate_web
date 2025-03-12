@@ -15,6 +15,7 @@ import { buildAddress, getMapsApiKey } from "../../../utils/Constants";
 import EnterpriseAddOrEditCompanyLocation from "../../enterprise/setting/EnterpriseAddOrEditCompanyLocation";
 import { setBranches } from "../../../redux/enterpriseSlice";
 import { getDashbaordBranch } from "../../../utils/UseFetch";
+import { useTranslation } from "react-i18next";
 
 function ManageCompanyLocation() {
   const user = useSelector((state) => state.auth.user);
@@ -27,6 +28,7 @@ function ManageCompanyLocation() {
   const [editBranch, setEditBranch] = useState(null);
   const [mapKey, setMapKey] = useState(null);
   const [resfresh, setRefresh] = useState(false);
+  const {t}=useTranslation();
 
   const getBranchLocation = (forDo = false) => {
     setLoading(true);
@@ -126,7 +128,7 @@ function ManageCompanyLocation() {
             style={{ cursor: "pointer" }}
           >
             <p className={Styles.addressBookHeaderTitleText}>
-              Manage company locations
+              {t("manage_company_locations")}
             </p>
             <button className={Styles.addressBookPlusIconBtn}>
               <FontAwesomeIcon icon={faPlus} />

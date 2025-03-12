@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import SadEmoji from "../../assets/images/SadFace-Emoji.png";
 import Styles from  "../../assets/css/PickupCancellationModal.module.css";
+import { useTranslation } from "react-i18next";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -14,13 +15,14 @@ function PickupOrderCancelled({ show, handleClose}) {
         handleClose();
         navigate('/consumber/dashboard')
       };
+      const {t}=useTranslation();
 
       return (
         <>
           <Modal show={show} onHide={handleClose} centered>
             <Modal.Header>
               <div className={Styles.modalCancellationHeader}>
-                <p className={Styles.orderCanceledTextHead}>Order cancelled</p>
+                <p className={Styles.orderCanceledTextHead}>{t("orderCancelled")}</p>
                 <FontAwesomeIcon  className={Styles.modalCloseHeaderBtn} icon={faTimes} onClick={handleSaveChanges} />
               </div>
             </Modal.Header>
@@ -28,14 +30,14 @@ function PickupOrderCancelled({ show, handleClose}) {
                <div className={Styles.orderCanceledMainCard}>
                   <img className={Styles.orderCanceledSadEmoji} src={SadEmoji} alt="Emoji" />
                   <div>
-                    <h6 className={Styles.yourOrderCancelText}>Your order is cancelled</h6>
-                    <p className={Styles.orderCanceledMsg}>Sorry for the inconvenience, hope to see you soon!</p>
+                    <h6 className={Styles.yourOrderCancelText}>{t("yourOrderIsCancelled")}</h6>
+                    <p className={Styles.orderCanceledMsg}>{t("yourOrderIsCancelledDescription")}</p>
                   </div>
                </div>
             </Modal.Body>
             <Modal.Footer>
                <div>
-                  <Link to="/consumer/dashboard" className={Styles.cancellationModalSubmitBtn}>Ok</Link>
+                  <Link to="/consumer/dashboard" className={Styles.cancellationModalSubmitBtn}>{t("ok")}</Link>
                </div>
             </Modal.Footer>
           </Modal>
