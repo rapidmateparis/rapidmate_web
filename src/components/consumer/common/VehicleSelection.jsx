@@ -15,6 +15,7 @@ const VehicleSelection = ({
   setSelectedVehiclePrice,
   openModal,
   dropoffLocation,
+  handleVehicleChange
 }) => {
   const {t}=useTranslation()
   return (
@@ -29,7 +30,7 @@ const VehicleSelection = ({
           )}
         </div>
         <div className="row">
-          {vehicleTypeList.map((vehicle, index) => (
+          {vehicleTypeList?.map((vehicle, index) => (
             <div key={index} className={`col-md-4 ${Styles.CoustomWidth}`}>
               <div
                 className={`${Styles.homePickupVehiclesCard} ${
@@ -38,9 +39,11 @@ const VehicleSelection = ({
                     : ""
                 }`}
                 onClick={() => {
+                 
                   if (dropoffLocation!=='' && dropoffLocation[0] !=='') {
                     setSelectedVehicle(vehicle.vehicle_type);
                     setSelectedVehicleDetails(vehicle);
+                    handleVehicleChange(vehicle?.vehicle_type)
                     const price = getPriceUsingVehicleType(vehicle.id);
                     setSelectedVehiclePrice(price);
                   }else{

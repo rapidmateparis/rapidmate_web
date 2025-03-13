@@ -19,12 +19,13 @@ const ServiceTypeSelection = ({
   selectedServiceType, 
   setSelectedServiceType,
   enterpriseServiceType,
-  t
+  t,
+  travelTimes,
+  setDuration
 }) => {
   
   const handleServiceTypeClick = (serviceType, vehicleMatch) => {
     
-   
       const vehicle = vehicleTypeList.find(
         (v) => v.id === vehicleMatch
       );
@@ -32,6 +33,8 @@ const ServiceTypeSelection = ({
         if (dropoffLocation!=='' && dropoffLocation[0] !=='') {
           setSelectedVehicle(vehicle.vehicle_type);
           setSelectedVehicleDetails(vehicle);
+         
+          
           const price = getPriceUsingVehicleType(vehicle.id);
           setSelectedVehiclePrice(price);
         } else {
@@ -40,7 +43,7 @@ const ServiceTypeSelection = ({
         }
       }
       
-
+  
    
     setSelectedServiceType(serviceType);
   }
@@ -94,6 +97,7 @@ const ServiceTypeSelection = ({
                   if (dropoffLocation !== ""  && dropoffLocation[0] !=='') {
                     setSelectedVehicle(vehicle.vehicle_type);
                     setSelectedVehicleDetails(vehicle);
+                    setDuration(travelTimes[vehicle.vehicle_type])
                     const price = getPriceUsingVehicleType(vehicle.id);
                     setSelectedVehiclePrice(price);
                   } else {

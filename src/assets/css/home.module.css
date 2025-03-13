@@ -5473,7 +5473,7 @@ a {
   border-color: var(--primaryColor);
 }
 
-.deliveryBoySignupCheckboxCard {
+/* .deliveryBoySignupCheckboxCard {
   width: 16px;
   height: 16px;
   margin-right: 8px;
@@ -5484,14 +5484,48 @@ a {
 
 .deliveryBoySignupCheckboxCard:focus {
   outline: none;
-  border-color: var(--secondary-color); /* Focus color */
+  border-color: var(--secondary-color);
   box-shadow: 0 0 4px var(--secondary-color);
 }
 
 .deliveryBoySignupCheckboxCard:checked {
   background-color: var(--secondary-color) !important;
   border-color: var(--secondary-color) !important;
+} */
+
+.deliveryBoySignupCheckboxCard:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 4px var(--secondary-color);
 }
+.deliveryBoySignupCheckboxCard {
+  appearance: none;
+  width: 20px;
+  height: 16px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.deliveryBoySignupCheckboxCard:checked {
+  background-color: #ff0058; /* Change to your preferred color */
+  border-color: #ff0058;;
+}
+
+.deliveryBoySignupCheckboxCard:checked::after {
+  content: "✔"; /* Checkmark */
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 
 /* end  */
 

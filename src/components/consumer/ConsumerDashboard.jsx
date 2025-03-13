@@ -29,21 +29,20 @@ import { showErrorToast, showSuccessToast } from "../../utils/Toastify";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrderDetails } from "../../redux/doOrderSlice";
+import { getTravelTime } from "../../utils/UseFetch";
 
 const libraries = ["places"];
-
-function ConsumerDashboard({mapApiKey}) {
+const DEFAULT_CENTER = { lat: 48.85754309772872, lng: 2.3513877855537912 };
+function ConsumerDashboard({ mapApiKey }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const {order} = useSelector((state) => state.orderDetails);
+  const { order } = useSelector((state) => state.orderDetails);
+  const user = useSelector((state) => state.auth.user);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
-  const [center, setCenter] = useState({
-    lat: 48.85754309772872,
-    lng: 2.3513877855537912,
-  });
+  const [center, setCenter] = useState("");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -59,9 +58,13 @@ function ConsumerDashboard({mapApiKey}) {
   const [addPickupLocation, setAddPickupLocation] = useState(null);
   const [addDestinationLocation, setAddDestinationLocation] = useState(null);
   const [dateValue, setDate] = useState("");
+  const [vehicleTimes, setVehicleTimes] = useState({});
   const [isSchedule, setIsSchedule] = useState(false);
   const [map, setMap] = useState(null);
-  const [mapHeight, setMapHeight] = useState(window.innerWidth < 768 ? "350px" : "100vh");
+  const [mapHeight, setMapHeight] = useState(
+    window.innerWidth < 768 ? "350px" : "100vh"
+  );
+  const [selectedMode,setSelectedMode] = useState("Car");
 
   useEffect(() => {
     setLoading(true);
@@ -93,6 +96,7 @@ function ConsumerDashboard({mapApiKey}) {
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ lat: latitude, lng: longitude });
+
           setCenter({ lat: latitude, lng: longitude });
         },
         (error) => {
@@ -100,8 +104,18 @@ function ConsumerDashboard({mapApiKey}) {
           // Fallback to a default location if needed
         }
       );
+    } else {
+      setCurrentLocation(DEFAULT_CENTER);
     }
   }, []);
+  useEffect(() => {
+    if (pickupLocation) {
+      setCenter({
+        lat: pickupLocation.lat,
+        lng: pickupLocation.lng,
+      });
+    }
+  }, [pickupLocation]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -134,14 +148,15 @@ function ConsumerDashboard({mapApiKey}) {
     getDistancePrice();
   }, [duration]);
 
-  useEffect(()=>{
-    if(order){
-      setSelectedVehicle(order?.selectedVehicle)
-      setSelectedVehicleDetails(order?.selectedVehicleDetails)
-      setSelectedVehiclePrice(order?.selectedVehiclePrice)
+  useEffect(() => {
+    if (order) {
+      setSelectedVehicle(order?.selectedVehicle);
+      setSelectedVehicleDetails(order?.selectedVehicleDetails);
+      setSelectedVehiclePrice(order?.selectedVehiclePrice);
       // setPickupLocation(order?.pickupLocation)
+      setSelectedMode(order?.selectedMode)
     }
-  },[order])
+  }, [order]);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: mapApiKey,
@@ -151,31 +166,54 @@ function ConsumerDashboard({mapApiKey}) {
   if (!isLoaded) {
     return <div>Loading map...</div>;
   }
-
+  const multipliers = {
+    Cycle: 0.8,    // Cycle is slower (time increases)
+    Scooter: 0.6,  // Scooter is faster than a cycle
+    Car: 1.0,      // Base travel time
+    Partner: 0.7,  // Partner vehicle (slightly slower than Car)
+    Pickup: 0.75,  // Pickup is slower than a car
+    Van: 0.72,     // Van is slower than a car
+    Truck: 0.6,    // Truck is the slowest
+  };
   const calculateRoute = async () => {
-    if (pickupLocation && dropoffLocation) {
+    if (!pickupLocation || !dropoffLocation) return;
+  
+    try {
       const directionsService = new google.maps.DirectionsService();
       const results = await directionsService.route({
         origin: { lat: pickupLocation.lat, lng: pickupLocation.lng },
         destination: { lat: dropoffLocation.lat, lng: dropoffLocation.lng },
         travelMode: google.maps.TravelMode.DRIVING,
       });
-
-      setDirectionsResponse(results);
-      setDistance(results.routes[0].legs[0].distance.text);
-      setDuration(results.routes[0].legs[0].duration.text);
-      const pickup = getLocation(
-        pickupLocation,
-        pickupLocation.lat,
-        pickupLocation.lng
-      );
-      setAddPickupLocation(pickup);
-      const dropoff = getLocation(
-        dropoffLocation,
-        dropoffLocation.lat,
-        dropoffLocation.lng
-      );
-      setAddDestinationLocation(dropoff);
+  
+      if (results?.routes?.length > 0) {
+        setDirectionsResponse(results); // Keep this as per your request
+  
+        const distanceText = results.routes[0].legs[0].distance.text; // e.g., "10 km"
+        const durationText = results.routes[0].legs[0].duration.text; // e.g., "30 mins"
+  
+        // Convert distance & duration to numbers
+        const baseDistance = parseFloat(distanceText.replace(" km", "").replace(",", ""));
+        const baseDuration = parseFloat(durationText.replace(" mins", "").replace(",", ""));
+  
+        // Precompute values for all vehicle types
+        const calculatedRoutes = Object.entries(multipliers).reduce((acc, [vehicle, multiplier]) => {
+          acc[vehicle] = {
+            distance: distanceText, // Keep distance the same for all vehicles
+            duration: (baseDuration * multiplier).toFixed(2) + " mins", // Adjust duration
+          };
+          return acc;
+        }, {});
+  
+        // Store precomputed data in state
+        setVehicleTimes(calculatedRoutes);
+  
+        // Set default values based on selectedMode
+        setDistance(calculatedRoutes[selectedMode].distance);
+        setDuration(calculatedRoutes[selectedMode].duration);
+      }
+    } catch (error) {
+      console.error("Error calculating route:", error);
     }
   };
 
@@ -184,7 +222,7 @@ function ConsumerDashboard({mapApiKey}) {
       showErrorToast("Please fill all fields.");
       return;
     }
-     
+
     const payload = {
       addPickupLocation,
       addDestinationLocation,
@@ -197,11 +235,12 @@ function ConsumerDashboard({mapApiKey}) {
       duration,
       selectedVehicleDetails,
       selectedVehiclePrice,
+      selectedMode,
     };
-    if(order?.orderCustomerDetails){
-      payload.orderCustomerDetails=order?.orderCustomerDetails
+    if (order?.orderCustomerDetails) {
+      payload.orderCustomerDetails = order?.orderCustomerDetails;
     }
-    dispatch(setOrderDetails(payload))
+    dispatch(setOrderDetails(payload));
 
     navigate("/consumer/pickup-details");
   };
@@ -218,7 +257,13 @@ function ConsumerDashboard({mapApiKey}) {
     setShowModal(true);
   };
 
-  
+  const handleVehicleChange = (mode) => {
+    setSelectedMode(mode)
+    if (vehicleTimes) {
+      setDistance(vehicleTimes[mode].distance);
+      setDuration(vehicleTimes[mode].duration);
+    }
+  };
 
   return (
     <section className={Styles.requestPickupSec}>
@@ -245,6 +290,7 @@ function ConsumerDashboard({mapApiKey}) {
               getPriceUsingVehicleType={getPriceUsingVehicleType}
               openModal={openModal}
               dropoffLocation={dropoffLocation}
+              handleVehicleChange={handleVehicleChange}
             />
           </div>
 
@@ -292,7 +338,7 @@ function ConsumerDashboard({mapApiKey}) {
             </div>
           )}
           <GoogleMap
-            center={center}
+            center={pickupLocation || currentLocation || DEFAULT_CENTER}
             zoom={14}
             mapContainerStyle={{ width: "100%", height: mapHeight }}
             options={{
@@ -321,6 +367,7 @@ function ConsumerDashboard({mapApiKey}) {
                 }}
               />
             )}
+
             {!pickupLocation && currentLocation && (
               <Marker
                 position={currentLocation}

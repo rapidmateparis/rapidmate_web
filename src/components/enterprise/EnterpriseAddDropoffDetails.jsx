@@ -44,7 +44,6 @@ const EnterpriseAdd = () => {
   const { order } = useSelector((state) => state.orderDetails);
   const [selectCheckOption, setSelectedCheckOption] = useState("custom");
   const [repeatOrder, setRepeatOrder] = useState(false);
-  const [instance, setInstance] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Daily");
   const [isFocused, setIsFocused] = useState(false);
   const [selectedDays, setSelectedDays] = useState({
@@ -137,10 +136,7 @@ const EnterpriseAdd = () => {
     setValue("repeatOrder", event.target.checked);
   };
 
-  const handleInstanceOrder = (event) => {
-    setInstance(event.target.checked);
-    setValue("isSchedule", event.target.checked);
-  };
+ 
 
   const handleUntilChange = (date) => {
     setUntilDate(moment(date).format("YYYY-MM-DD"));
@@ -164,7 +160,6 @@ const EnterpriseAdd = () => {
     const getLocalData = async ()=>{
       if(order?.orderCustomerDetails){
         
-        setInstance(order?.orderCustomerDetails?.isSchedule)
         const data =order?.orderCustomerDetails
         Object.keys(data).forEach((key) => {
             setValue(key, data[key]);
@@ -314,96 +309,6 @@ const EnterpriseAdd = () => {
                       )}
                     </div>
                   </div>
-                </div>
-                <div className={`row ${Styles.manageRow}`}>
-                  <div className="col-md-12">
-                    <div
-                      className={Styles.enterpriseSelectServiceRepeatOrderCard}
-                    >
-                      <p
-                        className={
-                          Styles.enterpriseSelectServiceRepeatOrderText
-                        }
-                      >
-                        {t("is_instant_date")}
-                      </p>
-
-                      <Form.Check
-                        type="switch"
-                        id="instance-switch"
-                        checked={instance}
-                        onChange={handleInstanceOrder}
-                        className={Styles.customSwitch}
-                      />
-                    </div>
-                  </div>
-                  {!instance ? (
-                    <>
-                      {/* Pickup Date Section */}
-                      <div className="col-md-6">
-                        <div className={Styles.addPickupDetailsInputs}>
-                          <label
-                            htmlFor="pickupDate"
-                            className={Styles.enterpriseSelectServicePickupDate}
-                          >
-                            {t("pickup_date")}{" "}
-                          </label>
-                          <Controller
-                            name="pickupDate"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                selected={field.value}
-                                onChange={field.onChange}
-                                dateFormat="dd/MM/yyyy"
-                                className={`${Styles.enterpriseSelectServiceDateCard} dynamic-border-input`}
-                              />
-                            )}
-                          />
-                          {errors.pickupDate && (
-                            <p className={Styles.errorText}>
-                              {errors.pickupDate.message}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Pickup Time Section */}
-                      <div className="col-md-6">
-                        <div className={Styles.addPickupDetailsInputs}>
-                          <label
-                            htmlFor="pickupTime"
-                            className={Styles.addPickupDetailFormLabels}
-                          >
-                            {t("pickup_time")}:
-                          </label>
-
-                          <input
-                            type="time"
-                            value={selectedTime}
-                            onChange={handleTimeset}
-                            style={{
-                              padding: "8px",
-                              borderRadius: "4px",
-                              border: "1px solid #ddd",
-                              width: "50%",
-                              fontSize: "14px",
-                            }}
-                            className="dynamic-border-input"
-                          />
-
-                          {errors.pickupTime && (
-                            <p className={Styles.errorText}>
-                              {errors.pickupTime.message}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div>{t("pickup_date")}: {localToUTC()}</div>
-                  )}
                 </div>
                 <div
                   className={Styles.enterpriseSelectServiceRepeatOrderMainCard}
@@ -1138,13 +1043,13 @@ const EnterpriseAdd = () => {
                 <div className={`row ${Styles.manageRow}`}>
                   <div className="col-md-12">
                     <div className={Styles.addPickupDetailsBtnCard}>
-                      <Link
+                      <div
                         className={Styles.addPickupDetailsCancelBTn}
                         style={{ color: "#000" }}
-                        to="/enterprise/dashboard"
+                        onClick={()=>navigate(-1)}
                       >
                         {t("back")}
-                      </Link>
+                      </div>
                       <button
                         type="submit"
                         onClick={handleSubmit(onSubmit)}

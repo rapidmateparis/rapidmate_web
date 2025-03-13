@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   }
   if(role == 'DELIVERY_BOY' || role== 'ENTERPRISE'){
     const { is_active, vehicleAdd } = user?.userDetails || {};
-    if(is_active === 0 && vehicleAdd === true){
+    if(is_active === 0){
       return <Navigate to="/request-pending" />;
     }
   }

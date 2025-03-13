@@ -78,7 +78,7 @@ const PaymentPage = ({
   const navigate = useNavigate();
   const dispatch=useDispatch()
   
-  
+  //  console.log("order",order)
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -98,7 +98,7 @@ const PaymentPage = ({
   const openAddModal = () => {
     setShowAddModal(true);
   };
-
+  
   const [savedCards, setSavedCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState("");
   const [saveForLater, setSaveForLater] = useState(false);
@@ -132,6 +132,8 @@ const PaymentPage = ({
       getPaymentCardList();
     }
   }, [customerId]);
+  
+
 
   const getOrderAddress = (serviceTypeId, order) => {
     if (serviceTypeId == 2) {
@@ -185,9 +187,7 @@ const PaymentPage = ({
         to_longitude: dropoff.lng,
         amount: order?.selectedVehiclePrice,
         dropoff_location: await addLocation(getDropoffLocation(dropoff, true)),
-        delivery_date: moment(order?.orderCustomerDetails?.pickupDate).format(
-          "YYYY-MM-DD hh:mm"
-        ),
+        delivery_date: moment(order?.date).format("YYYY-MM-DD hh:mm"),
         drop_first_name: getFileName(order?.orderCustomerDetails, "dname", index),
         drop_last_name: getFileName(order?.orderCustomerDetails, "dlastname", index),
         drop_mobile: getFileName(order?.orderCustomerDetails, "dphoneNumber", index),
@@ -338,10 +338,6 @@ const PaymentPage = ({
     const floatDistance = distance
       ? parseFloat(distance.replace(" km", ""))
       : 0;
-    const isInstantDate =
-      order?.deliveryType.id === 2
-        ? order?.isSchedule
-        : order?.orderCustomerDetails?.isSchedule;
     const isMultiple = order?.deliveryType.id;
     let requestParams = {
       enterprise_ext_id: user.userDetails.ext_id,
@@ -349,29 +345,22 @@ const PaymentPage = ({
       delivery_type_id: order?.deliveryType?.id,
       service_type_id: order?.selectedServiceType,
       vehicle_type_id: order?.selectedVehicleDetails?.id,
-      pickup_date: localToUTC(order?.orderCustomerDetails?.pickupDate),
-      order_date: isInstantDate
-        ? moment(order?.orderCustomerDetails?.pickupDate).format("YYYY-MM-DD hh:mm")
-        : "",
-      pickup_time: isInstantDate
-        ? moment(order?.orderCustomerDetails?.pickupDate).format("hh:mm")
-        : order?.orderCustomerDetails?.pickupTime,
+      pickup_date:moment(order?.date).format("YYYY-MM-DD hh:mm"),
+      order_date:moment(order?.date).format("YYYY-MM-DD hh:mm"),
+      pickup_time: moment(order?.date).format("hh:mm"),
       pickup_location_id: sourceLocationId,
       dropoff_location_id: destinationLocationId,
       is_repeat_mode: order?.orderCustomerDetails?.repeatOrder ? 1 : 0,
       repeat_mode: order?.orderCustomerDetails?.selectCheckOption || "",
       repeat_every: order?.orderCustomerDetails?.repeatEvery,
-      repeat_until: localToUTC(order?.orderCustomerDetails?.until),
+      repeat_until: moment(order?.orderCustomerDetails?.until).format("YYYY-MM-DD hh:mm"),
       repeat_day: order?.orderCustomerDetails?.days || "",
       package_photo: packageImageId,
-      package_id:
-        isMultiple === 2
-          ? getFileName(order?.orderCustomerDetails, "packageId", 0)
-          : order?.orderCustomerDetails?.packageId,
+      package_id:isMultiple === 2 ? getFileName(order?.orderCustomerDetails, "packageId", 0) : order?.orderCustomerDetails?.packageId,
       distance: floatDistance,
       total_amount: parseFloat(paymentAmount),
       pickup_notes: order?.orderCustomerDetails?.pickupnote,
-      is_scheduled_order: order?.orderCustomerDetails?.isSchedule ? 0 : 1,
+      is_scheduled_order: order?.isSchedule ? 1 : 0,
       drop_first_name: order?.orderCustomerDetails?.dname,
       drop_last_name: order?.orderCustomerDetails?.dlastname,
       drop_mobile: order?.orderCustomerDetails?.dphoneNumber,
@@ -380,11 +369,8 @@ const PaymentPage = ({
       drop_company_name: order?.orderCustomerDetails?.dcompany,
     };
 
-    if (order?.orderCustomerDetails?.isSchedule == false) {
-      requestParams.schedule_date_time =
-        moment(order?.orderCustomerDetails?.pickupDate).format("YYYY-MM-DD") +
-        " " +
-        order?.orderCustomerDetails?.pickupTime;
+    if (order?.orderCustomerDetails?.isSchedule == true) {
+      requestParams.schedule_date_time=moment(order?.date).format("YYYY-MM-DD hh:mm");
     }
 
     if (promoCodeResponse) {
@@ -516,8 +502,8 @@ const PaymentPage = ({
       navigate("/payment-successfull", {
         state: {
           orderNumber: orderNumber,
-          date: order?.orderCustomerDetails?.pickupDate,
-          isSchedule: order?.orderCustomerDetails?.isSchedule ? false : true,
+          date: order?.date,
+          isSchedule: order?.isSchedule,
         },
       });
     }
@@ -574,8 +560,8 @@ const PaymentPage = ({
           navigate("/payment-successfull", {
             state: {
               orderNumber: orderNumber,
-              date: order?.orderCustomerDetails?.pickupDate,
-              isSchedule: order?.orderCustomerDetails?.isSchedule ? false : true,
+              date: order?.date,
+              isSchedule: order?.isSchedule,
             },
           });
         }
@@ -743,7 +729,7 @@ const PaymentPage = ({
 
                         <div className={Styles.paymentTotalAmountCard}>
                           <p className={Styles.paymentTotalAmounttext}>
-                            {t("total_amount")}
+                            {t("total_amount")} {' '}{"(Excl. VAT)"}
                           </p>
                           <p className={Styles.paymentTotalAmounttext}>
                             € {paymentAmount?.toFixed(2) || 0.0}

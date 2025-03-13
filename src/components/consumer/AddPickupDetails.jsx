@@ -187,7 +187,8 @@ const AddPickupDetails = () => {
       setValue("name", "");
       setValue("lastname", "");
       setValue("email", "");
-      setValue("phoneNumber", "");
+      setValue("phoneNumber", "+33");
+      setValue("pcountry", "fr");
       setValue("company","")
 
     }
@@ -406,13 +407,15 @@ const AddPickupDetails = () => {
                         control={control}
                         render={({ field: { onChange, value } }) => (
                           <PhoneInput
-                            country={"fr"}
+                            country={selectedOption ==='Other' ? "fr" : "fr"}
                             value={value}
                             onlyCountries={["fr", "in", "ru", "us", "nz"]}
                             countryCodeEditable={false}
                             isValid={(value, country) => {
                               setValue("pcountry", country.iso2);
                             }}
+                            
+                             placeholder=""
                             onFocus={handleFocus}
                             onBlur={handleBlur}
                             onChange={onChange}
