@@ -14,6 +14,7 @@ import {
 } from "../../../data_manager/dataManage";
 import { useSelector } from "react-redux";
 import { buildAddress, getLocation } from "../../../utils/Constants";
+import { useTranslation } from "react-i18next";
 
 const center = { lat: 28.56341236809311, lng: 77.33609181917045 };
 const libraries = ["places"];
@@ -31,6 +32,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
   const [postcode, setPostalCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [isPostal,setISPostal]=useState(false)
+  const {t}=useTranslation();
 
   const [locationInput, setLocationInput] = useState({
     address: "",
@@ -154,7 +156,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
         <div className="row">
           <div className="col-md-12">
             <p className={Styles.addressBookHeaderTitleText}>
-              {editBranch ? "Edit company location" : "Add company location"}
+              {editBranch ? t("editCompanyLocation") : t("addCompanyLocation")}
             </p>
             <div className={Styles.mapContainer}>
               <GoogleMap
@@ -174,12 +176,12 @@ const EnterpriseAddOrEditCompanyLocation = ({
             <div>
               <div className="mb-2">
                 <div className={Styles.enterpriseNewCompanyLocationTitleLabel}>
-                  Location Title
+                {t("locationTitle")}
                 </div>
-                <input
+                <input 
                   className={Styles.enterpriseNewCompanyLocationTitleinput}
                   type="text"
-                  placeholder="Type location title"
+                  placeholder={t("typeLocationTitle")}
                   value={locationTitle}
                   onChange={(e) => setLocationTitle(e.target.value)}
                 />
@@ -188,7 +190,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
                 <label
                   className={Styles.enterpriseNewCompanyLocationTitleLabel}
                 >
-                  Search Location
+                  {t("searchLocation")}
                 </label>
                 <Autocomplete
                   onLoad={(autocomplete) =>
@@ -201,7 +203,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
                   <input
                     className={Styles.homeMapPlaceSearch}
                     type="text"
-                    placeholder="Type and select location"
+                    placeholder={t("typeAndSelectLocation")}
                     ref={autocompleteRef}
                     defaultValue={locationInput.displayedAddress}
                   />
@@ -222,7 +224,7 @@ const EnterpriseAddOrEditCompanyLocation = ({
                   onClick={handleSaveLocation}
                   disabled={loading}
                 >
-                  {editBranch ? "Update Location" : "Save Location"}
+                  {editBranch ? t("updateLocation") : t("saveLocation")}
                 </button>
               </div>
             </div>

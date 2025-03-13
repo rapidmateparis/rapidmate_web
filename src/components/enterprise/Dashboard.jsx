@@ -58,7 +58,7 @@ import { getDashbaordBranch } from "../../utils/UseFetch";
 function CommonDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {t}=useTranslation()
+  const {t}=useTranslation();
   const user = useSelector((state) => state.auth.user);
   const { vehicleType } = useSelector((state) => state.commonData.commonData);
   const { bookings, branches } = useSelector((state) => state.enterprise);
@@ -245,7 +245,7 @@ function CommonDashboard() {
                   </b>
                 </p>
                 <p className={Styles.enterprisesHomeDashbordDiscription}>
-                  This is your Rapidmate enterprise dashboard!{" "}
+                {t("rapidmateDashboardTitle")}{" "}
                   <button
                     className="m-2 border-0 text-white bg-primary rounded-md"
                     onClick={getBookingList}
@@ -344,7 +344,7 @@ function CommonDashboard() {
                   <div className={Styles.enterpriseHomeWithoutGraphCard}>
                     <div>
                       <h4 className={Styles.enterpriseHomeHoursText}>
-                        Hours booked
+                      {t("hoursBooked")}
                       </h4>
                       <div className={Styles.enterpriseHomeLocationSelectCard}>
                         <Select

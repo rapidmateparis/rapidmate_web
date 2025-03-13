@@ -6,12 +6,14 @@ import Styles from  "../assets/css/PickupCancellationModal.module.css";
 import PickupOrderCancelled from "../components/consumer/PickupOrderCancelled";
 import { showErrorToast, showSuccessToast } from "../utils/Toastify";
 import { cancelOrderConsumer } from "../data_manager/dataManage";
+import { useTranslation } from "react-i18next";
 
 function PickupCancellationReasonModal({ show, handleClose, orderNumber,handleReasonSelect,setSelectedReason,selectedReason }) {
   const [showOrderCancelModal, setOrderCancelModal] = useState(false); // State to manage ResetPasswordModal visibility
   const handleShowOrderCancelModal = () => setOrderCancelModal(true);
   const handleCloseCancelModal = () => setOrderCancelModal(false);
-  const [laoding,setLoading]=useState(false)
+  const [laoding,setLoading]=useState(false);
+  const {t}=useTranslation();
 
   const handleReasonSubmit = () => {
     if (!selectedReason) {
@@ -46,18 +48,18 @@ function PickupCancellationReasonModal({ show, handleClose, orderNumber,handleRe
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
           <div className={Styles.modalCancellationHeader}>
-            <p className={Styles.cancellationReasonText}>Cancellation reason</p>
+            <p className={Styles.cancellationReasonText}>{t("cancellationReason")}</p>
             <FontAwesomeIcon className={Styles.modalCloseHeaderBtn} icon={faTimes} onClick={handleClose} />
           </div>
         </Modal.Header>
         <Modal.Body>
           <div>
             {[
-              { id: 1, reason: 'Change of plans' },
-              { id: 2, reason: 'I want to change delivery time' },
-              { id: 3, reason: 'Incorrect address or information' },
-              { id: 4, reason: 'Found another person' },
-              { id: 5, reason: 'It is taking too long' },
+              { id: 1, reason: t("changeOfPlans") },
+              { id: 2, reason: t("iWantChangeDeliveryTime") },
+              { id: 3, reason: t("incorrectAddressInformation") },
+              { id: 4, reason: t("foundAnotherPerson") },
+              { id: 5, reason: t("itTakingLong") },
             ].map((reason, key) => (
               <div
                 className={`${Styles.cancellationReasonCard} ${selectedReason?.id === reason.id ? Styles.selected : ""}`}
@@ -74,7 +76,7 @@ function PickupCancellationReasonModal({ show, handleClose, orderNumber,handleRe
         </Modal.Body>
         <Modal.Footer>
           <div>
-            <button onClick={handleReasonSubmit} className={Styles.cancellationModalSubmitBtn}>Submit</button>
+            <button onClick={handleReasonSubmit} className={Styles.cancellationModalSubmitBtn}>{t("submit")}</button>
           </div>
         </Modal.Footer>
       </Modal>

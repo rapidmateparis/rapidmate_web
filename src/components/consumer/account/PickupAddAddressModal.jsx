@@ -157,7 +157,7 @@ function PickupAddAddressModal({ show, handleClose, role, extId ,t}) {
         <Modal.Header>
           <div className={modalCss.modalPickupEditAddressHeader}>
             <p className={modalCss.vehicleDimensionsTextHead}>
-              Add New Address
+            {t("addNewAddress")}
             </p>
             <FontAwesomeIcon
               className={modalCss.modalCloseHeaderBtn}

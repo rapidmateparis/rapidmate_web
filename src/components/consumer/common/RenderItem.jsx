@@ -90,8 +90,8 @@ function RenderItem({ status = "", locationList = [], orderList = [] ,tabId}) {
                 <img className={Styles.pickupHistoryNodataImage} src={NoDataImage} alt="No-Data" />
               </div>
               <div>
-                <h4 className={Styles.pickupHistoryNoDatatext}>{t("No orders to show")}</h4>
-                <p className={Styles.pickupHistoryNodataSubText}>{t("If there is any active order, it will be shown here.")}</p>
+                <h4 className={Styles.pickupHistoryNoDatatext}>{t("no_orders_to_show")}</h4>
+                <p className={Styles.pickupHistoryNodataSubText}>{t("active_order_message")}</p>
               </div>
             </div>
           )}

@@ -9,8 +9,10 @@ import Home from "../../../assets/images/home-icon.png";
 import NoDataImage from "../../../assets/images/NoOrder.png";
 import { buildAddress } from "../../../utils/Constants";
 import { setBranches } from "../../../redux/enterpriseSlice";
+import { useTranslation } from "react-i18next";
 
 function AllCompanyLocations() {
+  const {t}=useTranslation()
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const { branches } = useSelector((state) => state.enterprise);
@@ -65,7 +67,7 @@ function AllCompanyLocations() {
               <div className={Styles.enterpriseNewScheduleTitleCard}>
                 <div>
                   <h4 className={Styles.enterpriseNewScheduleText}>
-                    Company locations
+                  {t("company_locations")}
                   </h4>
                 </div>
                 <div>
@@ -115,21 +117,21 @@ function AllCompanyLocations() {
                         <div className={Styles.enterpriseHomeLocSpentCard}>
                           <div className={Styles.enterpriseHomeHrsBookedCard}>
                             <p className={Styles.enterpriseHomeLocHsbooked}>
-                              Active booking
+                            {t("active_bookings")}
                             </p>
                             <h4>{company?.active_order || 0}</h4>
                           </div>
 
                           <div className={Styles.enterpriseHomeHrsBookedCard}>
                             <p className={Styles.enterpriseHomeLocHsbooked}>
-                              Scheduled booking
+                            {t("shift_bookings")}
                             </p>
                             <h4>{company?.schedule_order || 0}</h4>
                           </div>
 
                           <div className={Styles.enterpriseHomeHrsBookedCard}>
                             <p className={Styles.enterpriseHomeLocHsbooked}>
-                              All booking
+                            {t("all_bookings")}
                             </p>
                             <h4>{company?.total || 0}</h4>
                           </div>
@@ -147,10 +149,10 @@ function AllCompanyLocations() {
                       </div>
                       <div>
                         <h4 className={Styles.pickupHistoryNoDatatext}>
-                          No orders to show
+                        {t("noCompanyLocationsToShow")}
                         </h4>
                         <p className={Styles.pickupHistoryNodataSubText}>
-                          If there is any active order, it will be shown here..
+                        {t("noCompanyLocationsShowDes")}
                         </p>
                       </div>
                     </div>
