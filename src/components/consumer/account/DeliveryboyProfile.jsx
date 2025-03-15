@@ -10,7 +10,9 @@ import {
   getConsumerWallet,
   updateUserProfile,
 } from "../../../data_manager/dataManage";
-import Calender from "../../../assets/images/Calender-Icon.png";
+import Shift from "../../../assets/images/Calender-Icon.png";
+import PickupDrop from "../../../assets/images/Location-Icon.png";
+import Both from "../../../assets/images/Calender-Both.png";
 import { UseFetch } from "../../../utils/UseFetch";
 import { updateUserDetails } from "../../../redux/authSlice";
 import { ToastContainer } from "react-toastify";
@@ -60,8 +62,18 @@ const DeliveryboyProfile = () => {
     );
   };
 
-  
-  
+  const getImageSrc = (workType) => {
+    switch (workType) {
+      case "Shift wise":
+        return Shift;
+      case "Pickup and dropoff deliveries":
+        return PickupDrop;
+      case "Both":
+        return Both;
+      default:
+        return Shift;
+    }
+  };
 
   return (
     <section className={Styles.profileChooseSec}>
@@ -88,8 +100,8 @@ const DeliveryboyProfile = () => {
                 <div className={Styles.DeliveryboyProfiletypeImgCard}>
                   <img
                     className={Styles.deliveryboyProfileTypeImg}
-                    src={Calender}
-                    alt="Calender"
+                    src={getImageSrc(worktype.work_type)}
+                    alt="Img"
                   />
                 </div>
                 <div>

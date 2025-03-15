@@ -1,13 +1,14 @@
 import { toast } from 'react-toastify';
+import Styles from "../assets/css/home.module.css";
 
 /**
  * Displays a success toast.
  * @param {string} message - The success message to display.
  */
 export const showSuccessToast = (message) => {
-  toast.warning(message, {
+  toast.success(message, {
     position: 'top-right',
-    autoClose: 3000,
+    autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: false,
     pauseOnHover: false,

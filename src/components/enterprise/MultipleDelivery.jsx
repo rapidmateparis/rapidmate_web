@@ -50,6 +50,7 @@ function MultipleDelivery() {
   const [vehicleTypeList, setVehicleTypeList] = useState([]);
   const [pickupLocation, setPickupLocation] = useState("");
   const [pickupLoc, setPickupLoc] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [dropoffLocations, setDropoffLocations] = useState([""]);
   const [dropoffLoc, setDropoffLoc] = useState([""]);
   const [distances, setDistances] = useState([]);
@@ -58,6 +59,7 @@ function MultipleDelivery() {
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
   const [selectedVehiclePrice, setSelectedVehiclePrice] = useState(null);
   const [distance, setDistance] = useState(null);
+  const [vehicleDetail, setVehicleDetail] = useState(null);
   const [duration, setDuration] = useState(null);
   const [selectedServiceType, setSelectedServiceType] = useState(1);
   const [isSchedule, setIsSchedule] = useState(false);
@@ -508,6 +510,12 @@ function MultipleDelivery() {
           <RouteTimeline  timeline={timeline} directions={directions} center={center} markers = {markers} distance={distance} duration={duration}/>
         
         </div>
+
+        <PickupVehicleDimensionsModal
+          show={showModal}
+          handleClose={() => setShowModal(false)}
+          vehicle={vehicleDetail}
+        />
 
         <ToastContainer />
       </section>
