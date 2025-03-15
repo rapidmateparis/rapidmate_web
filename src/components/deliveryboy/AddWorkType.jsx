@@ -3,14 +3,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import Styles from "../../assets/css/home.module.css";
 import Logo from "../../assets/images/Logo-icon.png";
-import Calender from "../../assets/images/Calender-Icon.png";
+import Shift from "../../assets/images/Calender-Icon.png";
+import PickupDrop from "../../assets/images/Location-Icon.png";
+import Both from "../../assets/images/Calender-Both.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { UseFetch } from "../../utils/UseFetch";
 import { updateUserProfile } from "../../data_manager/dataManage";
-import {logout, updateUserDetails } from "../../redux/authSlice";
+import { logout, updateUserDetails } from "../../redux/authSlice";
 import localforage from "localforage";
+import { useTranslation } from "react-i18next";
 function AddWorkType() {
+   const {t}=useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { lookup, user } = UseFetch();
@@ -35,9 +39,9 @@ function AddWorkType() {
       (successResponse) => {
         const userDetailsData = {
           ...user.userDetails,
-          vehicleAdd: false,
+          vehicleAdd: true,
         };
-        dispatch(updateUserDetails({userDetails:userDetailsData}))
+        dispatch(updateUserDetails({ userDetails: userDetailsData }));
         dispatch(logout());
         localforage.clear();
         navigate("/thanks");
@@ -46,6 +50,19 @@ function AddWorkType() {
         console.log("updateUserProfile", errorResponse);
       }
     );
+  };
+
+  const getImageSrc = (workType) => {
+    switch (workType) {
+      case "Shift wise":
+        return Shift;
+      case "Pickup and dropoff deliveries":
+        return PickupDrop;
+      case "Both":
+        return Both;
+      default:
+        return Shift;
+    }
   };
   return (
     <section className={Styles.profileChooseSec}>
@@ -63,10 +80,10 @@ function AddWorkType() {
           <div className="col-md-12">
             <div className={Styles.chooseProfileCard}>
               <h2 className={Styles.chooseProfileHeading}>
-                How would you like to work?
+              {t("select_work_type")}
               </h2>
               <p className={Styles.chooseProfileSubheading}>
-                You can change this in settings later
+              {t("changeWorkTypeDes")}
               </p>
             </div>
           </div>
@@ -84,8 +101,8 @@ function AddWorkType() {
                 <div className={Styles.DeliveryboyProfiletypeImgCard}>
                   <img
                     className={Styles.deliveryboyProfileTypeImg}
-                    src={Calender}
-                    alt="Calender"
+                    src={getImageSrc(worktype.work_type)}
+                    alt="Img"
                   />
                 </div>
                 <div>
@@ -117,7 +134,7 @@ function AddWorkType() {
               type="button"
               onClick={continueHandler}
             >
-              Save & Continue
+              {t("saveContinue")}
             </Link>
           </div>
         </div>
